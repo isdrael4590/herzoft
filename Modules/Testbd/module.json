@@ -1,0 +1,11 @@
+{
+    "name": "Testbd",
+    "alias": "testbd",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Testbd\\Providers\\TestbdServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/discharge",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Discharge\\": "",
+            "Modules\\Discharge\\App\\": "app/",
+            "Modules\\Discharge\\Database\\Factories\\": "database/factories/",
+            "Modules\\Discharge\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Discharge\\Tests\\": "tests/"
+        }
+    }
+}

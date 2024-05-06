@@ -1,0 +1,11 @@
+{
+    "name": "Labelqr",
+    "alias": "labelqr",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Labelqr\\Providers\\LabelqrServiceProvider"
+    ],
+    "files": []
+}

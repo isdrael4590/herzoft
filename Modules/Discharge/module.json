@@ -1,0 +1,11 @@
+{
+    "name": "Discharge",
+    "alias": "discharge",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Discharge\\Providers\\DischargeServiceProvider"
+    ],
+    "files": []
+}
