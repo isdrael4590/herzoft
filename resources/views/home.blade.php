@@ -43,21 +43,51 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-6 text-center">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6>EQUIPOS VAPOR <img src="{{ URL::to('assets/img/logos_equipos/LOGO-STEAM.png') }}"
-                                            height="100"> </h6>
-                                    <h8>LOTE ACTUAL : </h8>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card border-0">
+                                <div class="card-body p-0 d-flex align-items-center shadow-sm">
+                                    <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
+                                        <i class="bi bi-caret-down-square font-4xl"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted text-uppercase font-weight-bold small">Recepción</div>
+                                        <div class="text-value text-primary">Aquí va el valor</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 text-center">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6>EQUIPOS BAJA TEMPERATURA <img src="{{ URL::to('assets/img/logos_equipos/130HPO.png') }}"
-                                            height="60"></h6>
-                                    <h8>LOTE ACTUAL : </h8>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card border-0">
+                                <div class="card-body p-0 d-flex align-items-center shadow-sm">
+                                    <div class="bg-gradient-warning-primary p-4 mfe-3 rounded-left">
+                                        <img src="{{ URL::to('assets/img/logos_equipos/LOGO-STEAM.png') }}" height="60">
+                                    </div>
+                                    <div>
+                                        <div class="text-muted text-uppercase font-weight-bold small">EQUIPOS VAPOR</div>
+                                        <div class="text-muted text-uppercase font-weight-bold small">Vapor 1</div>
+                                        <div class="text-value text-primary">Aquí va el valor 1</div>
+                                        <div class="text-muted text-uppercase font-weight-bold small">Vapor 2</div>
+                                        <div class="text-value text-primary">Aquí va el valor 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card border-0">
+                                <div class="card-body p-0 d-flex align-items-center shadow-sm">
+                                    <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
+                                        <h1>HPO</h1>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted text-uppercase font-weight-bold small">EQUIPOS BAJA TEMPERATURA
+                                        </div>
+                                        <div></div>
+                                        <div class="text-muted text-uppercase font-weight-bold small"><img
+                                                src="{{ URL::to('assets/img/logos_equipos/logo_matachana.png') }}"
+                                                height="10"> 130HPO</div>
+                                        <div></div>
+                                        <div class="text-value text-primary">Aquí va el valor 1</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -67,139 +97,91 @@
         @endcan
 
         @can('show_test')
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
-                        <h8 class="text-center">NUMERO DE TEST DE BOWIE </h8>
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
-                            <div class="dash-widget-info">
-                                <h8>112</h8>
-                                <h1><img src="{{ URL::to('assets/img/logos_equipos/logo_matachana.png') }}" height="20"> 
-                                </h1>
+            <div class="row mb-4">
+                @can('show_test_bd')
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Test de Bowie & Dick
                             </div>
-                        </div>
-
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
-                            <div class="dash-widget-info">
-                                <h8>1112</h8>
-                                <h1><img src="{{ URL::to('assets/img/logos_equipos/logo_matachana.png') }}" height="20"> 
-                                </h1>
+                            <div class="card-body">
+                                <canvas id="testBowie"></canvas>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-
-                    <div class="card dash-widget">
-                        <h8 class="text-center">NUMERO DE CICLOS </h8>
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
-                            <div class="dash-widget-info">
-                                <h8>1112</h8>
-                                <h1><img src="{{ URL::to('assets/img/logos_equipos/logo_matachana.png') }}" height="20"> 
-                                </h1>
+                @endcan
+                @can('show_test_vacuum')
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Test de Vacío
                             </div>
-                        </div>
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
-                            <div class="dash-widget-info">
-                                <h8>1112</h8>
-                                <h1><img src="{{ URL::to('assets/img/logos_equipos/logo_matachana.png') }}" height="20"> 
-                                </h1>
+                            <div class="card-body">
+                                <canvas id="testVacuum"></canvas>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
-                        <h8 class="text-center">NUMERO DE TEST DE VACIO </h8>
-
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
-                            <div class="dash-widget-info">
-                                <h8>1112</h8>
-                                <h2><img src="{{ URL::to('assets/img/logos_equipos/130HPO.png') }}" height="40"> </h2>
-                            </div>
-                        </div>
-
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
-                            <div class="dash-widget-info">
-                                <h8>1112</h8>
-                                <h2><img src="{{ URL::to('assets/img/logos_equipos/LOGO_130LF.png') }}" height="30"></h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-
-                    <div class="card dash-widget">
-                        <h8 class="text-center">NUMERO DE CICLOS </h8>
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
-                            <div class="dash-widget-info">
-                                <h8>1112</h8>
-                                <h2><img src="{{ URL::to('assets/img/logos_equipos/130HPO.png') }}" height="40"> </h2>
-                            </div>
-                        </div>
-                        <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
-                            <div class="dash-widget-info">
-                                <h8>1112</h8>
-                                <h2><img src="{{ URL::to('assets/img/logos_equipos/LOGO_130LF.png') }}" height="30"></h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                @endcan
             </div>
         @endcan
-        @can('show_rendimiento')
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6 text-center">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h8 class="card-title">Rendimiento de Funcionalidad <img
-                                            src="{{ URL::to('assets/img/logos_equipos/LOGO-STEAM.png') }}" height="100"></h8>
-                                    <div id="bar-charts"></div>
-                                </div>
+        @can('show_production')
+            <div class="row mb-4">
+                @can('show_production_steam')
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Producción De Equipos de Vapor.
                             </div>
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h8 class="card-title">PRODUCCION <img
-                                            src="{{ URL::to('assets/img/logos_equipos/LOGO-STEAM.png') }}" height="100"></h8>
-                                    <div id="line-charts"></div>
-                                </div>
+                            <div class="card-body">
+                                <canvas id="ProductionSteam"></canvas>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6 text-center">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h8 class="card-title">Rendimiento de Incubacion <img
-                                            src="{{ URL::to('assets/img/logos_equipos/LOGO-STEAM.png') }}" height="100">
-                                    </h8>
-                                    <div id="bar-charts2"></div>
-                                </div>
+                @endcan
+                @can('show_production_hpo')
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Producción De Equipos de Peróxido.
                             </div>
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h8 class="card-title">Rendimiento de Incubacion <img
-                                            src="{{ URL::to('assets/img/logos_equipos/130HPO.png') }}" height="50"></h8>
-                                    <div id="line-charts2"></div>
-                                </div>
+                            <div class="card-body">
+                                <canvas id="ProductionHPO"></canvas>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endcan
             </div>
         @endcan
+
+        @can('show_biologic')
+        <div class="row mb-4">
+            @can('show_biologic_steam')
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Resultado de liberación del Biologico Vapor.
+                        </div>
+                        <div class="card-body">
+                            <canvas id="BiologicSteam"></canvas>
+                        </div>
+                    </div>
+                </div>
+            @endcan
+            @can('show_biologic_hpo')
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Resultado de liberación del Biologico Peróxido.
+                        </div>
+                        <div class="card-body">
+                            <canvas id="BiologicHPO"></canvas>
+                        </div>
+                    </div>
+                </div>
+            @endcan
+        </div>
+    @endcan
+
 
     </div>
 @endsection
@@ -211,5 +193,5 @@
 @endsection
 
 @push('page_scripts')
-   {{-- @vite('resources/js/chart-config.js')--}}
+    {{-- @vite('resources/js/chart-config.js') --}}
 @endpush
