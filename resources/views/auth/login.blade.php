@@ -19,7 +19,9 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-12 d-flex justify-content-center">
-            <img width="200" src="{{ asset('images/LOGOHERZ.JPG') }}" alt="Logo">
+            {{--<img width="200" src="{{ asset('images/LOGOHERZ.JPG') }}" alt="Logo">--}}
+                <img width="200" src="{{ URL::to('images/LOGOHERZ.jpg') }}" alt="Logo">
+
         </div>
     </div>
     <div class="row justify-content-center">
