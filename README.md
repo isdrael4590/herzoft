@@ -9,6 +9,7 @@
 # Local Installation
 
 - run `` git clone ``
+- repositori ``https://github.com/isdrael4590/herzoft.git``
 - run ``composer install `` 
 - run `` npm install ``
 - run ``npm run dev``
