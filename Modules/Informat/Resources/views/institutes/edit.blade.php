@@ -28,6 +28,12 @@
                             @csrf
                             @method('patch')
                             <div class="row">
+                                <div class="col-lg-12">
+                                    @include('utils.alerts')
+                                    <div class="form-group">
+                                        <button class="btn btn-primary">Actualizar Institución <i class="bi bi-check"></i></button>
+                                    </div>
+                                </div>
                                 <div class="col-md-8">
                                     <div class="card">
                                         <div class="card-body">

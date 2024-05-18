@@ -104,7 +104,7 @@
                                             <span class="text-danger">*</span></label>
                                         <select class="form-control" name="insumo_unit" id="insumo_unit" required>
                                             <option value="" selected>Selección Presentación</option>
-                                            @foreach (\Modules\Setting\Entities\Unit::all() as $unit)
+                                            @foreach (\Modules\Informat\Entities\Unit::all() as $unit)
                                                 <option {{ $informat->insumo_unit == $unit->short_name ? 'selected' : '' }}value="{{ $unit->name }}" >
                                                     {{ $unit->name . ' | ' . $unit->short_name }}</option>
                                             @endforeach

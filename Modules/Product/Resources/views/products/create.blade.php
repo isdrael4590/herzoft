@@ -5,8 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Paquetes</a></li>
-        <li class="breadcrumb-item active">Añadir</li>
+        <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Base Datos RUMED</a></li>        <li class="breadcrumb-item active">Añadir</li>
     </ol>
 @endsection
 
@@ -83,7 +82,7 @@
                                         <label for="product_unit">Unidad <i class="bi bi-question-circle-fill text-info" data-toggle="tooltip" data-placement="top" title="This short text will be placed after Product Quantity."></i> <span class="text-danger">*</span></label>
                                         <select class="form-control" name="product_unit" id="product_unit">
                                             <option value="" selected >Seleccionar Unidad</option>
-                                            @foreach(\Modules\Setting\Entities\Unit::all() as $unit)
+                                            @foreach(\Modules\Informat\Entities\Unit::all() as $unit)
                                                 <option value="{{ $unit->short_name }}">{{ $unit->name . ' | ' . $unit->short_name }}</option>
                                             @endforeach
                                         </select>

@@ -5,7 +5,7 @@ namespace Modules\Product\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Product\Entities\Category;
-use Modules\Setting\Entities\Unit;
+use Modules\Product\Entities\Product;
 
 class ProductDatabaseSeeder extends Seeder
 {
@@ -23,10 +23,16 @@ class ProductDatabaseSeeder extends Seeder
             'category_name' => 'LAPARASCOPIA'
         ]);
 
-        Unit::create([
-            'name' => 'Unidad',
-            'short_name' => 'Un',
-     
-        ]);
+       Product::create([
+        'category_id' => '1',
+            'product_name' => 'ABRE-BOCA + CAJA DE FRESAS',
+            'product_code'  => 'V1',
+            'area'  => 'Odontologia',
+            'product_unit'  => 'Un'
+        ]
+        );
+      
+   
+        
     }
 }

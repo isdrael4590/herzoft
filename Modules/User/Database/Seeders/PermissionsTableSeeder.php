@@ -22,8 +22,15 @@ class PermissionsTableSeeder extends Seeder
             'access_user_management',
             //Dashboard
             'show_total_stats',
-            'show_rendimiento',
             'show_test',
+            'show_test_bd',
+            'show_test_vacuum',
+            'show_production',
+            'show_production_steam',
+            'show_production_hpo',
+            'show_result_biologic',
+            'show_biologic_steam',
+            'show_biologic_hpo',
             'show_notifications',
             //Products
             'access_products',
@@ -31,7 +38,6 @@ class PermissionsTableSeeder extends Seeder
             'show_products',
             'edit_products',
             'delete_products',
-            //Product Categories
             'access_product_categories',
             //Barcode Printing
             'print_barcodes',
@@ -39,7 +45,33 @@ class PermissionsTableSeeder extends Seeder
             //Settings
             'access_settings',
             //Units
-            'access_units',
+            'access_informats_units',
+
+            // insumos
+            'access_informats',
+            'create_informats',
+            'show_informats',
+            'edit_informats',
+            'delete_informats',
+
+            // Institucion
+            'access_Informat_institutes',
+            'create_institutes',
+            'show_institutes',
+            'edit_institutes',
+            'delete_institutes',
+            // Equipos
+            'access_informat_machines',
+            'create_machines',
+            'show_machines',
+            'edit_machines',
+            'delete_machines',
+            // areas
+            'access_informat_areas',
+            'create_areas',
+            'show_areas',
+            'edit_areas',
+            'delete_areas',
 
             //Reception
             'access_dirty_area',
@@ -55,6 +87,14 @@ class PermissionsTableSeeder extends Seeder
             'access_wash_area',
             'delete_wash_area',
             'edit_wash_area',
+            'create_reception_preparations',
+            
+            // PREAPARACION
+            'access_preparations',
+            'create_preparations',
+            'show_preparations',
+            'edit_preparations',
+            'delete_preparations',
 
             //ZONA NO ESTERIL
             'access_zne_area',
@@ -64,6 +104,8 @@ class PermissionsTableSeeder extends Seeder
             'edit_testbds',
             'delete_testbds',
             'print_testbds',
+
+            // generacion de etiquetas
             'access_labelqrs',
             'create_labelqrs',
             'show_labelqrs',
@@ -80,7 +122,16 @@ class PermissionsTableSeeder extends Seeder
             'delete_discharges',
             'print_discharges',
             'access_release_cycle',
+            // ZONA ALMACEN 
             'access_almacen_area',
+            'create_expeditions',
+            'show_expeditions',
+            'edit_expeditions',
+            'delete_expeditions',
+            'create_stocks',
+            'show_stocks',
+            'edit_stocks',
+            'delete_stocks',
 
         ];
 

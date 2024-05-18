@@ -11,7 +11,7 @@ class Machine extends Model
 
     protected $guarded = [];
 
-    public function informats() {
+    public function machine() {
         return $this->hasMany(Informat::class, 'machine_id', 'id');
     }
 }

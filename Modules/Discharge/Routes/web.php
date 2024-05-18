@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,11 +48,6 @@ Route::group(['middleware' => 'auth'], function () {
     //discharges
     Route::resource('discharges', 'DischargeController');
 
-    //Payments
-    Route::get('/discharge-payments/{discharge_id}', 'dischargePaymentsController@index')->name('discharge-payments.index');
-    Route::get('/discharge-payments/{discharge_id}/create', 'dischargePaymentsController@create')->name('discharge-payments.create');
-    Route::post('/discharge-payments/store', 'dischargePaymentsController@store')->name('discharge-payments.store');
-    Route::get('/discharge-payments/{discharge_id}/edit/{dischargePayment}', 'dischargePaymentsController@edit')->name('discharge-payments.edit');
-    Route::patch('/discharge-payments/update/{dischargePayment}', 'dischargePaymentsController@update')->name('discharge-payments.update');
-    Route::delete('/discharge-payments/destroy/{dischargePayment}', 'dischargePaymentsController@destroy')->name('discharge-payments.destroy');
+    // Almacen Form Descargas
+    Route::get('/discharges-stock/{discharge}', 'DischargetoStockController')->name('discharges-stock.create');
 });

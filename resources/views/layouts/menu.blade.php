@@ -12,7 +12,7 @@
 
 @can('access_dirty_area')
     <br>
-  
+
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('receptions.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
             <i class="c-sidebar-nav-icon bi bi-box-arrow-down" style="line-height: 1;"></i> INGRESO INSTRUMENTAL
@@ -74,7 +74,7 @@
                     </a>
                 </li>
             @endcan
-            
+
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{ request()->routeIs('testbds.index') ? 'c-active' : '' }}"
                     href="{{ route('testbds.index') }}">
@@ -87,17 +87,22 @@
     </li>
 
     <li
-        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('labelqrs.*') || request()->routeIs('labelqrs.*') ? 'c-show' : '' }}">
+        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('labelqrs.*') || request()->routeIs('preparations.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-            <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> ETIQUETADO / REG. PROCESO
+            <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> PREPARA. / REG. PROCESO
         </a>
         <ul class="c-sidebar-nav-dropdown-items">
-
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{ request()->routeIs('preparations.index') ? 'c-active' : '' }}"
+                    href="{{ route('preparations.index') }}">
+                    <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Stock_Preparación.
+                </a>
+            </li>
             @can('access_labelqrs')
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.create') ? 'c-active' : '' }}"
                         href="{{ route('labelqrs.create') }}">
-                        <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Imp. QR
+                        <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Etiqueta
 
                     </a>
                 </li>
@@ -114,8 +119,8 @@
 @endcan
 
 @can('access_ze_area')
-<br>
-<br>
+    <br>
+    <br>
     <li
         class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('discharges.*') || request()->routeIs('discharges.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
@@ -124,7 +129,6 @@
         <ul class="c-sidebar-nav-dropdown-items">
 
             @can('create_discharges')
-    
             @endcan
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{ request()->routeIs('discharges.index') ? 'c-active' : '' }}"
@@ -135,36 +139,45 @@
         </ul>
     </li>
 @endcan
-{{--
+
 @can('access_almacen_area')
+    <br>
+    <br>
     <li
-        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('products.*') || request()->routeIs('product-categories.*') ? 'c-show' : '' }}">
+        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('expedition.*') || request()->routeIs('stocks.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
             <i class="c-sidebar-nav-icon bi bi-clipboard-check" style="line-height: 1;"></i> ALMACEN
         </a>
         <ul class="c-sidebar-nav-dropdown-items">
-            @can('access_testbd')
+            @can('access_stock')
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link {{ request()->routeIs('product-categories.*') ? 'c-active' : '' }}"
-                        href="{{ route('product-categories.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Actualizar Stock.
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('stocks.*') ? 'c-active' : '' }}"
+                        href="{{ route('stocks.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Stock.
                     </a>
                 </li>
             @endcan
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('products.index') ? 'c-active' : '' }}"
-                    href="{{ route('products.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-send" style="line-height: 1;"></i> Despacho de instrumental
-                </a>
-            </li>
+            @can('access_expedition')
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('expeditions.index') ? 'c-active' : '' }}"
+                        href="{{ route('expeditions.create') }}">
+                        <i class="c-sidebar-nav-icon bi bi-send" style="line-height: 1;"></i> Despachar
+                    </a>
+                </li>
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('expeditions.index') ? 'c-active' : '' }}"
+                        href="{{ route('expeditions.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-send" style="line-height: 1;"></i> Todos los despachos
+                    </a>
+                </li>
+            @endcan
         </ul>
     </li>
 @endcan
---}}
 
 @can('access_products')
-<br>
-<br>
+    <br>
+    <br>
     <li
         class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('products.*') || request()->routeIs('product-categories.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
@@ -211,7 +224,7 @@
 
 
     <li
-        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('informats.*') || request()->routeIs('institute.*') || request()->routeIs('machine.*') ? 'c-show' : '' }}">
+        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('informats.*') || request()->routeIs('institute.*') || request()->routeIs('area.*') || request()->routeIs('units.*') || request()->routeIs('machine.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
             <i class="c-sidebar-nav-icon bi bi-journal-bookmark" style="line-height: 1;"></i> Configuración Servicio.
         </a>
@@ -233,6 +246,25 @@
                     </a>
                 </li>
             @endcan
+            @can('access_informat_areas')
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('area.*') ? 'c-active' : '' }}"
+                        href="{{ route('area.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Áreas
+                    </a>
+                </li>
+            @endcan
+           
+            @can('access_informat_units')
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('units.*') ? 'c-active' : '' }}"
+                        href="{{ route('units.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Presentación
+                    </a>
+                </li>
+            @endcan
+                
+          
 
             @can('create_informats')
                 <li class="c-sidebar-nav-item">
@@ -253,8 +285,6 @@
     </li>
 @endcan
 @can('access_user_management')
-
-
     <li class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('roles*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
             <i class="c-sidebar-nav-icon bi bi-people" style="line-height: 1;"></i> Gestión del Usuario.
@@ -284,20 +314,11 @@
 
 @can('access_settings')
     <li
-        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('currencies*') || request()->routeIs('units*') ? 'c-show' : '' }}">
+        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('settings*') || request()->routeIs('settings*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
             <i class="c-sidebar-nav-icon bi bi-gear" style="line-height: 1;"></i> Configuración
         </a>
-        @can('access_units')
-            <ul class="c-sidebar-nav-dropdown-items">
-                <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link {{ request()->routeIs('units*') ? 'c-active' : '' }}"
-                        href="{{ route('units.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-calculator" style="line-height: 1;"></i> Presentación
-                    </a>
-                </li>
-            </ul>
-        @endcan
+
 
         @can('access_settings')
             <ul class="c-sidebar-nav-dropdown-items">

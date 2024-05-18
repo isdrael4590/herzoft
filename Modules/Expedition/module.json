@@ -1,0 +1,11 @@
+{
+    "name": "Expedition",
+    "alias": "expedition",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Expedition\\Providers\\ExpeditionServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/expedition",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Expedition\\": "",
+            "Modules\\Expedition\\App\\": "app/",
+            "Modules\\Expedition\\Database\\Factories\\": "database/factories/",
+            "Modules\\Expedition\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Expedition\\Tests\\": "tests/"
+        }
+    }
+}

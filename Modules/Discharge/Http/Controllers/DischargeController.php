@@ -75,7 +75,7 @@ class DischargeController extends Controller
             Cart::instance('discharge')->destroy();
         });
 
-        toast('Discharge Created!', 'success');
+        toast('Descarga Created!', 'success');
 
         return redirect()->route('labelqrs.index');
     }

@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Send labelqr Mail
    // Route::get('/labelqr/mail/{labelqr}', 'SendlabelqrEmailController')->name('labelqr.email');
 
-    //Sales Form labelqr
+    //Descargas Form labelqr
     Route::get('/labelqr-discharges/{labelqr}', 'LabelqrDischargeController')->name('labelqr-discharges.create');
 
     //labelqrs
