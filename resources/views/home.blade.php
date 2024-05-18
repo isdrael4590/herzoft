@@ -153,7 +153,11 @@
             </div>
         @endcan
 
+<<<<<<< HEAD
         @can('show_result_biologic')
+=======
+        @can('show_biologic')
+>>>>>>> 1fca368daf5079129d6eefd18307ef2df41d56aa
         <div class="row mb-4">
             @can('show_biologic_steam')
                 <div class="col-lg-6">
@@ -194,4 +198,8 @@
 
 @push('page_scripts')
     {{-- @vite('resources/js/chart-config.js') --}}
+<<<<<<< HEAD
 @endpush
+=======
+@endpush
+>>>>>>> 1fca368daf5079129d6eefd18307ef2df41d56aa

@@ -32,12 +32,12 @@
                         <div class="row mb-4">
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h5 class="mb-2 border-bottom pb-2">Institución:</h5>
-                                <div><strong>{{ Institutes()->institute_code }}</strong></div>
-                                <div> <strong>Hospital:</strong> {{ Institutes()->institute_name }}</div>
-                                <div><strong>Dirección:</strong>  {{ Institutes()->institute_address }}</div>
-                                <div><strong>Área:</strong>  {{ Institutes()->institute_area }}</div>
-                                <div><strong>Ciudad:</strong> {{ Institutes()->institute_city }}</div>
-                                <div> <strong>País:</strong>{{ Institutes()->institute_country }}</div>
+                                <div><strong>{{ institutes()->institute_code }}</strong></div>
+                                <div> <strong>Hospital:</strong> {{ institutes()->institute_name }}</div>
+                                <div><strong>Dirección:</strong>  {{ institutes()->institute_address }}</div>
+                                <div><strong>Área:</strong>  {{ institutes()->institute_area }}</div>
+                                <div><strong>Ciudad:</strong> {{ institutes()->institute_city }}</div>
+                                <div> <strong>País:</strong>{{ institutes()->institute_country }}</div>
                             </div>
 
                             <div class="col-sm-3 mb-3 mb-md-0">

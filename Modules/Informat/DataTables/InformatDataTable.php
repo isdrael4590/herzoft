@@ -97,6 +97,7 @@ class InformatDataTable extends DataTable
                 ->className('text-center align-middle'),
 
             Column::computed('action')
+            ->title('Acción')
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
@@ -113,6 +114,6 @@ class InformatDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'informat_' . date('YmdHis');
+        return 'Informat_' . date('YmdHis');
     }
 }
