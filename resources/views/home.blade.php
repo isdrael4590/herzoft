@@ -28,15 +28,15 @@
     }
     ?>
     <div class="container-fluid">
-        
-            <div class="row">
-                <div class="col-sm-12">
-                    <h8 class="page-title">{{ $greet }}{{ Session::get('name') }}!</h8>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item active">Panel Principal</li>
-                    </ul>
-                </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h8 class="page-title">{{ $greet }}{{ Session::get('name') }}!</h8>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item active">Panel Principal</li>
+                </ul>
             </div>
+        </div>
 
 
         @can('show_total_stats')
@@ -124,6 +124,7 @@
                 @endcan
             </div>
         @endcan
+
         @can('show_production')
             <div class="row mb-4">
                 @can('show_production_steam')
@@ -153,38 +154,34 @@
             </div>
         @endcan
 
-<<<<<<< HEAD
-        @can('show_result_biologic')
-=======
         @can('show_biologic')
->>>>>>> 1fca368daf5079129d6eefd18307ef2df41d56aa
-        <div class="row mb-4">
-            @can('show_biologic_steam')
-                <div class="col-lg-6">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-header">
-                            Resultado de liberación del Biologico Vapor.
-                        </div>
-                        <div class="card-body">
-                            <canvas id="BiologicSteam"></canvas>
-                        </div>
-                    </div>
-                </div>
-            @endcan
-            @can('show_biologic_hpo')
-                <div class="col-lg-6">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-header">
-                            Resultado de liberación del Biologico Peróxido.
-                        </div>
-                        <div class="card-body">
-                            <canvas id="BiologicHPO"></canvas>
+            <div class="row mb-4">
+                @can('show_biologic_steam')
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Resultado de liberación del Biologico Vapor.
+                            </div>
+                            <div class="card-body">
+                                <canvas id="BiologicSteam"></canvas>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endcan
-        </div>
-    @endcan
+                @endcan
+                @can('show_biologic_hpo')
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Resultado de liberación del Biologico Peróxido.
+                            </div>
+                            <div class="card-body">
+                                <canvas id="BiologicHPO"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                @endcan
+            </div>
+        @endcan
 
 
     </div>
@@ -197,9 +194,5 @@
 @endsection
 
 @push('page_scripts')
-    {{-- @vite('resources/js/chart-config.js') --}}
-<<<<<<< HEAD
+    @vite('resources/js/chart-config.js')
 @endpush
-=======
-@endpush
->>>>>>> 1fca368daf5079129d6eefd18307ef2df41d56aa
