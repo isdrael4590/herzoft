@@ -19,5 +19,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/settings', 'SettingController@index')->name('settings.index');
     Route::patch('/settings', 'SettingController@update')->name('settings.update');
     // Units
-    Route::resource('units', 'UnitsController')->except('show');
+    
 });

@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/preparation",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Preparation\\": "",
+            "Modules\\Preparation\\App\\": "app/",
+            "Modules\\Preparation\\Database\\Factories\\": "database/factories/",
+            "Modules\\Preparation\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Preparation\\Tests\\": "tests/"
+        }
+    }
+}

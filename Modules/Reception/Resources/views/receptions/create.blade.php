@@ -37,8 +37,12 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Área Procedente</label>
-                                        <input class="form-control" type="text" id="area" name="area"
-                                            placeholder= "Ingrese el área de donde proviene el instrumental" required>
+                                        <select class="form-control" id="area" name="area" required>
+                                            @foreach (\Modules\Informat\Entities\Area::all() as $area)
+                                                <option value="{{ $area->area_name }}">
+                                                    {{ $area->area_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">

@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('discharges.index') }}">Etiquetas Generadas</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('labelqrs.index') }}">Etiquetas Generadas</a></li>
         <li class="breadcrumb-item active">Registro de envío de ciclo</li>
     </ol>
 @endsection
@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="expiration">TIPO DE PROGRAMA</label>
+                                        <label for="type_program">TIPO DE PROGRAMA</label>
                                         <select class="form-control" id="type_program" name="type_program" readonly>
                                             <option {{ $discharge->type_program == '134C ESTANDAR' ? 'selected' : '' }}
                                                 value="134C ESTANDAR">134C ESTANDAR</option>
@@ -148,7 +148,7 @@
                                 </div>
                             </div>
 
-                           <livewire:product-carttoDES :cartInstance="'discharge'" :data="$discharge"/>
+                           <livewire:product-carttoQR :cartInstance="'discharge'" :data="$discharge"/>
 
 
 

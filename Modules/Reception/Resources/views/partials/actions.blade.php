@@ -18,6 +18,14 @@
                 <i class="bi bi-eye mr-2 text-info" style="line-height: 1;"></i> Detalles
             </a>
         @endcan
+        @can('create_reception-preparations')
+    @if ($data->status == 'Registrado') 
+        <a href="{{ route('reception-preparations.create', $data) }}" class="dropdown-item">
+            <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a ZNE Preparación.
+        </a>
+   
+    @endif
+@endcan
         @can('delete_receptions')
             <button id="delete" class="dropdown-item" onclick="
                 event.preventDefault();

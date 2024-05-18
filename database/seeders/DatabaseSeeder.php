@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use Modules\Product\Database\Seeders\ProductDatabaseSeeder;
 use Modules\Setting\Database\Seeders\SettingDatabaseSeeder;
 use Modules\User\Database\Seeders\PermissionsTableSeeder;
+use Modules\Informat\Database\Seeders\InformatDatabaseSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SuperUserSeeder::class);
         $this->call(SettingDatabaseSeeder::class);
         $this->call(ProductDatabaseSeeder::class);
+        $this->call(InformatDatabaseSeeder::class);
     }
 }

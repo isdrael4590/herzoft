@@ -6,7 +6,10 @@
     "Reports": true,
     "Informat": true,
     "Reception": true,
+    "Preparation": true,
     "Testbd": true,
     "Labelqr": true,
-    "Discharge": true
+    "Discharge": true,
+    "Expedition": true,
+    "Stock": true
 }

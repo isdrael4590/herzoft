@@ -1,24 +1,27 @@
 <?php
 
-namespace Modules\Setting\Http\Controllers;
+namespace Modules\Informat\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Setting\Entities\Unit;
+use Modules\Informat\Entities\Unit;
+use Illuminate\Support\Facades\Gate;
+
 
 class   UnitsController extends Controller
 {
 
     public function index() {
+        abort_if(Gate::denies('access_nformat_units'), 403);
         $units = Unit::all();
 
-        return view('setting::units.index', [
+        return view('informat::units.index', [
             'units' => $units
         ]);
     }
 
     public function create() {
-        return view('setting::units.create');
+        return view('informat::units.create');
     }
 
     public function store(Request $request) {
@@ -39,7 +42,7 @@ class   UnitsController extends Controller
     }
 
     public function edit(Unit $unit) {
-        return view('setting::units.edit', [
+        return view('informat::units.edit', [
             'unit' => $unit
         ]);
     }

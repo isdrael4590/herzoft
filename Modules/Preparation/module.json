@@ -1,0 +1,11 @@
+{
+    "name": "Preparation",
+    "alias": "preparation",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Preparation\\Providers\\PreparationServiceProvider"
+    ],
+    "files": []
+}

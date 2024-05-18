@@ -19,12 +19,12 @@ class InstituteController extends Controller
     }
 
     public function create() {
-        abort_if(Gate::denies('create_products'), 403);
+        abort_if(Gate::denies('create_institutes'), 403);
 
         return view('informat::institutes.create');
     }
     public function store(Request $request) {
-        abort_if(Gate::denies('access_Informat_institutes'), 403);
+      
 
         $request->validate([
             'institute_code' => 'required',
@@ -49,9 +49,14 @@ class InstituteController extends Controller
         return redirect()->route('institute.index');
     }
 
+    public function show(Institute $institute) {
+        abort_if(Gate::denies('show_institutes'), 403);
+
+        return view('informat::institutes.show', compact('institute'));
+    }
 
     public function edit($id) {
-        abort_if(Gate::denies('access_Informat_institutes'), 403);
+        abort_if(Gate::denies('edit_institutes'), 403);
 
         $institute = Institute::findOrFail($id);
 
@@ -60,7 +65,7 @@ class InstituteController extends Controller
 
 
     public function update(Request $request, $id) {
-        abort_if(Gate::denies('access_Informat_institutes'), 403);
+        abort_if(Gate::denies('edit_institutes'), 403);
 
         $request->validate([
             'institute_code' => 'required|unique:institutes,institute_code,' . $id,
@@ -87,7 +92,7 @@ class InstituteController extends Controller
 
 
     public function destroy($id) {
-        abort_if(Gate::denies('access_Informat_institutes'), 403);
+        abort_if(Gate::denies('delete_institutes'), 403);
 
         $Institute = Institute::findOrFail($id);
 

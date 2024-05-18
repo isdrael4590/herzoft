@@ -1,13 +1,13 @@
 $(document).ready(function () {
-    let salesPurchasesBar = document.getElementById('salesPurchasesChart');
-    $.get('/sales-purchases/chart-data', function (response) {
-        let salesPurchasesChart = new Chart(salesPurchasesBar, {
+    let testBowieBar = document.getElementById('testBowie');
+    $.get('/testbowie/chart-data', function (response) {
+        let testBowie = new Chart(testBowieBar, {
             type: 'bar',
             data: {
-                labels: response.sales.original.days,
+                labels: response.testbowiepositivo.original.days,
                 datasets: [{
-                    label: 'Sales',
-                    data: response.sales.original.data,
+                    label: 'Positivo',
+                    data: response.testbowiepositivo.original.data,
                     backgroundColor: [
                         '#6366F1',
                     ],
@@ -17,8 +17,8 @@ $(document).ready(function () {
                     borderWidth: 1
                 },
                     {
-                        label: 'Purchases',
-                        data: response.purchases.original.data,
+                        label: 'Negativo',
+                        data: response.testbowienegativo.original.data,
                         backgroundColor: [
                             '#A5B4FC',
                         ],

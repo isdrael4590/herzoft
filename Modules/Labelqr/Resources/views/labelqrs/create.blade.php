@@ -74,7 +74,7 @@
 
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="expiration">TIPO DE PROGRAMA</label>
+                                        <label for="type_program">TIPO DE PROGRAMA</label>
                                         <select class="form-control" id="type_program" name="type_program">
                                             <option selected value="134C ESTANDAR"> 134C ESTANDAR </option>
                                             <option value="121C ESTANDAR"> 121C ESTANDAR </option>

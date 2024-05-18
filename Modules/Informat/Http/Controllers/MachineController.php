@@ -19,7 +19,7 @@ class MachineController extends Controller
 
 
     public function store(Request $request) {
-        abort_if(Gate::denies('access_Informat_machines'), 403);
+        abort_if(Gate::denies('create_machines'), 403);
 
         $request->validate([
             'machine_code' => 'required',
@@ -48,16 +48,21 @@ class MachineController extends Controller
 
 
     public function edit($id) {
-        abort_if(Gate::denies('access_Informat_machines'), 403);
+        abort_if(Gate::denies('edit_machines'), 403);
 
         $Machines = Machine::findOrFail($id);
 
         return view('informat::machines.edit', compact('Machines'));
     }
 
+    public function show(Machine $machine) {
+        abort_if(Gate::denies('show_machines'), 403);
+
+        return view('informat::machines.show', compact('machine'));
+    }
 
     public function update(Request $request, $id) {
-        abort_if(Gate::denies('access_Informat_machines'), 403);
+        abort_if(Gate::denies('edit_machines'), 403);
 
         $request->validate([
             'machine_code' => 'required|unique:machines,machine_code,' . $id,
@@ -86,7 +91,7 @@ class MachineController extends Controller
 
 
     public function destroy($id) {
-        abort_if(Gate::denies('access_Informat_machines'), 403);
+        abort_if(Gate::denies('delete_machines'), 403);
 
         $category = Machine::findOrFail($id);
 
