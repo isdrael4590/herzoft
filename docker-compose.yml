@@ -13,6 +13,7 @@ services:
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         secrets:
           - db_password
+          - admin_password
         environment:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
@@ -121,6 +122,8 @@ secrets:
     file: database/credenciales/root_password.txt
   db_password:
     file: database/credenciales/user_password.txt
+  admin_password:
+    file: credenciales/admin.txt
 
 networks:
     sail:

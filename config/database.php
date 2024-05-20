@@ -1,11 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
-
-function docker_secret(string $secret_file): string
-{
-    return trim(file_get_contents($secret_file));
-}
+require_once __DIR__ . '/../utils/docker_secrets.php';
 
 return [
 
