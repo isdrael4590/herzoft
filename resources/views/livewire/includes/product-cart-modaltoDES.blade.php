@@ -36,19 +36,13 @@
                     @endif
 
                     <div class="form-group">
-                        <label>Validación del Embalaje <span class="text-danger">*</span></label>
+                        <label>Validación del Embalaje e Ind. Químico <span class="text-danger">*</span></label>
                         <select wire:model.live="eval_package.{{ $cart_item->id }}" class="form-control" required>
                             <option selected value="OK"> OK</option>
                             <option value="NO"> NO </option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Contiene Ind. Químico tipo 4 ó 5 <span class="text-danger">*</span></label>
-                        <select wire:model.live="eval_indicator.{{ $cart_item->id }}" class="form-control" required>
-                            <option selected value="OK"> OK</option>
-                            <option value="NO"> NO </option>
-                        </select>
-                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

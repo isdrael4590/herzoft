@@ -25,6 +25,8 @@
                         <th class="align-middle text-center">Tipo de Envoltura </th>
                         <th class="align-middle text-center"> Embalaje </th>
                         <th class="align-middle text-center"> Ind. 4 ó 5 </th>
+                        <th class="align-middle text-center"> Venc. </th>
+                        <th class="align-middle text-center"> Procesamiento. </th>
                         <th class="align-middle text-center">Acción</th>
                     </tr>
                 </thead>
@@ -48,12 +50,17 @@
                                 <td class="align-middle text-center">
                                     {{ $cart_item->options->product_eval_package }}
                                 </td>
-
+                               
                                 <td class="align-middle text-center">
                                     {{ $cart_item->options->product_eval_indicator }}
                                 </td>
-
-
+                               
+                                <td class="align-middle text-center">
+                                    {{ $cart_item->options->product_expiration}} <span> meses</span>
+                                </td>
+                                <td class="align-middle text-center">
+                                    {{ $cart_item->options->product_type_process }}
+                                </td>
 
                                 <td class="align-middle text-center">
                                     <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">

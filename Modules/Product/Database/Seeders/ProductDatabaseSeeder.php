@@ -28,7 +28,9 @@ class ProductDatabaseSeeder extends Seeder
             'product_name' => 'ABRE-BOCA + CAJA DE FRESAS',
             'product_code'  => 'V1',
             'area'  => 'Odontologia',
-            'product_unit'  => 'Un'
+            'product_unit'  => 'Un',
+            'product_type_process' => 'Alta Temperatura',
+            'product_barcode_symbology' => 'C128'
         ]
         );
       

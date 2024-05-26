@@ -17,7 +17,10 @@ class StockDetailsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-         
+
+            ->addColumn('dates', function ($data) {
+                return view('stock::partials.dates', compact('data'));
+            })
             ->addColumn('details_process', function ($data) {
                 return view('stock::partials.details_process', compact('data'));
             })
@@ -68,36 +71,35 @@ class StockDetailsDataTable extends DataTable
                 ->printable(false)
                 ->className('text-center align-middle'),
 
-                Column::computed('product_name')
+            Column::make('product_date_sterilized')
+                ->title('Fecha Esterilización')
+                ->className('text-center align-middle'),
+
+            Column::computed('product_name')
                 ->title('Nombre del producto')
                 ->className('text-center align-middle'),
 
-                Column::make('product_code')
+            Column::make('product_code')
                 ->title('Código del producto')
                 ->className('text-center align-middle'),
 
-                Column::make('product_package_wrap')
+            Column::make('product_package_wrap')
                 ->title('Tipo de embalaje')
                 ->className('text-center align-middle'),
 
-                Column::make('status_stock')
+            Column::make('status_stock')
                 ->title('Estado del Stock')
                 ->className('text-center align-middle'),
 
-            Column::make('product_expiration')
+            Column::make('dates')
                 ->title('Fecha de vencimiento')
                 ->className('text-center align-middle'),
 
-                Column::make('details_process')
+            Column::make('details_process')
                 ->title('Información del proceso')
                 ->className('text-center align-middle'),
-
-          
-        
-
         ];
     }
-
     protected function filename(): string
     {
         return 'StockDetails_' . date('YmdHis');

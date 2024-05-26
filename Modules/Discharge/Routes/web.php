@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-
+use Modules\Discharge\Http\Controllers\PrinterDischargeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,7 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Route::post('/app/pos', 'PosController@store')->name('app.pos.store');
 
     //Generate PDF
-    Route::get('/discharges/pdf/{id}', function ($id) {
+   /* Route::get('/discharges/pdf/{id}', function ($id) {
         $discharge = \Modules\Discharge\Entities\Discharge::findOrFail($id);
        
 
@@ -44,10 +44,17 @@ Route::group(['middleware' => 'auth'], function () {
 
         return $pdf->stream('discharge-'. $discharge->reference .'.pdf');
     })->name('discharges.pos.pdf');
+*/
 
+    Route::get('/discharges/pdf/{id}', [PrinterDischargeController::class, 'printerDischargea4'])->name('discharges.pdf');
     //discharges
     Route::resource('discharges', 'DischargeController');
 
-    // Almacen Form Descargas
+    // Almacen desde Descargas
     Route::get('/discharges-stock/{discharge}', 'DischargetoStockController')->name('discharges-stock.create');
+    
+    
+    // Almacen desde preparacion
+
+    Route::get('/discharges-preparation/{discharge}', 'DischargetopreparationController')->name('discharges-preparation.create');
 });

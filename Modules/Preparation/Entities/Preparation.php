@@ -21,7 +21,7 @@ class Preparation extends Model
 
         static::creating(function ($model) {
             $number = Preparation::max('id') + 1;
-            $model->reference = make_reference_id('ING', $number);
+            $model->reference = make_reference_id('PRE', $number);
         });
     }
 

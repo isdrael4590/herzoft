@@ -18,18 +18,18 @@
 @endcan
 @can('print_discharges')
     @if (($data->status_cycle == 'Ciclo Aprobado') | ($data->status_cycle == 'Ciclo Falla'))
-        <a href="#" class="dropdown-item">
-            <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
-        </a>
+    <a href="{{ route('discharges.pdf', $data->id) }}" class="dropdown-item">
+        <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
+    </a>
     @endif
 @endcan
-@can('create_dicharges_stock')
+@can('create_discharges_stock')
     @if (($data->status_cycle == 'Ciclo Aprobado') & ($data->validation_biologic == 'Correcto'))
         <a href="{{ route('discharges-stock.create', $data) }}" class="dropdown-item">
             <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a Almacén.
         </a>
     @elseif(($data->status_cycle == 'Ciclo Falla') | ($data->validation_biologic == 'Falla'))
-        <a href="#" class="dropdown-item">
+        <a href="{{ route('discharges-preparation.create', $data) }}" class="dropdown-item">
             <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a Reprocesamiento.
         </a>
     @endif

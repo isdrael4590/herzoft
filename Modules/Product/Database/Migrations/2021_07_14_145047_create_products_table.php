@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('product_name');
             $table->string('product_code')->unique()->nullable();
             $table->string('product_barcode_symbology')->nullable();
+            $table->string('product_type_process')->nullable();
             $table->string('area');
             $table->string('product_unit')->nullable();
             $table->text('product_note')->nullable();

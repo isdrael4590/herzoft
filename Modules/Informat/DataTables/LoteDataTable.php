@@ -1,33 +1,27 @@
 <?php
 
-namespace Modules\Preparation\DataTables;
+namespace Modules\Informat\DataTables;
 
-use Modules\Preparation\Entities\PreparationDetails;
+use Modules\Informat\Entities\Lote;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PreparationDsDataTable extends DataTable
+class LoteDataTable extends DataTable
 {
 
     public function dataTable($query)
     {
         return datatables()
             ->eloquent($query)
-
-            ->addColumn('coming_zone', function ($data) {
-                return view('preparation::partials.coming_zone', compact('data'));
-            })
-
             ->addColumn('action', function ($data) {
-                return view('preparation::partials.actions', compact('data'));
-     
+                return view('informat::lotes.partials.actions', compact('data'));
             });
     }
 
-    public function query(PreparationDetails $model)
+    public function query(Lote $model)
     {
         return $model->newQuery();
     }
@@ -35,13 +29,13 @@ class PreparationDsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('PreparationDetails-table')
+            ->setTableId('Informat_lote-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(6)
+            ->orderBy(4)
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -57,35 +51,39 @@ class PreparationDsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            
+            Column::make('lote_code')
+                ->title('Lote Equipo')
+                ->addClass('text-center'),
+
+            Column::make('equipo_lote')
+                ->title('Nombre del Equipo')
+                ->addClass('text-center'),
+
+            Column::make('tipo_lote')
+                ->title('Tipo de lote')
+                ->addClass('text-center'),
+
+            Column::make('tipo_equipo')
+                ->title('Tipo de Equipo')
+                ->addClass('text-center'),
+
+            Column::make('status_lote')
+                ->title('Estado de lote')
+                ->addClass('text-center'),
+
             Column::computed('action')
+                ->title('Acción')
                 ->exportable(false)
                 ->printable(false)
-                ->className('text-center align-middle'),
-           
+                ->addClass('text-center'),
 
-                Column::computed('product_name')
-                ->title('Nombre del producto')
-                ->className('text-center align-middle'),
-
-                Column::make('product_code')
-                ->title('Código del producto')
-                ->className('text-center align-middle'),
- 
-                Column::make('product_state_preparation')
-                ->title('Estado')
-                ->className('text-center align-middle'),
-        
-                Column::make('coming_zone')
-                ->title('Proveniente')
-                ->className('text-center align-middle'),
-
-
+            Column::make('created_at')
+                ->visible(false)
         ];
     }
 
     protected function filename(): string
     {
-        return 'PreparationDetails_' . date('YmdHis');
+        return 'lote_' . date('YmdHis');
     }
 }

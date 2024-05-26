@@ -18,7 +18,7 @@ class StoreStockRequest extends FormRequest
             'reference' => 'required|string|max:255',
             'operator' => 'required|string|max:255',
             'lote_machine' => 'required|string|max:255',
-            'type_program' => 'required|string|max:255',
+            'machine_name' => 'required|string|max:255',
             'lote_biologic' => 'required|string|max:255',
             'temp_ambiente' => 'required|string|max:255',
             'note' => 'nullable|string|max:255'

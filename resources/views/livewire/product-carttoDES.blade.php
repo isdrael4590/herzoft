@@ -20,9 +20,9 @@
                         <th class="align-middle">Descripción del Instrumental</th>
                         <th class="align-middle">Código del Instrumental</th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
-                        <th class="align-middle text-center">Validación Embalaje</th>
-                        <th class="align-middle text-center">Val. Ind. 4 ó 5</th>
-                        <th class="align-middle text-center">Referecia QR</th>
+                        <th class="align-middle text-center">Validación Embalaje e Indicador </th>
+                        <th class="align-middle text-center"> Ind. 4 ó 5</th>
+                        <th class="align-middle text-center"> Venc. </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,12 +47,10 @@
                                 <td class="align-middle text-center">
                                     {{ $cart_item->options->product_eval_indicator }}
                                 </td>
-                                <td class="align-middle">
-                                    <div>
-                                        {!! QrCode::size(50)->style('square')->generate('{{ $cart_item->options->product_ref_qr }}') !!}
-                                    </div>
-
+                                <td class="align-middle text-center">
+                                    {{ $cart_item->options->product_expiration}} <span> meses</span>
                                 </td>
+                  
                             </tr>
                         @endforeach
                     @else

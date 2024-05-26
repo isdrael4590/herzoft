@@ -5,7 +5,7 @@ namespace App\Livewire;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Modules\Product\Entities\Product;
-
+use Modules\Preparation\Entities\PreparationDetails;
 class SearchProducttoQR extends Component
 {
 
@@ -24,7 +24,7 @@ class SearchProducttoQR extends Component
     }
 
     public function updatedQuery() {
-        $this->search_results = Product::where('product_name', 'like', '%' . $this->query . '%')
+        $this->search_results = PreparationDetails::where('product_name', 'like', '%' . $this->query . '%')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
             ->take($this->how_many)->get();
     }

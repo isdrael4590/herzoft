@@ -38,37 +38,10 @@
                                             value="{{ $expedition_code }}">
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="lote_machine">Lote del Equipo <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="lote_machine" required
-                                            value="{{ old('lote_machine') }}">
-                                    </div>
-                                </div>
-                               
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="expiration">TIPO DE PROGRAMA</label>
-                                        <select class="form-control" id="type_program" name="type_program">
-                                            <option selected value="134C ESTANDAR"> 134C ESTANDAR </option>
-                                            <option value="121C ESTANDAR"> 121C ESTANDAR </option>
-                                            <option value="CONTENEDORES"> CONTENEDORES</option>
-                                            <option value=" RAPID"> RAPID </option>
-                                            <option value=" ESPORAS"> ESPORAS </option>
-
-                                        </select>
-                                    </div>
-                                </div>
+                             
 
 
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="lote_biologic">Lote Insumo Biológico <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="lote_biologic" required
-                                            value="{{ old('lote_biologic') }}">
-                                    </div>
-                                </div>
+                             
                                 
                           
                                 <div class="col-lg-3">
@@ -95,7 +68,7 @@
                                     <div class="form-group">
                                         <label for="area_expedition">Area de expedición <span
                                                 class="text-danger">*</span></label>
-                                                <select class="form-control" id="area" name="area" required>
+                                                <select class="form-control" id="area_expedition" name="area_expedition" required>
                                                     @foreach (\Modules\Informat\Entities\Area::all() as $area)
                                                         <option value="{{ $area->area_name }}">
                                                             {{ $area->area_name }}</option>

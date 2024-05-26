@@ -44,6 +44,10 @@
                                     <td>{{ $product->area }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Temperatura de Trabajo</th>
+                                    <td>{{ $product->product_type_process }}</td>
+                                </tr>
+                                <tr>
                                     <th>Note</th>
                                     <td>{{ $product->product_note ?? 'N/A' }}</td>
                                 </tr>

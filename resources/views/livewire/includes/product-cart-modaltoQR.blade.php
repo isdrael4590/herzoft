@@ -60,6 +60,15 @@
                             <option value="N/A"> N/A </option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>Tiempo de Vencimiento <span class="text-danger">*</span></label>
+                        <select wire:model.live="expiration.{{ $cart_item->id }}" class="form-control" required>
+                            <option selected value="6"> 6 Meses</option>
+                            <option value="9"> 9 Meses </option>
+                            <option value="12"> 12 Meses </option>
+                            <option value="N/A"> N/A </option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

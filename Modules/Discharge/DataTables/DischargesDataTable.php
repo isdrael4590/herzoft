@@ -68,8 +68,8 @@ class DischargesDataTable extends DataTable
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
-            Column::make('created_at')
-                ->title('dates')
+            Column::make('dates')
+                ->title('Fechas')
                 ->className('text-center align-middle'),
 
 

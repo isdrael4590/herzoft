@@ -5,7 +5,8 @@ namespace App\Livewire;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Request;
 use Livewire\Component;
-use Modules\Product\Entities\Product;
+use Modules\Stock\Entities\StockDetails;
+
 
 class ProductCarttoEXP extends Component
 {
@@ -18,6 +19,8 @@ class ProductCarttoEXP extends Component
     public $package_wrap;
     public $ref_qr;
     public $expiration;
+    public $type_process;
+
 
 
     private $product;
@@ -33,6 +36,8 @@ class ProductCarttoEXP extends Component
                 $this->package_wrap[$cart_item->id] = $cart_item->options->product_package_wrap;
                 $this->ref_qr[$cart_item->id] = $cart_item->options->product_ref_qr;
                 $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
+                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
+
       
     
             }
@@ -41,6 +46,8 @@ class ProductCarttoEXP extends Component
             $this->package_wrap = [];
             $this->ref_qr = [];
             $this->expiration = [];
+            $this->type_process = [];
+
         }
     }
 
@@ -73,18 +80,16 @@ class ProductCarttoEXP extends Component
             'weight'     => 1,
             'options' => [
                 'code'    => $product['product_code'],
-                'product_package_wrap' =>  'Contenedor', //ESTE ES EL DATO A MODIFICAR
-                'product_ref_qr' =>  'PRUEBA', //ESTE ES EL DATO A MODIFICAR
-                'product_expiration' =>  '24', //ESTE ES EL DATO A MODIFICAR
-                'product_status_stock' =>  'Disponible', //ESTE ES EL DATO A MODIFICAR
+                'product_type_process'    => $product['product_type_process'],
+                'product_package_wrap' =>  $product['product_package_wrap'], //ESTE ES EL DATO A MODIFICAR
+                'product_ref_qr' =>  $product['product_ref_qr'], //ESTE ES EL DATO A MODIFICAR
+                'product_expiration' => $product['product_expiration'], //ESTE ES EL DATO A MODIFICAR
+               
             ]
 
 
         ]);
-        $this->package_wrap[$product['id']] = 'Contenedor';
-        $this->ref_qr[$product['id']] = 'PRUEBA';
-        $this->status_stock[$product['id']] = 'Disponible';
-        $this->expiration[$product['id']] = '24';
+
     }
 
     
@@ -107,8 +112,9 @@ class ProductCarttoEXP extends Component
                 'code'                   => $cart_item->options->code,
                 'product_package_wrap'      => $cart_item->options->product_package_wrap,
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
-                'product_status_stock'      => $cart_item->options->product_status_stock,
                 'product_expiration'    => $cart_item->options->product_expiration,
+                'product_type_process'    => $cart_item->options->product_type_process,
+
             ]
         ]);
     }
@@ -123,11 +129,10 @@ class ProductCarttoEXP extends Component
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code' => $cart_item->options->code,
+            'product_type_process'=> $cart_item->options->product_type_process,
             'product_package_wrap'      => $this->package_wrap[$product_id],
-            'product_status_stock'     => $this->status_stock[$product_id],
             'product_expiration'   => $this->expiration[$product_id],
-
-
+           
         ]]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Modules\Product\Entities\Product;
+use Modules\Stock\Entities\StockDetails;
 
 class SearchProducttoEXP extends Component
 {
@@ -24,7 +25,7 @@ class SearchProducttoEXP extends Component
     }
 
     public function updatedQuery() {
-        $this->search_results = Product::where('product_name', 'like', '%' . $this->query . '%')
+        $this->search_results = StockDetails::where('product_name', 'like', '%' . $this->query . '%')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
             ->take($this->how_many)->get();
     }
