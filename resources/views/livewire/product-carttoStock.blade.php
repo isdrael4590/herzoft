@@ -16,11 +16,11 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
+                        <th class="align-middle">Código Instrumental</th>
                         <th class="align-middle">Descripción del Instrumental</th>
-                        <th class="align-middle">Código del Instrumental</th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
-                        <th class="align-middle text-center">Referecia QR</th>
                         <th class="align-middle text-center">Estado de Stock</th>
+                        <th class="align-middle text-center">Fecha Esterilización</th>
                         <th class="align-middle text-center">Expiración</th>
                     </tr>
                 </thead>
@@ -29,27 +29,25 @@
                         @foreach ($cart_items as $cart_item)
                             <tr>
                                 <td class="align-middle">
-                                    {{ $cart_item->name }}
+                                    {{ $cart_item->options->code }}
                                 </td>
                                 <td class="align-middle">
-                                    {{ $cart_item->options->code }}
+                                    {{ $cart_item->name }}
                                 </td>
                                 <td class="align-middle text-center text-center">
                                     <span>
                                         {{ $cart_item->options->product_package_wrap }}
                                     </span>
                                 </td>
-                                <td class="align-middle ">
-                                    <div>
-                                        {!! QrCode::size(50)->style('square')->generate('{{ $cart_item->options->product_ref_qr }}') !!}
-                                    </div>
-
-                                </td>
+                        
                                 <td class="align-middle text-center text-center">
                                     {{ $cart_item->options->product_status_stock }}  @include('livewire.includes.product-cart-modaltoStock')
                                 </td>
                                 <td class="align-middle text-center text-center">
-                                    {{ $cart_item->options->product_expiration }}
+                                    {{ $cart_item->options->product_date_sterilized }} 
+                                </td>
+                                <td class="align-middle text-center text-center">
+                                    {{ $cart_item->options->product_expiration }} 
                                 </td>
                             </tr>
                         @endforeach

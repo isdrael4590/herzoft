@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('expeditions', function (Blueprint $table) {
             $table->id();
             $table->string('reference');
-            $table->string('lote_machine');
-            $table->string('type_program');
-            $table->string('lote_biologic');
+            
             $table->string('area_expedition');
             $table->string('staff_expedition');
             $table->string('temp_ambiente');

@@ -17,6 +17,8 @@ class ProductCarttoPRE extends Component
     public $data;
     public $state_preparation;
     public $coming_zone ;
+    public $type_process;
+
 
     private $product;
 
@@ -29,11 +31,14 @@ class ProductCarttoPRE extends Component
 
             foreach ($cart_items as $cart_item) {
                 $this->state_preparation[$cart_item->id] = $cart_item->options->product_state_preparation;
+                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
              
             }
         } else {
             
             $this->state_preparation = [];
+            $this->type_process = [];
+
           
         }
       
@@ -73,6 +78,7 @@ class ProductCarttoPRE extends Component
 
             'options' => [
                 'code'    => $product['product_code'],
+                'product_type_process'    => $product['product_type_process'],
                 'product_state_preparation'   => 'Disponible',
                 'product_coming_zone'   => 'Recepcion',
              
@@ -106,7 +112,7 @@ class ProductCarttoPRE extends Component
                 'code'                       => $cart_item->options->code,
                 'product_state_preparation'  => $cart_item->options->product_state_preparation,
                 'product_coming_zone'        =>  $cart_item->options->product_coming_zone,
-                
+                'product_type_process'    => $cart_item->options->product_type_process,
 
             ]
         ]);
@@ -124,8 +130,11 @@ class ProductCarttoPRE extends Component
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code' => $cart_item->options->code,
+            'product_type_process'=> $cart_item->options->product_type_process,
             'product_state_preparation'     => $this->state_preparation[$product_id],
             'product_coming_zone'        =>   $this->product_coming_zone[$product_id],
+            
+           
 
         ]]);
     }

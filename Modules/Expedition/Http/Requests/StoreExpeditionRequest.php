@@ -17,9 +17,7 @@ class StoreExpeditionRequest extends FormRequest
         return [
             'reference' => 'required|string|max:255',
             'operator' => 'required|string|max:255',
-            'lote_machine' => 'required|string|max:255',
-            'type_program' => 'required|string|max:255',
-            'lote_biologic' => 'required|string|max:255',
+            
             'area_expedition' => 'required|string|max:255',
             'staff_expedition' => 'required|string|max:255',
             'temp_ambiente' => 'required|string|max:255',

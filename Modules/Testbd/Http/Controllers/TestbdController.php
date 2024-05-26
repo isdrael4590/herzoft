@@ -12,6 +12,7 @@ use Modules\Testbd\Entities\Testbd;
 use Modules\Testbd\Http\Requests\StoreTestbdRequest;
 use Modules\Testbd\Http\Requests\UpdateTestbdRequest;
 use Modules\Upload\Entities\Upload;
+use Modules\Informat\Entities\Lote;
 
 class TestbdController extends Controller
 {
@@ -32,8 +33,8 @@ class TestbdController extends Controller
     public function store(StoreTestbdRequest $request) {
         $testbd = Testbd::create($request->except('document'));
 
-
-
+       
+      
         toast('test BD Creado!', 'success');
 
         return redirect()->route('testbds.index');

@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use Modules\Expedition\Http\Controllers\PrinterExpeditionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Route::post('/app/pos', 'PosController@store')->name('app.pos.store');
 
     //Generate PDF
-    Route::get('/expeditions/pdf/{id}', function ($id) {
+ /*   Route::get('/expeditions/pdf/{id}', function ($id) {
         $expedition = \Modules\Expedition\Entities\Expedition::findOrFail($id);
        
 
@@ -44,8 +45,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         return $pdf->stream('expedition-'. $expedition->reference .'.pdf');
     })->name('expeditions.pos.pdf');
-
+*/
     //expeditions
     Route::resource('expeditions', 'ExpeditionController');
+
+    Route::get('/expeditions/pdf/{id}', [PrinterExpeditionController::class, 'printerExpeditionA4'])->name('expeditions.pdf');
+    //expeditions
 
 });

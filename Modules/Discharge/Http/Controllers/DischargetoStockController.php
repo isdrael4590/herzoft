@@ -14,6 +14,8 @@ use Modules\Product\Entities\Product;
 
 use Modules\Discharge\Entities\Discharge;
 use Modules\Discharge\Http\Requests\StoreDischargeRequest;
+use Carbon\Carbon;
+
 
 class DischargetoStockController extends Controller
 
@@ -30,6 +32,7 @@ class DischargetoStockController extends Controller
         $cart = Cart::instance('stock');
 
         foreach ($discharge_details as $discharge_detail) {
+            $expiration= Carbon::parse($discharge_detail->updated_at)->addMonth($discharge_detail->product_expiration) ;
             $cart->add([
                 'id'      => $discharge_detail->product_id,
                 'name'    => $discharge_detail->product_name,
@@ -38,9 +41,11 @@ class DischargetoStockController extends Controller
                 'weight'  => 1,
                 'options' => [
                     'code'     => $discharge_detail->product_code,
+                    'product_type_process'   => $discharge_detail->product_type_process,
                     'product_package_wrap'   => $discharge_detail->product_package_wrap,
                     'product_ref_qr'   => $discharge_detail->product_ref_qr,
-                    'product_expiration'   => '24',
+                    'product_expiration'   =>  $expiration,
+                    'product_date_sterilized'   =>  $discharge_detail->updated_at,
                     'product_status_stock'   => 'Disponible',
                 ]
             ]);

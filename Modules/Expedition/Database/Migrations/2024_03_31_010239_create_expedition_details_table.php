@@ -22,6 +22,7 @@ class CreateexpeditionDetailsTable extends Migration
             $table->string('product_package_wrap');
             $table->string('product_ref_qr')->nullable();
             $table->string('product_expiration');
+            $table->string('product_type_process')->nullable();
             $table->foreign('expedition_id')->references('id')->on('expeditions')->onDelete('cascade');
             $table->foreign('product_id')->references('id')
                 ->on('products')->nullOnDelete();

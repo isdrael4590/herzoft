@@ -39,9 +39,9 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="type_program">Tipo de Programa <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="type_program" required
-                                            value="{{ $stock->type_program }}" readonly>
+                                        <label for="machine_name">Equipo <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="machine_name" required
+                                            value="{{ $stock->machine_name }}" readonly>
                                     </div>
                                 </div>
                      

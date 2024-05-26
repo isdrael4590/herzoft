@@ -23,6 +23,8 @@ class CreateLabelqrDetailsTable extends Migration
             $table->string('product_ref_qr')->nullable();
             $table->string('product_eval_package')->nullable();
             $table->string('product_eval_indicator')->nullable();
+            $table->string('product_expiration')->nullable();
+            $table->string('product_type_process')->nullable();
             $table->foreign('labelqr_id')->references('id')->on('labelqrs')->onDelete('cascade');
             $table->foreign('product_id')->references('id')
                 ->on('products')->nullOnDelete();

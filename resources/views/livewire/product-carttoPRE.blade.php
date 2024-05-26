@@ -23,7 +23,7 @@
                         <th class="align-middle">Código</th>
                         <th class="align-middle text-center">Zona proveniente </th>
                         <th class="align-middle text-center">Disponibilidad</th>
-                        <th class="align-middle text-center">Acción</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -38,7 +38,7 @@
                                     
                                 </td>
                                 <td class="align-middle text-center">
-                                    @if ($cart_item->options->product_coming_zone == 'Reprocesamiento')
+                                    @if ($cart_item->options->product_coming_zone == 'Rechazado_ZE')
                                         <span class="badge badge-warning">
                                             {{ $cart_item->options->product_coming_zone }}
                                         </span>
@@ -63,11 +63,7 @@
 
                                 </td>
 
-                                <td class="align-middle text-center">
-                                    <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
-                                        <i class="bi bi-x-circle font-2xl text-danger"></i>
-                                    </a>
-                                </td>
+                            
                             </tr>
                         @endforeach
                     @else

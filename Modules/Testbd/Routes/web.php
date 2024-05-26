@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Modules\Testbd\Http\Controllers\PrinterTbdController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,5 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
     //testbd
     Route::resource('testbds', 'TestbdController');
 
+
+    Route::get('/testbds/pdf/{id}', [PrinterTbdController::class, 'printerTestbdA4'])->name('testbds.pdf');
 
 });

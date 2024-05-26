@@ -17,6 +17,9 @@ class ProductCart extends Component
     public $data;
     public $type_dirt;
     public $state_rumed;
+    public $type_process;
+
+    
     private $product;
 
     public function mount($cartInstance, $data = null)
@@ -30,11 +33,15 @@ class ProductCart extends Component
             foreach ($cart_items as $cart_item) {
                 $this->type_dirt[$cart_item->id] = $cart_item->options->product_type_dirt;
                 $this->state_rumed[$cart_item->id] = $cart_item->options->product_state_rumed;
+                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
+
             }
         } else {
             
             $this->type_dirt = [];
             $this->state_rumed = [];
+            $this->type_process = [];
+
         }
     }
 
@@ -72,6 +79,7 @@ class ProductCart extends Component
 
             'options' => [
                 'code'    => $product['product_code'],
+                'product_type_process'    => $product['product_type_process'],
                 'product_type_dirt' => 'CRITICO', //ESTE ES EL DATO A MODIFICAR
                 'product_state_rumed' => 'BUENO' //ESTE ES EL DATO A MODIFICAR
             ]
@@ -100,6 +108,7 @@ class ProductCart extends Component
                 'code'                   => $cart_item->options->code,
                 'product_type_dirt'      => $cart_item->options->product_type_dirt,
                 'product_state_rumed'    => $cart_item->options->product_state_rumed,
+                'product_type_process'    => $cart_item->options->product_type_process,
 
             ]
         ]);
@@ -119,9 +128,9 @@ class ProductCart extends Component
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code'                  => $cart_item->options->code,
+            'product_type_process'=> $cart_item->options->product_type_process,
             'product_type_dirt'     => $this->type_dirt[$product_id],
             'product_state_rumed'   => $this->state_rumed[$product_id],
-
         ]]);
     }
 }

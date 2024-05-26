@@ -38,10 +38,12 @@ class LabelqrDischargeController extends Controller
                 'weight'  => 1,
                 'options' => [
                     'code'     => $labelqr_detail->product_code,
+                    'product_type_process'   => $labelqr_detail->product_type_process,
                     'product_package_wrap'   => $labelqr_detail->product_package_wrap,
                     'product_ref_qr'   => $labelqr_detail->product_ref_qr,
                     'product_eval_package' => $labelqr_detail->product_eval_package,
-                    'product_eval_indicator'=> $labelqr_detail->product_eval_indicator
+                    'product_eval_indicator'=> $labelqr_detail->product_eval_indicator,
+                    'product_expiration'=> $labelqr_detail->product_expiration
                 ]
             ]);
         }
