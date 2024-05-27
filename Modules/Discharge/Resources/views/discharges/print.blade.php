@@ -183,7 +183,7 @@
                     <ul>
 
                         <li><a href="#">HerZoft</a></li>
-                        <li><a href="ferisdra@hotmail.com">ferisdra@hotmail.com</a></li>
+                        <li><a href="herzoftgroup@gmail.com">herzoftgroup@gmail.com</a></li>
                         <li><a href="#">+593 998484190</a></li>
                     </ul>
                 </div>

@@ -23,9 +23,9 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="expedition-form" action="{{ route('expeditions.store') }}" method="POST">
+                        <form id="expedition-form" action="{{ route('expeditions.update') }}" method="POST">
                             @csrf
-
+                            @method('patch')
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">

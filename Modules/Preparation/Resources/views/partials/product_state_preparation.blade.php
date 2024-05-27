@@ -1,9 +1,17 @@
-@if ($data->product_state_preparation == 'Disponible')
+
+@foreach(\Modules\Preparation\Entities\PreparationDetails::all() as  $PreparationDetails)
+<option value="{{ $PreparationDetails->id }}">
+
+    @if ($PreparationDetails->product_state_preparation == 'Disponible')
     <span class="badge badge-success">
-        {{ $data->status }}
+        {{ $PreparationDetails->product_state_preparation }}
     </span>
-@elseif($data->product_state_preparation == 'Procesado')
+@elseif($PreparationDetails->product_state_preparation == 'Procesado')
     <span class="badge badge-primary">
-        {{ $data->status }}
+        {{ $PreparationDetails->product_state_preparation }}
     </span>
 @endif
+
+
+</option>
+@endforeach

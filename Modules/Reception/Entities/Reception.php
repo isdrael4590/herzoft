@@ -13,7 +13,7 @@ class Reception extends Model
     protected $guarded = [];
 
     public function receptionDetails() {
-        return $this->hasMany(ReceptionDetails::class, 'reception_id', 'id');
+        return $this->hasMany(ReceptionDetails::class);
     }
 
     public static function boot() {

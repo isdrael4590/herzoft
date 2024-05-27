@@ -15,7 +15,7 @@ class PrinterTbdController extends Controller
     public function printerTestbdA4(Int $id)
     {
         $testbd = Testbd::where('id', $id)->first();
-        $institute = Institute::findOrFail($id);
+        $institute = Institute::all()->first();
       
         return view('testbd::testbds.print', [
             'testbd' => $testbd,

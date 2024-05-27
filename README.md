@@ -22,7 +22,7 @@
 - then visit `` http://localhost:8000 or http://127.0.0.1:8000 ``.
 
 # Admin Credentials
-> Email: ferisdra@hotmail.com || Password: 12345678
+> Email: herzoftgroup@gmail.com || Password: 12345678
 
 ## Demo
 

@@ -19,10 +19,10 @@ class PreparationDataTable extends DataTable
             ->addColumn('details_preparation', function ($data) {
                 return view('preparation::partials.details_preparation', compact('data'));
             })
-            ->addColumn('status', function ($data) {
-                return view('preparation::partials.status', compact('data'));
+            ->addColumn('product_state_preparation', function ($data) {
+                return view('preparation::partials.product_state_preparation', compact('data'));
             })
-            ->addColumn('action', function ($data) {
+               ->addColumn('action', function ($data) {
                 return view('preparation::partials.actions', compact('data'));
             })
             ->addColumn('dates', function ($data) {
@@ -77,18 +77,13 @@ class PreparationDataTable extends DataTable
             ->title('Detalles de Recepción')
              
                 ->className('text-center align-middle'),
-
- 
-
             Column::make('note')
                 ->title('Notas')
                 ->className('text-center align-middle'),
-
             Column::make('operator')
                 ->title('Operador')
                 ->className('text-center align-middle'),
-
-            Column::computed('status')
+            Column::computed('product_state_preparation')
                 ->title('Estado')
                 ->className('text-center align-middle'),
 

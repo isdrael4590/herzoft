@@ -24,13 +24,10 @@
                             <i class="bi bi-printer"></i> Enviar Ciclo
                         </a>
                         <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
-                            href="{{ route('labelqrs.pdf', $labelqr->id) }}">
-                            <i class="bi bi-printer"></i> Imprimir
+                            href="{{ route('labelqrs_label.pdf', $labelqr->id) }}">
+                            <i class="bi bi-printer"></i> Imprimir Etiquetas
                         </a>
-                        <a target="_blank" class="btn btn-sm btn-info mfe-1 d-print-none"
-                            href="{{ route('labelqrs.pdf', $labelqr->id) }}">
-                            <i class="bi bi-save"></i> Guardar
-                        </a>
+
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">

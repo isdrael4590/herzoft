@@ -13,7 +13,7 @@ class Preparation extends Model
     protected $guarded = [];
 
     public function preparationDetails() {
-        return $this->hasMany(PreparationDetails::class, 'oreparation_id', 'id');
+        return $this->hasMany(PreparationDetails::class, 'preparation_id', 'id');
     }
 
     public static function boot() {
