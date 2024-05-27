@@ -20,6 +20,12 @@
                         @include('utils.alerts')
                         <form id="discharge -form" action="{{ route('discharges.store') }}" method="POST">
                             @csrf
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    Envío de Cíclo Esterilizador<i class="bi bi-check"></i>
+                                </button>
+                            </div>
+                            <br>
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">

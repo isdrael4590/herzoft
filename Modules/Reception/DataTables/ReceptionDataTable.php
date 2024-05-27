@@ -3,11 +3,14 @@
 namespace Modules\Reception\DataTables;
 
 use Modules\Reception\Entities\Reception;
+use Modules\Reception\Entities\ReceptionDetails;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+
+use Illuminate\Support\Facades\DB;
 
 class ReceptionDataTable extends DataTable
 {
@@ -17,7 +20,13 @@ class ReceptionDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('details_reception', function ($data) {
-                return view('reception::partials.details_reception', compact('data'));
+
+                /* $datadetails=ReceptionDetails::where("reception_id", $data->id );
+                return view('reception::partials.details_reception', compact('datadetails'));
+                */
+                $datadetails = DB::table("reception_details")->where("reception_id", $data->id)->get();
+
+                return view('reception::partials.details_reception', compact('datadetails'));
             })
             ->addColumn('status', function ($data) {
                 return view('reception::partials.status', compact('data'));
@@ -60,7 +69,7 @@ class ReceptionDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            
+
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -74,8 +83,8 @@ class ReceptionDataTable extends DataTable
                 ->className('text-center align-middle'),
 
             Column::computed('details_reception')
-            ->title('Detalles de Recepción')
-             
+                ->title('Detalles de Recepción')
+
                 ->className('text-center align-middle'),
 
             Column::make('delivery_staff')

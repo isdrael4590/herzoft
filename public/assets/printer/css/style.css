@@ -5023,8 +5023,225 @@ table th{
 
 
 
+/** Print ticket **/
+/*css para etiquetas */
+
+.cabecera-ticket {
+	@include center;
+	height: 188.97637795px;
+	width: 291.02362205px;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+	overflow: hidden;
+	text-transform: uppercase;
 
 
+
+	small {
+		display: block;
+		font-size: 8px;
+		color: #000000;
+		margin-bottom: 2px;
+	}
+
+	strong {
+		font-size: 8px;
+		display: block;
+	}
+
+	& header {
+		padding: 8px 10px 0px 10px;
+		height: 20px;
+
+		.logo-ticket {
+			float: left;
+			width: 104px;
+			height: 31px;
+		}
+
+		.upper-ticket2 {
+			float: right;
+			color: #000000;
+			text-align: right;
+
+			small {
+				font-size: 6px;
+				margin-bottom: 2px;
+				opacity: 0.8;
+			}
+
+			strong {
+				font-size: 10px;
+			}
+
+		}
+
+		.upper-ticket {
+			float: left;
+			color: #000000;
+			text-align: left;
+
+			small {
+				font-size: 6px;
+				margin-bottom: 2px;
+				opacity: 0.8;
+			}
+
+			strong {
+				font-size: 10px;
+			}
+
+		}
+	}
+}
+
+/*Informacion equipo tickets */
+
+.machine-info {
+	position: relative;
+
+	&::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+
+	.machine-info2 {
+		padding: 3px 15px 1px 10px;
+		float: left;
+
+		&:nth-child(2) {
+			float: right;
+		}
+
+		strong {
+			font-size: 09px;
+            margin-left: 3px;
+
+			font-weight: 30;
+		}
+
+		small {
+			margin-bottom: 0px;
+			margin-left: 3px;
+			font-size: 12px;
+		}
+	}
+	.machine-info3 {
+		padding: 3px 15px 1px 10px;
+		float: left;
+
+		&:nth-child(2) {
+			float: right;
+		}
+
+		strong {
+			font-size: 14px;
+		
+			font-weight: 30;
+			line-height: 1;
+		}
+
+		small {
+			margin-bottom: 0px;
+			margin-left: 3px;
+		}
+	}
+
+}
+
+/*--------------------
+  Info relevantes
+  --------------------*/
+.infos {
+	display: flex;
+	border-top: 1px solid #000000;
+
+	.detalls_cycle,
+	.times {
+		padding: 1px 0;
+
+		&::after {
+			content: '';
+			display: table;
+			clear: both;
+		}
+	}
+
+	.times {
+
+		strong {
+			transform: scale(0.9);
+			transform-origin: center;
+		}
+	}
+
+	.detalls_cycle {
+		background: #fff;
+		
+		small {
+			color: #000000;
+		}
+
+		strong {
+			color: #000000;
+		}
+	}
+
+	.box {
+		padding: 2px 3px 1px 15px;
+		width: 100%;
+		float: center;
+
+		small {
+			font-size: 8px;
+		}
+	}
+}
+  /*--------------------
+  NOTA Y QR
+  --------------------*/
+  .strap {
+    clear: both;
+    position: relative;
+    border-top: 1px solid #000000;
+
+    &::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
+    .box {
+      padding: 2px 1px 1px 10px;
+   
+      & div {
+        margin-bottom: 5px;
+        
+        small {
+          font-size: 6px;
+        }
+
+        strong {
+          font-size: 8px;
+        }
+      }
+
+      sup {
+        font-size: 8px;
+        position: relative;
+        top: -5px;
+      }
+    }
+    .qrcode {
+        padding: 2px 10px 1px 5px;
+		width: 100%;
+        position: relative;
+		float: center;
+        margin-inline: center;
+    }
+  }
 
 
 

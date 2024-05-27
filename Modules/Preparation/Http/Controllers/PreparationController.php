@@ -27,7 +27,7 @@ use Modules\Reception\Http\Requests\StoreReceptionRequest;
 
 class PreparationController extends Controller
 {
-    public function index(PreparationDetailsDataTable $dataTable)
+    public function index(PreparationDataTable $dataTable)
     {
         abort_if(Gate::denies('access_preparations'), 403);
 
@@ -169,7 +169,7 @@ class PreparationController extends Controller
             Cart::instance('preparation')->destroy();
         });
 
-        toast('Recepción actualizado!', 'info');
+        toast('Preparación actualizado!', 'info');
 
         return redirect()->route('preparations.index');
     }
@@ -180,7 +180,7 @@ class PreparationController extends Controller
 
         $preparation->delete();
 
-        toast('Recepcion Eliminado!', 'warning');
+        toast('Preparación Eliminado!', 'warning');
 
         return redirect()->route('preparations.index');
     }

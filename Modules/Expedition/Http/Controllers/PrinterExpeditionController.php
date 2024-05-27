@@ -27,7 +27,7 @@ class PrinterExpeditionController extends Controller
             ->where('id', $id)
             ->orderBy('id', 'DESC')
             ->get();
-        $institute = Institute::findOrFail($id);
+            $institute = Institute::all()->first();
      
 
         return view('expedition::expeditions.print', [

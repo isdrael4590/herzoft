@@ -72,6 +72,18 @@ class PermissionsTableSeeder extends Seeder
             'show_areas',
             'edit_areas',
             'delete_areas',
+            // units
+            'access_informat_units',
+            'create_units',
+            'show_units',
+            'edit_units',
+            'delete_units',
+            // lotes
+            'access_informat_lotes',
+            'create_lotes',
+            'show_lotes',
+            'edit_lotes',
+            'delete_lotes',
 
             //Reception
             'access_dirty_area',
@@ -88,7 +100,7 @@ class PermissionsTableSeeder extends Seeder
             'delete_wash_area',
             'edit_wash_area',
             'create_reception_preparations',
-            
+
             // PREAPARACION
             'access_preparations',
             'create_preparations',
@@ -124,6 +136,7 @@ class PermissionsTableSeeder extends Seeder
             'access_release_cycle',
             // ZONA ALMACEN 
             'access_almacen_area',
+            'access_expeditions',
             'create_expeditions',
             'show_expeditions',
             'edit_expeditions',

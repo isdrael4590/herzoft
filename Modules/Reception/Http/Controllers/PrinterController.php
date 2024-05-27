@@ -22,12 +22,16 @@ class PrinterController extends Controller
 
     public function printerReceptiona4(Int $id)
     {
+        
+        
         $reception = Reception::where('id', $id)->first();
+
         $receptionDetails = receptionDetails::with('product')
-            ->where('id', $id)
+            ->where('reception_id', $reception->id)
             ->orderBy('id', 'DESC')
-            ->get();
-        $institute = Institute::findOrFail($id);
+            ->get()->first();
+
+        $institute = Institute::all()->first();
       
         return view('reception::receptions.print', [
             'reception' => $reception,

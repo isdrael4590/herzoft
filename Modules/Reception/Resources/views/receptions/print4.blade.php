@@ -145,7 +145,7 @@
             <div class="col-sm-4 mb-3 mb-md-0">
             <ul>
                 <li><a href="#">www.alem.com.ec</a></li>
-                <li><a href="ferisdra@hotmail.com">ferisdra@hotmail.com</a></li>
+                <li><a href="herzoftgroup@gmail.com">herzoftgroup@gmail.com</a></li>
                 <li><a href="#">++593 998484190</a></li>
             </ul>
         </div>
