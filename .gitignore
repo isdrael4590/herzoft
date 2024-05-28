@@ -25,4 +25,7 @@ Homestead.json
 docker-compose.override.yml
 npm-debug.log
 yarn-error.log
+# Información sensitiva
 database/credenciales/*
+# Composer log que no es necesario
+composer.lock
