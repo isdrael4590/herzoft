@@ -27,5 +27,6 @@ npm-debug.log
 yarn-error.log
 # Información sensitiva
 database/credenciales/*
+credenciales/*
 # Composer log que no es necesario
 composer.lock
