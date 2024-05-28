@@ -42,9 +42,8 @@ class ExpeditionController extends Controller
     {
         DB::transaction(function () use ($request) {
             $expedition = Expedition::create([
-                'lote_machine' => $request->lote_machine,
-                'type_program' => $request->type_program,
-                'lote_biologic' => $request->lote_biologic,
+                'area_expedition'=> $request->area_expedition,
+                'staff_expedition'=> $request->staff_expedition,
                 'temp_ambiente' => $request->temp_ambiente,
                 'status_expedition' => $request->status_expedition,
                 'note' => $request->note,
@@ -56,6 +55,7 @@ class ExpeditionController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' => $cart_item->options->product_expiration,
@@ -101,6 +101,7 @@ class ExpeditionController extends Controller
                 'weight'     => 1,
                 'options' => [
                     'code'     => $expedition_detail->product_code,
+                    'product_type_process'   => $expedition_detail->product_type_process,
                     'product_package_wrap'   => $expedition_detail->product_package_wrap,
                     'product_ref_qr'   => $expedition_detail->product_ref_qr,
                     'product_expiration'   => $expedition_detail->product_expiration,
@@ -122,10 +123,8 @@ class ExpeditionController extends Controller
             }
 
             $expedition->update([
-                'lote_machine' => $request->lote_machine,
-                'type_program' => $request->type_program,
-                'lote_biologic' => $request->lote_biologic,
-                'expiration' => $request->expiration,
+                'area_expedition'=> $request->area_expedition,
+                'staff_expedition'=> $request->staff_expedition,
                 'temp_ambiente' => $request->temp_ambiente,
                 'status_expedition' => $request->status_expedition,
                 'note' => $request->note,
@@ -139,6 +138,7 @@ class ExpeditionController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' => $cart_item->options->product_expiration,

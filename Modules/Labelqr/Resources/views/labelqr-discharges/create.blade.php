@@ -20,6 +20,12 @@
                         @include('utils.alerts')
                         <form id="discharge -form" action="{{ route('discharges.store') }}" method="POST">
                             @csrf
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    Envío de Cíclo Esterilizador<i class="bi bi-check"></i>
+                                </button>
+                            </div>
+                            <br>
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
@@ -100,21 +106,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="expiration">Tiempo de expiración</label>
-                                        <select class="form-control" name="expiration" id="expiration" readonly>
-                                            <option {{ $discharge->expiration == '6' ? 'selected' : '' }} value="6">6
-                                                meses</option>
-                                            <option {{ $discharge->expiration == '12' ? 'selected' : '' }} value="12">
-                                                12 meses</option>
-                                            <option {{ $discharge->expiration == '18' ? 'selected' : '' }} value="18">
-                                                18 meses</option>
-                                            <option {{ $discharge->expiration == '24' ? 'selected' : '' }} value="24">
-                                                24 meses</option>
-                                        </select>
-                                    </div>
-                                </div>
+
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="status_cycle">Estado del Proceso <span

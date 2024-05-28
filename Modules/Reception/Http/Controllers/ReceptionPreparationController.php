@@ -38,6 +38,7 @@ class ReceptionPreparationController extends Controller
                 'weight'  => 1,
                 'options' => [
                     'code'     => $reception_detail->product_code,
+                    'product_type_process'     => $reception_detail->product_type_process,
                     'product_state_preparation'   => 'Disponible',
                     'product_coming_zone'   => 'Recepcion',
                     

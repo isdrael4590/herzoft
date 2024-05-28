@@ -19,6 +19,9 @@ class ProductCarttoQR extends Component
     public $ref_qr;
     public $eval_package;
     public $eval_indicator;
+    public $expiration;
+    public $type_process;
+
     
 
 
@@ -37,6 +40,8 @@ class ProductCarttoQR extends Component
                 $this->ref_qr[$cart_item->id] = $cart_item->options->product_ref_qr;
                 $this->eval_package[$cart_item->id] = $cart_item->options->product_eval_package;
                 $this->eval_indicator[$cart_item->id] = $cart_item->options->product_eval_indicator;
+                $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
+                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
             }
         } else {
             
@@ -44,6 +49,9 @@ class ProductCarttoQR extends Component
             $this->ref_qr = [];
             $this->eval_package = [];
             $this->eval_indicator = [];
+            $this->expiration = [];
+            $this->type_process = [];
+
         }
       
     }
@@ -82,10 +90,12 @@ class ProductCarttoQR extends Component
 
             'options' => [
                 'code'    => $product['product_code'],
+                'product_type_process'    => $product['product_type_process'],
                 'product_package_wrap' =>  'Contenedor', //ESTE ES EL DATO A MODIFICAR
                 'product_ref_qr' =>  'PRUEBA', //ESTE ES EL DATO A MODIFICAR
                 'product_eval_package' => 'OK',//ESTE ES EL DATO A MODIFICAR
-                'product_eval_indicator' =>  '4'//ESTE ES EL DATO A MODIFICAR
+                'product_eval_indicator' =>  '4',//ESTE ES EL DATO A MODIFICAR
+                'product_expiration' =>  '6'//ESTE ES EL DATO A MODIFICAR
             ]
 
 
@@ -94,6 +104,7 @@ class ProductCarttoQR extends Component
         $this->ref_qr[$product['id']] = 'PRUEBA';
         $this->eval_package[$product['id']] = 'OK';
         $this->eval_indicator[$product['id']] = '4';
+        $this->expiration[$product['id']] = '6';
 
 
     }
@@ -118,7 +129,8 @@ class ProductCarttoQR extends Component
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
                 'product_eval_package'      => $cart_item->options->product_eval_package,
                 'product_eval_indicator'    => $cart_item->options->product_eval_indicator,
-
+                'product_expiration'    => $cart_item->options->product_expiration,
+                'product_type_process'    => $cart_item->options->product_type_process,
             ]
         ]);
     }
@@ -136,11 +148,12 @@ class ProductCarttoQR extends Component
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code'=> $cart_item->options->code,
+            'product_type_process'=> $cart_item->options->product_type_process,
             'product_package_wrap'     => $this->package_wrap[$product_id],
             'product_ref_qr'   => $this->ref_qr[$product_id],
             'product_eval_package'     => $this->eval_package[$product_id],
             'product_eval_indicator'   => $this->eval_indicator[$product_id],
-
+            'product_expiration'   => $this->expiration[$product_id],
         ]]);
     }
 }

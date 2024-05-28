@@ -24,24 +24,20 @@
                             <i class="bi bi-printer"></i> Enviar Ciclo
                         </a>
                         <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
-                            href="{{ route('labelqrs.pdf', $labelqr->id) }}">
-                            <i class="bi bi-printer"></i> Imprimir
+                            href="{{ route('labelqrs_label.pdf', $labelqr->id) }}">
+                            <i class="bi bi-printer"></i> Imprimir Etiquetas
                         </a>
-                        <a target="_blank" class="btn btn-sm btn-info mfe-1 d-print-none"
-                            href="{{ route('labelqrs.pdf', $labelqr->id) }}">
-                            <i class="bi bi-save"></i> Guardar
-                        </a>
+
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h5 class="mb-2 border-bottom pb-2">Institución:</h5>
-                                <div><strong>{{ Institutes()->institute_code }}</strong></div>
-                                <div> <strong>Hospital:</strong> {{ Institutes()->institute_name }}</div>
-                                <div><strong>Dirección:</strong>  {{ Institutes()->institute_address }}</div>
-                                <div><strong>Área:</strong>  {{ Institutes()->institute_area }}</div>
-                                <div><strong>Ciudad:</strong> {{ Institutes()->institute_city }}</div>
-                                <div> <strong>País:</strong>{{ Institutes()->institute_country }}</div>
+                                <div> <strong>Hospital:</strong> {{ institutes()->institute_name }}</div>
+                                <div><strong>Dirección:</strong>  {{ institutes()->institute_address }}</div>
+                                <div><strong>Área:</strong>  {{ institutes()->institute_area }}</div>
+                                <div><strong>Ciudad:</strong> {{ institutes()->institute_city }}</div>
+                                <div> <strong>País:</strong>{{ institutes()->institute_country }}</div>
                             </div>
 
                             <div class="col-sm-3 mb-3 mb-md-0">
@@ -62,11 +58,10 @@
                                 <div><strong>Estado del Ciclo: </strong> {{ $labelqr->status_cycle }}</div>
                                 <div><strong>Lote del Biológico: </strong> {{ $labelqr->lote_biologic }}</div>
                                 <div><strong>Validación Biológico: </strong> {{ $labelqr->validation_biologic }}</div>
-                                <div><strong>Fecha de Expiración: </strong> {{ $labelqr->expiration }}</div>
                             </div>
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
-                                {!! QrCode::size(150)->style('square')->generate( "$labelqr->reference"." // Equipo: "."$labelqr->machine_name"." // Lote: "."$labelqr->lote_machine"." // Fecha: "."$labelqr->created_up". " // Expiracion: ".  "$labelqr->expiration") !!}
+                                {!! QrCode::size(150)->style('square')->generate( "$labelqr->reference"." -> Equipo: "."$labelqr->machine_name"." -> Lote: "."$labelqr->lote_machine"." -> Fecha Elabo: "."$labelqr->created_up". " -> Expiracion: ".  "$labelqr->updated_at") !!}
                             </div>
                         </div>
 
@@ -79,6 +74,7 @@
                                         <th class="align-middle">Tipo de Envoltura</th>
                                         <th class="align-middle">Validación Embalaje</th>
                                         <th class="align-middle">Validación Ind. Químico</th>
+                                        <th class="align-middle">Fecha de vencimiento</th>
                                         <th class="align-middle">QR Paquete</th>
                                     </tr>
                                 </thead>
@@ -101,11 +97,17 @@
                                                 {{ $item->product_eval_indicator }}
                                             </td>
                                             <td class="align-middle">
+                                                {{ $item->product_expiration }} Meses
+                                            </td>
+                                            <td class="align-middle">
                                                 <div>
-                                                    {!! QrCode::size(50)->style('square')->generate( "$labelqr->reference"." // Lote: "."$labelqr->lote_machine"." // Cod: "."$item->product_code") !!}
+                                                    {!! QrCode::size(50)->style('square')->generate( "$labelqr->reference"." // Lote: "."$labelqr->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: "."$item->updated_at") !!}
                                                 </div>
                                                 <div>
-                                                    RefQR: {{ ($item->product_ref_qr) }} <br> Lote: {{ $labelqr->lote_machine }}  <br> Código: {{ $item->product_code }}
+                                                    <span>
+                                                       Lote: {{ $labelqr->lote_machine }}  <br> Código: {{ $item->product_code }}
+                                                    </span>
+                                                
                                                 </div>
                                        
                                              

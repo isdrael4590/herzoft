@@ -75,12 +75,7 @@
                                                 value="C39">Code 39</option>
                                             <option {{ $product->product_barcode_symbology == 'UPCA' ? 'selected' : '' }}
                                                 value="UPCA">UPC-A</option>
-                                            <option {{ $product->product_barcode_symbology == 'UPCE' ? 'selected' : '' }}
-                                                value="UPCE">UPC-E</option>
-                                            <option {{ $product->product_barcode_symbology == 'EAN13' ? 'selected' : '' }}
-                                                value="EAN13">EAN-13</option>
-                                            <option {{ $product->product_barcode_symbology == 'EAN8' ? 'selected' : '' }}
-                                                value="EAN8">EAN-8</option>
+
                                         </select>
                                     </div>
                                 </div>
@@ -89,9 +84,33 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="area">Área <span class="text-danger">*</span></label>
-                                        <input id="area" type="text" class="form-control" min="0"
-                                            name="area" required value="{{ $product->area }}">
+                                        <label for="area">Area <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="area" name="area" required>
+                                            @foreach (\Modules\Informat\Entities\Area::all() as $area)
+                                                <option {{ $product->area == $area->area_name ? 'selected' : '' }}
+                                                    value="{{ $area->area_name }}">
+                                                    {{ $area->area_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_type_process">Paquete procesado en:<span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-control" name="product_type_process" id="product_type_process"
+                                            required>
+                                            <option value="" disabled>Seleccion de Temp. Trabajo</option>
+                                            <option
+                                                {{ $product->product_type_process == 'Alta Temperatura' ? 'selected' : '' }}
+                                                value="Alta Temperatura">Alta Temperatura</option>
+                                            <option
+                                                {{ $product->product_type_process == 'Baja Temperatura' ? 'selected' : '' }}
+                                                value="Baja Temperatura">Baja Temperatura</option>
+                                            <option
+                                                {{ $product->product_type_process == 'N/A' ? 'selected' : '' }}
+                                                value="N/A">N/A</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

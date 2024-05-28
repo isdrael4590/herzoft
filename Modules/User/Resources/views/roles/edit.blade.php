@@ -84,52 +84,60 @@
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_test_bd" name="permissions[]"
-                                                            value="show_test_bd"
+                                                            id="show_test_bd" name="permissions[]" value="show_test_bd"
                                                             {{ $role->hasPermissionTo('show_test_bd') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label"
-                                                            for="show_test_bd">Producción
+                                                        <label class="custom-control-label" for="show_test_bd">Producción
                                                             Test Bowie</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="show_test_vacuum"
-                                                            name="permissions[]" value="show_test_vacuum"
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_test_vacuum" name="permissions[]"
+                                                            value="show_test_vacuum"
                                                             {{ $role->hasPermissionTo('show_test_vacuum') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="show_test_vacuum">Producción Test Vacio</label>
+                                                        <label class="custom-control-label"
+                                                            for="show_test_vacuum">Producción Test Vacio</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="show_production_steam"
-                                                            name="permissions[]" value="show_production_steam"
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_production_steam" name="permissions[]"
+                                                            value="show_production_steam"
                                                             {{ $role->hasPermissionTo('show_production_steam') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="show_production_steam">Producción Vapor</label>
-                                                    </div>
-                                                </div> 
-                                                <div class="col-12">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="show_production_hpo"
-                                                            name="permissions[]" value="show_production_hpo"
-                                                            {{ $role->hasPermissionTo('show_production_hpo') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="show_production_hpo">Producción Baja temperatura</label>
+                                                        <label class="custom-control-label"
+                                                            for="show_production_steam">Producción Vapor</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="show_biologic_steam"
-                                                            name="permissions[]" value="show_biologic_steam"
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_production_hpo" name="permissions[]"
+                                                            value="show_production_hpo"
+                                                            {{ $role->hasPermissionTo('show_production_hpo') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="show_production_hpo">Producción Baja temperatura</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_biologic_steam" name="permissions[]"
+                                                            value="show_biologic_steam"
                                                             {{ $role->hasPermissionTo('show_biologic_steam') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="show_biologic_steam">Estadísticas biológicos Vapor</label>
+                                                        <label class="custom-control-label"
+                                                            for="show_biologic_steam">Estadísticas biológicos Vapor</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="show_production_hpo"
-                                                            name="permissions[]" value="show_production_hpo"
-                                                            {{ $role->hasPermissionTo('show_production_hpo') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="show_production_hpo">Estadísticas biológicos Baja
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_biologic_hpo" name="permissions[]"
+                                                            value="show_biologic_hpo"
+                                                            {{ $role->hasPermissionTo('show_biologic_hpo') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="show_biologic_hpo">Estadísticas biológicos Baja
                                                             temperatura</label>
                                                     </div>
                                                 </div>
@@ -459,7 +467,8 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_preparations" name="permissions[]" value="show_preparations"
+                                                            id="show_preparations" name="permissions[]"
+                                                            value="show_preparations"
                                                             {{ $role->hasPermissionTo('show_preparations') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="show_preparations">Vista</label>
@@ -478,7 +487,8 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="edit_preparations" name="permissions[]" value="edit_preparations"
+                                                            id="edit_preparations" name="permissions[]"
+                                                            value="edit_preparations"
                                                             {{ $role->hasPermissionTo('edit_preparations') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="edit_preparations">Editar</label>
@@ -510,11 +520,11 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="access_zne_area" name="permissions[]"
-                                                            value="access_zne_area"
-                                                            {{ $role->hasPermissionTo('access_zne_area') ? 'checked' : '' }}>
+                                                            id="access_labelqrs" name="permissions[]"
+                                                            value="access_labelqrs"
+                                                            {{ $role->hasPermissionTo('access_labelqrs') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="access_zne_area">Acceso</label>
+                                                            for="access_labelqrs">Acceso</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -570,11 +580,11 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="access_ze_area" name="permissions[]"
-                                                            value="access_ze_area"
-                                                            {{ $role->hasPermissionTo('access_ze_area') ? 'checked' : '' }}>
+                                                            id="access_discharges" name="permissions[]"
+                                                            value="access_discharges"
+                                                            {{ $role->hasPermissionTo('access_discharges') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="access_ze_area">Acceso</label>
+                                                            for="access_discharges">Acceso</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -643,8 +653,7 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_stocks" name="permissions[]"
-                                                            value="show_stocks"
+                                                            id="show_stocks" name="permissions[]" value="show_stocks"
                                                             {{ $role->hasPermissionTo('show_stocks') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="show_stocks">Vista</label>
@@ -653,8 +662,7 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="create_stocks" name="permissions[]"
-                                                            value="create_stocks"
+                                                            id="create_stocks" name="permissions[]" value="create_stocks"
                                                             {{ $role->hasPermissionTo('create_stocks') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="create_stocks">Crear</label>
@@ -663,8 +671,7 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="edit_stocks" name="permissions[]"
-                                                            value="edit_stocks"
+                                                            id="edit_stocks" name="permissions[]" value="edit_stocks"
                                                             {{ $role->hasPermissionTo('edit_stocks') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="edit_stocks">Editar</label>
@@ -673,8 +680,7 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="delete_stocks" name="permissions[]"
-                                                            value="delete_stocks"
+                                                            id="delete_stocks" name="permissions[]" value="delete_stocks"
                                                             {{ $role->hasPermissionTo('delete_stocks') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="delete_stocks">Borrar</label>
@@ -696,11 +702,11 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="access_almacen_area" name="permissions[]"
-                                                            value="access_almacen_area"
-                                                            {{ $role->hasPermissionTo('access_almacen_area') ? 'checked' : '' }}>
+                                                            id="access_expeditions" name="permissions[]"
+                                                            value="access_expeditions"
+                                                            {{ $role->hasPermissionTo('access_expeditions') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="access_almacen_area">Acceso</label>
+                                                            for="access_expeditions">Acceso</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -750,8 +756,8 @@
 
                                 <div class="col-lg-4 col-md-6 mb-3">
                                 </div>
-                                 <!--INSUMOS-->
-                                 <div class="col-lg-4 col-md-6 mb-3">
+                                <!--INSUMOS-->
+                                <div class="col-lg-4 col-md-6 mb-3">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             INSUMOS
@@ -813,8 +819,8 @@
                                     </div>
                                 </div>
 
-                                  <!--INSTITUCION-->
-                                  <div class="col-lg-4 col-md-6 mb-3">
+                                <!--INSTITUCION-->
+                                <div class="col-lg-4 col-md-6 mb-3">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             INSTITUCION
@@ -875,8 +881,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                  <!--EQUIPOS-->
-                                  <div class="col-lg-4 col-md-6 mb-3">
+                                <!--EQUIPOS-->
+                                <div class="col-lg-4 col-md-6 mb-3">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
                                             EQUIPOS
@@ -896,8 +902,7 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_machines" name="permissions[]"
-                                                            value="show_machines"
+                                                            id="show_machines" name="permissions[]" value="show_machines"
                                                             {{ $role->hasPermissionTo('show_machines') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="show_machines">Vista</label>
@@ -916,8 +921,7 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="edit_machines" name="permissions[]"
-                                                            value="edit_machines"
+                                                            id="edit_machines" name="permissions[]" value="edit_machines"
                                                             {{ $role->hasPermissionTo('edit_machines') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="edit_machines">Editar</label>
@@ -937,11 +941,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                  <!--AREAS-->
-                                  <div class="col-lg-4 col-md-6 mb-3">
+                                <!--AREAS-->
+                                <div class="col-lg-4 col-md-6 mb-3">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
-                                            EQUIPOS
+                                            AREAS
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
@@ -958,18 +962,15 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_areas" name="permissions[]"
-                                                            value="show_areas"
+                                                            id="show_areas" name="permissions[]" value="show_areas"
                                                             {{ $role->hasPermissionTo('show_areas') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label"
-                                                            for="show_areas">Vista</label>
+                                                        <label class="custom-control-label" for="show_areas">Vista</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="create_areas" name="permissions[]"
-                                                            value="create_areas"
+                                                            id="create_areas" name="permissions[]" value="create_areas"
                                                             {{ $role->hasPermissionTo('create_areas') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="create_areas">Crear</label>
@@ -978,8 +979,7 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="edit_areas" name="permissions[]"
-                                                            value="edit_areas"
+                                                            id="edit_areas" name="permissions[]" value="edit_areas"
                                                             {{ $role->hasPermissionTo('edit_areas') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="edit_areas">Editar</label>
@@ -988,8 +988,7 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="delete_areas" name="permissions[]"
-                                                            value="delete_areas"
+                                                            id="delete_areas" name="permissions[]" value="delete_areas"
                                                             {{ $role->hasPermissionTo('delete_areas') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="delete_areas">Borrar</label>
@@ -999,7 +998,63 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <!--LOTES-->
+                                <div class="col-lg-4 col-md-6 mb-3">
+                                    <div class="card h-100 border-0 shadow">
+                                        <div class="card-header">
+                                            LOTES
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="access_informat_lotes" name="permissions[]"
+                                                            value="access_informat_lotes"
+                                                            {{ $role->hasPermissionTo('access_informat_lotes') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="access_informat_lotes">Acceso</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_lotes" name="permissions[]" value="show_lotes"
+                                                            {{ $role->hasPermissionTo('show_lotes') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label" for="show_lotes">Vista</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="create_lotes" name="permissions[]" value="create_lotes"
+                                                            {{ $role->hasPermissionTo('create_lotes') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="create_lotes">Crear</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="edit_lotes" name="permissions[]" value="edit_lotes"
+                                                            {{ $role->hasPermissionTo('edit_lotes') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="edit_lotes">Editar</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="delete_lotes" name="permissions[]" value="delete_lotes"
+                                                            {{ $role->hasPermissionTo('delete_lotes') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="delete_lotes">Borrar</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Reports -->
                                 <div class="col-lg-4 col-md-6 mb-3">
                                     <div class="card h-100 border-0 shadow">

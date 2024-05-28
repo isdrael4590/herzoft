@@ -2,32 +2,35 @@
 
 namespace Modules\Preparation\DataTables;
 
-use Modules\Preparation\Entities\PreparationDetails;
+use Modules\Preparation\Entities\Preparation;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PreparationDsDataTable extends DataTable
+class PreparationDataTable extends DataTable
 {
 
     public function dataTable($query)
     {
         return datatables()
             ->eloquent($query)
-
-            ->addColumn('coming_zone', function ($data) {
-                return view('preparation::partials.coming_zone', compact('data'));
+            ->addColumn('details_preparation', function ($data) {
+                return view('preparation::partials.details_preparation', compact('data'));
             })
-
-            ->addColumn('action', function ($data) {
+            ->addColumn('product_state_preparation', function ($data) {
+                return view('preparation::partials.product_state_preparation', compact('data'));
+            })
+               ->addColumn('action', function ($data) {
                 return view('preparation::partials.actions', compact('data'));
-     
+            })
+            ->addColumn('dates', function ($data) {
+                return view('preparation::partials.dates', compact('data'));
             });
     }
 
-    public function query(PreparationDetails $model)
+    public function query(Preparation $model)
     {
         return $model->newQuery();
     }
@@ -35,7 +38,7 @@ class PreparationDsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('PreparationDetails-table')
+            ->setTableId('preparations-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
@@ -62,22 +65,26 @@ class PreparationDsDataTable extends DataTable
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
-           
-
-                Column::computed('product_name')
-                ->title('Nombre del producto')
+            Column::make('dates')
+                ->title('Fecha')
                 ->className('text-center align-middle'),
 
-                Column::make('product_code')
-                ->title('Código del producto')
+            Column::make('reference')
+                ->title('Referencia')
                 ->className('text-center align-middle'),
- 
-                Column::make('product_state_preparation')
+
+            Column::computed('details_preparation')
+            ->title('Detalles de Recepción')
+             
+                ->className('text-center align-middle'),
+            Column::make('note')
+                ->title('Notas')
+                ->className('text-center align-middle'),
+            Column::make('operator')
+                ->title('Operador')
+                ->className('text-center align-middle'),
+            Column::computed('product_state_preparation')
                 ->title('Estado')
-                ->className('text-center align-middle'),
-        
-                Column::make('coming_zone')
-                ->title('Proveniente')
                 ->className('text-center align-middle'),
 
 
@@ -86,6 +93,6 @@ class PreparationDsDataTable extends DataTable
 
     protected function filename(): string
     {
-        return 'PreparationDetails_' . date('YmdHis');
+        return 'preparation_' . date('YmdHis');
     }
 }

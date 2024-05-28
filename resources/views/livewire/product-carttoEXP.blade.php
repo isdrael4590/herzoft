@@ -19,8 +19,9 @@
                         <th class="align-middle">Descripción del Instrumental</th>
                         <th class="align-middle">Código del Instrumental</th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
-                        <th class="align-middle text-center">Referecia QR</th>
+                       
                         <th class="align-middle text-center">Expiración</th>
+                        <th class="align-middle text-center">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,14 +39,14 @@
                                         {{ $cart_item->options->product_package_wrap }}
                                     </span>
                                 </td>
-                                <td class="align-middle ">
-                                    <div>
-                                        {!! QrCode::size(50)->style('square')->generate('{{ $cart_item->options->product_ref_qr }}') !!}
-                                    </div>
-
-                                </td>
+                                
                                 <td class="align-middle text-center text-center">
                                     {{ $cart_item->options->product_expiration }}
+                                </td>
+                                <td class="align-middle text-center">
+                                    <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
+                                        <i class="bi bi-x-circle font-2xl text-danger"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

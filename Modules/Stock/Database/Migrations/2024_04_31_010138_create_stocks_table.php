@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('reference');
             $table->string('lote_machine');
-            $table->string('type_program');
+            $table->string('machine_name');
             $table->string('lote_biologic');
           
             $table->string('temp_ambiente')->nullable(); 

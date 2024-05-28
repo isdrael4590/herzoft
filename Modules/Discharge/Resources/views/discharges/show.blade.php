@@ -58,11 +58,10 @@
                                 <div><strong>Estado del Ciclo: </strong> {{ $discharge->status_cycle }}</div>
                                 <div><strong>Lote del Biológico: </strong> {{ $discharge->lote_biologic }}</div>
                                 <div><strong>Validación Biológico: </strong> {{ $discharge->validation_biologic }}</div>
-                                <div><strong>Fecha de Expiración: </strong> {{ $discharge->expiration }}</div>
                             </div>
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
-                                {!! QrCode::size(150)->style('square')->generate( "$discharge->reference"." // Equipo: "."$discharge->machine_name"." // Lote: "."$discharge->lote_machine"." // Fecha: "."$discharge->created_up". " // Expiracion: ".  "$discharge->expiration") !!}
+                                {!! QrCode::size(150)->style('square')->generate( "$discharge->reference"." // Equipo: "."$discharge->machine_name"." // Lote: "."$discharge->lote_machine"." // Fecha: "."$discharge->updated_at". " // Expiracion: ".  "$discharge->updated_at") !!}
                             </div>
                         </div>
 
@@ -75,6 +74,7 @@
                                         <th class="align-middle">Tipo de Envoltura</th>
                                         <th class="align-middle">Validación Embalaje</th>
                                         <th class="align-middle">Validación Ind. Químico</th>
+                                        <th class="align-middle">Vencimiento</th>
                                         <th class="align-middle">QR Paquete</th>
                                     </tr>
                                 </thead>
@@ -97,12 +97,16 @@
                                                 {{ $item->product_eval_indicator }}
                                             </td>
                                             <td class="align-middle">
+                                                {{ $item->product_expiration }} Meses
+                                            </td>
+                                            <td class="align-middle">
+                                                
                                                 <div>
-                                                    {!! QrCode::size(50)->style('square')->generate( "$discharge->reference"." // Lote: "."$discharge->lote_machine"." // Cod: "."$item->product_code") !!}
+                                                    {!! QrCode::size(50)->style('square')->generate( "$discharge->reference"." // Lote: "."$discharge->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: "."$item->updated_at") !!}
                                                 </div>
-                                                <div>
-                                                    RefQR: {{ ($item->product_ref_qr) }} <br> Lote: {{ $discharge->lote_machine }}  <br> Código: {{ $item->product_code }}
-                                                </div>
+                                                <span>
+                                                    Lote: {{ $discharge->lote_machine }}  <br> Código: {{ $item->product_code }}
+                                                 </span>
                                        
                                              
                                             </td>

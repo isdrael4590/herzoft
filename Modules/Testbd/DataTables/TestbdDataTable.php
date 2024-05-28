@@ -23,6 +23,8 @@ class TestbdDataTable extends DataTable
             })
             ->addColumn('validation_bd', function ($data) {
                 return view('testbd::testbds.partials.validation_bd', compact('data'));
+            })->addColumn('dates', function ($data) {
+                return view('testbd::testbds.partials..dates', compact('data'));
             });
     }
 
@@ -67,8 +69,8 @@ class TestbdDataTable extends DataTable
                 ->title('Referencia de BD.')
                 ->className('text-center align-middle'),
 
-            Column::make('created_at')
-                ->title('Fecha de elaboración.')
+                Column::make('dates')
+                ->title('Fecha')
                 ->className('text-center align-middle'),
 
             Column::make('machine_name')

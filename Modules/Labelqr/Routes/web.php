@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Labelqr\Http\Controllers\PrinterLabelQrController;
 
 
 /*
@@ -30,6 +31,9 @@ Route::group(['middleware' => 'auth'], function () {
    // Route::get('/labelqr/mail/{labelqr}', 'SendlabelqrEmailController')->name('labelqr.email');
 
     //Descargas Form labelqr
+
+    Route::get('/labelqrs_label/pdf/{id}', [PrinterLabelQrController::class, 'printerLabelqr'])->name('labelqrs_label.pdf');
+
     Route::get('/labelqr-discharges/{labelqr}', 'LabelqrDischargeController')->name('labelqr-discharges.create');
 
     //labelqrs

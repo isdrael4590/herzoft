@@ -114,27 +114,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="expiration">Tiempo de expiración</label>
-                                        <select class="form-control" name="expiration" id="expiration">
-                                            <option disabled>-- SELECCIONAR LOS MESES--</option>
-
-                                            <option value="6"> 6 meses </option>
-                                            <option value="12"> 12 meses </option>
-                                            <option value="12"> 18 meses </option>
-                                            <option selected value="24"> 24 meses </option>
-
-                                        </select>
-                                    </div>
-                                </div>
+                           
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="status_cycle">Estado del Proceso <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_cycle" id="status_cycle" required>
-                                            <option  selected value="Pendiente">Pendiente</option>
-                                            <option   value="En Curso">En Curso</option>
+                                            <option   value="Pendiente">Pendiente</option>
+                                            <option  selected value="En Curso">En Curso</option>
 
                                         </select>
                                     </div>

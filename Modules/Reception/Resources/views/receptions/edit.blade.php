@@ -23,7 +23,7 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="quotation-form" action="{{ route('receptions.update', $reception) }}" method="POST">
+                        <form id="reception-form" action="{{ route('receptions.update', $reception) }}" method="POST">
                             @csrf
                             @method('patch')
                             <div class="form-row">
@@ -37,14 +37,14 @@
                                     <div class="form-group">
                                         <label>Área Procedente</label>
                                         <input class="form-control" type="text" id="area" name="area"
-                                        value="{{ $reception->area }}">
+                                        value="{{ $reception->area }}" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Persona que entrega</label>
                                         <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
-                                        value="{{ $reception->delivery_staff }}">
+                                        value="{{ $reception->delivery_staff }}" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">

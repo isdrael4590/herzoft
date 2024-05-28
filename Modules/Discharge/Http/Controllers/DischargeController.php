@@ -52,7 +52,6 @@ class DischargeController extends Controller
                 'type_program' => $request->type_program,
                 'lote_biologic' => $request->lote_biologic,
                 'validation_biologic' => $request->validation_biologic,
-                'expiration' => $request->expiration,
                 'temp_ambiente' => $request->temp_ambiente,
                 'status_cycle' => $request->status_cycle,
                 'note' => $request->note,
@@ -65,10 +64,12 @@ class DischargeController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_eval_package' => $cart_item->options->product_eval_package,
-                    'product_eval_indicator'=> $cart_item->options->product_eval_indicator
+                    'product_eval_indicator'=> $cart_item->options->product_eval_indicator,
+                    'product_expiration'=> $cart_item->options->product_expiration
                 ]);
             }
 
@@ -108,10 +109,12 @@ class DischargeController extends Controller
                 'weight'     => 1,
                 'options' => [
                     'code'     => $discharge_detail->product_code,
+                    'product_type_process'   => $discharge_detail->product_type_process,
                     'product_package_wrap'   => $discharge_detail->product_package_wrap,
                     'product_ref_qr'   => $discharge_detail->product_ref_qr,
                     'product_eval_package' => $discharge_detail->product_eval_package,
-                    'product_eval_indicator'=> $discharge_detail->product_eval_indicator
+                    'product_eval_indicator'=> $discharge_detail->product_eval_indicator,
+                    'product_expiration'=> $discharge_detail->product_expiration
                 ]
             ]);
         }
@@ -135,7 +138,6 @@ class DischargeController extends Controller
                 'type_program' => $request->type_program,
                 'lote_biologic' => $request->lote_biologic,
                 'validation_biologic' => $request->validation_biologic,
-                'expiration' => $request->expiration,
                 'temp_ambiente' => $request->temp_ambiente,
                 'status_cycle' => $request->status_cycle,
                 'note' => $request->note,
@@ -149,10 +151,12 @@ class DischargeController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_eval_package' => $cart_item->options->product_eval_package,
-                    'product_eval_indicator'=> $cart_item->options->product_eval_indicator
+                    'product_eval_indicator'=> $cart_item->options->product_eval_indicator,
+                    'product_expiration'=> $cart_item->options->product_expiration
                     
                 ]);
             }

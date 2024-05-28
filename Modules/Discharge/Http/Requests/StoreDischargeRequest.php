@@ -23,7 +23,6 @@ class StoreDischargeRequest extends FormRequest
             'type_program' => 'required|string|max:255',
             'lote_biologic' => 'required|string|max:255',
             'validation_biologic' => 'required|string|max:255',
-            'expiration' => 'required|string|max:255',
             'temp_ambiente' => 'required|string|max:255',
             'status_cycle' => 'required|string|max:255',
             'note' => 'nullable|string|max:255'

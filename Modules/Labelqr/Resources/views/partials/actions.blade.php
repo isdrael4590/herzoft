@@ -3,18 +3,14 @@
         <i class="bi bi-three-dots-vertical"></i>
     </button>
     <div class="dropdown-menu"> --}}
-@can('create_labelqr_dicharges')
+@can('create_labelqr_discharges')
     @if ($data->status_cycle == 'En Curso')
         <a href="{{ route('labelqr-discharges.create', $data) }}" class="dropdown-item">
             <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar Proceso.
         </a>
     @endif
 @endcan
-{{-- @can('print_labelqrs')
-        <a href="#" class="dropdown-item">
-            <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
-        </a>
-    @endcan --}}
+
 
 @can('edit_labelqrs')
     @if (($data->status_cycle == 'En Curso') | ($data->status_cycle == 'Pendiente'))

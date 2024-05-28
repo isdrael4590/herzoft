@@ -16,11 +16,9 @@ class ExpeditionDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('dates', function ($data) {
-                return view('expedition::partials.dates', compact('data'));
-            })
-            ->addColumn('status_Stock', function ($data) {
-                return view('expedition::partials.status_stock', compact('data'));
+
+            ->addColumn('status_expedition', function ($data) {
+                return view('expedition::partials.status_expedition', compact('data'));
             })
          
             ->addColumn('action', function ($data) {
@@ -72,10 +70,7 @@ class ExpeditionDataTable extends DataTable
                 ->title('Ref. Expedición')
                 ->className('text-center align-middle'),
 
-            Column::computed('lote_machine')
-                ->title('Lote')
-                ->className('text-center align-middle'),
-       
+           
             Column::make('area_expedition')
                 ->title('Area Despachada')
                 ->className('text-center align-middle'),
@@ -84,7 +79,7 @@ class ExpeditionDataTable extends DataTable
                 ->title('Persona Recibe')
                 ->className('text-center align-middle'),
 
-            Column::make('Temp_ambiente')
+            Column::make('temp_ambiente')
                 ->title('Temperatura ambiental')
                 ->className('text-center align-middle'),
 

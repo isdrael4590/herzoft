@@ -50,8 +50,8 @@
                     <div class="form-group">
                         <label>Vencimiento <span class="text-danger">*</span></label>
                         <select wire:model.live="expiration.{{ $cart_item->id }}" class="form-control" required>
-                            <option value="24">24</option>
-                            <option value="18">18</option>
+                            <option value="6">6</option>
+                            <option value="9">9</option>
                             <option value="12">12</option>
                          
                         </select>

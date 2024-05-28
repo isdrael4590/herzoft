@@ -23,9 +23,11 @@ class CreateDischargeDetailsTable extends Migration
             $table->string('product_ref_qr')->nullable();
             $table->string('product_eval_package')->nullable();
             $table->string('product_eval_indicator')->nullable();
+            $table->string('product_expiration')->nullable();
+            $table->string('product_type_process')->nullable();
             $table->foreign('discharge_id')->references('id')->on('discharges')->onDelete('cascade');
             $table->foreign('product_id')->references('id')
-                ->on('products')->nullOnDelete();
+            ->on('products')->nullOnDelete();
             $table->timestamps();
         });
     }

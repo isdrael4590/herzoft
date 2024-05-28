@@ -18,7 +18,10 @@ class ProductCarttoStock extends Component
     public $package_wrap;
     public $ref_qr;
     public $status_stock;
+    public $date_sterilized;
     public $expiration;
+    public $type_process;
+
 
 
     private $product;
@@ -35,6 +38,8 @@ class ProductCarttoStock extends Component
                 $this->ref_qr[$cart_item->id] = $cart_item->options->product_ref_qr;
                 $this->status_stock[$cart_item->id] = $cart_item->options->product_status_stock;
                 $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
+                $this->date_sterilized[$cart_item->id] = $cart_item->options->product_date_sterilized;
+                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
       
     
             }
@@ -43,7 +48,10 @@ class ProductCarttoStock extends Component
             $this->package_wrap = [];
             $this->ref_qr = [];
             $this->status_stock = [];
+            $this->date_sterilized = [];
             $this->expiration = [];
+            $this->type_process = [];
+
         }
     }
 
@@ -76,10 +84,13 @@ class ProductCarttoStock extends Component
             'weight'     => 1,
             'options' => [
                 'code'    => $product['product_code'],
+                'product_type_process'    => $product['product_type_process'],
                 'product_package_wrap' =>  'Contenedor', //ESTE ES EL DATO A MODIFICAR
                 'product_ref_qr' =>  'PRUEBA', //ESTE ES EL DATO A MODIFICAR
-                'product_expiration' =>  '24', //ESTE ES EL DATO A MODIFICAR
+                'product_expiration' =>  '6', //ESTE ES EL DATO A MODIFICAR
                 'product_status_stock' =>  'Disponible', //ESTE ES EL DATO A MODIFICAR
+                'product_date_sterilized' =>  '',
+                
             ]
 
 
@@ -87,7 +98,8 @@ class ProductCarttoStock extends Component
         $this->package_wrap[$product['id']] = 'Contenedor';
         $this->ref_qr[$product['id']] = 'PRUEBA';
         $this->status_stock[$product['id']] = 'Disponible';
-        $this->expiration[$product['id']] = '24';
+        $this->date_sterilized[$product['id']] = '';
+        $this->expiration[$product['id']] = '6';
     }
 
     
@@ -112,6 +124,8 @@ class ProductCarttoStock extends Component
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
                 'product_status_stock'      => $cart_item->options->product_status_stock,
                 'product_expiration'    => $cart_item->options->product_expiration,
+                'product_date_sterilized'    => $cart_item->options->product_date_sterilized,
+                'product_type_process'    => $cart_item->options->product_type_process,
             ]
         ]);
     }
@@ -129,8 +143,7 @@ class ProductCarttoStock extends Component
             'product_package_wrap'      => $this->package_wrap[$product_id],
             'product_status_stock'     => $this->status_stock[$product_id],
             'product_expiration'   => $this->expiration[$product_id],
-
-
+            'product_date_sterilized'   => $this->date_sterilized[$product_id],
         ]]);
     }
 }

@@ -44,7 +44,7 @@ class StockController extends Controller
         DB::transaction(function () use ($request) {
             $stock = Stock::create([
                 'lote_machine' => $request->lote_machine,
-                'type_program' => $request->type_program,
+                'machine_name' => $request->machine_name,
                 'lote_biologic' => $request->lote_biologic,
                 'temp_ambiente' => $request->temp_ambiente,
                 'note' => $request->note,
@@ -56,9 +56,11 @@ class StockController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' =>$cart_item->options->product_expiration,
+                    'product_date_sterilized' =>$cart_item->options->product_date_sterilized,
                     'product_status_stock' =>$cart_item->options->product_status_stock,
 
                 ]);
@@ -99,10 +101,13 @@ class StockController extends Controller
                 'weight'     => 1,
                 'options' => [
                     'code'     => $stock_details->product_code,
+                    'product_type_process'   => $stock_details->product_type_process,
                     'product_package_wrap'   => $stock_details->product_package_wrap,
                     'product_ref_qr'   => $stock_details->product_ref_qr,
                     'product_expiration'   => $stock_details->product_expiration,
+                    'product_date_sterilized'   => $stock_details->product_date_sterilized,
                     'product_status_stock'   => $stock_details->product_status_stock,
+                    
                  
                 ]
             ]);
@@ -122,7 +127,7 @@ class StockController extends Controller
 
             $stock->update([
                 'lote_machine' => $request->lote_machine,
-                'type_program' => $request->type_program,
+                'machine_name' => $request->machine_name,
                 'lote_biologic' => $request->lote_biologic,
                 'temp_ambiente' => $request->temp_ambiente,
                 'note' => $request->note,
@@ -136,9 +141,11 @@ class StockController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' =>$cart_item->options->product_expiration,
+                    'product_date_sterilized' =>$cart_item->options->product_date_sterilized,
                     'product_status_stock' =>$cart_item->options->product_status_stock,
           
                     

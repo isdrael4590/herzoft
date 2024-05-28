@@ -12,6 +12,7 @@ use Modules\Testbd\Entities\Testbd;
 use Modules\Testbd\Http\Requests\StoreTestbdRequest;
 use Modules\Testbd\Http\Requests\UpdateTestbdRequest;
 use Modules\Upload\Entities\Upload;
+use Modules\Informat\Entities\Lote;
 
 class TestbdController extends Controller
 {
@@ -29,11 +30,24 @@ class TestbdController extends Controller
     }
 
 
-    public function store(StoreTestbdRequest $request) {
+    public function store(StoreTestbdRequest $request ) {
         $testbd = Testbd::create($request->except('document'));
 
-
-
+        $request->validate([
+            'lote_code' => 'nullable',
+            'equipo_lote' => 'nullable',
+            'tipo_lote' => 'nullable',
+            'tipo_equipo' => 'nullable',
+            'status_lote' => 'nullable',
+        ]);
+        Lote::create([
+            'lote_code' => $request->lote_machine,
+            'equipo_lote' => $request->machine_name,
+            'tipo_lote' => "TEST BOWIE & DICK",
+            'tipo_equipo' => "Vapor",
+            'status_lote' => $request->validation_bd,
+        ]);
+      
         toast('test BD Creado!', 'success');
 
         return redirect()->route('testbds.index');
@@ -42,33 +56,21 @@ class TestbdController extends Controller
 
     public function show(Testbd $testbd) {
         abort_if(Gate::denies('show_testbds'), 403);
-
         return view('testbd::testbds.show', compact('testbd'));
     }
 
-    public function edit(Testbd $testbd) {
+    public function edit(Testbd $testbd, $id) {
         abort_if(Gate::denies('edit_testbds'), 403);
+        $lotes = Lote::findOrFail($id);
+
         return view('testbd::testbds.edit', compact('testbd'));
     }
 
 
     public function update(UpdateTestbdRequest $request, Testbd $testbd) {
         $testbd->update($request->except('document'));
-        if ($request->has('document')) {
-            if (count($testbd->getMedia('images')) > 0) {
-                foreach ($testbd->getMedia('images') as $media) {
-                    if (!in_array($media->file_name, $request->input('document', []))) {
-                        $media->delete();
-                    }
-                }
-            }
-            $media = $testbd->getMedia('images')->pluck('file_name')->toArray();
-            foreach ($request->input('document', []) as $file) {
-                if (count($media) === 0 || !in_array($file, $media)) {
-                    $testbd->addMedia(Storage::path('temp/dropzone/' . $file))->toMediaCollection('images');
-                }
-            }
-        }
+ 
+
 
         toast('Testbd Actualizado!', 'info');
         return redirect()->route('testbds.index');

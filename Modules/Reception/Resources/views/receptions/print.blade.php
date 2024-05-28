@@ -1,90 +1,158 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="zxx">
 
-@section('title', 'reception Detalles')
+<head>
+    <title>Recepción</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-@section('breadcrumb')
-    <ol class="breadcrumb border-0 m-0">
-        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('receptions.index') }}">Recepción de instrumental</a></li>
-        <li class="breadcrumb-item active">Detalles</li>
-    </ol>
-@endsection
+    <!-- External CSS libraries -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/bootstrap.min.css') }}">
 
-@section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-          
-                    <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-sm-4 mb-3 mb-md-0">
-                                <h5 class="mb-2 border-bottom pb-2">Institución:</h5>
-                                <div><strong>{{ institutes()->institute_code }}</strong></div>
-                                <div>{{ Institutes()->institute_name }}</div>
-                                <div>Dirección: {{ Institutes()->institute_address }}</div>
-                                <div>Área: {{ Institutes()->institute_area }}</div>
-                                <div>Ciudad: {{ Institutes()->institute_city }}</div>
-                                <div>País: {{ Institutes()->institute_country }}</div>
-                            </div>
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
-                            <div class="col-sm-4 mb-3 mb-md-0">
-                                <h5 class="mb-2 border-bottom pb-2">Información de ingreso:</h5>
-                                <div>Persona que entrega: {{ $reception->delivery_staff }}</div>
-                                <div>Área Procedente: {{ $reception->area }}</div>
-                                <div>Persona que recibe: {{ $reception->operator }}</div>
-                            </div>
+    <!-- Custom Stylesheet -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/style.css') }}">
+</head>
 
-                            <div class="col-sm-4 mb-3 mb-md-0">
-                                <h5 class="mb-2 border-bottom pb-2">Registro INFO:</h5>
-                                <div>Número: <strong>{{ $reception->reference }}</strong></div>
-                                <div>Fecha: {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}</div>
-                                <div>
-                                    Status: <strong>{{ $reception->status }}</strong>
+<body>
+    <div class="printer-16 printer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="printer-inner-9" id="printer_wrapper">
+                        <div class="printer-top">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="logo">
+                                        <img class="logo" src="{{ asset('assets/images/logo.png') }}" alt="logo">
+                                    </div>
                                 </div>
-                            
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="printer">
+                                        <h1>#<span>{{ $reception->reference }}</span></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="printer-info">
+                            <div class="row">
+
+                                <div class="printer-number">
+                                    <h4 class="print-title-1">Fecha de Ingreso:</h4>
+                                    <p class="printo-addr-1">
+                                        {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}
+                                    </p>
+                                </div>
                             </div>
 
                         </div>
-
-                        <div class="table-responsive-sm">
-                            <table class="table table-striped">
+                        <div class="printer-info">
+                            <div class="row mb-4">
+                                <div class="col-sm-4 mb-3 mb-md-0">
+                                    <h4 class="print-title-1">Institución:</h4>
+                                    <div>{{ Institutes()->institute_name }}</div>
+                                    <div>Dirección: {{ Institutes()->institute_address }}</div>
+                                    <div>Área: {{ Institutes()->institute_area }}</div>
+                                    <div>Ciudad: {{ Institutes()->institute_city }}</div>
+                                    <div>País: {{ Institutes()->institute_country }}</div>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-md-0">
+                                    <h4 class="print-title-1">Información de ingreso:</h4>
+                                    <div>Persona que entrega: <strong> {{ $reception->delivery_staff }}</strong></div>
+                                    <div>Área Procedente: <strong>{{ $reception->area }}</strong></div>
+                                    <div>Persona que recibe:<strong> {{ $reception->operator }}</strong></div>
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-md-0">
+                                    <h4 class="print-title-1">Registro INFO:</h4>
+                                    <div>Número: <strong>{{ $reception->reference }}</strong></div>
+                                    <div>Fecha: {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}
+                                    </div>
+                                    <div>
+                                        Status: <strong>{{ $reception->status }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="product-summary">
+                        <div >
+                            <table class="default-table printer-table">
                                 <thead>
                                     <tr>
-                                        <th class="align-middle">Códigop del Instrumental</th>
-                                        <th class="align-middle">Descripción</th>
-                                        <th class="align-middle">Nivel de infección</th>
-                                        <th class="align-middle">Estado</th>
+                                        <th>Código </th>
+                                        <th>Descripción Rumed</th>
+                                        <th>Nivel infección</th>
+                                        <th>Estado</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @foreach ($reception->receptionDetails as $item)
                                         <tr>
-                                            <td class="align-middle">
-                                                {{ $item->product_name }} <br>
-                                               
-                                            </td>
-
-                                            <td class="align-middle"> <span class="badge badge-success">
+                                            <td>
                                                 {{ $item->product_code }}
-                                            </span></td>
-
-                                            <td class="align-middle">
+                                            </td>
+                                            <td>
+                                                {{ $item->product_name }}
+                                            </td>
+                                            <td>
                                                 {{ $item->product_type_dirt }}
                                             </td>
-
-                                            <td class="align-middle">
-                                                {{ ($item->product_state_rumed) }}
+                                            <td>
+                                                {{ $item->product_state_rumed }}
                                             </td>
                                         </tr>
                                     @endforeach
+
                                 </tbody>
                             </table>
                         </div>
+                        <div>Notas: {{ $reception->note }}</div>
+                        <br><br><br><br>
+                        <table class="default-table ">
+                           
+                                <tr >
+                                    <th>RECIBE: <span> {{ $reception->operator }}</span></th>
+                                    
+                                    <th>ENTREGA: <span> {{ $reception->delivery_staff }}</span></th>
+                                </tr>
+                                
+                            
+
+                        </table>
+
+
 
                     </div>
+                    <div class="printer-informeshon-footer">
+                        <ul>
+                            <li><strong>Nota:</strong> Revisar el registro previo a la firma de responsabilidad.</li>
+                        </ul>
+                        <ul>
+
+                            <li><a href="#">HerZoft</a></li>
+                            <li><a href="herzoftgroup@gmail.com">herzoftgroup@gmail.com</a></li>
+                            <li><a href="#">+593 998484190</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="printer-btn-section clearfix d-print-none">
+                    <a href="javascript:window.print()" class="btn btn-lg btn-print">
+                        Imprimir
+                    </a>
+                    
                 </div>
             </div>
         </div>
     </div>
-@endsection
+
+
+</body>
+
+</html>

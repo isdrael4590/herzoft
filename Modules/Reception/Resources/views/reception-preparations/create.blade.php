@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="preparation -form" action="{{ route('preparations.store') }}" method="POST">
+                        <form id="preparation-form" action="{{ route('preparations.store') }}" method="POST">
                             @csrf
                             <div class="form-row">
                                 <div class="col-lg-3">
@@ -31,14 +31,7 @@
                                 </div>
                               
 
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="temp_ambiente">Temperatura del Ambiente <span
-                                                class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="temp_ambiente" required
-                                        value="{{ old('temp_ambiente') }}">
-                                    </div>
-                                </div>
+                         
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>

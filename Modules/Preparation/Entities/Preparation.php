@@ -13,7 +13,7 @@ class Preparation extends Model
     protected $guarded = [];
 
     public function preparationDetails() {
-        return $this->hasMany(PreparationDetails::class, 'oreparation_id', 'id');
+        return $this->hasMany(PreparationDetails::class, 'preparation_id', 'id');
     }
 
     public static function boot() {
@@ -21,7 +21,7 @@ class Preparation extends Model
 
         static::creating(function ($model) {
             $number = Preparation::max('id') + 1;
-            $model->reference = make_reference_id('ING', $number);
+            $model->reference = make_reference_id('PRE', $number);
         });
     }
 

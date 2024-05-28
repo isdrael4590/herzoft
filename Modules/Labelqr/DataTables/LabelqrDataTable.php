@@ -69,12 +69,8 @@ class LabelqrDataTable extends DataTable
                 ->printable(false)
                 ->className('text-center align-middle'),
             Column::make('dates')
-                ->title('Fecha')
+                ->title('Fecha Elaboración')
                 ->className('text-center align-middle'),
-            Column::make('expiration')
-                ->title('Fecha de Expiración')
-                ->className('text-center align-middle'),
-
             Column::make('reference')
                 ->title('Ref. Proceso')
                 ->className('text-center align-middle'),
@@ -118,7 +114,7 @@ class LabelqrDataTable extends DataTable
 
 
 
-            
+
 
             Column::make('created_at')
                 ->visible(false)

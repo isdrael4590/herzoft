@@ -60,6 +60,7 @@ class ReceptionController extends Controller
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_dirt' => $cart_item->options->product_type_dirt,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_state_rumed' => $cart_item->options->product_state_rumed,
                 ]);
             }
@@ -99,7 +100,7 @@ class ReceptionController extends Controller
                 'weight'     => 1,
                 'options' => [
                 'code'     => $reception_detail->product_code,
-                'product_type_dirt'   => $reception_detail->product_type_dirt,
+                'product_type_dirt'   => $reception_detail->product_type_dirt,                'product_type_process'   => $reception_detail->product_type_process,
                 'product_state_rumed'   => $reception_detail->product_state_rumed
                 ]
             ]);
@@ -130,6 +131,7 @@ class ReceptionController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_type_dirt' => $cart_item->options->product_type_dirt,
                     'product_state_rumed' => $cart_item->options->product_state_rumed,
                 ]);

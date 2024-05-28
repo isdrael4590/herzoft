@@ -13,23 +13,27 @@ use Illuminate\Support\Facades\Gate;
 use Modules\Product\Entities\Product;
 
 use Modules\Preparation\Entities\Preparation;
-use Modules\Preparation\DataTables\PreparationDsDataTable;
+use Modules\Preparation\DataTables\PreparationDetailsDataTable;
 use Modules\Preparation\DataTables\PreparationDataTable;
-
+use Modules\Reception\Entities\Reception;
+use Modules\Reception\Entities\ReceptionDetails;
 
 use Modules\Preparation\Entities\PreparationDetails;
 
 use Modules\Preparation\Http\Requests\StorePreparationRequest;
 use Modules\Preparation\Http\Requests\UpdatePreparationRequest;
+use Modules\Reception\Http\Requests\StoreReceptionRequest;
+
 
 class PreparationController extends Controller
 {
-    public function index(PreparationDsDataTable $dataTable)
+    public function index(PreparationDataTable $dataTable)
     {
         abort_if(Gate::denies('access_preparations'), 403);
 
         return $dataTable->render('preparation::preparations.index');
     }
+    
 
     public function create()
     {
@@ -41,15 +45,12 @@ class PreparationController extends Controller
     }
 
 
-    public function store(StorePreparationRequest $request)
+    public function store(StorePreparationRequest $request, Reception $reception)
     {
-        DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request, $reception) {
             $preparation = Preparation::create([
-
-              
                 'operator' => $request->operator,
                 'note' => $request->note,
-
             ]);
 
             foreach (Cart::instance('preparation')->content() as $cart_item) {
@@ -58,13 +59,41 @@ class PreparationController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_state_preparation' => $cart_item->options->product_state_preparation,
                     'product_coming_zone' => $cart_item->options->product_coming_zone,
                 ]);
             }
+            foreach ($reception->receptionDetails as $reception_detail) {
+                $reception_detail->delete();
+            }
 
+            $reception->update([
+                'reference' => $request->reference,
+                'operator' => $request->operator,
+                'delivery_staff' => $request->delivery_staff,
+                'area' => $request->area,
+                'status' => "procesado",
+                'note' => $request->note,
+            ]);
+
+            foreach (Cart::instance('reception')->content() as $cart_item) {
+                ReceptionDetails::create([
+                    'reception_id' => $reception->id,
+                    'product_id' => $cart_item->id,
+                    'product_name' => $cart_item->name,
+                    'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
+                    'product_type_dirt' => $cart_item->options->product_type_dirt,
+                    'product_state_rumed' => $cart_item->options->product_state_rumed,
+                ]);
+            }
+
+            
             Cart::instance('preparation')->destroy();
         });
+
+       
 
         toast('preparation registrada!', 'success');
 
@@ -98,6 +127,7 @@ class PreparationController extends Controller
                 'weight'     => 1,
                 'options' => [
                     'code'     => $preparation_detail->product_code,
+                    'product_type_process'   => $preparation_detail->product_type_process,
                     'product_state_preparation'   => $preparation_detail->product_state_preparation,
                     'product_coming_zone' => $preparation_detail->product_coming_zone,
                   
@@ -128,6 +158,7 @@ class PreparationController extends Controller
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
+                    'product_type_process' => $cart_item->options->product_type_process,
                     'product_state_preparation' => $cart_item->options->product_state_preparation,
                     'product_coming_zone' => $cart_item->options->product_coming_zone,
 
@@ -138,7 +169,7 @@ class PreparationController extends Controller
             Cart::instance('preparation')->destroy();
         });
 
-        toast('Recepción actualizado!', 'info');
+        toast('Preparación actualizado!', 'info');
 
         return redirect()->route('preparations.index');
     }
@@ -149,7 +180,7 @@ class PreparationController extends Controller
 
         $preparation->delete();
 
-        toast('Recepcion Eliminado!', 'warning');
+        toast('Preparación Eliminado!', 'warning');
 
         return redirect()->route('preparations.index');
     }
