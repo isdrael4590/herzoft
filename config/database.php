@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+require_once __DIR__ . '/../utils/docker_secrets.php';
 
 return [
 
@@ -50,7 +51,7 @@ return [
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'password' => docker_secret(env('DB_PASSWORD_FILE', '/run/secrets/db_password')),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

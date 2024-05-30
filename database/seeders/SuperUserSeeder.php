@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
+require_once __DIR__ . '/../../utils/docker_secrets.php';
+
 class SuperUserSeeder extends Seeder
 {
     /**
@@ -17,9 +19,9 @@ class SuperUserSeeder extends Seeder
     public function run()
     {
         $user = User::create([
-            'name' => 'Administrador Herzoft ',
-            'email' => 'herzoftgroup@gmail.com',
-            'password' => Hash::make(12345678),
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make(docker_secret('/run/secrets/admin_password')),
             'is_active' => 1
         ]);
 
