@@ -96,10 +96,12 @@
                                       
                                             <select class="form-control" id="lote_biologic" name="lote_biologic" required>
                                                 @foreach (\Modules\Informat\Entities\Informat::all() as $informat)
-                                                    @if ($informat->insumo_type == 'INDICADORES BIOLOGICOS' & $informat->insumo_status == 'Activo' )
-                                                        <option value="{{ $informat->insumo_lot }}">
-                                                            {{ $informat->insumo_lot }}</option>
-                                                    @endif
+                                                   @if (($informat->insumo_type == 'INDICADORES BIOLOGICOS') &
+                                                        ($informat->insumo_status == 'Activo') &
+                                                        ($informat->insumo_temp == 'ALTA TEMPERATURA'))
+                                                    <option value="{{ $informat->insumo_lot }}">
+                                                        {{ $informat->insumo_lot }}</option>
+                                                @endif
                                                 @endforeach
                                             </select>
                                     </div>
