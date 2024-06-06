@@ -44,8 +44,10 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" id="machine_name" name="machine_name">
                                             @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
-                                                <option value="{{ $machines->machine_name }}">
-                                                    {{ $machines->machine_name }}</option>
+                                                 @if ($machines->machine_type == 'Autoclave')
+                                                    <option value="{{ $machines->machine_name }}">
+                                                        {{ $machines->machine_name }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
