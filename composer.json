@@ -12,7 +12,7 @@
         "anayarojo/shoppingcart": "^4.2",
         "barryvdh/laravel-dompdf": "^2.1",
         "guzzlehttp/guzzle": "^7.0.1",
-       
+        "knplabs/knp-snappy-bundle": "^1.10",
         "laravel/framework": "^10.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^4.0",
