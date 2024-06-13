@@ -16,12 +16,10 @@ use \Modules\Informat\Entities\Institute;
 use Modules\Labelqr\Entities\Labelqr;
 use Modules\Labelqr\Entities\LabelqrDetails;
 use Modules\Labelqr\Http\Requests\StoreReceptionRequest;
-use Knp\Snappy\Image;
+use SnappyImage;
 use Illuminate\Support\Facades\View;
 class PrinterLabelQrController extends Controller
-
 {
-
     public function printerLabelqr(Int $id)
     {
         $labelqr = Labelqr::where('id', $id)->first();
@@ -53,11 +51,9 @@ class PrinterLabelQrController extends Controller
 
     public function sendLabeltoPrinter(Int $id)
     {   
-        $publicUrl = route("labelqrs_label.html", $id);
+        $urlEtiqueta = route("labelqrs_label.html", $id);
         # Permite guardar la imagen
-        $knpSnappyImage = new Image('/usr/bin/wkhtmltoimage');
-        $knpSnappyImage->generate($publicUrl, storage_path('image.png'));
-        echo("Generated label");
+        $image = SnappyImage::generate($urlEtiqueta, storage_path('image.png'));
         return redirect()->route('labelqrs_label.pdf', $id);
     }
 }

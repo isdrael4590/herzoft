@@ -19,20 +19,22 @@
 </head>
 
 <body>
-        <div class="container">
-            <div class="row">
+    <div class="container">
+        <div class="row">
+            <div class="printer-16 printer-content">
                 @include('labelqr::labelqrs.print-only', [
                     'labelqr' => $labelqr,
                     'labelqrDetails' => $labelqrDetails,
                     'institute' => $institute,
                 ])
             </div>
-            <div class="printer-btn-section clearfix d-print-none">
-                <a href="{{ route('labelqrs_label.img', $labelqr->id) }}" class="btn btn-lg btn-print">
-                    Imprimir
-                </a>
-            </div>
-
+        </div>
+        <div class="printer-btn-section clearfix d-print-none">
+            <a href="{{ route('labelqrs_label.img', $labelqr->id) }}" class="btn btn-lg btn-print">
+                Imprimir
+            </a>
+        </div>
+    </div>
 </body>
 
 </html>
