@@ -45,7 +45,10 @@ return [
         'enabled' => true,
         'binary'  => env('WKHTML_IMG_BINARY', '/usr/bin/wkhtmltoimage'),
         'timeout' => 20,
-        'options' => ["width" => "300", "format" => "png"],
+        'options' => [
+            "width" => "300", 
+            "format" => "png"
+        ],
         'env'     => [],
     ],
 
