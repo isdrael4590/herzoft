@@ -20,10 +20,11 @@
 
 <body>
     <div class="container">
-        @if (session()->has('message'))
-            <div class="alert alert-success">
-                {{ session('message') }}
-            </div>
+        @if(session()->has('mensaje'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('mensaje') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         @endif
         <div class="row">
             <div class="printer-16 printer-content">

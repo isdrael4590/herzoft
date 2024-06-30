@@ -23,14 +23,14 @@ use Illuminate\Support\Facades\App;
 
 class PrinterLabelQrController extends Controller
 {
-    public function printerLabelqr(Int $id)
+    public function printerLabelqr(int $id)
     {
         $labelqr = Labelqr::where('id', $id)->first();
         $labelqrDetails = LabelqrDetails::with('product')
             ->where('id', $id)
             ->orderBy('id', 'DESC')
             ->get();
-            $institute = Institute::all()->first();
+        $institute = Institute::all()->first();
         return view('labelqr::labelqrs.print', [
             'labelqr' => $labelqr,
             'labelqrDetails' => $labelqrDetails,
@@ -38,7 +38,8 @@ class PrinterLabelQrController extends Controller
         ]);
     }
 
-    public function return_label_html(Int $id){
+    public function return_label_html(int $id)
+    {
         $labelqr = Labelqr::where('id', $id)->first();
         $labelqrDetails = LabelqrDetails::with('product')
             ->where('id', $id)
@@ -52,11 +53,11 @@ class PrinterLabelQrController extends Controller
         ]);
     }
 
-    public function sendLabeltoPrinter(Int $id)
-    {   
+    public function sendLabeltoPrinter(int $id)
+    {
         $urlEtiqueta = route("labelqrs_label.html", $id);
         # Permite guardar la imagen
-        $img_filename = 'etiqueta_'. $id .'.png';
+        $img_filename = 'etiqueta_' . $id . '.png';
         $labelqr = Labelqr::where('id', $id)->first();
         $labelqrDetails = LabelqrDetails::with('product')
             ->where('id', $id)
@@ -80,9 +81,11 @@ class PrinterLabelQrController extends Controller
         $clientServerUrl = "http://$clientIp:3000/";
 
         $response = Http::attach(
-            'attachment', file_get_contents($img_filename), $img_filename, ['Content-Type' => 'image/png']
+            'attachment',
+            file_get_contents($img_filename),
+            $img_filename,
+            ['Content-Type' => 'image/png']
         )->post($clientServerUrl);
-        session()->flash('mensaje', $response);
-        return redirect()->route('labelqrs_label.pdf', $id);
+        return redirect()->route('labelqrs_label.pdf', $id)->with('mensaje', $response->body());
     }
 }
