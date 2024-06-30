@@ -74,7 +74,7 @@ class PrinterLabelQrController extends Controller
             'labelqrDetails' => $labelqrDetails,
             'institute' => $institute,
         ]);
-        $image = $image_view->save($img_filename); //->inline() para guardar como objeto
+        $image = $image_view->inline($img_filename);
         // Get the client's IP address
         $clientIp = request()->ip();
         // Define the local server URL to send the image to
@@ -82,7 +82,7 @@ class PrinterLabelQrController extends Controller
 
         $response = Http::attach(
             'attachment',
-            file_get_contents($img_filename),
+            $image->content(),
             $img_filename,
             ['Content-Type' => 'image/png']
         )->post($clientServerUrl);
