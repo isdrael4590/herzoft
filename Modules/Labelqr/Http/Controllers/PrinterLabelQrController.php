@@ -19,6 +19,7 @@ use Modules\Labelqr\Http\Requests\StoreReceptionRequest;
 use SnappyImage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\App;
 
 class PrinterLabelQrController extends Controller
 {
@@ -72,20 +73,16 @@ class PrinterLabelQrController extends Controller
             'labelqrDetails' => $labelqrDetails,
             'institute' => $institute,
         ]);
-        $image = $image_view->stream($img_filename);
+        $image = $image_view->save($img_filename); //->inline() para guardar como objeto
         // Get the client's IP address
         $clientIp = request()->ip();
         // Define the local server URL to send the image to
         $clientServerUrl = "http://$clientIp:3000/";
 
-        // Send the image to the local server
-        $response = Http::withHeaders([
-            'Content-Type' => 'image/png',
-        ])->post($clientServerUrl, [
-            'image' => base64_encode($image),
-            'data' => "hi",
-        ]);
-        dump($response);
-        #return redirect()->route('labelqrs_label.pdf', $id);
+        $response = Http::attach(
+            'attachment', file_get_contents($img_filename), $img_filename, ['Content-Type' => 'image/png']
+        )->post($clientServerUrl);
+        session()->flash('mensaje', $response);
+        return redirect()->route('labelqrs_label.pdf', $id);
     }
 }

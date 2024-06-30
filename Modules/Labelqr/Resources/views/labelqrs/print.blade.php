@@ -20,6 +20,11 @@
 
 <body>
     <div class="container">
+        @if (session()->has('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
         <div class="row">
             <div class="printer-16 printer-content">
                 @include('labelqr::labelqrs.print-only', [
@@ -28,11 +33,11 @@
                     'institute' => $institute,
                 ])
             </div>
+            <div class="printer-btn-section clearfix d-print-none">
+                <a href="{{ route('labelqrs_label.img', $labelqr->id) }}" class="btn btn-lg btn-print">
+                    Imprimir
+                </a>
         </div>
-        <div class="printer-btn-section clearfix d-print-none">
-            <a href="{{ route('labelqrs_label.img', $labelqr->id) }}" class="btn btn-lg btn-print">
-                Imprimir
-            </a>
         </div>
     </div>
 </body>
