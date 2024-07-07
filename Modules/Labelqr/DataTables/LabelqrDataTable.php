@@ -22,9 +22,9 @@ class LabelqrDataTable extends DataTable
             ->addColumn('status_cycle', function ($data) {
                 return view('labelqr::partials.status_cycle', compact('data'));
             })
-            ->addColumn('details_process', function ($data) {
+            /*->addColumn('details_process', function ($data) {
                 return view('labelqr::partials.details_process', compact('data'));
-            })
+            })*/
             ->addColumn('validation_biologic', function ($data) {
                 return view('labelqr::partials.validation_biologic', compact('data'));
             })
@@ -48,7 +48,9 @@ class LabelqrDataTable extends DataTable
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(6)
+            ->parameters([
+                'order' => [[2, 'desc']],
+            ])
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -77,13 +79,13 @@ class LabelqrDataTable extends DataTable
             Column::computed('status_cycle')
                 ->title('Estado Ciclo')
                 ->className('text-center align-middle'),
-
+            /*
             Column::computed('details_process')
                 ->title('Instrumental Procesado')
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
-
+*/
             Column::make('machine_name')
                 ->title('Equipo')
                 ->className('text-center align-middle'),

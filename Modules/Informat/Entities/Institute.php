@@ -21,8 +21,8 @@ class Institute extends Model implements HasMedia
     }
 
     public function registerMediaCollections(): void {
-        $this->addMediaCollection('images')
-            ->useFallbackUrl('/images/fallback_product_image.png');
+        $this->addMediaCollection('institutes')
+            ->useFallbackUrl('/institutes/fallback_insitute_image.png');
     }
 
     public function registerMediaConversions(Media $media = null): void {

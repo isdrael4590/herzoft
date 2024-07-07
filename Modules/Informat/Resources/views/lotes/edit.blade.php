@@ -30,28 +30,32 @@
                             <div class="form-group">
                                 <label class="font-weight-bold" for="equipo_lote">Nombre del Equipo <span
                                         class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="equipo_lote" required
+                                <input class="form-control" type="text" name="equipo_lote" required readonly
                                     value="{{ $lotes->equipo_lote }}">
                             </div>
                             <div class="form-group">
-                                <label class="font-weight-bold" for="tipo_lote">Tipo de Lote <span
+                                <label class="font-weight-bold" for="tipo_lote">Tipo de Proceso <span
                                         class="text-danger">*</span></label>
                                 <input class="form-control" type="text" name="tipo_lote" required
-                                    value="{{ $lotes->tipo_lote }}">
+                                    value="{{ $lotes->tipo_lote }}" readonly>
                             </div>
                             <div class="form-group">
                                 <label class="font-weight-bold" for="status_lote">Estado de Equipo <span
                                         class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="status_lote" required
-                                    value="{{ $lotes->status_lote }}">
+                                        <select class="form-control" name="status_lote" id="status_lote" required >
+                                            <option {{ $lotes->status_lote == 'Correcto' ? 'selected' : '' }}
+                                                value="Correcto">Correcto</option>
+                                            <option {{ $lotes->status_lote == 'Falla' ? 'selected' : '' }}
+                                                value="Falla">Falla</option>
+                                        </select>
                             </div>
                             <div class="form-group">
                                 <label class="font-weight-bold" for="tipo_equipo">Tipo de Equipo
-                                    <select class="form-control" name="tipo_equipo" id="tipo_equipo" required>
-                                        <option {{ $lotes->tipo_equipo == 'Alta Temperatura' ? 'selected' : '' }}
-                                            value="Alta Temperatura">Alta Temperatura</option>
-                                        <option {{ $lotes->tipo_equipo == 'Baja Temperatura' ? 'selected' : '' }}
-                                            value="Baja Temperatura">Baja Temperatura</option>
+                                    <select class="form-control" name="tipo_equipo" id="tipo_equipo" required >
+                                        <option {{ $lotes->tipo_equipo == 'Autoclave' ? 'selected' : '' }}
+                                            value="Autoclave">Autoclave</option>
+                                        <option {{ $lotes->tipo_equipo == 'Peroxido' ? 'selected' : '' }}
+                                            value="Peroxido">Peroxido</option>
                                     </select>
                             </div>
                             <div class="form-group">

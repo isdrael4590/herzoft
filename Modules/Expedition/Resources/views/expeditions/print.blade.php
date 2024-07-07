@@ -16,6 +16,16 @@
 
     <!-- Custom Stylesheet -->
     <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/style.css') }}">
+    <style>
+        /* default for all pages */
+        @page {
+            size: A4 portrait;
+        }
+
+        p {
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,19 +36,39 @@
                     <div class="printer-inner-9" id="printer_wrapper">
                         <div class="printer-top">
                             <div class="row">
-                                <div class="col-lg-6 col-sm-6">
+                                <div class="col-lg-4 col-sm-4">
                                     <div class="logo">
-                                        <img class="logo" src="{{ asset('assets/images/logo.png') }}" alt="logo">
+                                        <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
+                                            alt="Institute Image" class="img-fluid mb-2">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-6">
+                                <div class="col-lg-4 col-sm-4">
                                     <div class="printer">
-                                        <h5><span>Registro Físico del proceso de Despacho de instrumental.</span></h5>
+                                        <h1># <span>{{ $expedition->reference }}</span></h1>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="printer">
+                                        <div>Versión: <strong> 01</strong></div>
+                                        <div>Vigente: <strong> Junio 2024</strong></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="printer-info">
+                            <div class="row">
 
+                                <div class="printer-number">
+                                    <h1 class="print-title-1">Registro Físico del proceso de Despacho de instrumental.
+                                    </h1>
+                                    <p class="printo-addr-1">
+                                        {{ \Carbon\Carbon::parse($expedition->created_up)->format('d M, Y') }}
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
                         <div class="printer-info">
                             <div class="row mb-4">
                                 <div class="col-sm-4 mb-3 mb-md-0">
@@ -51,21 +81,15 @@
                                 </div>
                                 <div class="col-sm-4 mb-3 mb-md-0">
                                     <h4 class="print-title-1 border-bottom">Información de Despacho:</h4>
-
-
-                                    <div><strong>Lote del Equipo:</strong> {{ $expedition->lote_machine }}</div>
-
-                                    <div><strong>Tipo de Programa:</strong> {{ $expedition->type_program }}</div>
                                     <div><strong>Temperatura del Ambiente: </strong> {{ $expedition->temp_ambiente }}
                                     </div>
-                                    <div><strong>Lote del Biológico: </strong> {{ $expedition->lote_biologic }}</div>
                                     <div><strong>Operario:</strong> {{ $expedition->operator }}</div>
-
+                                    <div><strong>Personal Retiro: </strong> {{ $expedition->staff_expedition }}</div>
                                 </div>
                                 <div class="col-sm-4 mb-3 mb-md-0">
                                     <h5 class="print-title-1 border-bottom">Registro INFO:</h5>
                                     <div>Número: <strong>{{ $expedition->reference }}</strong></div>
-                                    <div><strong>Fecha Proceso:
+                                    <div><strong>Fecha Despacho:
                                         </strong>{{ \Carbon\Carbon::parse($expedition->created_up)->format('d M, Y') }}
                                     </div>
                                     <div><strong>Estado de la expedición: </strong>
@@ -74,87 +98,90 @@
 
                                     <div><strong>Area Expedido: </strong> {{ $expedition->area_expedition }}</div>
                                 </div>
-                                <div><strong>Personal Retiro: </strong> {{ $expedition->staff_expedition }}</div>
+
                             </div>
                         </div>
-                    </div>
-
-                    <div class="product-summary">
-                        <div>
-                            <table class="default-table printer-table">
-                                <thead>
-                                    <tr>
-                                        <th>Código </th>
-                                        <th>Descripción</th>
-                                        <th>Envoltura</th>
-                                        <th>Expiración</th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @foreach ($expedition->expeditionDetails as $item)
+                        <div class="product-summary">
+                            <div>
+                                <table class="default-table printer-table">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                {{ $item->product_code }} <br>
-                                            </td>
-                                            <td>
-                                                {{ $item->product_name }}
-                                            </td>
-                                            <td>
-                                                {{ $item->product_package_wrap }}
-                                            </td>
-                                            <td>
-                                                {{ $item->product_expiration }}
-                                            </td>
+                                            <th>Código </th>
+                                            <th>Descripción</th>
+                                            <th>Envoltura</th>
+                                            <th>Expiración</th>
 
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <br>
-                        <div>
-                            @if (@empty($expedition->note))
-                                Notas: N/A
-                            @else
-                                Notas: {{ $expedition->note }}
-                            @endif
-                        </div>
-                        <br>
+                                    </thead>
 
-                        <table class="default-table ">
-                            <tr>
-                                <td>Emisor: <span> {{ $expedition->operator }}</span></td>
-                            </tr>
-                            <tr>
-                                <td>Receptor: <span> {{ $expedition->staff_expedition }}</span></td>
-                            </tr>
-                        </table>
+                                    <tbody>
+                                        @foreach ($expedition->expeditionDetails as $item)
+                                            <tr>
+                                                <td>
+                                                    {{ $item->product_code }} <br>
+                                                </td>
+                                                <td>
+                                                    {{ $item->product_name }}
+                                                </td>
+                                                <td>
+                                                    {{ $item->product_package_wrap }}
+                                                </td>
+                                                <td>
+                                                    {{ $item->product_expiration }}
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                            <div>
+                                @if (@empty($expedition->note))
+                                    Notas: N/A
+                                @else
+                                    Notas: {{ $expedition->note }}
+                                @endif
+                            </div>
+                            <br>
+
+                            <table class="default-table ">
+                                <tr>
+                                    <th>
+                                        <br><br>
+                                        Emisor: <span> {{ $expedition->operator }}</span>
+                                        <br><br><br>
+                                    </th>
+                                    <th><br><br>Receptor: <span> {{ $expedition->staff_expedition }}</span><br><br><br>
+                                    </th>
+                                </tr>
+                            </table>
+
+                        </div>
                     </div>
                 </div>
+                <div class="printer-informeshon-footer">
+                    <ul>
+                        <li><strong>Nota:</strong> Asegurarse que el producto entregado sea el correcto.</li>
+                    </ul>
+                    <ul>
+                        <li><a href="#"> {{ Settings()->company_name }}</a></li>
+                        <li><a href="#">{{ Settings()->company_email }}</a></li>
+                        <li><a href="#">{{ Settings()->company_phone }}</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="printer-informeshon-footer">
-                <ul>
-                    <li><strong>Nota:</strong> Asegurarse que el producto entregado sea el correcto.</li>
-                </ul>
-                <ul>
 
-                    <li><a href="#">HerZoft</a></li>
-                    <li><a href="herzoftgroup@gmail.com">herzoftgroup@gmail.com</a></li>
-                    <li><a href="#">+593 998484190</a></li>
-                </ul>
-            </div>
             <div class="printer-btn-section clearfix d-print-none">
                 <a href="javascript:window.print()" class="btn btn-lg btn-print">
                     Imprimir
                 </a>
-    
+
             </div>
         </div>
-       
-       
+
+
     </div>
-   </body>
+</body>
 
 </html>

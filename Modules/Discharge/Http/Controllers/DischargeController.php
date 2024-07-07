@@ -12,13 +12,7 @@ use Modules\Discharge\Entities\Discharge;
 use Modules\Discharge\Entities\DischargeDetails;
 use Modules\Discharge\Http\Requests\StoreDischargeRequest;
 use Modules\Discharge\Http\Requests\UpdateDischargeRequest;
-
-
-use Modules\Labelqr\Entities\Labelqr;
-use Modules\Labelqr\DataTables\LabelqrDataTable;
-use Modules\Labelqr\Entities\LabelqrDetails;
-use Modules\Labelqr\Http\Requests\StoreLabelqrRequest;
-use Modules\Labelqr\Http\Requests\UpdateLabelqrRequest;
+use Modules\Informat\Entities\Lote;
 
 
 class DischargeController extends Controller
@@ -26,7 +20,7 @@ class DischargeController extends Controller
 
     public function index(DischargesDataTable $dataTable)
     {
-        abort_if(Gate::denies('access_ze_area'), 403);
+        abort_if(Gate::denies('access_esteril_area'), 403);
 
         return $dataTable->render('discharge::discharges.index');
     }
@@ -47,6 +41,7 @@ class DischargeController extends Controller
         DB::transaction(function () use ($request) {
             $discharge = Discharge::create([
                 'machine_name' => $request->machine_name,
+                'machine_type' => $request->machine_type,
                 'lote_machine' => $request->lote_machine,
                 'temp_machine' => $request->temp_machine,
                 'type_program' => $request->type_program,
@@ -57,6 +52,16 @@ class DischargeController extends Controller
                 'note' => $request->note,
                 'operator' => $request->operator,
             ]);
+       
+    
+            Lote::create([
+                'lote_code' => $request->lote_machine,
+                'equipo_lote' => $request->machine_name,
+                'tipo_equipo' => $request->machine_type,
+                'tipo_lote' => "Esterilizacion",
+                'status_lote' => $request->status_cycle,
+            ]);
+    
 
             foreach (Cart::instance('discharge')->content() as $cart_item) {
                 DischargeDetails::create([
@@ -76,6 +81,7 @@ class DischargeController extends Controller
             Cart::instance('discharge')->destroy();
         });
 
+       
         toast('Descarga Created!', 'success');
 
         return redirect()->route('labelqrs.index');
@@ -123,9 +129,9 @@ class DischargeController extends Controller
     }
 
 
-    public function update(UpdateDischargeRequest  $request, Discharge $discharge)
+    public function update(UpdateDischargeRequest  $request, Discharge $discharge, Lote $id)
     {
-        DB::transaction(function () use ($request, $discharge) {
+        DB::transaction(function () use ($request, $discharge, $id) {
 
             foreach ($discharge->dischargeDetails as $discharge_detail) {
                 $discharge_detail->delete();
@@ -133,6 +139,7 @@ class DischargeController extends Controller
 
             $discharge->update([
                 'machine_name' => $request->machine_name,
+                'machine_type' => $request->machine_type,
                 'lote_machine' => $request->lote_machine,
                 'temp_machine' => $request->temp_machine,
                 'type_program' => $request->type_program,
@@ -144,6 +151,18 @@ class DischargeController extends Controller
                 'operator' => $request->operator
             ]);
      
+          
+    
+            /*Lote::findOrFail($id)->update([
+                'lote_code' => $request->lote_machine,
+                'equipo_lote' => $request->machine_name,
+                'tipo_equipo' => $request->machine_type,
+                'tipo_lote' => "Esterilizacion",
+                'status_lote' => $request->status_cycle,
+            ]);
+    
+    */
+       
 
             foreach (Cart::instance('discharge')->content() as $cart_item) {
                 DischargeDetails::create([
@@ -165,9 +184,8 @@ class DischargeController extends Controller
         });
 
 
-
-
-
+    
+    
 
         toast('Descarga Liberada!', 'info');
 

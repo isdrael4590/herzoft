@@ -114,7 +114,7 @@ class ProductCarttoDES extends Component
         Cart::instance($this->cart_instance)->remove($row_id);
     }
 
-    public function InputWrap_package($product_id, $row_id)
+    public function inputPreparation($product_id, $row_id)
     { // se añade
         $this->updateDataInput($row_id, $product_id); // se añade
     } // se añade
@@ -143,7 +143,7 @@ class ProductCarttoDES extends Component
         $this->updateCartOptions($row_id, $product_id, $cart_item);
   
 
-        session()->flash('message_InputWrap_package' . $product_id, 'Observaciones añadidos...!');
+        session()->flash('message_inputPreparation' . $product_id, 'Observaciones añadidos...!');
     }
     public function updateCartOptions($row_id, $product_id, $cart_item)
     {

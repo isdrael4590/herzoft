@@ -43,69 +43,125 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card border-0">
-                                <div class="card-body p-0 d-flex align-items-center shadow-sm">
-                                    <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
-                                        <i class="bi bi-caret-down-square font-4xl"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">Recepción</div>
-                                        <div class="text-value text-primary">Aquí va el valor</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card border-0">
-                                <div class="card-body p-0 d-flex align-items-center shadow-sm">
-                                    <div class="bg-gradient-warning-primary p-4 mfe-3 rounded-left">
-                                        <img src="{{ URL::to('assets/img/logos_equipos/LOGO-STEAM.png') }}" height="60">
-                                    </div>
-                                    <div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">EQUIPOS VAPOR</div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">Vapor 1</div>
-                                        <div class="text-value text-primary">Aquí va el valor 1</div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">Vapor 2</div>
-                                        <div class="text-value text-primary">Aquí va el valor 2</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card border-0">
-                                <div class="card-body p-0 d-flex align-items-center shadow-sm">
-                                    <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
-                                        <h1>HPO</h1>
-                                    </div>
-                                    <div>
-                                        <div class="text-muted text-uppercase font-weight-bold small">EQUIPOS BAJA TEMPERATURA
+                        @can('access_dirty_area')
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <div class="card-body p-0 d-flex align-items-center shadow-sm">
+                                        <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
+                                            <i class="bi bi-caret-down-square font-4xl"></i>
                                         </div>
-                                        <div></div>
-                                        <div class="text-muted text-uppercase font-weight-bold small"><img
-                                                src="{{ URL::to('assets/img/logos_equipos/logo_matachana.png') }}"
-                                                height="10"> 130HPO</div>
-                                        <div></div>
-                                        <div class="text-value text-primary">Aquí va el valor 1</div>
+                                        <div>
+                                            <div class="text-muted text-uppercase font-weight-bold small">Módulo Recepción</div>
+                                            <div class="text-value text-primary"><a href="{{ route('receptions.index') }}">Ver todos
+                                                    los ingresos</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endcan
+                        @can('access_zne_area')
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <div class="card-body p-0 d-flex align-items-center shadow-sm">
+                                        <div class="bg-gradient-warning-primary p-4 mfe-3 rounded-left">
+                                            <img src="{{ URL::to('assets/img/logos_equipos/LOGO-STEAM.png') }}" height="60">
+                                        </div>
+                                        <div>
+                                            <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO PREPARACIÓN</div>
+                                            <div class="text-value text-primary"><a
+                                                    href="{{ route('preparations.index') }}">Stock en Preparación</a>
+                                            </div>
+                                            @can('access_labelqrs')
+                                                <div class="text-value text-primary"><a href="{{ route('labelqrs.create') }}">Generar
+                                                        Etiqueta</a>
+                                                </div>
+                                            @endcan
+                                            @can('create_Testbds')
+                                                <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO TEST DE BOWIE &
+                                                    DICK</div>
+                                                <div class="text-value text-primary"><a href="{{ route('testbds.index') }}">Ver
+                                                        Test de B&D</a>
+                                                </div>
+                                            @endcan
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <div class="card-body p-0 d-flex align-items-center shadow-sm">
+                                        <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
+                                            <h1>HPO</h1>
+                                        </div>
+
+                                        <div>
+                                            <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO PREPARACIÓN</div>
+                                            <div class="text-value text-primary"><a
+                                                    href="{{ route('preparations.index') }}">Instrumental en Preparación</a>
+                                            </div>
+                                            @can('access_labelqrs')
+                                                <div class="text-value text-primary"><a href="{{ route('labelqrshpo.create') }}">Generar
+                                                        Etiqueta</a>
+                                                </div>
+                                            @endcan
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endcan
+                        @can('access_esteril_area')
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <div class="card-body p-0 d-flex align-items-center shadow-sm">
+                                        <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
+                                            <h1>DES</h1>
+                                        </div>
+
+                                        <div>
+                                            @can('create_discharges')
+                                                <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE DESCARGA
+                                                </div>
+                                                <div class="text-value text-primary"><a
+                                                        href="{{ route('discharges.index') }}">Liberación de Ciclos</a>
+                                                </div>
+                                            @endcan
+                                            @can('access_almacen_area')
+                                                <div>
+                                                    <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE
+                                                        ALMACÉN Y DESPACHO.
+                                                    </div>
+                                                    <div class="text-value text-primary"><a href="{{ route('stocks.index') }}">Stock Esteril</a>
+                                                    </div>
+                                                    @can('access_expedition')
+                                                        <div class="text-value text-primary"><a href="{{ route('expeditions.index') }}">VER
+                                                                DESPACHOS</a>
+                                                        </div>
+                                                    @endcan
+
+                                                </div>
+                                            @endcan
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endcan
+
                     </div>
                 </div>
             </div>
         @endcan
-
         @can('show_test')
             <div class="row mb-4">
                 @can('show_test_bd')
                     <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Test de Bowie & Dick
+                                Resultado de Test de Bowie & Dick 
                             </div>
                             <div class="card-body">
-                                <canvas id="testBowie"></canvas>
+                                <canvas id="testBowieChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -117,7 +173,7 @@
                                 Test de Vacío
                             </div>
                             <div class="card-body">
-                                <canvas id="testVacuum"></canvas>
+                                <canvas id="testbowieReport"></canvas>
                             </div>
                         </div>
                     </div>
@@ -189,8 +245,8 @@
 
 @section('third_party_scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"
-        integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endsection
 
 @push('page_scripts')

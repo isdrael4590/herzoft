@@ -2,7 +2,7 @@
 
 namespace Modules\Informat\DataTables;
 
-use Modules\informat\Entities\Informat;
+use Modules\Informat\Entities\Informat;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -11,8 +11,6 @@ use Yajra\DataTables\Services\DataTable;
 
 class InformatDataTable extends DataTable
 {
-
-    //insumos
 
     public function dataTable($query)
     {
@@ -31,13 +29,13 @@ class InformatDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('informat-table')
+            ->setTableId('Informat-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(7)
+            ->orderBy(2)
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -53,65 +51,44 @@ class InformatDataTable extends DataTable
     protected function getColumns()
     {
         return [
-
-
             Column::make('insumo_name')
-                ->title('Nombre del Insumo.')
-                ->className('text-center align-middle'),
+                ->title('Nombre del insumo')
+                ->addClass('text-center'),
 
             Column::make('insumo_code')
-                ->title('Código del insumo.')
-                ->className('text-center align-middle'),
+                ->title('Código del insumo')
+                ->addClass('text-center'),
 
             Column::make('insumo_type')
-                ->title('Tipo del Insumo.')
-                ->className('text-center align-middle'),
+                ->title('Tipo Insumo')
+                ->addClass('text-center'),
+
+            Column::make('insumo_temp')
+                ->title('Temp. Insumo')
+                ->addClass('text-center'),
+
+            Column::make('insumo_lot')
+                ->title('Lote Insumo')
+                ->addClass('text-center'),
+
+            Column::make('insumo_exp')
+                ->title('Venc Insumo')
+                ->addClass('text-center'),
 
             Column::make('insumo_status')
-                ->title('Estado Insumo.')
-                ->className('text-center align-middle'),
-
-
-            Column::computed('insumo_temp')
-                ->title('Temperatura del Uso.')
-                ->className('text-center align-middle'),
-
-            Column::computed('insumo_lot')
-                ->title('Lote del insumo.')
-                ->className('text-center align-middle'),
-
-            Column::computed('insumo_exp')
-                ->title('Expiración del lote.')
-                ->className('text-center align-middle'),
-
-            Column::computed('insumo_unit')
-                ->title('Presentación')
-                ->className('text-center align-middle'),
-
-            Column::computed('insumo_quantity')
-                ->title('Cantidad.')
-                ->className('text-center align-middle'),
-
-            Column::computed('insumo_note')
-                ->title('Observaciones')
-                ->className('text-center align-middle'),
+                ->title('Estado Insumo')
+                ->addClass('text-center'),
 
             Column::computed('action')
-            ->title('Acción')
+                ->title('Acción')
                 ->exportable(false)
                 ->printable(false)
-                ->className('text-center align-middle'),
+                ->addClass('text-center'),
 
-            Column::make('created_at')
-                ->visible(false)
+
         ];
     }
 
-    /**
-     * Get filename for export.
-     *
-     * @return string
-     */
     protected function filename(): string
     {
         return 'Informat_' . date('YmdHis');

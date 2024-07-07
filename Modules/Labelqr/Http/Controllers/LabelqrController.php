@@ -45,6 +45,7 @@ class LabelqrController extends Controller
             $labelqr = Labelqr::create([
 
                 'machine_name' => $request->machine_name,
+                'machine_type' => $request->machine_type,
                 'lote_machine' => $request->lote_machine,
                 'temp_machine' => $request->temp_machine,
                 'type_program' => $request->type_program,
@@ -130,6 +131,7 @@ class LabelqrController extends Controller
 
             $labelqr->update([
                 'machine_name' => $request->machine_name,
+                'machine_type' => $request->machine_type,
                 'lote_machine' => $request->lote_machine,
                 'temp_machine' => $request->temp_machine,
                 'type_program' => $request->type_program,

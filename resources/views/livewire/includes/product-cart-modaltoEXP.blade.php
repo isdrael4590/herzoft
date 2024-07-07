@@ -47,15 +47,7 @@
                             <option value="No Disponible"> No Disponible</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Vencimiento <span class="text-danger">*</span></label>
-                        <select wire:model.live="expiration.{{ $cart_item->id }}" class="form-control" required>
-                            <option value="24">24</option>
-                            <option value="18">18</option>
-                            <option value="12">12</option>
-                         
-                        </select>
-                    </div>
+                 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

@@ -25,15 +25,14 @@
                         <i class="c-sidebar-nav-icon bi bi-arrow-down-square" style="line-height: 1;"></i> Registro Ingreso
                     </a>
                 </li>
+
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('receptions.index') ? 'c-active' : '' }}"
+                        href="{{ route('receptions.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-caret-down" style="line-height: 1;"></i> Todos los Ingresos
+                    </a>
+                </li>
             @endcan
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('receptions.index') ? 'c-active' : '' }}"
-                    href="{{ route('receptions.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-caret-down" style="line-height: 1;"></i> Todos los Ingresos
-                </a>
-            </li>
-
-
 
         </ul>
     </li>
@@ -60,12 +59,13 @@
 
     <li
         class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('testbds.*') || request()->routeIs('testbds.*') ? 'c-show' : '' }}">
-        <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-            <i class="c-sidebar-nav-icon bi bi-box-seam" style="line-height: 1;"></i> TEST BD & DICK
-        </a>
-        <ul class="c-sidebar-nav-dropdown-items">
+        @can('create_testbds')
+            <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+                <i class="c-sidebar-nav-icon bi bi-box-seam" style="line-height: 1;"></i> TEST BD & DICK
+            </a>
+            <ul class="c-sidebar-nav-dropdown-items">
 
-            @can('create_Testbds')
+
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('testbds.create') ? 'c-active' : '' }}"
                         href="{{ route('testbds.create') }}">
@@ -73,69 +73,76 @@
                         Dick.
                     </a>
                 </li>
-            @endcan
 
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('testbds.index') ? 'c-active' : '' }}"
-                    href="{{ route('testbds.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-card-checklist" style="line-height: 1;"></i> Todos los Test de BD &
-                    Dick
-                </a>
-            </li>
-        </ul>
 
-    </li>
-
-    <li
-        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('labelqrs.*') || request()->routeIs('preparations.*') ? 'c-show' : '' }}">
-        <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-            <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> PREPARA. / REG. PROCESO
-        </a>
-        <ul class="c-sidebar-nav-dropdown-items">
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('preparations.index') ? 'c-active' : '' }}"
-                    href="{{ route('preparations.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Stock_Preparación.
-                </a>
-            </li>
-            @can('access_labelqrs')
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.create') ? 'c-active' : '' }}"
-                        href="{{ route('labelqrs.create') }}">
-                        <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Etiqueta
-
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('testbds.index') ? 'c-active' : '' }}"
+                        href="{{ route('testbds.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-card-checklist" style="line-height: 1;"></i> Todos los Test de BD &
+                        Dick
                     </a>
                 </li>
-            @endcan
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.index') ? 'c-active' : '' }}"
-                    href="{{ route('labelqrs.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los ciclos generados QR.
-                </a>
-            </li>
-        </ul>
-    </li>
 
+            </ul>
+        @endcan
+    </li>
+    @can('access_preparations')
+        <li
+            class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('labelqrs.*') || request()->routeIs('preparations.*') ? 'c-show' : '' }}">
+
+            <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+                <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> PREPARA. / REG. PROCESO
+            </a>
+
+            <ul class="c-sidebar-nav-dropdown-items">
+
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('preparations.index') ? 'c-active' : '' }}"
+                        href="{{ route('preparationDetails.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Stock_Preparación.
+                    </a>
+                </li>
+
+                @can('access_labelqrs')
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.create') ? 'c-active' : '' }}"
+                            href="{{ route('labelqrs.create') }}">
+                            <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Etiqueta
+
+                        </a>
+                    </li>
+
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.index') ? 'c-active' : '' }}"
+                            href="{{ route('labelqrs.index') }}">
+                            <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los ciclos generados QR.
+                        </a>
+                    </li>
+                @endcan
+            </ul>
+        </li>
+    @endcan
 @endcan
 
-@can('access_ze_area')
+@can('access_esteril_area')
     <br>
     <br>
-    <li
-        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('discharges.*') || request()->routeIs('discharges.*') ? 'c-show' : '' }}">
-        <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-            <i class="c-sidebar-nav-icon bi bi-box-arrow-up-right" style="line-height: 1;"></i> DESCARGA DE INSTRUMENTAL
-        </a>
-        <ul class="c-sidebar-nav-dropdown-items">
-
-            @can('create_discharges')
+    @can('access_discharges')
+        <li
+            class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('discharges.*') || request()->routeIs('discharges.*') ? 'c-show' : '' }}">
+            <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+                <i class="c-sidebar-nav-icon bi bi-box-arrow-up-right" style="line-height: 1;"></i> DESCARGA DE INSTRUMENTAL
+            </a>
+            <ul class="c-sidebar-nav-dropdown-items">
+                @can('access_discharges')
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{ request()->routeIs('discharges.index') ? 'c-active' : '' }}"
+                            href="{{ route('discharges.index') }}">
+                            <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Liberar Ciclos.
+                        </a>
+                    </li>
+                @endcan
             @endcan
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('discharges.index') ? 'c-active' : '' }}"
-                    href="{{ route('discharges.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Liberar Ciclos.
-                </a>
-            </li>
         </ul>
     </li>
 @endcan
@@ -149,15 +156,15 @@
             <i class="c-sidebar-nav-icon bi bi-clipboard-check" style="line-height: 1;"></i> ALMACEN
         </a>
         <ul class="c-sidebar-nav-dropdown-items">
-            @can('access_stock')
+            @can('access_stocks')
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('stocks.*') ? 'c-active' : '' }}"
-                        href="{{ route('stocks.index') }}">
+                        href="{{ route('stockDetails.index') }}">
                         <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Stock.
                     </a>
                 </li>
             @endcan
-            @can('access_expedition')
+            @can('access_expeditions')
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('expeditions.index') ? 'c-active' : '' }}"
                         href="{{ route('expeditions.create') }}">
@@ -174,6 +181,52 @@
         </ul>
     </li>
 @endcan
+
+@can('access_reports')
+    <br>
+    <br>
+    <li
+        class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('reports.*') || request()->routeIs('reports.*') ? 'c-show' : '' }}">
+        <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+            <i class="c-sidebar-nav-icon bi bi-clipboard-check" style="line-height: 1;"></i> REPORTES
+        </a>
+        <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{ request()->routeIs('reports.*') ? 'c-active' : '' }}"
+                    href="{{ route('testbd-report.index') }}">
+                    <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Reporte Test Bowie &
+                    Dick.
+                </a>
+            </li>
+        </ul>
+        <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{ request()->routeIs('reports.*') ? 'c-active' : '' }}"
+                    href="{{ route('reception-report.index') }}">
+                    <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Reporte Recepción.
+                </a>
+            </li>
+        </ul>
+        <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{ request()->routeIs('reports.*') ? 'c-active' : '' }}"
+                    href="{{ route('discharge-report.index') }}">
+                    <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Reporte Descarga.
+                </a>
+            </li>
+        </ul>
+        <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{ request()->routeIs('reports.*') ? 'c-active' : '' }}"
+                    href="{{ route('expedition-report.index') }}">
+                    <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Reporte Despachos.
+                </a>
+            </li>
+        </ul>
+    </li>
+@endcan
+
+
 
 @can('access_products')
     <br>
@@ -245,17 +298,15 @@
                         <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Equipos
                     </a>
                 </li>
-
             @endcan
             @can('access_informat_lotes')
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('lote.*') ? 'c-active' : '' }}"
-                    href="{{ route('lote.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Lote Procesados
-                </a>
-            </li>
-            
-        @endcan
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('lote.*') ? 'c-active' : '' }}"
+                        href="{{ route('lote.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Lote Procesados
+                    </a>
+                </li>
+            @endcan
             @can('access_informat_areas')
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('area.*') ? 'c-active' : '' }}"
@@ -264,7 +315,7 @@
                     </a>
                 </li>
             @endcan
-           
+
             @can('access_informat_units')
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('units.*') ? 'c-active' : '' }}"
@@ -273,8 +324,8 @@
                     </a>
                 </li>
             @endcan
-                
-          
+
+
 
             @can('create_informats')
                 <li class="c-sidebar-nav-item">
@@ -312,12 +363,14 @@
                     <i class="c-sidebar-nav-icon bi bi-person-lines-fill" style="line-height: 1;"></i> Todo los usuarios
                 </a>
             </li>
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('roles*') ? 'c-active' : '' }}"
-                    href="{{ route('roles.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-key" style="line-height: 1;"></i> Roles y Permisos.
-                </a>
-            </li>
+            @can('access_roles')
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('roles*') ? 'c-active' : '' }}"
+                        href="{{ route('roles.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-key" style="line-height: 1;"></i> Roles y Permisos.
+                    </a>
+                </li>
+            @endcan
         </ul>
     </li>
 @endcan

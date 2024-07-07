@@ -5,9 +5,15 @@
     <div class="dropdown-menu"> --}}
 
 @can('edit_discharges')
-    <a href="{{ route('discharges.edit', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Liberar
-    </a>
+    @if ($data->machine_type == 'Autoclave')
+        <a href="{{ route('discharges.edit', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Liberar STEAM
+        </a>
+    @elseif($data->machine_type == 'Peroxido')
+        <a href="{{ route('discharges.edit', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Liberar HPO
+        </a>
+    @endif
 @endcan
 @can('show_discharges')
     @if (($data->status_cycle == 'Ciclo Aprobado') | ($data->status_cycle == 'Ciclo Falla'))
@@ -18,9 +24,9 @@
 @endcan
 @can('print_discharges')
     @if (($data->status_cycle == 'Ciclo Aprobado') | ($data->status_cycle == 'Ciclo Falla'))
-    <a href="{{ route('discharges.pdf', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
-    </a>
+        <a href="{{ route('discharges.pdf', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
+        </a>
     @endif
 @endcan
 @can('create_discharges_stock')

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('reference');
             $table->string('machine_name');
+            $table->string('machine_type');
             $table->string('lote_machine');
             $table->string('temp_machine');
             $table->string('type_program');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->string('status_cycle')->nullable();
             $table->text('note')->nullable();
             $table->string('operator');
+    
             $table->timestamps();
         });
     }

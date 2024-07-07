@@ -28,17 +28,20 @@
                                             value="{{ $discharge->reference }}" readonly>
                                     </div>
                                 </div>
-
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="machine_type">Tipo de Esterilización <span
+                                                class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="machine_type" required readonly
+                                                value="{{ $discharge->machine_type }}" >
+                                    </div>
+                                </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="machine_name">Nombre del Equipo <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" id="machine_name" name="machine_name" readonly>
-                                            @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
-                                                <option {{ $discharge->machine_name == $machines->machine_name ? 'selected' : '' }}value="{{ $machines->machine_name }}">
-                                                    {{ $machines->machine_name }}</option>
-                                            @endforeach
-                                        </select>
+                                                <input type="text" class="form-control" name="machine_name" required readonly
+                                                value="{{ $discharge->machine_name }}" >
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -58,14 +61,9 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="expiration">TIPO DE PROGRAMA</label>
-                                        <select class="form-control" id="type_program" name="type_program" readonly >
-                                            <option {{ $discharge->type_program == '134C ESTANDAR' ? 'selected' : '' }} value="134C ESTANDAR">134C ESTANDAR</option>
-                                            <option {{ $discharge->type_program == '121C ESTANDAR' ? 'selected' : '' }} value="121C ESTANDAR">121C ESTANDAR</option>
-                                            <option {{ $discharge->type_program == 'CONTENEDORES' ? 'selected' : '' }} value="CONTENEDORES">CONTENEDORES</option>
-                                            <option {{ $discharge->type_program == 'RAPID' ? 'selected' : '' }} value="RAPID">RAPID</option>
-                                            <option {{ $discharge->type_program == 'ESPORAS' ? 'selected' : '' }} value="ESPORAS">ESPORAS</option>
-                                        </select>
+                                        <label for="type_program">TIPO DE PROGRAMA</label>
+                                        <input type="text" class="form-control" name="type_program" required
+                                        value="{{ $discharge->type_program }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -77,17 +75,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="expiration">Tiempo de expiración</label>
-                                        <select class="form-control" name="expiration" id="expiration" readonly >
-                                            <option {{ $discharge->expiration == '6' ? 'selected' : '' }} value="6">6 meses</option>
-                                            <option {{ $discharge->expiration == '12' ? 'selected' : '' }} value="12">12 meses</option>
-                                            <option {{ $discharge->expiration == '18' ? 'selected' : '' }} value="18">18 meses</option>
-                                            <option {{ $discharge->expiration == '24' ? 'selected' : '' }} value="24">24 meses</option>
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="temp_ambiente">Temperatura del Ambiente <span

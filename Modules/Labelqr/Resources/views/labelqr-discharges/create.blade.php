@@ -37,15 +37,18 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
+                                        <label for="machine_type">Tipo de esterilización <span
+                                                class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="machine_type" required
+                                                value="{{ $discharge->machine_type }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
                                         <label for="machine_name">Nombre del Equipo <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" id="machine_name" name="machine_name" readonly>
-                                            @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
-                                                <option
-                                                    {{ $discharge->machine_id == $machines->id ? 'selected' : '' }}value="{{ $machines->id }}">
-                                                    {{ $machines->machine_name }}</option>
-                                            @endforeach
-                                        </select>
+                                                <input type="text" class="form-control" name="machine_name" required
+                                                value="{{ $discharge->machine_name }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -66,18 +69,8 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="type_program">TIPO DE PROGRAMA</label>
-                                        <select class="form-control" id="type_program" name="type_program" readonly>
-                                            <option {{ $discharge->type_program == '134C ESTANDAR' ? 'selected' : '' }}
-                                                value="134C ESTANDAR">134C ESTANDAR</option>
-                                            <option {{ $discharge->type_program == '121C ESTANDAR' ? 'selected' : '' }}
-                                                value="121C ESTANDAR">121C ESTANDAR</option>
-                                            <option {{ $discharge->type_program == 'CONTENEDORES' ? 'selected' : '' }}
-                                                value="CONTENEDORES">CONTENEDORES</option>
-                                            <option {{ $discharge->type_program == 'RAPID' ? 'selected' : '' }}
-                                                value="RAPID">RAPID</option>
-                                            <option {{ $discharge->type_program == 'ESPORAS' ? 'selected' : '' }}
-                                                value="ESPORAS">ESPORAS</option>
-                                        </select>
+                                        <input type="text" class="form-control" name="type_program" required
+                                        value="{{ $discharge->type_program }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -97,12 +90,7 @@
                                                 {{ $discharge->validation_biologic == 'sin_validar' ? 'selected' : '' }}
                                                 value="sin_validar">
                                                 Sin Validar</option>
-                                            {{-- <option {{ $discharge->validation_biologic == 'Correcto' ? 'selected' : '' }}
-                                                value="Correcto">
-                                                Correcto</option>
-                                            <option {{ $discharge->validation_biologic == 'Falla' ? 'selected' : '' }}
-                                                value="Falla">
-                                                Falla</option> --}}
+                                          
                                         </select>
                                     </div>
                                 </div>

@@ -20,7 +20,7 @@ class ExpeditionDataTable extends DataTable
             ->addColumn('status_expedition', function ($data) {
                 return view('expedition::partials.status_expedition', compact('data'));
             })
-         
+
             ->addColumn('action', function ($data) {
                 return view('expedition::partials.actions', compact('data'));
             });
@@ -41,7 +41,9 @@ class ExpeditionDataTable extends DataTable
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(6)
+            ->parameters([
+                'order' => [[1, 'desc']],
+            ])
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -61,16 +63,17 @@ class ExpeditionDataTable extends DataTable
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
-            Column::make('created_at')
-                ->title('Fecha de entrega')
-                ->className('text-center align-middle'),
+           
 
 
             Column::make('reference')
                 ->title('Ref. Expedición')
                 ->className('text-center align-middle'),
 
-           
+                Column::make('created_at')
+                ->title('Fecha de entrega')
+                ->className('text-center align-middle'),
+                
             Column::make('area_expedition')
                 ->title('Area Despachada')
                 ->className('text-center align-middle'),
@@ -86,8 +89,8 @@ class ExpeditionDataTable extends DataTable
             Column::make('status_expedition')
                 ->title('Estado de Despacho')
                 ->className('text-center align-middle'),
-                
-   
+
+
             Column::make('note')
                 ->title('Notas')
                 ->className('text-center align-middle'),

@@ -12,7 +12,11 @@
 @endsection
 @section('content')
     <div class="container-fluid mb-4">
-
+        <div class="row">
+            <div class="col-12">
+                <livewire:search-producttoDES />
+            </div>
+        </div>
         <div class="row mt-4">
             <div class="col-md-12">
                 <div class="card">
@@ -32,40 +36,72 @@
 
                                 <div class="col-lg-3">
                                     <div class="form-group">
+                                        <label for="machine_type">Tipo de Esterilización <span
+                                                class="text-danger">*</span></label>
+                                                <select class="form-control" id="machine_type" name="machine_type">
+                                                    @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
+                                                            <option {{ $stock->machine_type == $machines->machine_type ? 'selected' : '' }} value="{{ $machines->machine_type }}">
+                                                                {{ $machines->machine_type }}</option>
+                                                    @endforeach
+                                                </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
                                         <label for="lote_machine">Lote del Equipo <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="lote_machine" required
                                             value="{{ $stock->lote_machine }}">
                                     </div>
                                 </div>
-                             
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="expiration">TIPO DE PROGRAMA</label>
-                                        <select class="form-control" id="type_program" name="type_program">
-                                            <option {{ $stock->type_program == '134C ESTANDAR' ? 'selected' : '' }} value="134C ESTANDAR">134C ESTANDAR</option>
-                                            <option {{ $stock->type_program == '121C ESTANDAR' ? 'selected' : '' }} value="121C ESTANDAR">121C ESTANDAR</option>
-                                            <option {{ $stock->type_program == 'CONTENEDORES' ? 'selected' : '' }} value="CONTENEDORES">CONTENEDORES</option>
-                                            <option {{ $stock->type_program == 'RAPID' ? 'selected' : '' }} value="RAPID">RAPID</option>
-                                            <option {{ $stock->type_program == 'ESPORAS' ? 'selected' : '' }} value="ESPORAS">ESPORAS</option>
+                                        <label for="machine_name">Equipo</label>
+                                        <select class="form-control" id="machine_name" name="machine_name">
+                                            @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
+                                                    <option  {{ $stock->machine_name == $machines->machine_type ? 'selected' : '' }} value="{{ $machines->machine_name }}">
+                                                        {{ $machines->machine_name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
+
+
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="lote_bd">Lote del Insumo Biológico <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="lote_biologic" required
-                                            value="{{ $stock->lote_biologic }}">
+                                        <label for="machine_name">Equipo</label>
+                                        <select class="form-control" id="machine_name" name="machine_name">
+                                            @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
+                                                    <option value="{{ $machines->machine_name }}">
+                                                        {{ $machines->machine_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
-                         
-              
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="temp_ambiente">Temperatura del Ambiente <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_ambiente" required
                                             value="{{ $stock->temp_ambiente }}">
+                                    </div>
+                                </div>
+                               <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="lote_biologic">Lote del Insumo Biológico <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-control" id="lote_biologic" name="lote_biologic" required>
+                                            @foreach (\Modules\Informat\Entities\Informat::all() as $informat)
+                                                @if (
+                                                    ($informat->insumo_type == 'INDICADORES BIOLOGICOS') &
+                                                        ($informat->insumo_status == 'Activo') &
+                                                        ($informat->insumo_temp == 'ALTA TEMPERATURA'))
+                                                    <option
+                                                        {{ $stock->lote_biologic == $informat->insumo_lot ? 'selected' : '' }}value="{{ $informat->insumo_lot }}">
+                                                        {{ $informat->insumo_lot }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -75,7 +111,7 @@
                                             placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
                                     </div>
                                 </div>
-                              
+
 
                             </div>
 

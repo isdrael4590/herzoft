@@ -22,9 +22,7 @@ class DischargesDataTable extends DataTable
             ->addColumn('status_cycle', function ($data) {
                 return view('discharge::partials.status_cycle', compact('data'));
             })
-            ->addColumn('details_process', function ($data) {
-                return view('discharge::partials.details_process', compact('data'));
-            })
+            /*->addColumn('details_process', function ($data){return view('discharge::partials.details_process', compact('data'));})*/
             ->addColumn('validation_biologic', function ($data) {
                 return view('discharge::partials.validation_biologic', compact('data'));
             })
@@ -48,7 +46,9 @@ class DischargesDataTable extends DataTable
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(6)
+            ->parameters([
+                'order' => [[1, 'desc']],
+            ])
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -68,15 +68,16 @@ class DischargesDataTable extends DataTable
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
-            Column::make('dates')
-                ->title('Fechas')
-                ->className('text-center align-middle'),
-
+        
 
             Column::make('reference')
                 ->title('Ref. Proceso')
                 ->className('text-center align-middle'),
-                
+                Column::make('dates')
+                ->title('Fechas')
+                ->className('text-center align-middle'),
+
+
             Column::computed('status_cycle')
                 ->title('Estado Ciclo')
                 ->className('text-center align-middle'),
@@ -85,12 +86,12 @@ class DischargesDataTable extends DataTable
                 ->title('Validación Biológico')
                 ->className('text-center align-middle'),
 
-            Column::computed('details_process')
+            /*Column::computed('details_process')
                 ->title('Instrumental Procesado')
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
-
+*/
             Column::make('machine_name')
                 ->title('Equipo')
                 ->className('text-center align-middle'),
@@ -99,21 +100,6 @@ class DischargesDataTable extends DataTable
                 ->title('Lote Equipo')
                 ->className('text-center align-middle'),
 
-            Column::make('type_program')
-                ->title('Tipo Programa')
-                ->className('text-center align-middle'),
-
-            Column::make('temp_machine')
-                ->title('Temp. Equipo')
-                ->className('text-center align-middle'),
-
-            Column::make('temp_ambiente')
-                ->title('Temp. Ambiente')
-                ->className('text-center align-middle'),
-
-            Column::make('note')
-                ->title('Notas')
-                ->className('text-center align-middle'),
 
             Column::make('operator')
                 ->title('Operador')
