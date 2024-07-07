@@ -44,7 +44,7 @@ class TestbdController extends Controller
             'lote_code' => $request->lote_machine,
             'equipo_lote' => $request->machine_name,
             'tipo_lote' => "TEST BOWIE & DICK",
-            'tipo_equipo' => "Vapor",
+            'tipo_equipo' => "Autoclave",
             'status_lote' => $request->validation_bd,
         ]);
       
@@ -59,9 +59,8 @@ class TestbdController extends Controller
         return view('testbd::testbds.show', compact('testbd'));
     }
 
-    public function edit(Testbd $testbd, $id) {
+    public function edit(Testbd $testbd) {
         abort_if(Gate::denies('edit_testbds'), 403);
-        $lotes = Lote::findOrFail($id);
 
         return view('testbd::testbds.edit', compact('testbd'));
     }

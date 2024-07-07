@@ -8,6 +8,11 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Modules\Informat\Entities\Institute;
 use Modules\Informat\DataTables\InstituteDataTable;
+use Modules\Informat\Http\Requests\StoreInstituteRequest;
+use Modules\Informat\Http\Requests\UpdateInstituteRequest;
+
+use Illuminate\Support\Facades\Storage;
+
 
 class InstituteController extends Controller
 {
@@ -23,26 +28,18 @@ class InstituteController extends Controller
 
         return view('informat::institutes.create');
     }
-    public function store(Request $request) {
+
+    public function store(StoreInstituteRequest $request) {
       
+        $institute=Institute::create($request->except('document'));
 
-        $request->validate([
-            'institute_code' => 'required',
-            'institute_name' => 'required',
-            'institute_address' => 'nullable',
-            'institute_area' => 'nullable',
-            'institute_city' => 'nullable',
-            'institute_country' => 'nullable'
-        ]);
+        if ($request->has('document')) {
+            foreach ($request->input('document', []) as $file) {
+                $institute->addMedia(Storage::path('temp/dropzone/' . $file))->toMediaCollection('institutes');
+            }
+        }
 
-        Institute::create([
-            'institute_code' => $request->institute_code,
-            'institute_name' => $request->institute_name,
-            'institute_address' => $request->institute_address,
-            'institute_area' => $request->institute_area,
-            'institute_city' => $request->institute_city,
-            'institute_country' => $request->institute_country,
-        ]);
+  
 
         toast('Institución creado!', 'success');
 
@@ -55,35 +52,36 @@ class InstituteController extends Controller
         return view('informat::institutes.show', compact('institute'));
     }
 
-    public function edit($id) {
+    public function edit(Institute $institute) {
         abort_if(Gate::denies('edit_institutes'), 403);
 
-        $institute = Institute::findOrFail($id);
 
         return view('informat::institutes.edit', compact('institute'));
     }
 
 
-    public function update(Request $request, $id) {
-        abort_if(Gate::denies('edit_institutes'), 403);
+    public function update(UpdateInstituteRequest $request, Institute $institute) {
+        $institute->update($request->except('document'));
 
-        $request->validate([
-            'institute_code' => 'required|unique:institutes,institute_code,' . $id,
-            'institute_name' => 'required',
-            'institute_address' => 'nullable',
-            'institute_area' => 'nullable',
-            'institute_city' => 'nullable',
-            'institute_country' => 'nullable'
-        ]);
 
-        Institute::findOrFail($id)->update([
-            'institute_code' => $request->institute_code,
-            'institute_name' => $request->institute_name,
-            'institute_address' => $request->institute_address,
-            'institute_area' => $request->institute_area,
-            'institute_city' => $request->institute_city,
-            'institute_country' => $request->institute_country,
-        ]);
+        if ($request->has('document')) {
+            if (count($institute->getMedia('institutes')) > 0) {
+                foreach ($institute->getMedia('institutes') as $media) {
+                    if (!in_array($media->file_name, $request->input('document', []))) {
+                        $media->delete();
+                    }
+                }
+            }
+
+            $media = $institute->getMedia('institutes')->pluck('file_name')->toArray();
+
+            foreach ($request->input('document', []) as $file) {
+                if (count($media) === 0 || !in_array($file, $media)) {
+                    $institute->addMedia(Storage::path('temp/dropzone/' . $file))->toMediaCollection('institutes');
+                }
+            }
+        }
+
 
         toast('Institucion actualizada!', 'info');
 

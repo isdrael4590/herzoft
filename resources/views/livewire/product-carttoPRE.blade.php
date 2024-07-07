@@ -47,7 +47,7 @@
                                             {{ $cart_item->options->product_coming_zone }}
                                         </span>
                                     @endif
-
+                                    @include('livewire.includes.product-cart-modaltoPRE')
                                 </td>
 
                                 <td class="align-middle text-center text-center">

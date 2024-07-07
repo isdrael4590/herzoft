@@ -29,7 +29,14 @@
                                             value="STOCK">
                                     </div>
                                 </div>
-
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="machine_type">Tipo de Esterilización <span
+                                                class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="machine_type" required readonly
+                                                value="{{ $stock->machine_type }}" >
+                                    </div>
+                                </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="lote_machine">Lote del Equipo <span class="text-danger">*</span></label>

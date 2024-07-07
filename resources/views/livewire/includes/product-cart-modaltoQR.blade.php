@@ -40,6 +40,7 @@
                             <option disabled>-- Seleccionar la envoltura--</option>
                             <option selected value="Contenedor"> Contenedor Rígido</option>
                             <option value="Papel Mixto"> Papel Mixto </option>
+                            <option value="Papel Tyvek"> Papel Tyvek </option>
                             <option value="Tela No Tejida"> Tela No Tejida </option>
                             <option value="Lamina SMS"> Lámina SMS</option>
                             <option value="Otro"> Otro</option>
@@ -66,6 +67,7 @@
                             <option selected value="6"> 6 Meses</option>
                             <option value="9"> 9 Meses </option>
                             <option value="12"> 12 Meses </option>
+                            <option value="14"> 14 Meses </option>
                             <option value="N/A"> N/A </option>
                         </select>
                     </div>

@@ -32,5 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     //preparations
     Route::resource('preparations', 'PreparationController');
+    Route::resource('preparationDetails', 'PreparationDetailsController');
 
 });

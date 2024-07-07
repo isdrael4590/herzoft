@@ -16,6 +16,16 @@
 
     <!-- Custom Stylesheet -->
     <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/style.css') }}">
+    <style>
+        /* default for all pages */
+        @page {
+            size: A4 portrait;
+        }
+
+        p {
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,14 +36,22 @@
                     <div class="printer-inner-9" id="printer_wrapper">
                         <div class="printer-top">
                             <div class="row">
-                                <div class="col-lg-6 col-sm-6">
+                                <div class="col-lg-4 col-sm-4">
                                     <div class="logo">
-                                        <img class="logo" src="{{ asset('assets/images/logo.png') }}" alt="logo">
+                                        <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
+                                            alt="Institute Image" class="img-fluid  mb-1">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-6">
+                                <div class="col-lg-4 col-sm-4">
                                     <div class="printer">
-                                        <h1>#<span>{{ $testbd->testbd_reference }}</span></h1>
+                                        <h1># <span>{{ $testbd->testbd_reference }}</span></h1>
+                                        <h4> <span>{{ $testbd->machine_name }}</span></h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="printer">
+                                        <div>Versión: <strong> 01</strong></div>
+                                        <div>Vigente: <strong> Junio 2024</strong></div>
                                     </div>
                                 </div>
                             </div>
@@ -42,8 +60,8 @@
                             <div class="row">
 
                                 <div class="printer-number">
-                                    <h4 class="print-title-1">Fecha de Test de Bowie & Dick:</h4>
-                                    <p class="printo-addr-1">
+                                    <h4 class="print-title-2">Resultado de Test de Bowie & Dick:</h4>
+                                    <p class="printo-addr"> Fecha:
                                         {{ \Carbon\Carbon::parse($testbd->updated_at)->format('d M, Y') }}
                                     </p>
                                 </div>
@@ -55,10 +73,10 @@
                                 <div class="col-sm-4 mb-3 mb-md-0">
                                     <h4 class="print-title-1">Institución:</h4>
                                     <div>{{ Institutes()->institute_name }}</div>
-                                    <div>Dirección: {{ Institutes()->institute_address }}</div>
-                                    <div>Área: {{ Institutes()->institute_area }}</div>
-                                    <div>Ciudad: {{ Institutes()->institute_city }}</div>
-                                    <div>País: {{ Institutes()->institute_country }}</div>
+                                    <div><strong>Dirección: </strong>{{ Institutes()->institute_address }}</div>
+                                    <div><strong>Área: </strong>{{ Institutes()->institute_area }}</div>
+                                    <div><strong>Ciudad: </strong>{{ Institutes()->institute_city }}</div>
+                                    <div><strong>País:</strong> {{ Institutes()->institute_country }}</div>
                                 </div>
                                 <div class="col-sm-4 mb-3 mb-md-0">
                                     <h4 class="print-title-1">Información de Registro</h4>
@@ -66,6 +84,7 @@
                                     <div>Equipo: <strong>{{ $testbd->machine_name }}</strong></div>
                                     <div>Temperatura del Equipo:<strong> {{ $testbd->temp_machine }}</strong></div>
                                     <div>Temperatura Ambiente:<strong> {{ $testbd->temp_ambiente }}</strong></div>
+                                    <div>Operario:<strong> {{ $testbd->operator }}</strong></div>
                                 </div>
                                 <div class="col-sm-4 mb-3 mb-md-0">
                                     <h4 class="print-title-1">Registro INFO:</h4>
@@ -92,26 +111,36 @@
                                         height="580" IMA>
                                 </div>
                             </div>
-                            <div>Notas: {{ $testbd->note }}</div>
+                            <br><br>
+                            <div>
+                                @if (@empty($discharge->note))
+                                    Notas: N/A
+                                @else
+                                    Notas: {{ $discharge->note }}
+                                @endif
+                            </div>
                             <br><br><br><br>
+                            <br><br><br><br> <br><br><br><br> 
                             <table class="default-table ">
+
                                 <tr>
-                                    <th>Operador: <span> {{ $testbd->operator }}</span></th>
+                                    <th rowspan="10"></th>
+                                    <th>Firma de Operador: <span> {{ $testbd->operator }}</span></th>
                                 </tr>
                             </table>
                         </div>
+                        <div class="printer-informeshon-footer">
+                            <ul>
+                                <li><strong>Nota:</strong> Asegurarse que el producto entregado sea el correcto.</li>
+                            </ul>
+                            <ul>
+                                <li><a href="#"> {{ Settings()->company_name }}</a></li>
+                                <li><a href="#">{{ Settings()->company_email }}</a></li>
+                                <li><a href="#">{{ Settings()->company_phone }}</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="printer-informeshon-footer">
-                        <ul>
-                            <li><strong>Nota:</strong> Revisar el registro previo a la firma de responsabilidad.</li>
-                        </ul>
-                        <ul>
 
-                            <li><a href="#">HerZoft</a></li>
-                            <li><a href="herzoftgroup@gmail.com">herzoftgroup@gmail.com</a></li>
-                            <li><a href="#">+593 998484190</a></li>
-                        </ul>
-                    </div>
                 </div>
 
                 <div class="printer-btn-section clearfix d-print-none">

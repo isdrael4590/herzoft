@@ -4,7 +4,7 @@
 @endphp
 @extends('layouts.app')
 
-@section('title', 'Registrar Ingreso')
+@section('title', 'Registrar Stock Manual')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
@@ -38,6 +38,18 @@
                                             value="{{ $stock_code }}">
                                     </div>
                                 </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="machine_type">Tipo de Esterilización <span
+                                                class="text-danger">*</span></label>
+                                                <select class="form-control" id="machine_type" name="machine_type">
+                                                    @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
+                                                            <option value="{{ $machines->machine_type }}">
+                                                                {{ $machines->machine_type }}</option>
+                                                    @endforeach
+                                                </select>
+                                    </div>
+                                </div>
 
                                 <div class="col-lg-3">
                                     <div class="form-group">
@@ -50,14 +62,12 @@
                              
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="type_program">TIPO DE PROGRAMA</label>
-                                        <select class="form-control" id="type_program" name="type_program">
-                                            <option selected value="134C ESTANDAR"> 134C ESTANDAR </option>
-                                            <option value="121C ESTANDAR"> 121C ESTANDAR </option>
-                                            <option value="CONTENEDORES"> CONTENEDORES</option>
-                                            <option value=" RAPID"> RAPID </option>
-                                            <option value=" ESPORAS"> ESPORAS </option>
-
+                                        <label for="machine_name">Equipo</label>
+                                        <select class="form-control" id="machine_name" name="machine_name">
+                                            @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
+                                                    <option value="{{ $machines->machine_name }}">
+                                                        {{ $machines->machine_name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>

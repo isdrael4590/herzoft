@@ -21,9 +21,9 @@ class StockDetailsDataTable extends DataTable
             ->addColumn('dates', function ($data) {
                 return view('stock::partials.dates', compact('data'));
             })
-            ->addColumn('details_process', function ($data) {
+            /*->addColumn('details_process', function ($data) {
                 return view('stock::partials.details_process', compact('data'));
-            })
+            })*/
             ->addColumn('status_stock', function ($data) {
                 return view('stock::partials.status_stock', compact('data'));
             })
@@ -50,7 +50,9 @@ class StockDetailsDataTable extends DataTable
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(6)
+            ->parameters([
+                'order' => [[1, 'desc']],
+            ])
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -94,10 +96,10 @@ class StockDetailsDataTable extends DataTable
             Column::make('dates')
                 ->title('Fecha de vencimiento')
                 ->className('text-center align-middle'),
-
+            /*
             Column::make('details_process')
                 ->title('Información del proceso')
-                ->className('text-center align-middle'),
+                ->className('text-center align-middle'),*/
         ];
     }
     protected function filename(): string

@@ -16,7 +16,18 @@
 
     <!-- Custom Stylesheet -->
     <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/style.css') }}">
+    <style>
+        /* default for all pages */
+        @page {
+            size: A4 portrait;
+        }
+
+        p {
+            font-size: 1.5em;
+        }
+    </style>
 </head>
+
 <body>
     <div class="printer-16 printer-content">
         <div class="container">
@@ -25,20 +36,39 @@
                     <div class="printer-inner-9" id="printer_wrapper">
                         <div class="printer-top">
                             <div class="row">
-                                <div class="col-lg-6 col-sm-6">
+                                <div class="col-lg-4 col-sm-4">
                                     <div class="logo">
-                                        <img class="logo" src="{{ asset('assets/images/logo.png') }}" alt="logo">
+                                        <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
+                                            alt="Institute Image" class="img-fluid  mb-1">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-6">
+                                <div class="col-lg-4 col-sm-4">
                                     <div class="printer">
-                                        <h5><span>Registro Físico del proceso de esterilización Con el equipo:</span></h5>
-                                        <h2 class="print-title-1">{{ $discharge->machine_name }}</h2>
+                                        <h1># <span>{{ $discharge->reference }}</span></h1>
+                                        <h4> <span>{{ $discharge->machine_name }}</span></h4>
                                     </div>
                                 </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="printer">
+                                        <div>Versión: <strong> 01</strong></div>
+                                        <div>Vigente: <strong> Junio 2024</strong></div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+                        <div class="printer-info">
+                            <div class="row">
 
+                                <div class="printer-number">
+                                    <h6 class="print-title-2">Registro Físico del proceso de esterilización:</h6>
+                                    <p class="printo-addr"> Fecha:
+                                        {{ \Carbon\Carbon::parse($discharge->updated_at)->format('d M, Y') }}
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
                         <div class="printer-info">
                             <div class="row mb-4">
                                 <div class="col-sm-3 mb-3 mb-md-0">
@@ -75,16 +105,16 @@
                                 <div class="col-sm-3 mb-3 mb-md-0">
                                     <h4 class="print-title-1 border-bottom">QR Proceso:</h4>
                                     <span class="aling-middle">{!! QrCode::size(100)->style('square')->generate(
-                                        "$discharge->reference" .
-                                            ' // Equipo: ' .
-                                            "$discharge->machine_name" .
-                                            ' // Lote: ' .
-                                            "$discharge->lote_machine" .
-                                            ' // Fecha: ' .
-                                            "$discharge->created_up" .
-                                            ' // Expiracion: ' .
-                                            "$discharge->expiration",
-                                    ) !!}</span>
+                                            "$discharge->reference" .
+                                                ' // Equipo: ' .
+                                                "$discharge->machine_name" .
+                                                ' // Lote: ' .
+                                                "$discharge->lote_machine" .
+                                                ' // Fecha: ' .
+                                                "$discharge->created_up" .
+                                                ' // Expiracion: ' .
+                                                "$discharge->expiration",
+                                        ) !!}</span>
                                     <h6>#<span>{{ $discharge->reference }}</span></h6>
                                 </div>
                             </div>
@@ -148,20 +178,13 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td></td>
+                                            <td>
+                                                <br><br><br><br><br><br>
+                                            </td>
                                             <td></td>
                                         </tr>
 
-                                        <tr>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
 
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                        </tr>
 
                                     </tbody>
 
@@ -170,23 +193,25 @@
                             </div>
                             <table class="default-table ">
                                 <tr>
+                                    <br><br><br>
                                     <td>Responsable: <span> {{ $discharge->operator }}</span></td>
                                 </tr>
                             </table>
                         </div>
+                        <div class="printer-informeshon-footer">
+                            <ul>
+                                <li><strong>Nota:</strong> Asegurarse que el producto entregado sea el correcto.</li>
+                            </ul>
+                            <ul>
+                                <li><a href="#"> {{ Settings()->company_name }}</a></li>
+                                <li><a href="#">{{ Settings()->company_email }}</a></li>
+                                <li><a href="#">{{ Settings()->company_phone }}</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="printer-informeshon-footer">
-                    <ul>
-                        <li><strong>Nota:</strong> Asegurarse que el producto tiene una liberación del biológico.</li>
-                    </ul>
-                    <ul>
 
-                        <li><a href="#">HerZoft</a></li>
-                        <li><a href="herzoftgroup@gmail.com">herzoftgroup@gmail.com</a></li>
-                        <li><a href="#">+593 998484190</a></li>
-                    </ul>
                 </div>
+
             </div>
             <div class="printer-btn-section clearfix d-print-none">
                 <a href="javascript:window.print()" class="btn btn-lg btn-print">

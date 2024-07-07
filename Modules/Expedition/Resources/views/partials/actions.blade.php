@@ -13,11 +13,10 @@
     </a>
 @endcan
 @can('show_expeditions')
-    @if (($data->status_cycle == 'Ciclo Aprobado') | ($data->status_cycle == 'Ciclo Falla'))
         <a href="{{ route('expeditions.show', $data->id) }}" class="dropdown-item">
             <i class="bi bi-eye mr-2 text-info" style="line-height: 1;"></i> Detalles
         </a>
-    @endif
+   
 @endcan
 
 
@@ -37,6 +36,3 @@
     </button>
 @endcan
 
-
-{{--    </div>
-</div> --}}

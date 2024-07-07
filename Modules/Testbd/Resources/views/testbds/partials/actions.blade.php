@@ -3,17 +3,17 @@
     <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
 </a>
 @endcan
-@can('edit_Testbds')
+@can('edit_testbds')
 <a href="{{ route('testbds.edit', $data->id) }}" class="dropdown-item">
     <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar
 </a>
 @endcan
-@can('show_Testbds')
+@can('show_testbds')
 <a href="{{ route('testbds.show', $data->id) }}" class="dropdown-item">
     <i class="bi bi-eye mr-2 text-info" style="line-height: 1;"></i> Detalles
 </a>
 @endcan
-@can('delete_Testbds')
+@can('delete_testbds')
 <button id="delete" class="dropdown-item" onclick="
     event.preventDefault();
     if (confirm('Are you sure? It will delete the data permanently!')) {

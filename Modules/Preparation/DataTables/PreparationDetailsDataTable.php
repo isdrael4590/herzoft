@@ -16,15 +16,12 @@ class PreparationDetailsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-
-
-
-            ->addColumn('product_state_preparation', function ($data) {
-                return view('preparation::partials.product_state_preparation', compact('data'));
+            
+            ->addColumn('dates', function ($data) {
+                return view('preparation::partials.dates', compact('data'));
             })
-
             ->addColumn('action', function ($data) {
-                return view('preparation::partials.actions', compact('data'));
+                return view('preparation::partials.actions2', compact('data'));
             });
     }
 
@@ -45,7 +42,9 @@ class PreparationDetailsDataTable extends DataTable
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(6)
+            ->parameters([
+                'order' => [[2, 'desc']],
+            ])
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -61,8 +60,14 @@ class PreparationDetailsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-
-            Column::computed('product_name')
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->className('text-center align-middle'),
+            Column::make('dates')
+                ->title('Fecha')
+                ->className('text-center align-middle'),
+                Column::make('product_name')
                 ->title('Nombre del producto')
                 ->className('text-center align-middle'),
             Column::make('product_code')
@@ -74,10 +79,7 @@ class PreparationDetailsDataTable extends DataTable
             Column::make('product_coming_zone')
                 ->title('Proveniente')
                 ->className('text-center align-middle'),
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
-                ->className('text-center align-middle'),
+
         ];
     }
 

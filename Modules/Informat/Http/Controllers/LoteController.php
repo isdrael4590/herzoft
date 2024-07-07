@@ -95,11 +95,8 @@ class LoteController extends Controller
     {
         abort_if(Gate::denies('delete_lotes'), 403);
 
-        $category = Lote::findOrFail($id);
-
-
-
-        $category->delete();
+        $lote = Lote::findOrFail($id);
+        $lote->delete();
 
         toast('Equipo Eliminado!', 'warning');
 
