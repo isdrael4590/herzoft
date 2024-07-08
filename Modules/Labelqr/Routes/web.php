@@ -39,4 +39,3 @@ Route::group(['middleware' => 'auth'], function () {
     //labelqrs
     Route::resource('labelqrs', 'LabelqrController');
 });
-Route::get('/labelqrs_label/html/{id}', [PrinterLabelQrController::class, 'return_label_html'])->name('labelqrs_label.html');
