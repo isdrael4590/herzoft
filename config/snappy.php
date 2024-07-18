@@ -47,7 +47,8 @@ return [
         'timeout' => 20,
         'options' => [
             "width" => "300", 
-            "format" => "png"
+            "format" => "png",
+            "quality" => "100"
         ],
         'env'     => [],
     ],
