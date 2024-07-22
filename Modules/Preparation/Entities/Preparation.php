@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Preparation\Database\factories\PreparationFactory;
 use Modules\Product\Entities\Product;
+use Modules\Reception\Entities\Reception;
 
 class Preparation extends Model
 {
@@ -29,5 +30,9 @@ class Preparation extends Model
         return Carbon::parse($value)->format('d M, Y');
     }
 
+
+    public function ReceptiontoPreparation() {
+        return $this->hasMany(Reception::class, 'reception_id', 'id');
+    }
 
 }

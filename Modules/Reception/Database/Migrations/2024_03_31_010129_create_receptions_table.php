@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stocks', function (Blueprint $table) {
+        Schema::create('receptions', function (Blueprint $table) {
             $table->id();
             $table->string('reference');
-            $table->string('lote_machine');
-            $table->string('machine_name');
-            $table->string('lote_biologic');
-          
-            $table->string('temp_ambiente')->nullable(); 
+            $table->unsignedBigInteger('area_id')->nullable();
            
-            $table->text('note')->nullable();
             $table->string('operator');
+            $table->string('delivery_staff')->nullable();
+            $table->string('area');
+            $table->string('status');
+            $table->text('note')->nullable();
+            $table->foreign('area_id')->references('id')->on('areas')->nullOnDelete();
+       
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('receptions');
     }
 };

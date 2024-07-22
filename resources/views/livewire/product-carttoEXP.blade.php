@@ -41,7 +41,8 @@
                                 </td>
                                 
                                 <td class="align-middle text-center text-center">
-                                    {{ $cart_item->options->product_expiration }}
+                                 
+                                    {!!\Carbon\Carbon::parse($cart_item->options->product_expiration)->format('d M, Y')!!}
                                 </td>
                                 <td class="align-middle text-center">
                                     <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">

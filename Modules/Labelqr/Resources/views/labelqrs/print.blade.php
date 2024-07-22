@@ -39,7 +39,7 @@
                         </header>
                         <section class="machine-info">
                             <div class="machine-info2">
-                                <small>Venc. {!!Carbon\Carbon::parse(($item->updated_at)->format('d-m-Y'))->addMonth($item->product_expiration)!!}</small>
+                                <small>Venc. {!!Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y')!!}</small>
                                 <strong>Elab.: {{$item->updated_at }}</strong>
                             </div>
 
@@ -58,7 +58,7 @@
                               
                                 <div class="qrcode">
                                     <div class="box">
-                                    {!! QrCode::size(60)->style('square')->generate( "$labelqr->reference"." // Lote: "."$labelqr->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: "."$item->updated_at") !!}
+                                    {!! QrCode::size(60)->style('square')->generate( "$labelqr->reference"." // Lote: "."$labelqr->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: ". Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)) !!}
                                     <span>
                                         <small>
                                             Lote: {{ $labelqr->lote_machine }}  <br> Código: {{ $item->product_code }}

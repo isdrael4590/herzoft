@@ -37,7 +37,7 @@
                                 <li class="list-group-item list-group-item-action">
                                     <a wire:click="resetQuery" wire:click.prevent="selectProduct({{ $result }})"
                                         href="#">
-                                        {{ $result->product_name }} | {{ $result->product_code }}
+                                        {{ $result->product_name }} -> {{ $result->product_code }} ==> [ {!!\Carbon\Carbon::parse($result->product_expiration)->format('d M, Y')!!} ]
                                     </a>
                                 </li>
                             @endif

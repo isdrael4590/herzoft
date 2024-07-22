@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="col-sm-3 mb-3 mb-md-0">
                                     <h4 class="print-title-1 border-bottom">Información de Proceso:</h4>
-
+                                    <div><strong>Proceso N°:</strong> {{ $discharge->labelqr_id }}</div>
                                     <div><strong>Equipo:</strong> {{ $discharge->machine_name }}</div>
                                     <div><strong>Lote del Equipo:</strong> {{ $discharge->lote_machine }}</div>
                                     <div><strong>Temperatura del equipo:</strong> {{ $discharge->temp_machine }}</div>
@@ -103,18 +103,8 @@
                                     <div><strong>Fecha de Expiración: </strong> {{ $discharge->expiration }}</div>
                                 </div>
                                 <div class="col-sm-3 mb-3 mb-md-0">
-                                    <h4 class="print-title-1 border-bottom">QR Proceso:</h4>
-                                    <span class="aling-middle">{!! QrCode::size(100)->style('square')->generate(
-                                            "$discharge->reference" .
-                                                ' // Equipo: ' .
-                                                "$discharge->machine_name" .
-                                                ' // Lote: ' .
-                                                "$discharge->lote_machine" .
-                                                ' // Fecha: ' .
-                                                "$discharge->created_up" .
-                                                ' // Expiracion: ' .
-                                                "$discharge->expiration",
-                                        ) !!}</span>
+                                    <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
+                                {!! QrCode::size(150)->style('square')->generate( "Ref. Proces: "."$discharge->labelqr_id"." // Ref. Des: "."$discharge->reference"." // Equipo: "."$discharge->machine_name"." // Lote: "."$discharge->lote_machine"." // Fecha: "."$discharge->updated_at") !!}
                                     <h6>#<span>{{ $discharge->reference }}</span></h6>
                                 </div>
                             </div>
@@ -128,9 +118,9 @@
                                             <th>Código </th>
                                             <th>Descripción</th>
                                             <th>Envoltura</th>
-                                            <th>Val. Embalaje</th>
-                                            <th>Val. Químico</th>
-
+                                            <th>Validación</th>
+                                            <th>Tipo. Químico</th>
+                                            <th>Fecha Expiración</th>
                                         </tr>
                                     </thead>
 
@@ -151,6 +141,9 @@
                                                 </td>
                                                 <td>
                                                     {{ $item->product_eval_indicator }}
+                                                </td>
+                                                <td>
+                                                    {!!Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)->format('d M, Y')!!}
                                                 </td>
 
                                             </tr>

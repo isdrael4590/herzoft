@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('preparations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('reception_id');
             $table->string('reference');
             $table->string('operator');
             $table->text('note')->nullable();
+            $table->foreign('reception_id')->references('id')->on('receptions')->cascadeOnDelete();
             $table->timestamps();
         });
     }

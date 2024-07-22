@@ -18,6 +18,8 @@ use Modules\Labelqr\Entities\LabelqrDetails;
 
 use Modules\Labelqr\Http\Requests\StoreLabelqrHPORequest;
 use Modules\Labelqr\Http\Requests\UpdateLabelqrHPORequest;
+use Modules\Preparation\Entities\PreparationDetails;
+
 
 class LabelqrHPOController extends Controller
 
@@ -58,8 +60,10 @@ class LabelqrHPOController extends Controller
             ]);
 
             foreach (Cart::instance('labelqrhpo')->content() as $cart_item) {
+                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 LabelqrDetails::create([
                     'labelqr_id' => $labelqrhpo->id,
+                    'preparation_detail_id' => $preparation_detail->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -69,6 +73,10 @@ class LabelqrHPOController extends Controller
                     'product_eval_package' => $cart_item->options->product_eval_package,
                     'product_eval_indicator' => $cart_item->options->product_eval_indicator,
                     'product_expiration' => $cart_item->options->product_expiration
+                ]);
+                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
+                $preparation_detail->update([
+                    'product_state_preparation' => 'Procesado',
                 ]);
             }
 
@@ -141,8 +149,10 @@ class LabelqrHPOController extends Controller
             ]);
 
             foreach (Cart::instance('labelqrhpo')->content() as $cart_item) {
+                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 LabelqrDetails::create([
                     'labelqr_id' => $labelqr->id,
+                    'preparation_detail_id' => $preparation_detail->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -153,6 +163,10 @@ class LabelqrHPOController extends Controller
                     'product_eval_indicator' => $cart_item->options->product_eval_indicator,
                     'product_expiration' => $cart_item->options->product_expiration
 
+                ]);
+                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
+                $preparation_detail->update([
+                    'product_state_preparation' => 'Procesado',
                 ]);
             }
 

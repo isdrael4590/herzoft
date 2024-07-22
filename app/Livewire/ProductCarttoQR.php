@@ -95,7 +95,7 @@ class ProductCarttoQR extends Component
                 'product_ref_qr' =>  'PRUEBA', //ESTE ES EL DATO A MODIFICAR
                 'product_eval_package' => 'OK',//ESTE ES EL DATO A MODIFICAR
                 'product_eval_indicator' =>  '4',//ESTE ES EL DATO A MODIFICAR
-                'product_expiration' =>  '6'//ESTE ES EL DATO A MODIFICAR
+                'product_expiration' =>  '14'//ESTE ES EL DATO A MODIFICAR
             ]
 
 
@@ -104,7 +104,7 @@ class ProductCarttoQR extends Component
         $this->ref_qr[$product['id']] = 'PRUEBA';
         $this->eval_package[$product['id']] = 'OK';
         $this->eval_indicator[$product['id']] = '4';
-        $this->expiration[$product['id']] = '6';
+        $this->expiration[$product['id']] = '14';
 
 
     }

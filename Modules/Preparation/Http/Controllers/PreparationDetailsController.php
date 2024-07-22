@@ -3,6 +3,8 @@
 namespace Modules\Preparation\Http\Controllers;
 
 use Modules\Preparation\DataTables\PreparationDetailsDataTable;
+use Modules\Preparation\DataTables\PreparationDataTable;
+
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -16,13 +18,28 @@ use Modules\Preparation\Entities\PreparationDetails;
 class PreparationDetailsController extends Controller
 {
 
-    public function index(PreparationDetailsDataTable $dataTable)
+    public function index(PreparationDetailsDataTable $dataTable, PreparationDataTable $PreparationDataTable)
     {
         abort_if(Gate::denies('access_preparations'), 403);
 
         return $dataTable->render('preparation::preparationDetails.index');
+        /*return view('preparation::preparationDetails.index', [
+            'PreparationDataTable'=> $PreparationDataTable->html(),
+            'PreparationDetailsDataTable'=> $PreparationDetailsDataTable->html()
+        ]);
     }
 
+    public function getdata1(PreparationDetailsDataTable $PreparationDetailsDataTable)
+    {
+        return $PreparationDetailsDataTable->render('preparation::preparationDetails.index');
+    }
+
+
+    public function getdata2(PreparationDataTable $PreparationDataTable)
+    {
+        return $PreparationDataTable->render('preparation::preparationDetails.index');
+        */
+    }
 
 
 

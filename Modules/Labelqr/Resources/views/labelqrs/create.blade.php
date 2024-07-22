@@ -34,11 +34,11 @@
                         @include('utils.alerts')
                         <form id="labelqr-form" action="{{ route('labelqrs.store') }}" method="POST">
                             @csrf
-
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="machine_type">Tipo Esterilización <span class="text-danger">*</span></label>
+                                        <label for="machine_type">Tipo Esterilización <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="machine_type" required readonly
                                             value="Autoclave">
                                     </div>
@@ -138,7 +138,7 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_cycle" id="status_cycle" required>
                                             <option value="Pendiente">Pendiente</option>
-                                            <option selected value="En Curso">En Curso</option>
+                                            <option selected value="Cargar">Cargar</option>
 
                                         </select>
                                     </div>
@@ -162,29 +162,30 @@
                                     </div>
                                 </div>
                             </div>
+
+
+                            <livewire:product-carttoQR :cartInstance="'labelqr'" />
+
+                            <div class="form-row">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="note_labelqr">Nota (Si se necesita)</label>
+                                <textarea name="note_labelqr" id="note_labelqr" rows="5" class="form-control"></textarea>
+                            </div>
+
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    Guardar proceso <i class="bi bi-sd-card"></i>
+                                </button>
+
+                            </div>
+
+                            <div class="mt-3">
+
+                            </div>
+                        </form>
                     </div>
-
-                    <livewire:product-carttoQR :cartInstance="'labelqr'" />
-
-                    <div class="form-row">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="note_labelqr">Nota (Si se necesita)</label>
-                        <textarea name="note_labelqr" id="note_labelqr" rows="5" class="form-control"></textarea>
-                    </div>
-
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary">
-                            Guardar proceso <i class="bi bi-sd-card"></i>
-                        </button>
-                     
-                    </div>
-
-                    <div class="mt-3">
-
-                    </div>
-                    </form>
                 </div>
             </div>
         </div>

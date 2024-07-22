@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('labelqrs.index') }}">Etiquetas Generadas</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('stocks.index') }}">Stocks Generadas</a></li>
         <li class="breadcrumb-item active">Detalles</li>
     </ol>
 @endsection
@@ -17,20 +17,8 @@
                 <div class="card">
                     <div class="card-header d-flex flex-wrap align-items-center">
                         <div>
-                            Referencia: <strong>{{ $labelqr->reference }}</strong>
+                            Referencia: <strong>{{ $stock->reference }}</strong>
                         </div>
-                        <a target="_blank" class="btn btn-sm btn-warning mfs-auto mfe-1 d-print-none"
-                            href="{{ route('labelqr-discharges.create', $labelqr->id) }}">
-                            <i class="bi bi-printer"></i> Enviar Ciclo
-                        </a>
-                        <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
-                            href="{{ route('labelqrs.pdf', $labelqr->id) }}">
-                            <i class="bi bi-printer"></i> Imprimir
-                        </a>
-                        <a target="_blank" class="btn btn-sm btn-info mfe-1 d-print-none"
-                            href="{{ route('labelqrs.pdf', $labelqr->id) }}">
-                            <i class="bi bi-save"></i> Guardar
-                        </a>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
@@ -47,26 +35,22 @@
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h4 class="mb-2 border-bottom pb-2">Información de Proceso:</h4>
                                 
-                                <div><strong>Equipo:</strong> {{ $labelqr->machine_name }}</div>
-                                <div><strong>Lote del Equipo:</strong> {{ $labelqr->lote_machine }}</div>
-                                <div><strong>Temperatura del equipo:</strong> {{ $labelqr->temp_machine }}</div>
-                                <div><strong>Tipo de Programa:</strong> {{ $labelqr->type_program }}</div>
-                                <div><strong>Temperatura del Ambiente: </strong> {{ $labelqr->temp_ambiente }}</div>
-                                <div><strong>Operario:</strong> {{ $labelqr->operator }}</div>
+                                <div><strong>Equipo:</strong> {{ $stock->machine_name }}</div>
+                                <div><strong>Lote del Equipo:</strong> {{ $stock->lote_machine }}</div>
+                                <div><strong>Lote del Biológico:</strong> {{ $stock->lote_biologic }}</div>
+                                <div><strong>Temperatura del Ambiente: </strong> {{ $stock->temp_ambiente }}</div>
+                                <div><strong>Operario:</strong> {{ $stock->operator }}</div>
                             </div>
 
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h5 class="mb-2 border-bottom pb-2">Registro INFO:</h5>
-                                <div>Número: <strong>{{ $labelqr->reference }}</strong></div>
-                                <div><strong>Fecha Proceso: </strong>{{ \Carbon\Carbon::parse($labelqr->created_up)->format('d M, Y') }}</div>
-                                <div><strong>Estado del Ciclo: </strong> {{ $labelqr->status_cycle }}</div>
-                                <div><strong>Lote del Biológico: </strong> {{ $labelqr->lote_biologic }}</div>
-                                <div><strong>Validación Biológico: </strong> {{ $labelqr->validation_biologic }}</div>
-                                <div><strong>Fecha de Expiración: </strong> {{ $labelqr->expiration }}</div>
+                                <div>Número: <strong>{{ $stock->reference }}</strong></div>
+                                <div><strong>Fecha Stock: </strong>{{ \Carbon\Carbon::parse($stock->created_up)->format('d M, Y') }}</div>
+                               
                             </div>
                             <div class="col-sm-3 mb-3 mb-md-0">
-                                <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
-                                {!! QrCode::size(150)->style('square')->generate( "$labelqr->reference"." // Equipo: "."$labelqr->machine_name"." // Lote: "."$labelqr->lote_machine"." // Fecha: "."$labelqr->created_up". " // Expiracion: ".  "$labelqr->expiration") !!}
+                                <h4 class="mb-2 border-bottom pb-2">QR de Stock:</h4>
+                                {!! QrCode::size(150)->style('square')->generate( "$stock->reference"." // Equipo: "."$stock->machine_name"." // Lote: "."$stock->lote_machine"." // Fecha: "."$stock->created_up") !!}
                             </div>
                         </div>
 
@@ -77,13 +61,14 @@
                                         <th class="align-middle">Código del Instrumental</th>
                                         <th class="align-middle">Descripción</th>
                                         <th class="align-middle">Tipo de Envoltura</th>
-                                        <th class="align-middle">Validación Embalaje</th>
-                                        <th class="align-middle">Validación Ind. Químico</th>
-                                        <th class="align-middle">QR Paquete</th>
+                                        <th class="align-middle">Disponibilidad</th>
+                                        <th class="align-middle">Fecha de esterilización </th>
+                                        <th class="align-middle">Fecha de Vencimiento</th>
+                                        <th class="align-middle">Tipo de Esterilización</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($labelqr->labelqrDetails as $item)
+                                    @foreach ($stock->stockDetails as $item)
                                         <tr>
                                             <td class="align-middle">
                                                 {{ $item->product_name }} <br>
@@ -95,20 +80,16 @@
                                                 {{ $item->product_package_wrap }}
                                             </td>
                                             <td class="align-middle">
-                                                {{ $item->product_eval_package}}
+                                                {{ $item->product_status_stock}}
                                             </td>
                                             <td class="align-middle">
-                                                {{ $item->product_eval_indicator }}
+                                                {{ $item->product_date_sterilized }}
                                             </td>
                                             <td class="align-middle">
-                                                <div>
-                                                    {!! QrCode::size(50)->style('square')->generate( "$labelqr->reference"." // Lote: "."$labelqr->lote_machine"." // Cod: "."$item->product_code") !!}
-                                                </div>
-                                                <div>
-                                                    RefQR: {{ ($item->product_ref_qr) }} <br> Lote: {{ $labelqr->lote_machine }}  <br> Código: {{ $item->product_code }}
-                                                </div>
-                                       
-                                             
+                                                {{ $item->product_expiration }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $item->product_type_process }}
                                             </td>
                                         </tr>
                                     @endforeach

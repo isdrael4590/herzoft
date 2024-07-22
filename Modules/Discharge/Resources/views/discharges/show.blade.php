@@ -42,7 +42,7 @@
 
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h4 class="mb-2 border-bottom pb-2">Información de Proceso:</h4>
-                                
+                                <div><strong>Ref. Proceso:</strong> {{ $discharge->labelqr_id }}</div>
                                 <div><strong>Equipo:</strong> {{ $discharge->machine_name }}</div>
                                 <div><strong>Lote del Equipo:</strong> {{ $discharge->lote_machine }}</div>
                                 <div><strong>Temperatura del equipo:</strong> {{ $discharge->temp_machine }}</div>
@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
-                                {!! QrCode::size(150)->style('square')->generate( "$discharge->reference"." // Equipo: "."$discharge->machine_name"." // Lote: "."$discharge->lote_machine"." // Fecha: "."$discharge->updated_at". " // Expiracion: ".  "$discharge->updated_at") !!}
+                                {!! QrCode::size(150)->style('square')->generate( "Ref. Proces: "."$discharge->labelqr_id"." // Ref. Des: "."$discharge->reference"." // Equipo: "."$discharge->machine_name"." // Lote: "."$discharge->lote_machine"." // Fecha: "."$discharge->updated_at") !!}
                             </div>
                         </div>
 
@@ -73,7 +73,7 @@
                                         <th class="align-middle">Descripción</th>
                                         <th class="align-middle">Tipo de Envoltura</th>
                                         <th class="align-middle">Validación Embalaje</th>
-                                        <th class="align-middle">Validación Ind. Químico</th>
+                                        <th class="align-middle">Tipo Ind. Químico</th>
                                         <th class="align-middle">Vencimiento</th>
                                         <th class="align-middle">QR Paquete</th>
                                     </tr>
@@ -97,12 +97,13 @@
                                                 {{ $item->product_eval_indicator }}
                                             </td>
                                             <td class="align-middle">
-                                                {{ $item->product_expiration }} Meses
+                                                {{ $item->product_expiration }} Meses <br>
+                                                {!!Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)!!}
                                             </td>
                                             <td class="align-middle">
                                                 
                                                 <div>
-                                                    {!! QrCode::size(50)->style('square')->generate( "$discharge->reference"." // Lote: "."$discharge->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: "."$item->updated_at") !!}
+                                                    {!! QrCode::size(50)->style('square')->generate( "$discharge->reference"." // Lote: "."$discharge->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: ".Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)) !!}
                                                 </div>
                                                 <span>
                                                     Lote: {{ $discharge->lote_machine }}  <br> Código: {{ $item->product_code }}

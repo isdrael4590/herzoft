@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('discharges', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('labelqr_id');
             $table->string('reference');
             $table->string('machine_name');
             $table->string('machine_type');
@@ -23,9 +24,10 @@ return new class extends Migration
             $table->string('validation_biologic')->nullable();
             $table->string('temp_ambiente');
             $table->string('status_cycle')->nullable();
+            $table->string('ruta_process')->nullable();
             $table->text('note')->nullable();
             $table->string('operator');
-    
+            $table->foreign('labelqr_id')->references('id')->on('labelqrs')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Modules\Setting\Entities\Setting;
 use Modules\Setting\Http\Requests\StoreSettingsRequest;
 use Modules\Setting\Http\Requests\StoreSmtpSettingsRequest;
@@ -24,7 +25,27 @@ class SettingController extends Controller
     }
 
 
-    public function update(StoreSettingsRequest $request) {
+    public function update(StoreSettingsRequest $request, Setting $setting) {
+        $setting->update($request->except('document'));
+        if ($request->has('document')) {
+            if (count($setting->getMedia('images')) > 0) {
+                foreach ($setting->getMedia('images') as $media) {
+                    if (!in_array($media->file_name, $request->input('document', []))) {
+                        $media->delete();
+                    }
+                }
+            }
+
+            $media = $setting->getMedia('images')->pluck('file_name')->toArray();
+
+            foreach ($request->input('document', []) as $file) {
+                if (count($media) === 0 || !in_array($file, $media)) {
+                    $setting->addMedia(Storage::path('temp/dropzone/' . $file))->toMediaCollection('images');
+                }
+            }
+        }
+
+
         Setting::firstOrFail()->update([
             'company_name' => $request->company_name,
             'company_email' => $request->company_email,

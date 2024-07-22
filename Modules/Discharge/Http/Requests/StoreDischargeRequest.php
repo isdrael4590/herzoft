@@ -26,7 +26,9 @@ class StoreDischargeRequest extends FormRequest
             'validation_biologic' => 'required|string|max:255',
             'temp_ambiente' => 'required|string|max:255',
             'status_cycle' => 'required|string|max:255',
+             'ruta_process' => 'nullable|string|max:255',
             'note' => 'nullable|string|max:255'
+
             ];
     }
 

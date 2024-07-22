@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Modules\Product\Entities\Product;
 use Modules\Expedition\Entities\Expedition;
 use Modules\Expedition\Entities\ExpeditionDetails;
-
+use Modules\Stock\Entities\StockDetails;
 use Modules\Expedition\Http\Requests\StoreExpeditionRequest;
 use Modules\Expedition\Http\Requests\UpdateExpeditionRequest;
 
@@ -49,9 +49,13 @@ class ExpeditionController extends Controller
                 'note' => $request->note,
                 'operator' => $request->operator,
             ]);
+
+
             foreach (Cart::instance('expedition')->content() as $cart_item) {
+                $stock_detail = StockDetails::findOrFail($cart_item->id);
                 ExpeditionDetails::create([
                     'expedition_id' => $expedition->id,
+                    'stock_detail_id' => $stock_detail->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -60,6 +64,11 @@ class ExpeditionController extends Controller
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' => $cart_item->options->product_expiration,
                 ]);
+                $stock_detail = StockDetails::findOrFail($cart_item->id);
+                $stock_detail->update([
+                    'product_status_stock'=> 'Despachado',
+                ]);
+
             }
 
 
@@ -133,8 +142,11 @@ class ExpeditionController extends Controller
      
 
             foreach (Cart::instance('expedition')->content() as $cart_item) {
+                $stock_detail = StockDetails::findOrFail($cart_item->id);
+
                 ExpeditionDetails::create([
                     'expedition_id' => $expedition->id,
+                    'stock_detail_id' => $stock_detail->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -142,8 +154,10 @@ class ExpeditionController extends Controller
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' => $cart_item->options->product_expiration,
-          
-                    
+                ]);
+                $stock_detail = StockDetails::findOrFail($cart_item->id);
+                $stock_detail->update([
+                    'product_status_stock'=> 'Despachado',
                 ]);
             }
 

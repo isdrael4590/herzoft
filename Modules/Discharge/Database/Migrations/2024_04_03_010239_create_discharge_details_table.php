@@ -15,8 +15,9 @@ class CreateDischargeDetailsTable extends Migration
     {
         Schema::create('discharge_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('discharge_id');
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('labelqr_detail_id');
             $table->string('product_name');
             $table->string('product_code');
             $table->string('product_package_wrap');
@@ -26,8 +27,7 @@ class CreateDischargeDetailsTable extends Migration
             $table->string('product_expiration')->nullable();
             $table->string('product_type_process')->nullable();
             $table->foreign('discharge_id')->references('id')->on('discharges')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')
-            ->on('products')->nullOnDelete();
+            $table->foreign('labelqr_detail_id')->references('id')->on('labelqr_details')->onDelete('cascade');
             $table->timestamps();
         });
     }

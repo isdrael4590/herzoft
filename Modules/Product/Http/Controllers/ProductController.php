@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Product\Entities\Product;
 use Modules\Product\Http\Requests\StoreProductRequest;
 use Modules\Product\Http\Requests\UpdateProductRequest;
 use Modules\Upload\Entities\Upload;
-
+use Exception;
 class ProductController extends Controller
 {
 
@@ -22,6 +23,14 @@ class ProductController extends Controller
         return $dataTable->render('product::products.index');
     }
 
+  /*  public function import(){
+        
+
+
+        Excel::import(new Product, request()->file('file'));
+        return redirect()->back();
+    }
+*/
 
     public function create() {
         abort_if(Gate::denies('create_products'), 403);

@@ -20,7 +20,9 @@ class ExpeditionDataTable extends DataTable
             ->addColumn('status_expedition', function ($data) {
                 return view('expedition::partials.status_expedition', compact('data'));
             })
-
+            ->addColumn('dates', function ($data) {
+                return view('expedition::partials.dates', compact('data'));
+            })
             ->addColumn('action', function ($data) {
                 return view('expedition::partials.actions', compact('data'));
             });
@@ -70,7 +72,7 @@ class ExpeditionDataTable extends DataTable
                 ->title('Ref. Expedición')
                 ->className('text-center align-middle'),
 
-                Column::make('created_at')
+                Column::make('dates')
                 ->title('Fecha de entrega')
                 ->className('text-center align-middle'),
                 
