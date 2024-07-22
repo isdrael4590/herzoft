@@ -39,7 +39,7 @@
                                 <div class="col-lg-4 col-sm-4">
                                     <div class="logo">
                                         <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
-                                            alt="Institute Image" class="img-fluid  mb-1">
+                                            alt="Institute Image" class="img-fluid mb-1" >
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-4">

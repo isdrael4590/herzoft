@@ -13,8 +13,8 @@ class CreateStockDetailsTable extends Migration
     {
         Schema::create('stock_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('stock_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->string('product_name');
             $table->string('product_code');
             $table->string('product_package_wrap');
@@ -24,8 +24,7 @@ class CreateStockDetailsTable extends Migration
             $table->timestamp('product_expiration')->nullable();
             $table->string('product_type_process')->nullable();
             $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')
-                ->on('products')->nullOnDelete();
+            //$table->foreign('product_id')->references('id')->on('products')->nullOnDelete();
             $table->timestamps();
         });
     }

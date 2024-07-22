@@ -100,14 +100,8 @@
                                         <label for="status_cycle">Estado del Proceso <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_cycle" id="status_cycle" required>
-
-                                            <option {{ $discharge->status_cycle == 'Pendiente' ? 'selected' : '' }}
-                                                value="Pendiente">Pendiente</option>
-                                            <option {{ $discharge->status_cycle == 'En Curso' ? 'selected' : '' }}
-                                                value="En Curso">En curso</option>
-                                            {{--
-                                            <option {{ $discharge->status_cycle == 'cycle_ok' ? 'selected' : '' }} value="cycle_ok">Ciclo Aprobado</option>
-                                            <option {{ $discharge->status_cycle == 'cycle_fail' ? 'selected' : '' }} value="cycle_fail">Ciclo Con Falla</option> --}}
+                                            <option {{ $discharge->status_cycle == 'Cargar' ? 'selected' : '' }}
+                                                value="En Curso">En Curso</option>
                                         </select>
                                     </div>
                                 </div>

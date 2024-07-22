@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="preparation -form" action="{{ route('preparations.store') }}" method="POST">
+                        <form id="preparation -form" action="{{ route('preparationsfromZE.store') }}" method="POST">
                             @csrf
                             <div class="form-row">
                                 <div class="col-lg-3">

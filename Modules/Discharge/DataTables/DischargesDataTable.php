@@ -86,12 +86,12 @@ class DischargesDataTable extends DataTable
                 ->title('Validación Biológico')
                 ->className('text-center align-middle'),
 
-            /*Column::computed('details_process')
-                ->title('Instrumental Procesado')
+            Column::computed('ruta_process')
+                ->title('Ruta')
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
-*/
+
             Column::make('machine_name')
                 ->title('Equipo')
                 ->className('text-center align-middle'),

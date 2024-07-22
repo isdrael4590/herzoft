@@ -134,8 +134,8 @@
 
                                             <option {{ $labelqr->status_cycle == 'Pendiente' ? 'selected' : '' }}
                                                 value="Pendiente">Pendiente</option>
-                                            <option {{ $labelqr->status_cycle == 'En Curso' ? 'selected' : '' }}
-                                                value="En Curso">En curso</option>
+                                            <option {{ $labelqr->status_cycle == 'Cargar' ? 'selected' : '' }}
+                                                value="Cargar">Cargar</option>
                                             {{--
                                             <option {{ $labelqr->status_cycle == 'cycle_ok' ? 'selected' : '' }} value="cycle_ok">Ciclo Aprobado</option>
                                             <option {{ $labelqr->status_cycle == 'cycle_fail' ? 'selected' : '' }} value="cycle_fail">Ciclo Con Falla</option> --}}

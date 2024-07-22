@@ -23,9 +23,10 @@ use Modules\Preparation\Entities\PreparationDetails;
 use Modules\Preparation\Http\Requests\StorePreparationRequest;
 use Modules\Preparation\Http\Requests\UpdatePreparationRequest;
 use Modules\Reception\Http\Requests\StoreReceptionRequest;
+use Modules\Discharge\Entities\Discharge;
 
 
-class PreparationController extends Controller
+class PreparationfromZEController extends Controller
 {
     public function index( PreparationDataTable $dataTable)
     {
@@ -36,14 +37,14 @@ class PreparationController extends Controller
     }
 
 
-    public function create($reception_id)
+    public function create($discharge_id)
     {
         abort_if(Gate::denies('create_preparations'), 403);
-        $reception = Reception::findOrFail($reception_id);
+        $discharge = Discharge::findOrFail($discharge_id);
 
         Cart::instance('preparation')->destroy();
 
-        return view('preparation::preparations.create',compact('reception'));
+        return view('preparation::preparations.create',compact('discharge'));
     }
 
 
@@ -51,14 +52,14 @@ class PreparationController extends Controller
     {
         DB::transaction(function () use ($request) {
             $preparation = Preparation::create([
-                'reception_id' => $request->reception_id,
+                'reception_id' => $request->discharge_id,
                 'operator' => $request->operator,
                 'note' => $request->note,
             ]);
 
-            $reception = Reception::findOrFail($request->reception_id);
-            $reception->update([
-                'status' => 'Procesado',
+            $discharge = discharge::findOrFail($request->discharge_id);
+            $discharge->update([
+                'ruta_process' => 'Reprocesado',
             ]);
             foreach (Cart::instance('preparation')->content() as $cart_item) {
                 PreparationDetails::create([
@@ -129,10 +130,16 @@ class PreparationController extends Controller
             }
 
             $preparation->update([
+                'discharge_id' => $request->discharge_id,
                 'reference' => $request->reference,
                 'operator' => $request->operator,
                 'note' => $request->note,
 
+            ]);
+
+            $discharge = discharge::findOrFail($request->discharge_id);
+            $discharge->update([
+                'ruta_process' => 'Reprocesado',
             ]);
 
             foreach (Cart::instance('preparation')->content() as $cart_item) {

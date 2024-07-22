@@ -23,8 +23,7 @@ class CreatePreparationDetailsTable extends Migration
             $table->string('product_coming_zone')->nullable();
             $table->string('product_type_process')->nullable();
             $table->foreign('preparation_id')->references('id')->on('preparations')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')
-                ->on('products')->nullOnDelete();
+           // $table->foreign('product_id')->references('id')->on('products')->nullOnDelete();
             $table->timestamps();
         });
     }

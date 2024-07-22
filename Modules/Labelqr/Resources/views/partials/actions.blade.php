@@ -5,7 +5,7 @@
     <div class="dropdown-menu"> --}}
         
 @can('create_labelqr_discharges')
-    @if ($data->status_cycle == 'En Curso')
+    @if ($data->status_cycle == 'Cargar')
         <a href="{{ route('labelqr-discharges.create', $data) }}" class="dropdown-item">
             <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar Proceso.
         </a>
@@ -15,11 +15,11 @@
 
 @can('edit_labelqrs')
 
-    @if (($data->status_cycle == 'En Curso' | $data->status_cycle == 'Pendiente' ) & ($data->machine_type == 'Autoclave'))
+    @if (($data->status_cycle == 'Cargar' || $data->status_cycle == 'Pendiente' ) & ($data->machine_type == 'Autoclave'))
         <a href="{{ route('labelqrs.edit', $data->id) }}" class="dropdown-item">
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar STEAM
         </a>
-       @elseif (($data->status_cycle == 'En Curso' | $data->status_cycle == 'Pendiente' )& ($data->machine_type == 'Peroxido'))
+       @elseif (($data->status_cycle == 'Cargar' || $data->status_cycle == 'Pendiente' )& ($data->machine_type == 'Peroxido'))
         <a href="{{ route('labelqrs.edit', [($data->id)])}}" class="dropdown-item">
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar HPO
         </a>

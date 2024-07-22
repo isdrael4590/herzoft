@@ -22,15 +22,15 @@ class InformatDatabaseSeeder extends Seeder
 
         Institute::create([
             'institute_code' => 'Inst_01',
-            'institute_name' => 'ALEM ',
-            'institute_address' => 'Ambato, Ficoa, oficina 301, av. Pachano y Montalvo',
-            'institute_area' => 'Ingeniería',
-            'institute_city' => 'Ambato',
+            'institute_name' => 'Hospital de Especialidades de FF.AA N°1',
+            'institute_address' => 'Av. Gran Colombia &, Quito 170136',
+            'institute_area' => 'Central Esterilización',
+            'institute_city' => 'Quito',
             'institute_country' => 'Ecuador'
         ]);
         Area::create([
             'area_code' => 'Area_01',
-            'area_name' => 'Ingenieria Ambato ',
+            'area_name' => 'Ingenieria Alem ',
             'area_responsable' => 'FJacome',
             'area_piso' => 'P3',
             

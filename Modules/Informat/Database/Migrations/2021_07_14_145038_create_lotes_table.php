@@ -15,7 +15,7 @@ class CreatelotesTable extends Migration
     {
         Schema::create('lotes', function (Blueprint $table) {
             $table->id();
-            $table->string('lote_code')->unique();
+            $table->string('lote_code');
             $table->string('equipo_lote');
             $table->string('tipo_lote');
             $table->string('tipo_equipo');

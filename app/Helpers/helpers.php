@@ -1,8 +1,9 @@
 <?php
 
 if (!function_exists('testbds')) {
-    function testbds() {
-        $testbds = cache()->remember('testbds', 24*60, function () {
+    function testbds()
+    {
+        $testbds = cache()->remember('testbds', 24 * 60, function () {
             return \Modules\Testbd\Entities\Testbd::firstOrFail();
         });
 
@@ -11,8 +12,9 @@ if (!function_exists('testbds')) {
 }
 
 if (!function_exists('institutes')) {
-    function institutes() {
-        $institutes = cache()->remember('institutes', 24*60, function () {
+    function institutes()
+    {
+        $institutes = cache()->remember('institutes', 24 * 60, function () {
             return \Modules\Informat\Entities\Institute::firstOrFail();
         });
 
@@ -21,26 +23,41 @@ if (!function_exists('institutes')) {
 }
 
 if (!function_exists('settings')) {
-    function settings() {
-        $settings = cache()->remember('settings', 24*60, function () {
+    function settings()
+    {
+        $settings = cache()->remember('settings', 24 * 60, function () {
             return \Modules\Setting\Entities\Setting::firstOrFail();
         });
 
         return $settings;
     }
-    if (!function_exists('machines')) {
-        function machines() {
-            $machines = cache()->remember('machines', 24*60, function () {
-                return \Modules\Informat\Entities\Machine::firstOrFail();
-            });
-    
-            return $machines;
-        }
+  
+}
+if (!function_exists('machines')) {
+    function machines()
+    {
+        $machines = cache()->remember('machines', 24 * 60, function () {
+            return \Modules\Informat\Entities\Machine::firstOrFail();
+        });
+
+        return $machines;
+    }
+}
+
+if (!function_exists('labelqrs')) {
+    function labelqrs()
+    {
+        $labelqrs = cache()->remember('labelqrs', 24 * 60, function () {
+            return \Modules\Labelqr\Entities\Labelqr::firstOrFail();
+        });
+
+        return $labelqrs;
     }
 }
 
 if (!function_exists('format_currency')) {
-    function format_currency($value, $format = true) {
+    function format_currency($value, $format = true)
+    {
         if (!$format) {
             return $value;
         }
@@ -62,7 +79,8 @@ if (!function_exists('format_currency')) {
 }
 
 if (!function_exists('make_reference_id')) {
-    function make_reference_id($prefix, $number) {
+    function make_reference_id($prefix, $number)
+    {
         $padded_text = $prefix . '-' . str_pad($number, 5, 0, STR_PAD_LEFT);
 
         return $padded_text;
@@ -70,7 +88,8 @@ if (!function_exists('make_reference_id')) {
 }
 
 if (!function_exists('array_merge_numeric_values')) {
-    function array_merge_numeric_values() {
+    function array_merge_numeric_values()
+    {
         $arrays = func_get_args();
         $merged = array();
         foreach ($arrays as $array) {

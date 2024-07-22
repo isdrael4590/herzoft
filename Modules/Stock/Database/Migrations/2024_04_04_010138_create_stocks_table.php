@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('receptions', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('discharge_id');
             $table->string('reference');
-            $table->unsignedBigInteger('area_id')->nullable();
-            $table->string('operator');
-            $table->string('delivery_staff')->nullable();
-            $table->string('area');
-            $table->string('status');
+            $table->string('lote_machine');
+            $table->string('machine_name');
+            $table->string('lote_biologic');
+            $table->string('temp_ambiente')->nullable(); 
             $table->text('note')->nullable();
-            $table->foreign('area_id')->references('id')->on('areas')->nullOnDelete();
+            $table->string('operator');
+            $table->foreign('discharge_id')->references('id')->on('discharges')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('receptions');
+        Schema::dropIfExists('stocks');
     }
 };

@@ -23,9 +23,16 @@
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="reference">Referencia <span class="text-danger">*</span></label>
+                                        <label for="reference">Ref.Descarga <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="reference" required
                                             value="{{ $discharge->reference }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="reference">Ref.Proceso <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="labelqr_id" required placeholder= "prueba"
+                                            value="{{ $discharge->labelqr_id }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">

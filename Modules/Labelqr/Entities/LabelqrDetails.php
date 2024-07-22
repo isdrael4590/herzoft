@@ -5,6 +5,7 @@ namespace Modules\Labelqr\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Labelqr\Database\factories\LabelqrFactory;
+use Modules\Preparation\Entities\PreparationDetails;
 use Modules\Product\Entities\Product;
 
 
@@ -22,5 +23,9 @@ class LabelqrDetails extends Model
 
     public function labelqr() {
         return $this->belongsTo(Labelqr::class, 'labelqr_id', 'id');
+    }
+
+    public function preparationtolabelqr() {
+        return $this->belongsTo(PreparationDetails::class, 'preparation_detail_id', 'id');
     }
 }

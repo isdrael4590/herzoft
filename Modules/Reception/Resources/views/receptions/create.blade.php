@@ -56,41 +56,43 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" required>
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                            required>
                                     </div>
                                 </div>
                             </div>
-                    </div>
 
-                    <livewire:product-cart :cartInstance="'reception'" />
 
-                    <div class="form-row">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="status">Estado de Ingreso <span class="text-danger">*</span></label>
-                                <select class="form-control" name="status" id="status" required>
-                                    <option value="Pendiente">Pendiente</option>
-                                    <option value="Registrado">Registrado</option>
-                                </select>
+                            <livewire:product-cart :cartInstance="'reception'" />
+
+                            <div class="form-row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="status">Estado de Ingreso <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="status" id="status" required>
+                                            <option value="Pendiente">Pendiente</option>
+                                            <option value="Registrado">Registrado</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="note">Nota (Si se necesita)</label>
-                        <textarea name="note" id="note" rows="5" class="form-control"></textarea>
-                    </div>
+                            <div class="form-group">
+                                <label for="note">Nota (Si se necesita)</label>
+                                <textarea name="note" id="note" rows="5" class="form-control"></textarea>
+                            </div>
 
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary">
-                            Registrar Ingreso <i class="bi bi-check"></i>
-                        </button>
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    Registrar Ingreso <i class="bi bi-check"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
-  
+
 @endsection
 
 @push('page_scripts')

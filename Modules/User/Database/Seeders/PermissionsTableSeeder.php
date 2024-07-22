@@ -60,7 +60,7 @@ class PermissionsTableSeeder extends Seeder
             'access_product_categories',
             //Barcode Printing
             'print_barcodes',
-            'access_reports',
+            
             //Settings
             'access_settings',
             //Units

@@ -18,6 +18,7 @@ use Modules\Labelqr\Entities\LabelqrDetails;
 
 use Modules\Labelqr\Http\Requests\StoreLabelqrRequest;
 use Modules\Labelqr\Http\Requests\UpdateLabelqrRequest;
+use Modules\Preparation\Entities\PreparationDetails;
 
 class LabelqrController extends Controller
 
@@ -59,8 +60,10 @@ class LabelqrController extends Controller
             ]);
 
             foreach (Cart::instance('labelqr')->content() as $cart_item) {
+                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 LabelqrDetails::create([
                     'labelqr_id' => $labelqr->id,
+                    'preparation_detail_id' => $preparation_detail->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -68,8 +71,12 @@ class LabelqrController extends Controller
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_eval_package' => $cart_item->options->product_eval_package,
-                    'product_eval_indicator'=> $cart_item->options->product_eval_indicator,
-                    'product_expiration'=> $cart_item->options->product_expiration
+                    'product_eval_indicator' => $cart_item->options->product_eval_indicator,
+                    'product_expiration' => $cart_item->options->product_expiration
+                ]);
+                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
+                $preparation_detail->update([
+                    'product_state_preparation' => 'Procesado',
                 ]);
             }
 
@@ -79,7 +86,6 @@ class LabelqrController extends Controller
         toast('labelqr registrada!', 'success');
 
         return redirect()->route('labelqrs.index');
-
     }
 
     public function show(Labelqr $labelqr)
@@ -113,8 +119,8 @@ class LabelqrController extends Controller
                     'product_package_wrap'   => $labelqr_detail->product_package_wrap,
                     'product_ref_qr'   => $labelqr_detail->product_ref_qr,
                     'product_eval_package' => $labelqr_detail->product_eval_package,
-                    'product_eval_indicator'=> $labelqr_detail->product_eval_indicator,
-                    'product_expiration'=> $labelqr_detail->product_expiration
+                    'product_eval_indicator' => $labelqr_detail->product_eval_indicator,
+                    'product_expiration' => $labelqr_detail->product_expiration
                 ]
             ]);
         }
@@ -144,8 +150,10 @@ class LabelqrController extends Controller
             ]);
 
             foreach (Cart::instance('labelqr')->content() as $cart_item) {
+                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 LabelqrDetails::create([
                     'labelqr_id' => $labelqr->id,
+                    'preparation_detail_id'=>$preparation_detail->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -153,9 +161,13 @@ class LabelqrController extends Controller
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_eval_package' => $cart_item->options->product_eval_package,
-                    'product_eval_indicator'=> $cart_item->options->product_eval_indicator,
-                    'product_expiration'=> $cart_item->options->product_expiration
+                    'product_eval_indicator' => $cart_item->options->product_eval_indicator,
+                    'product_expiration' => $cart_item->options->product_expiration
 
+                ]);
+                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
+                $preparation_detail->update([
+                    'product_state_preparation' => 'Procesado',
                 ]);
             }
 

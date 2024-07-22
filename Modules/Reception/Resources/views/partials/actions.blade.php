@@ -8,9 +8,16 @@
         <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
     </a>
 @endcan
+
 @can('edit_receptions')
+    @if ($data->status != 'Procesado')
+        <a href="{{ route('receptions.edit', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Operario
+        </a>
+    @endif
+    
     <a href="{{ route('receptions.edit', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar
+        <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Supervisor
     </a>
 @endcan
 @can('show_receptions')
