@@ -30,32 +30,15 @@
                             </div>
                         </div>
                     @endif
-                    <div class="form-group">
-                        <label>Tipo de envoltura <span class="text-danger">*</span></label>
-                        <select wire:model.live="package_wrap.{{ $cart_item->id }}" class="form-control" required>
-                            <option selected value="Contenedor"> Contenedor Rígido</option>
-                            <option value="Papel Mixto"> Papel Mixto </option>
-                            <option value="Tela No Tejida"> Tela No Tejida </option>
-                            <option value="Lamina SMS"> Lámina SMS</option>
-                            <option value="Otro"> Otro</option>
-                        </select>
-                    </div>
+
                     <div class="form-group">
                         <label>Estado Stock <span class="text-danger">*</span></label>
                         <select wire:model.live="status_stock.{{ $cart_item->id }}" class="form-control" required>
                             <option selected ="Disponible"> Disponible</option>
-                            <option value="No Disponible"> No Disponible</option>
+                            <option value="Despachado">Despachado</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Vencimiento <span class="text-danger">*</span></label>
-                        <select wire:model.live="expiration.{{ $cart_item->id }}" class="form-control" required>
-                            <option value="6">6</option>
-                            <option value="9">9</option>
-                            <option value="12">12</option>
-                         
-                        </select>
-                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

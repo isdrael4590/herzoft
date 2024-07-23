@@ -29,7 +29,6 @@
                         @include('utils.alerts')
                         <form id="expedition-form" action="{{ route('expeditions.store') }}" method="POST">
                             @csrf
-
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
@@ -38,20 +37,14 @@
                                             value="{{ $expedition_code }}">
                                     </div>
                                 </div>
-                             
-
-
-                             
-                                
-                          
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="status_expedition">Estado del Despacho <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" name="status_expedition" id="status_expedition" required>
+                                        <select class="form-control" name="status_expedition" id="status_expedition"
+                                            required>
                                             <option selected value="Despachado">Despachado</option>
                                             <option value="Pendiente">Pendiente</option>
-
                                         </select>
                                     </div>
                                 </div>
@@ -68,12 +61,12 @@
                                     <div class="form-group">
                                         <label for="area_expedition">Area de expedición <span
                                                 class="text-danger">*</span></label>
-                                                <select class="form-control" id="area_expedition" name="area_expedition" required>
-                                                    @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                                        <option value="{{ $area->area_name }}">
-                                                            {{ $area->area_name }}</option>
-                                                    @endforeach
-                                                </select>
+                                        <select class="form-control" id="area_expedition" name="area_expedition" required>
+                                            @foreach (\Modules\Informat\Entities\Area::all() as $area)
+                                                <option value="{{ $area->area_name }}">
+                                                    {{ $area->area_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -84,8 +77,6 @@
                                             value="{{ old('staff_expedition') }}">
                                     </div>
                                 </div>
-
-
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>
@@ -94,24 +85,21 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
+                            <livewire:product-carttoEXP :cartInstance="'expedition'" />
+                            <div class="form-row">
+                            </div>
+                            <div class="form-group">
+                                <label for="note_expedition">Nota (Si se necesita)</label>
+                                <textarea name="note_expedition" id="note_expedition" rows="5" class="form-control"></textarea>
+                            </div>
 
-                    <livewire:product-carttoEXP :cartInstance="'expedition'" />
-
-                    <div class="form-row">
-
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    Despachar Productos <i class="bi bi-check"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="note_expedition">Nota (Si se necesita)</label>
-                        <textarea name="note_expedition" id="note_expedition" rows="5" class="form-control"></textarea>
-                    </div>
-
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary">
-                            Despachar Productos <i class="bi bi-check"></i>
-                        </button>
-                    </div>
-                    </form>
                 </div>
             </div>
         </div>

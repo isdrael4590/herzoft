@@ -5,9 +5,17 @@
     <div class="dropdown-menu"> --}}
 
 @can('edit_discharges')
-    <a href="{{ route('discharges.edit', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Liberar
-    </a>
+    @if ($data->ruta_process != 'Almacenado')
+        @if ($data->machine_type == 'Autoclave')
+            <a href="{{ route('discharges.edit', $data->id) }}" class="dropdown-item">
+                <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Liberar STEAM
+            </a>
+        @elseif($data->machine_type == 'Peroxido')
+            <a href="{{ route('discharges.edit', $data->id) }}" class="dropdown-item">
+                <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Liberar HPO
+            </a>
+        @endif
+    @endif
 @endcan
 @can('show_discharges')
     @if (($data->status_cycle == 'Ciclo Aprobado') | ($data->status_cycle == 'Ciclo Falla'))
@@ -18,20 +26,22 @@
 @endcan
 @can('print_discharges')
     @if (($data->status_cycle == 'Ciclo Aprobado') | ($data->status_cycle == 'Ciclo Falla'))
-    <a href="{{ route('discharges.pdf', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
-    </a>
+        <a href="{{ route('discharges.pdf', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
+        </a>
     @endif
 @endcan
 @can('create_discharges_stock')
-    @if (($data->status_cycle == 'Ciclo Aprobado') & ($data->validation_biologic == 'Correcto'))
-        <a href="{{ route('discharges-stock.create', $data) }}" class="dropdown-item">
-            <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a Almacén.
-        </a>
-    @elseif(($data->status_cycle == 'Ciclo Falla') | ($data->validation_biologic == 'Falla'))
-        <a href="{{ route('discharges-preparation.create', $data) }}" class="dropdown-item">
-            <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a Reprocesamiento.
-        </a>
+    @if ($data->ruta_process != 'Almacenado')
+        @if (($data->status_cycle == 'Ciclo Aprobado') & ($data->validation_biologic == 'Correcto'))
+            <a href="{{ route('discharges-stock.create', $data) }}" class="dropdown-item">
+                <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a Almacén.
+            </a>
+        @elseif(($data->status_cycle == 'Ciclo Falla') | ($data->validation_biologic == 'Falla'))
+            <a href="{{ route('discharges-preparation.create', $data) }}" class="dropdown-item">
+                <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a Reprocesamiento.
+            </a>
+        @endif
     @endif
 @endcan
 

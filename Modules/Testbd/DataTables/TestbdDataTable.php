@@ -42,7 +42,9 @@ class TestbdDataTable extends DataTable
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(7)
+                                ->parameters([
+                                    'order' => [[1, 'desc']],
+                                ])
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -67,8 +69,8 @@ class TestbdDataTable extends DataTable
 
             Column::make('testbd_reference')
                 ->title('Referencia de BD.')
-                ->className('text-center align-middle'),
-
+                ->className('text-center align-middle')
+                ->orders('testbd_reference', 'desc'),
                 Column::make('dates')
                 ->title('Fecha')
                 ->className('text-center align-middle'),
@@ -89,7 +91,7 @@ class TestbdDataTable extends DataTable
                 ->title('Lote del insumo B&D.')
                 ->className('text-center align-middle'),
 
-            Column::computed('validation_bd')
+            Column::make('validation_bd')
                 ->title('Validación del Ciclo.')
                 ->className('text-center align-middle'),
 

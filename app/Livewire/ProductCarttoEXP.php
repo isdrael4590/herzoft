@@ -83,7 +83,8 @@ class ProductCarttoEXP extends Component
                 'product_type_process'    => $product['product_type_process'],
                 'product_package_wrap' =>  $product['product_package_wrap'], //ESTE ES EL DATO A MODIFICAR
                 'product_ref_qr' =>  $product['product_ref_qr'], //ESTE ES EL DATO A MODIFICAR
-                'product_expiration' => $product['product_expiration'], //ESTE ES EL DATO A MODIFICAR
+                'product_expiration' => $product['product_expiration'],
+               // 'stock_detail_id' => $product['stock_detail_id'], //ESTE ES EL DATO A MODIFICAR
                
             ]
 

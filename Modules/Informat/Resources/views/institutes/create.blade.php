@@ -133,8 +133,8 @@
                 $('form').find('input[name="document[]"][value="' + name + '"]').remove();
             },
             init: function () {
-                @if(isset($institute) && $institute->getMedia('images'))
-                var files = {!! json_encode($institute->getMedia('images')) !!};
+                @if(isset($institute) && $institute->getMedia('institutes'))
+                var files = {!! json_encode($institute->getMedia('institutes')) !!};
                 for (var i in files) {
                     var file = files[i];
                     this.options.addedfile.call(this, file);

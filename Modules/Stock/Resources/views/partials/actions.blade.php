@@ -1,16 +1,16 @@
 
 
-@can('edit_stocks')
+@can('edit_stockManual')
     <a href="{{ route('stocks.edit', $data->id) }}" class="dropdown-item">
         <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar
     </a>
 @endcan
-@can('show_stocks')
+@can('show_stockManual')
         <a href="{{ route('stocks.show', $data->id) }}" class="dropdown-item">
             <i class="bi bi-eye mr-2 text-info" style="line-height: 1;"></i> Detalles
         </a>
 @endcan
-@can('delete_stocks')
+@can('delete_stockManual')
     <button id="delete" class="dropdown-item"
         onclick="
                 event.preventDefault();

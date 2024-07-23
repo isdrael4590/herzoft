@@ -14,14 +14,16 @@ use Modules\Stock\Entities\Stock;
 use Modules\Stock\Entities\StockDetails;
 use Modules\Stock\Http\Requests\StoreStockRequest;
 use Modules\Stock\Http\Requests\UpdateStockRequest;
+use Modules\Discharge\Entities\Discharge;
 
+use Carbon\Carbon;
 
 
 
 class StockController extends Controller
 {
 
-    public function index(StockDetailsDataTable $dataTable)
+    public function index(StockDataTable $dataTable)
     {
         abort_if(Gate::denies('access_almacen_area'), 403);
 
@@ -29,13 +31,13 @@ class StockController extends Controller
     }
 
 
-    public function create()
+    public function create($discharge_id)
     {
         abort_if(Gate::denies('create_stocks'), 403);
-
+        $discharge = Discharge::findOrFail($discharge_id);
         Cart::instance('stocks')->destroy();
 
-        return view('stock::stocks.create');
+        return view('stock::stocks.create' ,compact('discharge'));
     }
 
 
@@ -43,6 +45,7 @@ class StockController extends Controller
     {
         DB::transaction(function () use ($request) {
             $stock = Stock::create([
+                'discharge_id'=>$request->discharge_id,
                 'lote_machine' => $request->lote_machine,
                 'machine_name' => $request->machine_name,
                 'lote_biologic' => $request->lote_biologic,
@@ -50,7 +53,16 @@ class StockController extends Controller
                 'note' => $request->note,
                 'operator' => $request->operator,
             ]);
-            foreach (Cart::instance('stock')->content() as $cart_item) {
+
+            $discharge = Discharge::findOrFail($request->discharge_id);
+            $discharge->update([
+                'ruta_process' => 'Almacenado',// aquii falta
+
+            ]);
+
+            foreach (Cart::instance('stock')->content() as $cart_item) {  
+                $expiration= Carbon::parse($cart_item->options->product_expiration);
+                $date_sterelized= Carbon::parse($cart_item->options->product_date_sterilized);
                 StockDetails::create([
                     'stock_id' => $stock->id,
                     'product_id' => $cart_item->id,
@@ -59,8 +71,8 @@ class StockController extends Controller
                     'product_type_process' => $cart_item->options->product_type_process,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
-                    'product_expiration' =>$cart_item->options->product_expiration,
-                    'product_date_sterilized' =>$cart_item->options->product_date_sterilized,
+                    'product_expiration' =>$expiration,
+                    'product_date_sterilized' =>$date_sterelized,
                     'product_status_stock' =>$cart_item->options->product_status_stock,
 
                 ]);
@@ -93,20 +105,21 @@ class StockController extends Controller
         $cart = Cart::instance('stock');
 
         foreach ($stock_details as $stock_detail) {
+            $expiration= Carbon::parse($stock_detail->updated_at)->addMonth($stock_detail->product_expiration) ;
             $cart->add([
-                'id'      => $stock_details->product_id,
-                'name'    => $stock_details->product_name,
+                'id'      => $stock_detail->product_id,
+                'name'    => $stock_detail->product_name,
                 'qty'     => 1,
                 'price'     => 1,
                 'weight'     => 1,
                 'options' => [
-                    'code'     => $stock_details->product_code,
-                    'product_type_process'   => $stock_details->product_type_process,
-                    'product_package_wrap'   => $stock_details->product_package_wrap,
-                    'product_ref_qr'   => $stock_details->product_ref_qr,
-                    'product_expiration'   => $stock_details->product_expiration,
-                    'product_date_sterilized'   => $stock_details->product_date_sterilized,
-                    'product_status_stock'   => $stock_details->product_status_stock,
+                    'code'     => $stock_detail->product_code,
+                    'product_type_process'   => $stock_detail->product_type_process,
+                    'product_package_wrap'   => $stock_detail->product_package_wrap,
+                    'product_ref_qr'   => $stock_detail->product_ref_qr,
+                    'product_expiration'   => $expiration,
+                    'product_date_sterilized'   => $stock_detail->product_date_sterilized,
+                    'product_status_stock'   => $stock_detail->product_status_stock,
                     
                  
                 ]
@@ -126,6 +139,7 @@ class StockController extends Controller
             }
 
             $stock->update([
+                'discharge_id'=>$request->discharge_id,
                 'lote_machine' => $request->lote_machine,
                 'machine_name' => $request->machine_name,
                 'lote_biologic' => $request->lote_biologic,
@@ -134,7 +148,11 @@ class StockController extends Controller
                 'operator' => $request->operator
             ]);
      
+            $discharge = Discharge::findOrFail($request->discharge_id);
+            $discharge->update([
+                'ruta_process' => 'Almacenado',// aquii falta
 
+            ]);
             foreach (Cart::instance('stock')->content() as $cart_item) {
                 stockDetails::create([
                     'stock_id' => $stock->id,

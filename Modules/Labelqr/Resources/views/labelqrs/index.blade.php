@@ -20,9 +20,11 @@
                 <div class="card">
                     <div class="card-body">
                         <a href="{{ route('labelqrs.create') }}" class="btn btn-primary">
-                            Generación de Etiquetas <i class="bi bi-plus"></i>
+                            Generación de Etiquetas STEAM<i class="bi bi-plus"></i>
                         </a>
-
+                        <a href="{{ route('labelqrshpo.create') }}" class="btn btn-primary">
+                            Generación de Etiquetas HPO <i class="bi bi-plus"></i>
+                        </a>
                         <hr>
 
                         <div class="table-responsive">

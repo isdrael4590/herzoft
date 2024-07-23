@@ -27,32 +27,39 @@ use Modules\Reception\Http\Requests\StoreReceptionRequest;
 
 class PreparationController extends Controller
 {
-    public function index(PreparationDataTable $dataTable)
+    public function index( PreparationDataTable $dataTable)
     {
         abort_if(Gate::denies('access_preparations'), 403);
 
+
         return $dataTable->render('preparation::preparations.index');
     }
-    
 
-    public function create()
+
+    public function create($reception_id)
     {
         abort_if(Gate::denies('create_preparations'), 403);
+        $reception = Reception::findOrFail($reception_id);
 
         Cart::instance('preparation')->destroy();
 
-        return view('preparation::preparations.create');
+        return view('preparation::preparations.create',compact('reception'));
     }
 
 
-    public function store(StorePreparationRequest $request, Reception $reception)
+    public function store(StorePreparationRequest $request)
     {
-        DB::transaction(function () use ($request, $reception) {
+        DB::transaction(function () use ($request) {
             $preparation = Preparation::create([
+                'reception_id' => $request->reception_id,
                 'operator' => $request->operator,
                 'note' => $request->note,
             ]);
 
+            $reception = Reception::findOrFail($request->reception_id);
+            $reception->update([
+                'status' => 'Procesado',
+            ]);
             foreach (Cart::instance('preparation')->content() as $cart_item) {
                 PreparationDetails::create([
                     'preparation_id' => $preparation->id,
@@ -63,41 +70,17 @@ class PreparationController extends Controller
                     'product_state_preparation' => $cart_item->options->product_state_preparation,
                     'product_coming_zone' => $cart_item->options->product_coming_zone,
                 ]);
-            }
-            foreach ($reception->receptionDetails as $reception_detail) {
-                $reception_detail->delete();
+
             }
 
-            $reception->update([
-                'reference' => $request->reference,
-                'operator' => $request->operator,
-                'delivery_staff' => $request->delivery_staff,
-                'area' => $request->area,
-                'status' => "procesado",
-                'note' => $request->note,
-            ]);
-
-            foreach (Cart::instance('reception')->content() as $cart_item) {
-                ReceptionDetails::create([
-                    'reception_id' => $reception->id,
-                    'product_id' => $cart_item->id,
-                    'product_name' => $cart_item->name,
-                    'product_code' => $cart_item->options->code,
-                    'product_type_process' => $cart_item->options->product_type_process,
-                    'product_type_dirt' => $cart_item->options->product_type_dirt,
-                    'product_state_rumed' => $cart_item->options->product_state_rumed,
-                ]);
-            }
-
-            
             Cart::instance('preparation')->destroy();
         });
 
-       
+
 
         toast('preparation registrada!', 'success');
 
-        return redirect()->route('preparations.index');
+        return redirect()->route('preparationDetails.index');
     }
 
     public function show(Preparation $preparation)
@@ -130,7 +113,7 @@ class PreparationController extends Controller
                     'product_type_process'   => $preparation_detail->product_type_process,
                     'product_state_preparation'   => $preparation_detail->product_state_preparation,
                     'product_coming_zone' => $preparation_detail->product_coming_zone,
-                  
+
                 ]
             ]);
         }
@@ -162,7 +145,7 @@ class PreparationController extends Controller
                     'product_state_preparation' => $cart_item->options->product_state_preparation,
                     'product_coming_zone' => $cart_item->options->product_coming_zone,
 
-                 
+
                 ]);
             }
 

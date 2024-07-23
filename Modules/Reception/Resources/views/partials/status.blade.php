@@ -6,4 +6,8 @@
     <span class="badge badge-success">
         {{ $data->status }}
     </span>
+@elseif($data->status == 'Procesado')
+    <span class="badge badge-secondary">
+        {{ $data->status }}
+    </span>
 @endif

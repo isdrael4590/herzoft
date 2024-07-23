@@ -32,5 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     //stocks
     Route::resource('stocks', 'StockController');
+    Route::resource('stockDetails', 'StockDetailsController');
 
 });

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 use Modules\Product\Entities\Product;
@@ -85,11 +86,11 @@ class ProductCarttoStock extends Component
             'options' => [
                 'code'    => $product['product_code'],
                 'product_type_process'    => $product['product_type_process'],
-                'product_package_wrap' =>  'Contenedor', //ESTE ES EL DATO A MODIFICAR
-                'product_ref_qr' =>  'PRUEBA', //ESTE ES EL DATO A MODIFICAR
-                'product_expiration' =>  '6', //ESTE ES EL DATO A MODIFICAR
+                'product_package_wrap' =>  $product['product_package_wrap'], //ESTE ES EL DATO A MODIFICAR
+                'product_ref_qr' =>  $product['product_ref_qr'], //ESTE ES EL DATO A MODIFICAR
+                'product_expiration' =>  $product['product_expiration'], //ESTE ES EL DATO A MODIFICAR
                 'product_status_stock' =>  'Disponible', //ESTE ES EL DATO A MODIFICAR
-                'product_date_sterilized' =>  '',
+                'product_date_sterilized' =>  $product['updated_at'],
                 
             ]
 

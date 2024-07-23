@@ -18,7 +18,12 @@ class InstituteDataTable extends DataTable
             ->eloquent($query)
             ->addColumn('action', function ($data) {
                 return view('informat::institutes.partials.actions', compact('data'));
-            });
+            })
+            ->addColumn('image_institute', function ($data) {
+                $url = $data->getFirstMediaUrl('institutes', 'thumb');
+                return '<img src="'.$url.'" border="0" width="50" class="img-thumbnail" align="center"/>';
+            })
+            ->rawColumns(['image_institute']);
     }
 
     public function query(Institute $model)
@@ -35,7 +40,7 @@ class InstituteDataTable extends DataTable
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(4)
+            ->orderBy(7)
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -51,7 +56,7 @@ class InstituteDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('institute_code')
+            Column::computed('image_institute')
             ->title('Logo Institución')
             ->addClass('text-center'),
             Column::make('institute_code')

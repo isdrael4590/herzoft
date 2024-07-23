@@ -15,17 +15,17 @@ use Modules\Expedition\Http\Controllers\PrinterExpeditionController;
 
 Route::group(['middleware' => 'auth'], function () {
 
-    //POS
-    //Route::get('/app/pos', 'PosController@index')->name('app.pos.index');
-    //Route::post('/app/pos', 'PosController@store')->name('app.pos.store');
 
     //Generate PDF
- /*   Route::get('/expeditions/pdf/{id}', function ($id) {
+ /*
+ Route::get('/expeditions/pdf/{id}', function ($id) {
         $expedition = \Modules\Expedition\Entities\Expedition::findOrFail($id);
+        $institute=\Modules\Informat\Entities\Institute::all()->first();
        
 
         $pdf = \PDF::loadView('expedition::expeditions.print', [
             'expedition' => $expedition,
+            'institute' => $institute,
            
         ])->setPaper('a4');
 
@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
     //expeditions
     Route::resource('expeditions', 'ExpeditionController');
 
-    Route::get('/expeditions/pdf/{id}', [PrinterExpeditionController::class, 'printerExpeditionA4'])->name('expeditions.pdf');
+   Route::get('/expeditions/pdf/{id}', [PrinterExpeditionController::class, 'printerExpeditionA4'])->name('expeditions.pdf');
     //expeditions
 
 });

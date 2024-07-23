@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Institute\Http\Requests;
+namespace Modules\Informat\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
@@ -17,9 +17,9 @@ class StoreInstituteRequest extends FormRequest
         return [
             'institute_code' => ['required', 'string', 'max:255'],
             'institute_name' => ['required', 'string', 'max:255'],
-            'institute_address' => ['required', 'string', 'max:255'],
-            'institute_area' => ['required', 'string', 'max:255'],
-            'institute_city' => ['required', 'string', 'min:1'],
+            'institute_address' => ['nullable', 'string', 'max:255'],
+            'institute_area' => ['nullable', 'string', 'max:255'],
+            'institute_city' => ['nullable', 'string', 'max:1000'],
             'institute_country' => ['nullable', 'string', 'max:1000']
         ];
     }

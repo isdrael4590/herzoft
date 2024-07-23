@@ -32,13 +32,13 @@ class ProductCarttoPRE extends Component
             foreach ($cart_items as $cart_item) {
                 $this->state_preparation[$cart_item->id] = $cart_item->options->product_state_preparation;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
-             
+                $this->coming_zone[$cart_item->id] = $cart_item->options->product_coming_zone;
             }
         } else {
             
             $this->state_preparation = [];
             $this->type_process = [];
-
+            $this->coming_zone = [];
           
         }
       
@@ -86,7 +86,7 @@ class ProductCarttoPRE extends Component
 
 
         ]);
-        $this->state_preparation[$product['id']] = 'Contenedor';
+        $this->state_preparation[$product['id']] = 'Disponible';
       
 
 
@@ -99,7 +99,7 @@ class ProductCarttoPRE extends Component
         Cart::instance($this->cart_instance)->remove($row_id);
     }
 
-    public function InputWrap_package($product_id, $row_id)
+    public function inputPreparation($product_id, $row_id)
     { // se añade
         $this->updateDataInput($row_id, $product_id); // se añade
     } // se añade
@@ -111,8 +111,8 @@ class ProductCarttoPRE extends Component
             'options' => [
                 'code'                       => $cart_item->options->code,
                 'product_state_preparation'  => $cart_item->options->product_state_preparation,
-                'product_coming_zone'        =>  $cart_item->options->product_coming_zone,
                 'product_type_process'    => $cart_item->options->product_type_process,
+                'product_coming_zone'    => $cart_item->options->product_coming_zone,
 
             ]
         ]);
@@ -124,15 +124,15 @@ class ProductCarttoPRE extends Component
         $this->updateCartOptions($row_id, $product_id, $cart_item);
   
 
-        session()->flash('message_InputWrap_package' . $product_id, 'Observaciones añadidos...!');
+        session()->flash('message_inputPreparation' . $product_id, 'Observaciones añadidos...!');
     }
     public function updateCartOptions($row_id, $product_id, $cart_item)
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code' => $cart_item->options->code,
             'product_type_process'=> $cart_item->options->product_type_process,
+            'product_coming_zone'=> $cart_item->options->product_coming_zone,
             'product_state_preparation'     => $this->state_preparation[$product_id],
-            'product_coming_zone'        =>   $this->product_coming_zone[$product_id],
             
            
 

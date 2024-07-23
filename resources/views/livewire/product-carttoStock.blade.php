@@ -22,6 +22,7 @@
                         <th class="align-middle text-center">Estado de Stock</th>
                         <th class="align-middle text-center">Fecha Esterilización</th>
                         <th class="align-middle text-center">Expiración</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,10 +45,17 @@
                                     {{ $cart_item->options->product_status_stock }}  @include('livewire.includes.product-cart-modaltoStock')
                                 </td>
                                 <td class="align-middle text-center text-center">
-                                    {{ $cart_item->options->product_date_sterilized }} 
+                                    {{ \Carbon\Carbon::parse($cart_item->options->product_date_sterilized)->format('d M, Y')  }}
+                                   
                                 </td>
                                 <td class="align-middle text-center text-center">
-                                    {{ $cart_item->options->product_expiration }} 
+                                   {{-- {!!\Carbon\Carbon::parse($cart_item->options->product_date_sterilized)->addMonth($cart_item->options->product_expiration)!!}--}}
+                                   {!!\Carbon\Carbon::parse($cart_item->options->product_expiration)->format('d M, Y')!!}
+                                </td>
+                                <td class="align-middle text-center">
+                                    <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
+                                        <i class="bi bi-x-circle font-2xl text-danger"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

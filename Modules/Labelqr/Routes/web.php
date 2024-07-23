@@ -38,4 +38,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/labelqr-discharges/{labelqr}', 'LabelqrDischargeController')->name('labelqr-discharges.create');    
     //labelqrs
     Route::resource('labelqrs', 'LabelqrController');
+    Route::resource('labelqrshpo', 'LabelqrHPOController');
 });
+

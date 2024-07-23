@@ -17,13 +17,7 @@ class StockDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-         
-            ->addColumn('details_process', function ($data) {
-                return view('stock::partials.details_process', compact('data'));
-            })
-            ->addColumn('status_stock', function ($data) {
-                return view('stock::partials.status_stock', compact('data'));
-            })
+
 
             ->addColumn('action', function ($data) {
                 return view('stock::partials.actions', compact('data'));
@@ -40,14 +34,16 @@ class StockDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('StockDetails-table')
+            ->setTableId('Stock-table')
 
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
-            ->orderBy(6)
+            ->parameters([
+                'order' => [[1, 'desc']],
+            ])
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
@@ -68,32 +64,27 @@ class StockDataTable extends DataTable
                 ->printable(false)
                 ->className('text-center align-middle'),
 
-                Column::computed('product_name')
-                ->title('Nombre del producto')
+            Column::computed('reference')
+                ->title('Referencia')
                 ->className('text-center align-middle'),
 
-                Column::make('product_code')
-                ->title('Código del producto')
+            Column::make('lote_machine')
+                ->title('Lote del equipo')
                 ->className('text-center align-middle'),
 
-                Column::make('product_package_wrap')
-                ->title('Tipo de embalaje')
+            Column::make('machine_name')
+                ->title('Equipo')
                 ->className('text-center align-middle'),
 
-                Column::make('status_stock')
-                ->title('Estado del Stock')
+            Column::make('lote_biologic')
+                ->title('Lote del Biológico')
                 ->className('text-center align-middle'),
 
-            Column::make('product_expiration')
-                ->title('Fecha de vencimiento')
+            Column::make('note')
+                ->title('Notas')
                 ->className('text-center align-middle'),
 
-                Column::make('details_process')
-                ->title('Información del proceso')
-                ->className('text-center align-middle'),
 
-          
-        
 
         ];
     }

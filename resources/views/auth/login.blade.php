@@ -8,7 +8,7 @@
     <title>Ingresar | {{ config('app.name') }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" href="{{ asset('images/LOGOHERZ.jpg') }}">
     <!-- CoreUI CSS -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
@@ -20,7 +20,7 @@
     <div class="row mb-3">
         <div class="col-12 d-flex justify-content-center">
             {{--<img width="200" src="{{ asset('images/LOGOHERZ.JPG') }}" alt="Logo">--}}
-                <img width="200" src="{{ URL::to('images/LOGOHERZ.jpg') }}" alt="Logo">
+                <img width="300" src="{{ URL::to('images/LOGOHERZ.jpg') }}" alt="Logo">
 
         </div>
     </div>
@@ -84,12 +84,20 @@
                 </div>
             </div>
 
-            <p class="text-center mt-5 lead">
+            <p class="text-center mt-10 lead">
                Desarrollado por 
                 <a href="#" class="font-weight-bold text-primary">herZoft Group</a>
-            </p>
+       <br>
+                Derechos adquiridos por 
+                 <a href="http://www.alem.com.ec/" class="font-weight-bold text-primary">Alem Cia. Ltda.</a>
+             </p>
         </div>
     </div>
+    <footer class="c-footer">
+        <div>herZoft {{ date('Y') }} || Todos los derechos son reservados con <strong><a target="_blank" href="#">herZoft</a></strong></div>
+    
+        <div class="mfs-auto d-md-down-none">Version <strong class="text-danger">1.0</strong></div>
+    </footer>
 </div>
 
 <!-- CoreUI -->
@@ -121,4 +129,5 @@
 </script>
 
 </body>
+
 </html>

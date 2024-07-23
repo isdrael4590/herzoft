@@ -39,7 +39,7 @@
                                 <option value="" selected disabled>Selección Tipo de Equipo
                                 </option>
                                 <option value="Autoclave">Autoclave</option>
-                                <option value="Peroxido">Esterilizador de peroxido</option>
+                                <option value="Peroxido">Peroxido</option>
                             </select>
                         </div>
                     </div>
