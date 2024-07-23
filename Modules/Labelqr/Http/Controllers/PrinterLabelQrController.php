@@ -54,11 +54,19 @@ class PrinterLabelQrController extends Controller
         // Definir la dirección del servidor local hacia a donde mandar la imagen
         $clientServerUrl = "http://$clientIp:3000/";
         // Envia el request hacia el servidor y procesa la respuesta
-        $response = Http::withBody(base64_encode($image->content()), 'text/plain')->post($clientServerUrl);
-        if ($response->status() == 200) {
-            return redirect()->route('labelqrs_label.pdf', $id)->with('exito', $response->body());
-        } else {
-            return redirect()->route('labelqrs_label.pdf', $id)->with('error', $response->body());
+        $mensaje = "";
+        $estado = 'error';
+        try{
+            $response = Http::withBody(base64_encode($image->content()), 'text/plain')->post($clientServerUrl);
+            $estado = ($response->status() == 200) ? 'exito': 'advertencia';
+            $mensaje = $response->body();
         }
+        catch(\Illuminate\Http\Client\ConnectionException $e){
+            $mensaje = 'Error al imprimir la etiqueta, por favor revise que la impresora esté conectada';
+        }
+        catch(\Exception $e){
+            $mensaje = 'Error, por favor requiera asistencia, detalles: ' . $e->getMessage();
+        }
+        return redirect()->route('labelqrs_label.pdf', $id)->with($estado, $mensaje);
     }
 }
