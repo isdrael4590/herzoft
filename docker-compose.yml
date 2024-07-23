@@ -1,7 +1,7 @@
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.2
+            context: ./docker/8.2
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -11,6 +11,7 @@ services:
         ports:
             - '${APP_PORT:-80}:80'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+            - 3000:3000 # Puerto comunicación con impresora
         secrets:
           - db_password
           - admin_password
@@ -21,6 +22,7 @@ services:
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
             DB_PASSWORD_FILE: '${DB_PASSWORD_FILE}'
+            PHP_CLI_SERVER_WORKERS: 2
         volumes:
             - '.:/var/www/html'
         networks:
@@ -46,7 +48,7 @@ services:
             MYSQL_PASSWORD_FILE: '${DB_PASSWORD_FILE}'
         volumes:
             - 'sail-mysql:/var/lib/mysql'
-            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+            - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
         healthcheck:

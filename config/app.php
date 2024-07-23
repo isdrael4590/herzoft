@@ -184,6 +184,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // Snappy para capturas de iMágenes
+        Barryvdh\Snappy\ServiceProvider::class,
 
     ],
 
@@ -243,10 +245,9 @@ return [
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
         'Module' => Nwidart\Modules\Facades\Module::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-        //'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
-        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        // Aliases del Wrapper de Snappy
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
-
     ],
 
 ];

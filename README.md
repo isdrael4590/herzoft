@@ -68,3 +68,6 @@ Comercial, Todos los derechos reservados Herzoft© 2024
 # Problemas conocidos
 
 - No se cargan los códigos RUMED descritos en la carpeta `init/codigos_rumed.sql`: Por favor borre el volumen `docker compose down && docker volume rm herzoft_sail-mysql`
+
+Para hacer capturas de pantalla 
+[Snappy PDF/Image Wrapper for Laravel](https://github.com/barryvdh/laravel-snappy)

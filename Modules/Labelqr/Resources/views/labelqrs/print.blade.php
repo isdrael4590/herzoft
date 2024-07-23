@@ -19,82 +19,38 @@
 </head>
 
 <body>
-    <div class="printer-16 printer-content">
-        <div class="container">
-    
-            <div class="row">
-                @foreach ($labelqr->labelqrDetails as $item)
-                    <div class="cabecera-ticket ">
-                        <header>
-                            <div class="upper-ticket">
-                                <strong>{{ institutes()->institute_name }}</strong>
-                                <small> {{ institutes()->institute_area }}</small>
-                                <small> {{ institutes()->institute_city }} - {{ institutes()->institute_country }}</small>
-                            </div>
-                            <div class="upper-ticket2">
-                                <small>{{ $labelqr->machine_name }}</small>
-                                <small>{{ $labelqr->type_program }}</small>
-                                <strong>Lote: {{ $labelqr->lote_machine }}</strong>
-                            </div>
-                        </header>
-                        <section class="machine-info">
-                            <div class="machine-info2">
-                                <small>Venc. {!!Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y')!!}</small>
-                                <strong>Elab.: {{$item->updated_at }}</strong>
-                            </div>
-
-                        </section>
-
-                        <section class="infos">
-                            <div class="detalls_cycle">
-                                <div class="box">
-                                    <strong><em>{{$item->product_name }}</em></strong>
-                                    <strong><em>{{$item->product_code }}</em></strong>
-                                    <small>Operario: {{ $labelqr->operator }} </small>
-                                    
-                                </div>
-                            </div>
-                            <div class="detalls_cycle">
-                              
-                                <div class="qrcode">
-                                    <div class="box">
-                                    {!! QrCode::size(60)->style('square')->generate( "$labelqr->reference"." // Lote: "."$labelqr->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: ". Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)) !!}
-                                    <span>
-                                        <small>
-                                            Lote: {{ $labelqr->lote_machine }}  <br> Código: {{ $item->product_code }}
-                                        </small>
-                                     </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="strap">
-                            <div class="box">
-                                <div class="">
-                                    <small>El producto no se considera ESTERIL, si el empaque esta ABIERTO o
-                                        HUMEDO</small>
-
-                                </div>
-
-                            </div>
-
-                        </section>
-                    </div>
-                @endforeach
-
-
-
-                <div class="printer-btn-section clearfix d-print-none">
-                    <a href="javascript:window.print()" class="btn btn-lg btn-print">
-                        Imprimir
-                    </a>
-
-                </div>
+    <div class="container">
+        @if (session()->has('exito'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('exito') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif(session()->has('advertencia'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session('advertencia') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif(session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        <div class="row">
+            <div class="printer-16 printer-content">
+                @include('labelqr::labelqrs.print-only', [
+                    'labelqr' => $labelqr,
+                    'labelqrDetails' => $labelqrDetails,
+                    'institute' => $institute,
+                ])
+            </div>
+            <div class="printer-btn-section clearfix d-print-none">
+                <a href="{{ route('labelqrs_label.img', $labelqr->id) }}" class="btn btn-lg btn-print">
+                    Imprimir
+                </a>
             </div>
         </div>
     </div>
-
-
 </body>
 
 </html>
