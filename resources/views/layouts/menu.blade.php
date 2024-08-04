@@ -115,7 +115,14 @@
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.index') ? 'c-active' : '' }}"
                             href="{{ route('labelqrs.index') }}">
-                            <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los ciclos generados QR.
+                            <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los ciclos generados.
+                        </a>
+                    </li>
+
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrsitem.index') ? 'c-active' : '' }}"
+                            href="{{ route('labelqrsitem.index') }}">
+                            <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Instrumental Procesado.
                         </a>
                     </li>
                 @endcan

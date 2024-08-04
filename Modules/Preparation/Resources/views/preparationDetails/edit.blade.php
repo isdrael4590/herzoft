@@ -20,8 +20,8 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="preparationDetails-form" action="{{ route('preparationDetails.update', $preparationDetails) }}"
-                            method="POST">
+                        <form id="preparationDetails-form"
+                            action="{{ route('preparationDetails.update', $preparationDetails) }}" method="POST">
                             @csrf
                             @method('patch')
                             <div class="form-row">
@@ -47,9 +47,10 @@
                                     <div class="form-group">
                                         <label for="product_state_preparation">Estado de Stock Producto<span
                                                 class="text-danger">*</span></label>
-                                     
-                                        <select class="form-control" id="product_state_preparation" name="product_state_preparation">
-                                            
+
+                                        <select class="form-control" id="product_state_preparation"
+                                            name="product_state_preparation">
+
                                             <option
                                                 {{ $preparationDetails->product_state_preparation == 'Disponible' ? 'selected' : '' }}
                                                 value="Disponible">
@@ -57,7 +58,10 @@
                                             <option
                                                 {{ $preparationDetails->product_state_preparation == 'Procesado' ? 'selected' : '' }}
                                                 value="Procesado">Procesado</option>
-                                           
+                                            <option
+                                                {{ $preparationDetails->product_state_preparation == 'Reprocesar' ? 'selected' : '' }}
+                                                value="Reprocesar">Reprocesar</option>
+
                                         </select>
                                     </div>
                                 </div>

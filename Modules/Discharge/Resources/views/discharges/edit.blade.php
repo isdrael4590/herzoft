@@ -31,7 +31,7 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="reference">Ref.Proceso <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="labelqr_id" required placeholder= "prueba"
+                                        <input type="text" class="form-control" name="labelqr_id" required 
                                             value="{{ $discharge->labelqr_id }}" readonly>
                                     </div>
                                 </div>

@@ -2,6 +2,7 @@
 
 namespace Modules\Preparation\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Preparation\Database\factories\PreparationFactory;

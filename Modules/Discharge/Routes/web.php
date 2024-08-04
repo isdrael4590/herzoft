@@ -56,5 +56,5 @@ Route::group(['middleware' => 'auth'], function () {
     
     // Almacen desde preparacion
 
-    Route::get('/discharges-preparation/{discharge}', 'DischargetoPreparationController')->name('discharges-preparation.create');
+
 });

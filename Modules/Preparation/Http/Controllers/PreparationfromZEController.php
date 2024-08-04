@@ -54,7 +54,6 @@ class PreparationfromZEController extends Controller
             $preparation = Preparation::create([
                 'reception_id' => $request->discharge_id,
                 'operator' => $request->operator,
-                'note' => $request->note,
             ]);
 
             $discharge = discharge::findOrFail($request->discharge_id);

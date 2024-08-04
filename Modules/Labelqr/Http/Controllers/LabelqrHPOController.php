@@ -76,7 +76,7 @@ class LabelqrHPOController extends Controller
                 ]);
                 $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 $preparation_detail->update([
-                    'product_state_preparation' => 'Procesado',
+                    'product_state_preparation' => 'Cargado',
                 ]);
             }
 
@@ -166,7 +166,7 @@ class LabelqrHPOController extends Controller
                 ]);
                 $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 $preparation_detail->update([
-                    'product_state_preparation' => 'Procesado',
+                    'product_state_preparation' => 'Cargado',
                 ]);
             }
 
