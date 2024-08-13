@@ -34,7 +34,7 @@
                     <ul class="list-group list-group-flush">
 
                         @foreach ($search_results as $result)
-                            @if ($result->product_state_preparation == 'Disponible' || $result->product_state_preparation == 'Reprocesar')
+                            @if ($result->product_state_preparation == 'Disponible')
                                 <li class="list-group-item list-group-item-action">
                                     <a wire:click="resetQuery" wire:click.prevent="selectProduct({{ $result }})"
                                         href="#">

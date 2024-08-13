@@ -21,6 +21,9 @@ class LabelqrDetailsDataTable extends DataTable
             })
             ->addColumn('date_expirations', function ($data) {
                 return view('labelqr::partials.date_expirations', compact('data'));
+            })
+            ->addColumn('action2', function ($data) {
+                return view('labelqr::partials.actions2', compact('data'));
             });
     }
 
@@ -65,8 +68,8 @@ class LabelqrDetailsDataTable extends DataTable
                 ->title('Fecha Elaboración')
                 ->className('text-center align-middle'),
             Column::make('date_expirations')
-            ->title('Fecha expiración')
-            ->className('text-center align-middle'),
+                ->title('Fecha expiración')
+                ->className('text-center align-middle'),
             Column::make('product_name')
                 ->title('Nombre del Producto')
                 ->className('text-center align-middle'),
@@ -85,11 +88,14 @@ class LabelqrDetailsDataTable extends DataTable
             Column::make('product_type_process')
                 ->title('Tipo de esterilización')
                 ->className('text-center align-middle'),
-                Column::make('product_ref_qr')
+            Column::make('product_ref_qr')
                 ->title('Estado del Instrumental')
                 ->className('text-center align-middle'),
 
-
+            Column::computed('action2')
+                ->exportable(false)
+                ->printable(false)
+                ->className('text-center align-middle'),
 
 
 
@@ -100,6 +106,6 @@ class LabelqrDetailsDataTable extends DataTable
 
     protected function filename(): string
     {
-        return 'Reception_' . date('YmdHis');
+        return 'LalbelqrDetails_' . date('YmdHis');
     }
 }

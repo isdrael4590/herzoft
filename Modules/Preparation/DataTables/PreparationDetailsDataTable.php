@@ -16,11 +16,14 @@ class PreparationDetailsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            
+
             ->addColumn('dates', function ($data) {
                 return view('preparation::partials.dates', compact('data'));
             })
-            ->addColumn('action', function ($data) {
+            ->addColumn('dates2', function ($data) {
+                return view('preparation::partials.dates2', compact('data'));
+            })
+            ->addColumn('action2', function ($data) {
                 return view('preparation::partials.actions2', compact('data'));
             });
     }
@@ -35,7 +38,7 @@ class PreparationDetailsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('PreparationDetails-table')
+            ->setTableId('preparationDetails-table')
 
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -43,7 +46,7 @@ class PreparationDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[2, 'desc']],
+                'orderBy' => [[6, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -60,14 +63,17 @@ class PreparationDetailsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
+
+            Column::make('id')
+                ->title('Item')
                 ->className('text-center align-middle'),
             Column::make('dates')
-                ->title('Fecha')
+                ->title('Fecha Ingreso')
                 ->className('text-center align-middle'),
-                Column::make('product_name')
+            Column::make('dates2')
+                ->title('Fecha Actualidado')
+                ->className('text-center align-middle'),
+            Column::make('product_name')
                 ->title('Nombre del producto')
                 ->className('text-center align-middle'),
             Column::make('product_code')
@@ -75,9 +81,14 @@ class PreparationDetailsDataTable extends DataTable
                 ->className('text-center align-middle'),
             Column::make('product_state_preparation')
                 ->title('Estado del Preparation')
-                ->className('text-center align-middle'),
+                ->className('text-center align-middle')
+                ->orders('product_state_preparation', 'asc'),
             Column::make('product_coming_zone')
                 ->title('Proveniente')
+                ->className('text-center align-middle'),
+            Column::computed('action2')
+                ->exportable(false)
+                ->printable(false)
                 ->className('text-center align-middle'),
 
         ];

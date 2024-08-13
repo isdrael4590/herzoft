@@ -24,19 +24,10 @@ use Modules\Preparation\Entities\PreparationDetails;
 class LabelqrHPOController extends Controller
 
 {
-    public function index(LabelqrDataTable $dataTable)
-    {
-        abort_if(Gate::denies('access_zne_area'), 403);
-
-        return view('labelqr::labelqrs.create');
-    }
-
     public function create()
     {
         abort_if(Gate::denies('create_labelqrs'), 403);
-
         Cart::instance('labelqrhpo')->destroy();
-
         return view('labelqr::labelqrshpo.create');
     }
 
@@ -44,7 +35,6 @@ class LabelqrHPOController extends Controller
     {
         DB::transaction(function () use ($request) {
             $labelqrhpo = Labelqr::create([
-
                 'machine_name' => $request->machine_name,
                 'machine_type' => $request->machine_type,
                 'lote_machine' => $request->lote_machine,
@@ -56,7 +46,6 @@ class LabelqrHPOController extends Controller
                 'status_cycle' => $request->status_cycle,
                 'note_labelqr' => $request->note_labelqr,
                 'operator' => $request->operator,
-
             ]);
 
             foreach (Cart::instance('labelqrhpo')->content() as $cart_item) {
@@ -74,8 +63,8 @@ class LabelqrHPOController extends Controller
                     'product_eval_indicator' => $cart_item->options->product_eval_indicator,
                     'product_expiration' => $cart_item->options->product_expiration
                 ]);
-                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
-                $preparation_detail->update([
+                $preparation_detail1 = PreparationDetails::findOrFail($preparation_detail->id);
+                $preparation_detail1->update([
                     'product_state_preparation' => 'Cargado',
                 ]);
             }
@@ -164,8 +153,8 @@ class LabelqrHPOController extends Controller
                     'product_expiration' => $cart_item->options->product_expiration
 
                 ]);
-                $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
-                $preparation_detail->update([
+                $preparation_detail1 = PreparationDetails::findOrFail($preparation_detail->id);
+                $preparation_detail1->update([
                     'product_state_preparation' => 'Cargado',
                 ]);
             }

@@ -65,7 +65,7 @@ class DischargeController extends Controller
                 'validation_biologic' => $request->validation_biologic,
                 'temp_ambiente' => $request->temp_ambiente,
                 'status_cycle' => $request->status_cycle,
-                'ruta_process' => "Liberado",
+                'ruta_process' => "Sin Ruta",
                 'note' => $request->note,
                 'operator' => $request->operator
             ]);
@@ -82,6 +82,7 @@ class DischargeController extends Controller
 
 
             foreach (Cart::instance('discharge')->content() as $cart_item) {
+                dd($cart_item);
                 $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
                 DischargeDetails::create([
                     'discharge_id' => $discharge->id,

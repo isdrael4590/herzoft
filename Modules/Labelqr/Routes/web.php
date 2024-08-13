@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //labelqrs
     Route::resource('labelqrs', 'LabelqrController');
-    Route::resource('labelqrsitem', 'LabelqrItemController');
+    Route::resource('labelqrDetails', 'LabelqrDetailsController');
 
     Route::resource('labelqrshpo', 'LabelqrHPOController');
 });

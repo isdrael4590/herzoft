@@ -314,6 +314,16 @@
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
+                                                            id="create_importproducts" name="permissions[]"
+                                                            value="create_importproducts"
+                                                            {{ $role->hasPermissionTo('create_importproducts') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label" for="create_importproducts">
+                                                            Importar Prodcutos</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
                                                             id="print_barcodes" name="permissions[]"
                                                             value="print_barcodes"
                                                             {{ $role->hasPermissionTo('print_barcodes') ? 'checked' : '' }}>
@@ -585,11 +595,82 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!--TEST VACIO Permission -->
+                                <div class="col-lg-4 col-md-6 mb-3">
+                                    <div class="card h-100 border-0 shadow">
+                                        <div class="card-header">
+                                            TEST DE VACIO
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="access_testvacuums" name="permissions[]"
+                                                            value="access_testvacuums"
+                                                            {{ $role->hasPermissionTo('access_testvacuums') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="access_testvacuums">Acceso</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_testvacuums" name="permissions[]" value="show_testvacuums"
+                                                            {{ $role->hasPermissionTo('show_testvacuums') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="show_testvacuums">Vista</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="create_testvacuums" name="permissions[]"
+                                                            value="create_testvacuums"
+                                                            {{ $role->hasPermissionTo('create_testvacuums') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="create_testvacuums">Crear</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="edit_testvacuums" name="permissions[]" value="edit_testvacuums"
+                                                            {{ $role->hasPermissionTo('edit_testvacuums') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="edit_testvacuums">Editar</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="print_testvacuums" name="permissions[]" value="print_testvacuums"
+                                                            {{ $role->hasPermissionTo('print_testvacuums') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="print_testvacuums">Imprimir</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="delete_testvacuums" name="permissions[]"
+                                                            value="delete_testvacuums"
+                                                            {{ $role->hasPermissionTo('delete_testvacuums') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="delete_testvacuums">Borrar</label>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!--PREPARACION   AVANZADA Permission -->
                                 <div class="col-lg-4 col-md-6 mb-3">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
-                                            PREPARACION 
+                                            PREPARACION
                                         </div>
                                         <div class="card-body">
                                             <div class="row">

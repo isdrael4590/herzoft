@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Editar Etiquetas')
+@section('title', 'Liberar Ciclo')
 
 
 @section('breadcrumb')

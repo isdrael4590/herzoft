@@ -7,7 +7,7 @@
 </option>
 @endforeach
 
-@if ($data->product_coming_zone == 'Reprocesamiento')
+@if ($data->product_coming_zone == 'Zona Esteril')
     <span class="badge badge-warning">
         {{ $data->product_coming_zone }}
     </span>

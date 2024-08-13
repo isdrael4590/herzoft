@@ -20,6 +20,7 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
+                        <th class="align-middle">id</th>
                         <th class="align-middle">Código</th>
                         <th class="align-middle text-center">Nivel de Infección </th>
                         <th class="align-middle text-center">Estado del instrumental</th>
@@ -30,6 +31,10 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
+                                <td class="align-middle">
+                                    {{ $cart_item->id }} <br>
+                                   
+                                </td>
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-info">

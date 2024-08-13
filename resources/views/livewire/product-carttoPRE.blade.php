@@ -20,6 +20,8 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
+                        <th class="align-middle">id</th>
+
                         <th class="align-middle">Código</th>
                         <th class="align-middle text-center">Zona proveniente </th>
                         <th class="align-middle text-center">Disponibilidad</th>
@@ -31,6 +33,11 @@
                         @foreach ($cart_items as $cart_item)
                             <tr>
                                 <td class="align-middle">
+                                    {{ $cart_item->id }} <br>
+                                    
+                                    
+                                </td>
+                                <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-info">
                                         {{ $cart_item->options->code }}
@@ -38,7 +45,7 @@
                                     
                                 </td>
                                 <td class="align-middle text-center">
-                                    @if ($cart_item->options->product_coming_zone == 'Rechazado_ZE')
+                                    @if ($cart_item->options->product_coming_zone == 'Zona Esteril')
                                         <span class="badge badge-warning">
                                             {{ $cart_item->options->product_coming_zone }}
                                         </span>
@@ -51,7 +58,7 @@
                                 </td>
 
                                 <td class="align-middle text-center text-center">
-                                    @if ($cart_item->options->product_state_preparation == 'Procesado')
+                                    @if ($cart_item->options->product_state_preparation == 'Reprocesar')
                                         <span class="badge badge-info">
                                             {{ $cart_item->options->product_state_preparation }}
                                         </span>

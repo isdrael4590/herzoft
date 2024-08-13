@@ -113,10 +113,10 @@
                             </div>
                             <br><br>
                             <div>
-                                @if (@empty($discharge->note))
+                                @if (@empty($testbd->note))
                                     Notas: N/A
                                 @else
-                                    Notas: {{ $discharge->note }}
+                                    Notas: {{ $testbd->note }}
                                 @endif
                             </div>
                             <br><br><br><br>
@@ -131,7 +131,7 @@
                         </div>
                         <div class="printer-informeshon-footer">
                             <ul>
-                                <li><strong>Nota:</strong> Asegurarse que el producto entregado sea el correcto.</li>
+                                <li><strong>Nota:</strong> Asegurarse la validación del Test.</li>
                             </ul>
                             <ul>
                                 <li><a href="#"> {{ Settings()->company_name }}</a></li>

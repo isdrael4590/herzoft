@@ -58,6 +58,7 @@ class PermissionsTableSeeder extends Seeder
             'edit_products',
             'delete_products',
             'access_product_categories',
+            'create_importproducts',
             //Barcode Printing
             'print_barcodes',
             
@@ -141,6 +142,14 @@ class PermissionsTableSeeder extends Seeder
             'delete_testbds',
             'print_testbds',
 
+            'access_testvacuums',
+            'create_testvacuums',
+            'show_testvacuums',
+            'edit_testvacuums',
+            'delete_testvacuums',
+            'print_testvacuums',
+
+
             // generacion de etiquetas
             'access_labelqrs',
             'create_labelqrs',
@@ -148,6 +157,8 @@ class PermissionsTableSeeder extends Seeder
             'edit_labelqrs',
             'delete_labelqrs',
             'print_labelqrs',
+            'edit_labelqrDetails',
+            'delete_labelqrDetails',
             'create_labelqr_discharges',
 
             //ZONA ESTERIL LIMPIA

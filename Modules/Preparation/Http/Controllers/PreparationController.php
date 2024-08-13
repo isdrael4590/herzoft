@@ -15,6 +15,8 @@ use Modules\Product\Entities\Product;
 use Modules\Preparation\Entities\Preparation;
 use Modules\Preparation\DataTables\PreparationDetailsDataTable;
 use Modules\Preparation\DataTables\PreparationDataTable;
+use Modules\Preparation\DataTables\PreparationzeDataTable;
+
 use Modules\Reception\Entities\Reception;
 use Modules\Reception\Entities\ReceptionDetails;
 
@@ -27,12 +29,12 @@ use Modules\Reception\Http\Requests\StoreReceptionRequest;
 
 class PreparationController extends Controller
 {
-    public function index( PreparationDataTable $dataTable)
+    public function index( PreparationDataTable $dataTable, PreparationzeDataTable $dataTableze)
     {
         abort_if(Gate::denies('access_preparations'), 403);
 
 
-        return $dataTable->render('preparation::preparations.index');
+        return $dataTable->render('preparation::preparations.index', compact('dataTable','dataTableze'));
     }
 
 
