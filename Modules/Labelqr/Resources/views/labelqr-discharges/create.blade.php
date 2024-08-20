@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="discharge -form" action="{{ route('discharges.store') }}" method="POST">
+                        <form id="discharge-form" action="{{ route('discharges.store') }}" method="POST">
                             @csrf
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-primary">

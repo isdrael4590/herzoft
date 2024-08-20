@@ -54,7 +54,7 @@ class DischargeController extends Controller
 
             ]);
 
-            $discharge= Discharge::create([
+            $discharge = Discharge::create([
                 'labelqr_id' => $request->labelqr_id,
                 'machine_name' => $request->machine_name,
                 'machine_type' => $request->machine_type,
@@ -80,10 +80,9 @@ class DischargeController extends Controller
                 'status_lote' => $request->status_cycle,
             ]);
 
-
             foreach (Cart::instance('discharge')->content() as $cart_item) {
-               
-                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
+                dd($cart_item);
+                $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
                 DischargeDetails::create([
                     'discharge_id' => $discharge->id,
                     'labelqr_detail_id' => $labelqr_detail->id,
@@ -98,7 +97,7 @@ class DischargeController extends Controller
                     'product_expiration' => $cart_item->options->product_expiration
 
                 ]);
-                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
+                $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
                 $labelqr_detail->update([
                     'product_ref_qr' => 'En Curso',
 
@@ -207,7 +206,7 @@ class DischargeController extends Controller
                     'product_expiration' => $cart_item->options->product_expiration
 
                 ]);
-                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
+                $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
                 $labelqr_detail->update([
                     'product_ref_qr' => $request->validation_biologic,
 
