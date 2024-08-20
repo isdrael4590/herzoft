@@ -14,7 +14,7 @@ class SearchProducttoQR extends Component
 
     public function mount() {
         $this->query = '';
-        $this->how_many = 5;
+        $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
 
@@ -30,7 +30,7 @@ class SearchProducttoQR extends Component
     }
 
     public function loadMore() {
-        $this->how_many += 5;
+        $this->how_many += 10;
         $this->updatedQuery();
     }
 

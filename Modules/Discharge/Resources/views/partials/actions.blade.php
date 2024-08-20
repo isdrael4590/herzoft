@@ -5,7 +5,7 @@
     <div class="dropdown-menu"> --}}
 
 @can('edit_discharges')
-    @if ($data->ruta_process != 'Almacenado')
+    @if ($data->ruta_process == 'Sin Ruta')
         @if ($data->machine_type == 'Autoclave')
             <a href="{{ route('discharges.edit', $data->id) }}" class="dropdown-item">
                 <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Liberar STEAM
@@ -36,10 +36,6 @@
         @if (($data->status_cycle == 'Ciclo Aprobado') & ($data->validation_biologic == 'Correcto'))
             <a href="{{ route('discharges-stock.create', $data) }}" class="dropdown-item">
                 <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a Almacén.
-            </a>
-        @elseif(($data->status_cycle == 'Ciclo Falla') | ($data->validation_biologic == 'Falla'))
-            <a href="{{ route('discharges-preparation.create', $data) }}" class="dropdown-item">
-                <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a Reprocesamiento.
             </a>
         @endif
     @endif

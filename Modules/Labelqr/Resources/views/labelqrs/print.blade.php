@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="es">
 
 <head>
     <title>QR ETIQUETAS</title>
@@ -20,81 +20,91 @@
 
 <body>
     <div class="printer-16 printer-content">
-        <div class="container">
-    
-            <div class="row">
-                @foreach ($labelqr->labelqrDetails as $item)
-                    <div class="cabecera-ticket ">
-                        <header>
-                            <div class="upper-ticket">
-                                <strong>{{ institutes()->institute_name }}</strong>
-                                <small> {{ institutes()->institute_area }}</small>
-                                <small> {{ institutes()->institute_city }} - {{ institutes()->institute_country }}</small>
-                            </div>
-                            <div class="upper-ticket2">
-                                <small>{{ $labelqr->machine_name }}</small>
-                                <small>{{ $labelqr->type_program }}</small>
-                                <strong>Lote: {{ $labelqr->lote_machine }}</strong>
-                            </div>
-                        </header>
-                        <section class="machine-info">
-                            <div class="machine-info2">
-                                <small>Venc. {!!Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y')!!}</small>
-                                <strong>Elab.: {{$item->updated_at }}</strong>
-                            </div>
 
-                        </section>
 
-                        <section class="infos">
-                            <div class="detalls_cycle">
-                                <div class="box">
-                                    <strong><em>{{$item->product_name }}</em></strong>
-                                    <strong><em>{{$item->product_code }}</em></strong>
-                                    <small>Operario: {{ $labelqr->operator }} </small>
-                                    
-                                </div>
-                            </div>
-                            <div class="detalls_cycle">
-                              
-                                <div class="qrcode">
-                                    <div class="box">
-                                    {!! QrCode::size(60)->style('square')->generate( "$labelqr->reference"." // Lote: "."$labelqr->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: ". Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)) !!}
-                                    <span>
-                                        <small>
-                                            Lote: {{ $labelqr->lote_machine }}  <br> Código: {{ $item->product_code }}
-                                        </small>
-                                     </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="strap">
-                            <div class="box">
-                                <div class="">
-                                    <small>El producto no se considera ESTERIL, si el empaque esta ABIERTO o
-                                        HUMEDO</small>
 
-                                </div>
-
-                            </div>
-
-                        </section>
+        @foreach ($labelqr->labelqrDetails as $item)
+            <div class="cabecera-ticket ">
+                <header>
+                    <div class="upper-ticket col-xs-12 text-center">
+                        <strong>{{ institutes()->institute_name }}</strong>
+                        <small> {{ institutes()->institute_area }} - {{ institutes()->institute_city }} -
+                            {{ institutes()->institute_country }}</small>
                     </div>
-                @endforeach
 
 
 
-                <div class="printer-btn-section clearfix d-print-none">
-                    <a href="javascript:window.print()" class="btn btn-lg btn-print">
-                        Imprimir
-                    </a>
 
-                </div>
+                    <div class="upper-ticket col-xs-4 text-center">
+                        <div class="box">
+                            {!! QrCode::size(80)->style('square')->generate(
+                                    "$labelqr->reference" .
+                                        ' // Lote: ' .
+                                        "$labelqr->lote_machine" .
+                                        ' // Elab: ' .
+                                        Carbon\Carbon::parse($item->updated_at)->format('d M, Y') .
+                                        ' // Venc: ' .
+                                        Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y'),
+                                ) !!}
+
+                            <strong> {{ $labelqr->reference }}</strong>
+                        </div>
+                    </div>
+                    <div class="upper-ticket col-xs-4 text-center">
+
+                        <strong>Venc. {!! Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y') !!}</strong>
+                        <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d M, Y') !!}</small>
+                        <small>{{ $labelqr->machine_name }}</small>
+                        <small>{{ $labelqr->type_program }}</small>
+                        <strong>Lote: {{ $labelqr->lote_machine }}</strong>
+                        <strong><em>{{ $item->product_name }}</em></strong>
+                        <small><em>{{ $item->product_code }}</em></small>
+                        <small>Operario: {{ $labelqr->operator }} </small>
+
+
+                    </div>
+                </header>
+
+
+
+                <section class="strap">
+                    <div class="box">
+                        <div class="">
+                            <small>El producto no se considera ESTERIL, si el empaque esta ABIERTO o
+                                HUMEDO</small>
+
+                        </div>
+
+                    </div>
+
+                </section>
             </div>
+        @endforeach
+
+
+
+
+
+
+        <div>
+           
+            <button id="download" class="mt-2 btn btn-info text-light" onclick="downloadSVG()">Imprimir</button>
+
         </div>
+
     </div>
-
-
 </body>
 
 </html>
+<script>
+
+    function downloadSVG() {
+      const svg = document.getElementById('cabecera-ticket').innerHTML;
+      const blob = new Blob([svg.toString()]);
+      const element = document.createElement("a");
+      element.download = "w3c.svg";
+      element.href = window.URL.createObjectURL(blob);
+      element.click();
+      element.remove();
+    }
+    </script>

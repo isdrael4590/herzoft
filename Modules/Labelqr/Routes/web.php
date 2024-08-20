@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     //labelqrs
     Route::resource('labelqrs', 'LabelqrController');
+    Route::resource('labelqrDetails', 'LabelqrDetailsController');
+
     Route::resource('labelqrshpo', 'LabelqrHPOController');
 });
 

@@ -7,6 +7,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\Controller;
 use \Modules\Informat\Entities\Institute;
 use Modules\Testbd\Entities\Testbd;
+use Modules\Testbd\Entities\Testvacuum;
 
 class PrinterTbdController extends Controller
 
@@ -16,12 +17,21 @@ class PrinterTbdController extends Controller
     {
         $testbd = Testbd::where('id', $id)->first();
         $institute = Institute::all()->first();
-      
+
         return view('testbd::testbds.print', [
             'testbd' => $testbd,
             'institute' => $institute,
         ]);
+    }
 
-     
+    public function printerTestvacuumA4(Int $id)
+    {
+        $testvacuum = Testvacuum::where('id', $id)->first();
+        $institute = Institute::all()->first();
+
+        return view('testbd::testvacuums.print', [
+            'testvacuum' => $testvacuum,
+            'institute' => $institute,
+        ]);
     }
 }

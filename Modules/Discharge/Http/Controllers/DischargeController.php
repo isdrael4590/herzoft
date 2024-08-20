@@ -14,6 +14,9 @@ use Modules\Discharge\Http\Requests\StoreDischargeRequest;
 use Modules\Discharge\Http\Requests\UpdateDischargeRequest;
 use Modules\Informat\Entities\Lote;
 use Modules\Labelqr\Entities\Labelqr;
+use Modules\Labelqr\Entities\LabelqrDetails;
+use Modules\Preparation\Entities\PreparationDetails;
+use PhpParser\Node\Stmt\TryCatch;
 
 class DischargeController extends Controller
 {
@@ -26,20 +29,31 @@ class DischargeController extends Controller
     }
 
 
-    public function create($labelqr_id)
+    public function create()
     {
         abort_if(Gate::denies('create_discharges'), 403);
-        $labelqr = Labelqr::findOrFail($labelqr_id);
+       // $labelqr = Labelqr::findOrFail($labelqr_id);
 
         Cart::instance('discharge')->destroy();
+        //return view('discharge::discharges.create', compact('labelqr'));
 
-        return view('discharge::discharges.create', compact('labelqr'));
+        return view('discharge::discharges.create');
     }
 
 
-    public function store(StoreDischargeRequest $request)
+    public function store(StoreDischargeRequest $request, Discharge $discharge)
     {
-        DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request, $discharge) {
+        
+            foreach ($discharge->dischargeDetails as $discharge_detail) {
+                $discharge_detail->delete();
+            }
+            $labelqr = Labelqr::findOrFail($request->labelqr_id);
+            $labelqr->update([
+                'status_cycle' => 'En Curso',
+
+            ]);
+
             $discharge = Discharge::create([
                 'labelqr_id' => $request->labelqr_id,
                 'machine_name' => $request->machine_name,
@@ -53,14 +67,10 @@ class DischargeController extends Controller
                 'status_cycle' => $request->status_cycle,
                 'ruta_process' => "Sin Ruta",
                 'note' => $request->note,
-                'operator' => $request->operator,
+                'operator' => $request->operator
             ]);
 
-            $labelqr = Labelqr::findOrFail($request->labelqr_id);
-            $labelqr->update([
-                'status_cycle' => 'En Curso', // aquii falta
 
-            ]);
 
             Lote::create([
                 'lote_code' => $request->lote_machine,
@@ -70,10 +80,11 @@ class DischargeController extends Controller
                 'status_lote' => $request->status_cycle,
             ]);
 
-
             foreach (Cart::instance('discharge')->content() as $cart_item) {
+                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
                 DischargeDetails::create([
                     'discharge_id' => $discharge->id,
+                    'labelqr_detail_id' => $labelqr_detail->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -83,9 +94,19 @@ class DischargeController extends Controller
                     'product_eval_package' => $cart_item->options->product_eval_package,
                     'product_eval_indicator' => $cart_item->options->product_eval_indicator,
                     'product_expiration' => $cart_item->options->product_expiration
-                ]);
-            }
 
+                ]);
+                $labelqr_detail->update([
+                    'product_ref_qr' => 'En Curso',
+
+                ]);
+                if ($request->status_cycle == 'En Curso') {
+                    $preparation_detail = PreparationDetails::findOrFail($labelqr_detail->preparation_detail_id);
+                    $preparation_detail->update([
+                        'product_state_preparation' => 'En Curso',
+                    ]);
+                }
+            }
             Cart::instance('discharge')->destroy();
         });
 
@@ -101,7 +122,7 @@ class DischargeController extends Controller
         abort_if(Gate::denies('show_discharges'), 403);
 
 
-        return view('discharge::discharges.show', compact('discharge' ));
+        return view('discharge::discharges.show', compact('discharge'));
     }
 
 
@@ -162,18 +183,16 @@ class DischargeController extends Controller
                 'validation_biologic' => $request->validation_biologic,
                 'temp_ambiente' => $request->temp_ambiente,
                 'status_cycle' => $request->status_cycle,
-                'ruta_process' => "Sin Ruta",
+                'ruta_process' => "Liberado",
                 'note' => $request->note,
                 'operator' => $request->operator
             ]);
 
-
-            
-
-
             foreach (Cart::instance('discharge')->content() as $cart_item) {
+                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
                 DischargeDetails::create([
                     'discharge_id' => $discharge->id,
+                    'labelqr_detail_id' => $labelqr_detail->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -185,6 +204,23 @@ class DischargeController extends Controller
                     'product_expiration' => $cart_item->options->product_expiration
 
                 ]);
+                $labelqr_detail->update([
+                    'product_ref_qr' => $request->validation_biologic,
+
+                ]);
+                if ($request->validation_biologic == 'Falla' || $request->status_cycle == 'Ciclo Falla') {
+                    $preparation_detail = PreparationDetails::findOrFail($labelqr_detail->preparation_detail_id);
+                    $preparation_detail->update([
+                        'product_state_preparation' => 'Reprocesar',
+                        'product_coming_zone' => 'Zona Esteril',
+                    ]);
+                } elseif ($request->validation_biologic == 'Correcto' && $request->status_cycle == 'Ciclo Aprobado') {
+                    $preparation_detail = PreparationDetails::findOrFail($labelqr_detail->preparation_detail_id);
+                    $preparation_detail->update([
+                        'product_state_preparation' => 'Procesado',
+                        'product_coming_zone' => 'Recepcion',
+                    ]);
+                }
             }
 
             Cart::instance('discharge')->destroy();

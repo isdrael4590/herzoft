@@ -4168,7 +4168,7 @@ table th{
     justify-content: center;
     align-items: center;
     padding: 27px 0 30px;
-    font-family: 'Poppins', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .printer-16 .mb-30{
@@ -5028,11 +5028,11 @@ table th{
 
 .cabecera-ticket {
 	@include center;
-	height: 188.97637795px;
-	width: 291.02362205px;
+	height: 35mm;
+	width: 70mm;
 	background: #fff;
-	border-radius: 12px;
-	box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+	border-radius: 8px;
+	box-shadow: 1px 1px 1px 1px rgba(1, 1, 1, 0.2);
 	overflow: hidden;
 	text-transform: uppercase;
 
@@ -5048,11 +5048,12 @@ table th{
 	strong {
 		font-size: 8px;
 		display: block;
+        padding:0mm 0mm 0mm 1.5mm;
 	}
 
 	& header {
-		padding: 8px 10px 0px 10px;
-		height: 20px;
+		padding: 3px 3px 5px 30px;
+		height: 10px;
 
 		.logo-ticket {
 			float: left;
@@ -5066,13 +5067,13 @@ table th{
 			text-align: right;
 
 			small {
-				font-size: 6px;
+				font-size: 5px;
 				margin-bottom: 2px;
 				opacity: 0.8;
 			}
 
 			strong {
-				font-size: 10px;
+				font-size: 9px;
 			}
 
 		}
@@ -5084,12 +5085,12 @@ table th{
 
 			small {
 				font-size: 6px;
-				margin-bottom: 2px;
+				margin-bottom:0;
 				opacity: 0.8;
 			}
 
 			strong {
-				font-size: 10px;
+				font-size: 9px;
 			}
 
 		}
@@ -5098,7 +5099,7 @@ table th{
 
 /*Informacion equipo tickets */
 
-.machine-info {
+.machine-info { 
 	position: relative;
 
 	&::after {
@@ -5137,7 +5138,7 @@ table th{
 		}
 
 		strong {
-			font-size: 14px;
+			font-size: 10px;
 		
 			font-weight: 30;
 			line-height: 1;
@@ -5214,17 +5215,17 @@ table th{
     }
 
     .box {
-      padding: 2px 1px 1px 10px;
+      padding: 2px 1px 1px 30px;
    
       & div {
         margin-bottom: 5px;
         
         small {
-          font-size: 6px;
+          font-size: 5px;
         }
 
         strong {
-          font-size: 8px;
+          font-size: 6px;
         }
       }
 

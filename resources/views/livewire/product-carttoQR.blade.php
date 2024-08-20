@@ -21,6 +21,7 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
+                        <th class="align-middle">Id</th>
                         <th class="align-middle">Paquete / Código</th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
                         <th class="align-middle text-center"> Embalaje </th>
@@ -34,6 +35,9 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
+                                <td class="align-middle text-center">
+                                    {{ $cart_item->id}}
+                                </td>
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-success">

@@ -3,6 +3,8 @@
 namespace Modules\Preparation\DataTables;
 
 use Modules\Preparation\Entities\Preparation;
+use Modules\Preparation\Entities\Preparationze;
+
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -27,9 +29,10 @@ class PreparationDataTable extends DataTable
 
     }
 
-    public function query(Preparation $model)
+    public function query(Preparation $model, Preparationze $model2)
     {
         return $model->newQuery();
+        return $model2->newQuery();
     }
 
     public function html()
