@@ -82,8 +82,8 @@ class DischargeController extends Controller
 
 
             foreach (Cart::instance('discharge')->content() as $cart_item) {
-                dd($cart_item);
-                $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
+               
+                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
                 DischargeDetails::create([
                     'discharge_id' => $discharge->id,
                     'labelqr_detail_id' => $labelqr_detail->id,
@@ -98,7 +98,7 @@ class DischargeController extends Controller
                     'product_expiration' => $cart_item->options->product_expiration
 
                 ]);
-                $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
+                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
                 $labelqr_detail->update([
                     'product_ref_qr' => 'En Curso',
 
@@ -192,7 +192,7 @@ class DischargeController extends Controller
             ]);
 
             foreach (Cart::instance('discharge')->content() as $cart_item) {
-                $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
+                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
                 DischargeDetails::create([
                     'discharge_id' => $discharge->id,
                     'labelqr_detail_id' => $labelqr_detail->id,
@@ -207,7 +207,7 @@ class DischargeController extends Controller
                     'product_expiration' => $cart_item->options->product_expiration
 
                 ]);
-                $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
+                $labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
                 $labelqr_detail->update([
                     'product_ref_qr' => $request->validation_biologic,
 
@@ -222,7 +222,7 @@ class DischargeController extends Controller
                     $preparation_detail = PreparationDetails::findOrFail($labelqr_detail->preparation_detail_id);
                     $preparation_detail->update([
                         'product_state_preparation' => 'Procesado',
-                        'product_coming_zone' => 'Recepcion',
+                        //'product_coming_zone' => 'Recepcion',
                     ]);
                 }
             }

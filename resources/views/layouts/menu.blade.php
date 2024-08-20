@@ -90,44 +90,58 @@
             class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('labelqrs.*') || request()->routeIs('preparations.*') ? 'c-show' : '' }}">
 
             <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-                <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> PREPARA. / REG. PROCESO
+                <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> PREPARACIÓN
             </a>
 
             <ul class="c-sidebar-nav-dropdown-items">
-
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('receptions-reprocess.index') ? 'c-active' : '' }}"
+                        href="{{ route('receptions-reprocess.create') }}">
+                        <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Reprocesar Instrumental.
+                    </a>
+                </li>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('preparations.index') ? 'c-active' : '' }}"
                         href="{{ route('preparationDetails.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Stock_Preparación.
+                        <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Stock Preparación.
                     </a>
                 </li>
 
-                @can('access_labelqrs')
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.create') ? 'c-active' : '' }}"
-                            href="{{ route('labelqrs.create') }}">
-                            <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Etiqueta
-
-                        </a>
-                    </li>
-
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.index') ? 'c-active' : '' }}"
-                            href="{{ route('labelqrs.index') }}">
-                            <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los ciclos generados.
-                        </a>
-                    </li>
-
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrDetails.index') ? 'c-active' : '' }}"
-                            href="{{ route('labelqrDetails.index') }}">
-                            <i class="c-sidebar-nav-icon bi bi-list-check" style="line-height: 1;"></i> Instrumental Procesado.
-                        </a>
-                    </li>
-                @endcan
             </ul>
         </li>
     @endcan
+    @can('access_labelqrs')
+        <li class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('labelqrs.*') ? 'c-show' : '' }}">
+
+            <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+                <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> PRODUCCIÓN
+            </a>
+
+            <ul class="c-sidebar-nav-dropdown-items">
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.create') ? 'c-active' : '' }}"
+                        href="{{ route('labelqrs.create') }}">
+                        <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Etiqueta
+
+                    </a>
+                </li>
+
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.index') ? 'c-active' : '' }}"
+                        href="{{ route('labelqrs.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los ciclos generados.
+                    </a>
+                </li>
+
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrDetails.index') ? 'c-active' : '' }}"
+                        href="{{ route('labelqrDetails.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-list-check" style="line-height: 1;"></i> Instrumental Procesado.
+                    </a>
+                </li>
+            @endcan
+        </ul>
+    </li>
 @endcan
 
 @can('access_esteril_area')

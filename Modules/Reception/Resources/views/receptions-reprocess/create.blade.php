@@ -1,6 +1,6 @@
 @php
     $Reception_max_id = \Modules\Reception\Entities\Reception::max('id') + 1;
-    $reception_code = 'ING_' . str_pad($Reception_max_id, 5, '0', STR_PAD_LEFT);
+    $reception_code = 'ING-RE_' . str_pad($Reception_max_id, 5, '0', STR_PAD_LEFT);
 @endphp
 
 @extends('layouts.app')
@@ -10,7 +10,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('receptions.index') }}">Recepción Instrumental</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('receptions-reprocess.index') }}">Reprocesado de Instrumental</a></li>
         <li class="breadcrumb-item active">Añadir</li>
     </ol>
 @endsection
@@ -28,7 +28,7 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="reception-form" action="{{ route('receptions.store') }}" method="POST">
+                        <form id="receptions-reprocess-form" action="{{ route('receptions-reprocess.store') }}" method="POST">
                             @csrf
 
                             <div class="form-row">
@@ -39,22 +39,13 @@
                                         value="{{ $reception_code }}">
                                     </div>
                                 </div>
+                               
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label>Área Procedente</label>
-                                        <select class="form-control" id="area" name="area" required>
-                                            @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                                <option value="{{ $area->area_name }}">
-                                                    {{ $area->area_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label>Persona que entrega</label>
+                                        <label>Persona Solicita Procesar</label>
                                         <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
-                                            placeholder= "Ingrese el nombre de la persona que entrega" required>
+                                        placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                        required> 
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -68,7 +59,7 @@
                             </div>
 
 
-                            <livewire:product-cart :cartInstance="'reception'" />
+                            <livewire:product-cartREPROC :cartInstance="'reception-reprocess'" />
 
                             <div class="form-row">
                                 <div class="col-lg-4">
@@ -88,7 +79,7 @@
 
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-primary">
-                                    Registrar Ingreso <i class="bi bi-check"></i>
+                                    Registrar Ingreso Reprocesar <i class="bi bi-check"></i>
                                 </button>
                             </div>
                         </form>

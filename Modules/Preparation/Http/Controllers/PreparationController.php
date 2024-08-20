@@ -29,12 +29,12 @@ use Modules\Reception\Http\Requests\StoreReceptionRequest;
 
 class PreparationController extends Controller
 {
-    public function index( PreparationDataTable $dataTable, PreparationzeDataTable $dataTableze)
+    public function index( PreparationDataTable $dataTable)
     {
         abort_if(Gate::denies('access_preparations'), 403);
 
 
-        return $dataTable->render('preparation::preparations.index', compact('dataTable','dataTableze'));
+        return $dataTable->render('preparation::preparations.index', compact('dataTable'));
     }
 
 

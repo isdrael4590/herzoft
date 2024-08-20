@@ -18,7 +18,7 @@ class Testbd extends Model implements HasMedia
     protected $with = ['media'];
 
     public function testbds() {
-        return $this->belongsTo(Testbd::class, 'testbd_id', 'id');
+        return $this->hasMany(Testbd::class, 'testbd_id', 'id');
     }
 
     public function registerMediaCollections(): void {

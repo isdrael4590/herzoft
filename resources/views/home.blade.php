@@ -69,8 +69,8 @@
                                         </div>
                                         <div>
                                             <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO PREPARACIÓN</div>
-                                            <div class="text-value text-primary"><a
-                                                    href="{{ route('preparations.index') }}">Stock en Preparación</a>
+                                            <div class="text-value text-primary"><a href="{{ route('preparations.index') }}">Stock
+                                                    en Preparación</a>
                                             </div>
                                             @can('access_labelqrs')
                                                 <div class="text-value text-primary"><a href="{{ route('labelqrs.create') }}">Generar
@@ -105,7 +105,7 @@
                                                         Etiqueta</a>
                                                 </div>
                                             @endcan
-                                        
+
                                         </div>
                                     </div>
                                 </div>
@@ -132,7 +132,8 @@
                                                     <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE
                                                         ALMACÉN Y DESPACHO.
                                                     </div>
-                                                    <div class="text-value text-primary"><a href="{{ route('stocks.index') }}">Stock Esteril</a>
+                                                    <div class="text-value text-primary"><a href="{{ route('stocks.index') }}">Stock
+                                                            Esteril</a>
                                                     </div>
                                                     @can('access_expedition')
                                                         <div class="text-value text-primary"><a href="{{ route('expeditions.index') }}">VER
@@ -158,10 +159,10 @@
                     <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Resultado de Test de Bowie & Dick 
+                                Resultado de Test de Bowie & Dick  / Vacío (7 días Últimos)
                             </div>
                             <div class="card-body">
-                                <canvas id="testBowieChart"></canvas>
+                                <canvas id="testBowiesChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -170,10 +171,15 @@
                     <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Test de Vacío
+                                Overview of Tests {{ now()->format('F, Y') }}
                             </div>
-                            <div class="card-body">
-                                <canvas id="testbowieReport"></canvas>
+                            <div class="card-body d-flex justify-content-center">
+                                <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                    <canvas id="currentMonthChart"></canvas>
+                                </div>
+                                <div class="chart-container" style="position: relative; height:auto; width:290px">
+                                    <canvas id="currentMonthChart2"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,11 +193,12 @@
                     <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Producción De Equipos de Vapor.
+                                Producción Mensual Esterilización.
                             </div>
                             <div class="card-body">
-                                <canvas id="ProductionSteam"></canvas>
+                                <canvas id="ProductionsChart"></canvas>
                             </div>
+                            
                         </div>
                     </div>
                 @endcan
@@ -199,10 +206,10 @@
                     <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Producción De Equipos de Peróxido.
+                                Instrumental Procesado ( Etiquetas Generadas).
                             </div>
                             <div class="card-body">
-                                <canvas id="ProductionHPO"></canvas>
+                                <canvas id="ProductionlabelsChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -216,10 +223,10 @@
                     <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Resultado de liberación del Biologico Vapor.
+                                Resultado de liberación del Biologicos.
                             </div>
                             <div class="card-body">
-                                <canvas id="BiologicSteam"></canvas>
+                                <canvas id="BiologicChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -228,10 +235,10 @@
                     <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Resultado de liberación del Biologico Peróxido.
+                                Rendimiento Areas Central.
                             </div>
                             <div class="card-body">
-                                <canvas id="BiologicHPO"></canvas>
+                                <canvas id="CentralChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -245,8 +252,8 @@
 
 @section('third_party_scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"
-            integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endsection
 
 @push('page_scripts')
