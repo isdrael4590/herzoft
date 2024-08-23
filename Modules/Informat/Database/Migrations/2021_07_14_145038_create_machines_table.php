@@ -17,6 +17,7 @@ class CreatemachinesTable extends Migration
             $table->id();
             $table->string('machine_code')->unique();
             $table->string('machine_name');
+            $table->string('machine_identificator');
             $table->string('machine_model');
             $table->string('machine_type');
             $table->string('machine_serial');

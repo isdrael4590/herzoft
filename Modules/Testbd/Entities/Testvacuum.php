@@ -18,13 +18,13 @@ class Testvacuum extends Model implements HasMedia
     protected $with = ['media'];
 
     public function testvacuums() {
-        return $this->belongsTo(Testvacuum::class, 'testvacuum_id', 'id');
+        return $this->hasMany(Testvacuum::class, 'testvacuum_id', 'id');
     }
 
-    public function registerMediaCollections(): void {
+    /*public function registerMediaCollections(): void {
         $this->addMediaCollection('images')
             ->useFallbackUrl('/images/fallback_testvacuum_image.png');
-    }
+    }*/
 
     public function registerMediaConversions(Media $media = null): void {
         $this->addMediaConversion('thumb')

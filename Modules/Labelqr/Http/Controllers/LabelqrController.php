@@ -5,13 +5,8 @@ namespace Modules\Labelqr\Http\Controllers;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Modules\Product\Entities\Product;
-
 use Modules\Labelqr\Entities\Labelqr;
 use Modules\Labelqr\DataTables\LabelqrDataTable;
 use Modules\Labelqr\Entities\LabelqrDetails;
@@ -61,6 +56,7 @@ class LabelqrController extends Controller
 
             foreach (Cart::instance('labelqr')->content() as $cart_item) {
                 $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
+                
                 LabelqrDetails::create([
                     'labelqr_id' => $labelqr->id,
                     'preparation_detail_id' => $preparation_detail->id,

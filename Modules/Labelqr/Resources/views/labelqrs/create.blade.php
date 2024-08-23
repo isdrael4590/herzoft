@@ -16,7 +16,7 @@
 
 @section('content')
     <div class="container-fluid mb-4">
-        <div class="row">
+        <div >
             <a href="{{ route('labelqrshpo.create') }}" class="btn btn-primary">
                 Generación de Etiquetas HPO <i class="bi bi-plus"></i>
             </a>

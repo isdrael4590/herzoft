@@ -1,3 +1,8 @@
+@php
+    $Reception_max_id = \Modules\Reception\Entities\Reception::max('id') + 1;
+    $reception_code = 'ING_' . str_pad($Reception_max_id, 5, '0', STR_PAD_LEFT);
+@endphp
+
 @extends('layouts.app')
 
 @section('title', 'Registrar Ingreso')
@@ -31,7 +36,7 @@
                                     <div class="form-group">
                                         <label for="reference">Referencia <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="reference" required readonly
-                                            value="ING_">
+                                        value="{{ $reception_code }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -61,10 +66,7 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <livewire:product-cart :cartInstance="'reception'" />
-
                             <div class="form-row">
                                 <div class="col-lg-4">
                                     <div class="form-group">

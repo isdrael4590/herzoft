@@ -1,4 +1,3 @@
-
 <div>
     <div>
         @if (session()->has('message'))
@@ -22,6 +21,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th class="align-middle">Id</th>
+                        <th class="align-middle">productid</th>
                         <th class="align-middle">Paquete / Código</th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
                         <th class="align-middle text-center"> Embalaje </th>
@@ -36,31 +36,33 @@
                         @foreach ($cart_items as $cart_item)
                             <tr>
                                 <td class="align-middle text-center">
-                                    {{ $cart_item->id}}
+                                    {{ $cart_item->id }}
                                 </td>
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-success">
                                         {{ $cart_item->options->code }}
                                     </span>
-                                    
-                                </td>
 
+                                </td>
+                                <td class="align-middle text-center">
+                                    {{ $cart_item->options->product_id }}
+                                </td>
                                 <td class="align-middle text-center">
 
                                     {{ $cart_item->options->product_package_wrap }} @include('livewire.includes.product-cart-modaltoQR')
-                               
+
                                 </td>
                                 <td class="align-middle text-center">
                                     {{ $cart_item->options->product_eval_package }}
                                 </td>
-                               
+
                                 <td class="align-middle text-center">
                                     {{ $cart_item->options->product_eval_indicator }}
                                 </td>
-                               
+
                                 <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_expiration}} <span> meses</span>
+                                    {{ $cart_item->options->product_expiration }} <span> meses</span>
                                 </td>
                                 <td class="align-middle text-center">
                                     {{ $cart_item->options->product_type_process }}

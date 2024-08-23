@@ -43,8 +43,8 @@ class ReceptionController extends Controller
         DB::transaction(function () use ($request) {
             $reception = Reception::create([
 
-                //'product_name' => $request->product_name,
-                // 'product_code' => $request->product_code,
+               
+                'reference' => $request->reference,
                 'operator' => $request->operator,
                 'delivery_staff' => $request->delivery_staff,
                 'area' => $request->area,
@@ -63,6 +63,7 @@ class ReceptionController extends Controller
                     'product_type_process' => $cart_item->options->product_type_process,
                     'product_state_rumed' => $cart_item->options->product_state_rumed,
                 ]);
+                
             }
 
             Cart::instance('reception')->destroy();

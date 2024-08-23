@@ -32,8 +32,8 @@ class LabelqrDetails extends Model
         return $this->has(DischargeDetails::class, 'discharge_detail_id', 'id');
     }
 
-   /* public function preparationfromlabelqr()
+    public function preparationtolabelqr()
     {
-        return $this->belongsTo(PreparationDetails::class, 'preparation_detail_id', 'id');
-    }*/
+        return $this->belongsTo(PreparationDetails::class, 'product_id', 'id');
+    }
 }

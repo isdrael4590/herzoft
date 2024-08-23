@@ -21,11 +21,9 @@
                     <div class="card-body">
                         @can('access_preparationDetails')
                             <a href="{{ route('preparations.index') }}" class="btn btn-primary">
-                                Cambios preparacion<i class="bi bi-plus"></i>
+                                Cambios EXCLUSIVOS<i class="bi bi-plus"></i>
                             </a>
-                            <a href="{{ route('preparationzes.index') }}" class="btn btn-primary">
-                                Cambios ZE<i class="bi bi-plus"></i>
-                            </a>
+                           
                         @endcan
                         <hr>
                         <div class="table-responsive">
