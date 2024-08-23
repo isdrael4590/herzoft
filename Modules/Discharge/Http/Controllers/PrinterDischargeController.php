@@ -15,6 +15,7 @@ use \Modules\Informat\Entities\Institute;
 use Modules\Discharge\Entities\Discharge;
 use Modules\Discharge\Entities\DischargeDetails;
 use Modules\Discharge\Http\Requests\StoreReceptionRequest;
+use Modules\Labelqr\Entities\Labelqr;
 
 class PrinterDischargeController extends Controller
 
@@ -22,20 +23,21 @@ class PrinterDischargeController extends Controller
 
     public function printerDischargea4(Int $id)
     {
+
         $discharge = Discharge::where('id', $id)->first();
+        $labelqr = Labelqr::findorfail( $discharge->labelqr_id);
         $dischargeDetails = DischargeDetails::with('product')
             ->where('id', $id)
             ->orderBy('id', 'DESC')
             ->get();
-            $institute = Institute::all()->first();
-     
-
+        $institute = Institute::all()->first();
+     //   dd($labelqrfisrt, $labelqr);
         return view('discharge::discharges.print', [
             'discharge' => $discharge,
             'dischargeDetails' => $dischargeDetails,
             'institute' => $institute,
-        ]);
+            'labelqr' => $labelqr,
 
-     
+        ]);
     }
 }

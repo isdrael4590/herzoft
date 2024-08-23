@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="col-sm-3 mb-3 mb-md-0">
                                     <h4 class="print-title-1 border-bottom">Información de Proceso:</h4>
-                                    <div><strong>Proceso N°:</strong> {{ $discharge->labelqr_id }}</div>
+                                    <div><strong>Proceso N°:</strong> {{ $labelqr->reference }}</div>
                                     <div><strong>Equipo:</strong> {{ $discharge->machine_name }}</div>
                                     <div><strong>Lote del Equipo:</strong> {{ $discharge->lote_machine }}</div>
                                     <div><strong>Temperatura del equipo:</strong> {{ $discharge->temp_machine }}</div>

@@ -25,7 +25,9 @@ class Labelqr extends Model
         });
     }
 
-
+    public function labelqr() {
+        return $this->hasMany(Labelqr::class, 'labelqr_id', 'id');
+    }
 
 
 }

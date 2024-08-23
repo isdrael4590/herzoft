@@ -1,15 +1,15 @@
 <div>
     <div>
-        @if (session()->has('message'))
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <div class="alert-body">
-                    <span>{{ session('message') }}</span>
+                    <span><?php echo e(session('message')); ?></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
             </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         <div class="table-responsive position-relative">
             <div wire:loading.flex class="col-12 position-absolute justify-content-center align-items-center"
                 style="top:0;right:0;left:0;bottom:0;background-color: rgba(255,255,255,0.5);z-index: 99;">
@@ -22,59 +22,69 @@
                     <tr>
                         <th class="align-middle">id</th>
                         <th class="align-middle">Código</th>
-                        <th class="align-middle text-center">Criterio de Infección. </th>
+                        <th class="align-middle text-center">Nivel de Infección </th>
                         <th class="align-middle text-center">Estado del instrumental</th>
                         <th class="align-middle text-center">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($cart_items->isNotEmpty())
-                        @foreach ($cart_items as $cart_item)
+                    <!--[if BLOCK]><![endif]--><?php if($cart_items->isNotEmpty()): ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $cart_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cart_item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td class="align-middle">
-                                    {{ $cart_item->id }} <br>
-                                   
+                                    <?php echo e($cart_item->id); ?> <br>
+
                                 </td>
                                 <td class="align-middle">
-                                    {{ $cart_item->name }} <br>
+                                    <?php echo e($cart_item->name); ?> <br>
                                     <span class="badge badge-info">
-                                        {{ $cart_item->options->code }}
+                                        <?php echo e($cart_item->options->code); ?>
+
                                     </span>
-                                    @include('livewire.includes.product-cart-modal')
+                                    <?php echo $__env->make('livewire.includes.product-cart-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 </td>
 
                                 <td class="align-middle text-center text-center">
-                                    @if ($cart_item->options->product_type_dirt == 'NO CRITICO')
+                                    <!--[if BLOCK]><![endif]--><?php if($cart_item->options->product_type_dirt == 'NO CRITICO'): ?>
                                         <span class="badge badge-info">
-                                            {{ $cart_item->options->product_type_dirt }}
+                                            <?php echo e($cart_item->options->product_type_dirt); ?>
+
                                         </span>
-                                    @elseif($cart_item->options->product_type_dirt == 'SEMICRITICO')
+                                    <?php elseif($cart_item->options->product_type_dirt == 'SEMICRITICO'): ?>
                                         <span class="badge badge-warning">
-                                            {{ $cart_item->options->product_type_dirt }}
+                                            <?php echo e($cart_item->options->product_type_dirt); ?>
+
                                         </span>
-                                    @elseif($cart_item->options->product_type_dirt == 'CRITICO')
+                                    <?php elseif($cart_item->options->product_type_dirt == 'CRITICO'): ?>
                                         <span class="badge badge-danger">
-                                            {{ $cart_item->options->product_type_dirt }}
+                                            <?php echo e($cart_item->options->product_type_dirt); ?>
+
                                         </span>
-                                    @endif
-                           
+                                    <?php elseif($cart_item->options->product_type_dirt == 'REPROCESADO'): ?>
+                                        <span class="badge badge-secondary">
+                                            <?php echo e($cart_item->options->product_type_dirt); ?>
+
+                                        </span>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                             
                                 </td>
 
                                 <td class="align-middle text-center">
                                     <span class="badge badge-secondary">
-                                        {{ $cart_item->options->product_state_rumed }}
+                                        <?php echo e($cart_item->options->product_state_rumed); ?>
+
                                     </span>
-                           
+                        
                                 </td>
 
                                 <td class="align-middle text-center">
-                                    <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
+                                    <a href="#" wire:click.prevent="removeItem('<?php echo e($cart_item->rowId); ?>')">
                                         <i class="bi bi-x-circle font-2xl text-danger"></i>
                                     </a>
                                 </td>
                             </tr>
-                        @endforeach
-                    @else
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php else: ?>
                         <tr>
                             <td colspan="8" class="text-center">
                                 <span class="text-danger">
@@ -82,10 +92,11 @@
                                 </span>
                             </td>
                         </tr>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </tbody>
             </table>
         </div>
     </div>
 
 </div>
+<?php /**PATH /var/www/html/resources/views/livewire/product-cart.blade.php ENDPATH**/ ?>

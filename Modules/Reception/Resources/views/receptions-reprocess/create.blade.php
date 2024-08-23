@@ -10,7 +10,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('receptions-reprocess.index') }}">Reprocesado de Instrumental</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('receptions.index') }}">Recepción Instrumental</a></li>
         <li class="breadcrumb-item active">Añadir</li>
     </ol>
 @endsection
@@ -19,7 +19,7 @@
     <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-12">
-                <livewire:search-product />
+                <livewire:search-producttoREPROC />
             </div>
         </div>
 
@@ -28,7 +28,7 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="receptions-reprocess-form" action="{{ route('receptions-reprocess.store') }}" method="POST">
+                        <form id="RecepReprocess-form" action="{{ route('RecepReprocess.store') }}" method="POST">
                             @csrf
 
                             <div class="form-row">
@@ -39,13 +39,18 @@
                                         value="{{ $reception_code }}">
                                     </div>
                                 </div>
-                               
                                 <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label>Persona Solicita Procesar</label>
+                                    <label>Persona que entrega</label>
+                                    <select class="form-control" name="area" id="area" required>
+                                        <option value="Zona Esteril">Zona Esteril</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                <div class="form-group">
+                                        <label>Persona que entrega</label>
                                         <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
-                                        placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
-                                        required> 
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -57,10 +62,7 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                            <livewire:product-cartREPROC :cartInstance="'reception-reprocess'" />
-
+                            <livewire:product-carttoREPROC :cartInstance="'RecepReprocess'"/>
                             <div class="form-row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
@@ -79,7 +81,7 @@
 
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-primary">
-                                    Registrar Ingreso Reprocesar <i class="bi bi-check"></i>
+                                    Registrar Ingreso <i class="bi bi-check"></i>
                                 </button>
                             </div>
                         </form>

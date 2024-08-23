@@ -66,10 +66,7 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <livewire:product-cart :cartInstance="'reception'" />
-
                             <div class="form-row">
                                 <div class="col-lg-4">
                                     <div class="form-group">

@@ -20,7 +20,7 @@ class SuperUserSeeder extends Seeder
     {
         $user = User::create([
             'name' => 'Admin',
-            'email' => 'herzoft@gmail.com',
+            'email' => 'herzgroup@gmail.com',
             'password' => Hash::make(docker_secret('/run/secrets/admin_password')),
             'is_active' => 1
         ]);

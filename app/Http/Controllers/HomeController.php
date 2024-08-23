@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Discharge\Entities\Discharge;
 use Modules\Discharge\Entities\DischargeDetails;
 use Modules\Expedition\Entities\Expedition;
+use Modules\Informat\Entities\Machine;
 use Modules\Labelqr\Entities\Labelqr;
 use Modules\Labelqr\Entities\LabelqrDetails;
 use Modules\Reception\Entities\Reception;
@@ -22,145 +23,95 @@ class HomeController extends Controller
 
         return view('home');
     }
-    // TEST BD Y VACIO 
+    // TEST DE BOWIE Y VACIO
+
     public function testBowiesChart()
     {
         abort_if(!request()->ajax(), 404);
-        $Negativos = $this->NegativosTBDChart();
-        $Positivos = $this->PositivosTBDChart();
-        $TvacNegativos = $this->NegativosTvacChart();
-        $TvacPositivos = $this->PositivosTvacChart();
-
-        return response()->json(['Negativos' => $Negativos, 'Positivos' => $Positivos, 'TvacNegativos' => $TvacNegativos, 'TvacPositivos' => $TvacPositivos]);
-    }
-    public function PositivosTBDChart()
-    {
         $dates = collect();
         foreach (range(-6, 0) as $i) {
-            $updated_at = Carbon::now()->addDays($i)->format('d-m-y');
-            $dates->put($updated_at, 0);
+            $date = Carbon::now()->addMonths($i)->format('m-Y');
+            $dates->put($date, 0);
         }
-        $date_range = Carbon::today()->subDays(6);
 
-        $Positivos = Testbd::where('validation_bd', 'Falla')
-            ->where('updated_at', '>=', $date_range)
-            ->groupBy(DB::raw("DATE_FORMAT(updated_at,'%d-%m-%y')"))
-            ->orderBy('updated_at')
-            ->get([
-                DB::raw(DB::raw("DATE_FORMAT(updated_at,'%d-%m-%y') as updated_at")),
-                DB::raw('count(*) as count'),
+        $date_range = Carbon::today()->subYear()->format('Y-m-d');
+
+        $Negativos = Testvacuum::where('updated_at', '>=', $date_range)
+            ->where('validation_vacuum', 'Correcto')
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("count('*') as count")
             ])
-            ->pluck('count', 'updated_at');
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('count', 'month');
 
-        $ciclo_positivos = array_merge_numeric_values($Positivos);
-        $dates = $dates->merge($ciclo_positivos);
-        $data = [];
-
-        $days = [];
-        foreach ($dates as $key => $value) {
-            $data[] = $value;
-            $days[] = $key;
-        }
-
-        return response()->json(['data' => $data, 'days' => $days]);
-    }
-
-    public function NegativosTBDChart()
-    {
-        $dates = collect();
-        foreach (range(-6, 0) as $i) {
-            $updated_at = Carbon::now()->addDays($i)->format('d-m-y');
-            $dates->put($updated_at, 0);
-        }
-        $date_range = Carbon::today()->subDays(6);
-
-        $Negativos = Testbd::where('validation_bd', 'Correcto')
-            ->where('updated_at', '>=', $date_range)
-            ->groupBy(DB::raw("DATE_FORMAT(updated_at,'%d-%m-%y')"))
-            ->orderBy('updated_at')
-            ->get([
-                DB::raw(DB::raw("DATE_FORMAT(updated_at,'%d-%m-%y') as updated_at")),
-                DB::raw('COUNT(*) as count'),
+        $Positivos = Testvacuum::where('updated_at', '>=', $date_range)
+            ->where('validation_vacuum', 'Falla')
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("count('*') as count")
             ])
-            ->pluck('count', 'updated_at');
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('count', 'month');
+
+        $NegativosTBD = Testbd::where('updated_at', '>=', $date_range)
+            ->where('validation_bd', 'Correcto')
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("count('*') as count")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('count', 'month');
+
+        $PositivosTBD = Testbd::where('updated_at', '>=', $date_range)
+            ->where('validation_bd', 'Falla')
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("count('*') as count")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('count', 'month');
+
+
+
         $ciclo_Negativos = array_merge_numeric_values($Negativos);
-        $dates = $dates->merge($ciclo_Negativos);
-
-        $data = [];
-        $days = [];
-        foreach ($dates as $key => $value) {
-            $data[] = $value;
-            $days[] = $key;
-        }
-
-        return response()->json(['data' => $data, 'days' => $days]);
-    }
-
-    public function PositivosTvacChart()
-    {
-        $dates = collect();
-        foreach (range(-6, 0) as $i) {
-            $updated_at = Carbon::now()->addDays($i)->format('d-m-y');
-            $dates->put($updated_at, 0);
-        }
-        $date_range = Carbon::today()->subDays(6);
-
-        $Positivos = Testvacuum::where('validation_vacuum', 'Falla')
-            ->where('updated_at', '>=', $date_range)
-            ->groupBy(DB::raw("DATE_FORMAT(updated_at,'%d-%m-%y')"))
-            ->orderBy('updated_at')
-            ->get([
-                DB::raw(DB::raw("DATE_FORMAT(updated_at,'%d-%m-%y') as updated_at")),
-                DB::raw('count(*) as count'),
-            ])
-            ->pluck('count', 'updated_at');
-
+        $dates_testvacNeg = $dates->merge($ciclo_Negativos);
         $ciclo_Positivos = array_merge_numeric_values($Positivos);
-        $dates = $dates->merge($ciclo_Positivos);
-        $data = [];
+        $dates_testvacPosi = $dates->merge($ciclo_Positivos);
+        $ciclo_NegativoTBDs = array_merge_numeric_values($NegativosTBD);
+        $dates_TBDNeg = $dates->merge($ciclo_NegativoTBDs);
+        $ciclo_PositivoTBDs = array_merge_numeric_values($PositivosTBD);
+        $dates_TBDPosi = $dates->merge($ciclo_PositivoTBDs);
 
-        $days = [];
-        foreach ($dates as $key => $value) {
-            $data[] = $value;
-            $days[] = $key;
+
+        $testvacNeg = [];
+        $testvacPosi = [];
+        $TBDNeg = [];
+        $TBDPosi = [];
+        $months = [];
+
+        foreach ($dates_testvacNeg as $key => $value) {
+            $testvacNeg[] = $value;
+            $months[] = $key;
+        }
+        foreach ($dates_testvacPosi as $key => $value) {
+            $testvacPosi[] = $value;
+        }
+        foreach ($dates_TBDNeg as $key => $value) {
+            $TBDNeg[] = $value;
+        }
+        foreach ($dates_TBDPosi as $key => $value) {
+            $TBDPosi[] = $value;
         }
 
-        return response()->json(['data' => $data, 'days' => $days]);
+        return response()->json([
+            'testvacNeg' => $testvacNeg,
+            'testvacPosi' => $testvacPosi,
+            'TBDNeg' => $TBDNeg,
+            'TBDPosi' => $TBDPosi,
+            'months' => $months,
+        ]);
     }
-
-    public function NegativosTvacChart()
-    {
-        $dates = collect();
-        foreach (range(-6, 0) as $i) {
-            $updated_at = Carbon::now()->addDays($i)->format('d-m-y');
-            $dates->put($updated_at, 0);
-        }
-        $date_range = Carbon::today()->subDays(6);
-
-        $Negativos = Testvacuum::where('validation_vacuum', 'Correcto')
-            ->where('updated_at', '>=', $date_range)
-            ->groupBy(DB::raw("DATE_FORMAT(updated_at,'%d-%m-%y')"))
-            ->orderBy('updated_at')
-            ->get([
-                DB::raw(DB::raw("DATE_FORMAT(updated_at,'%d-%m-%y') as updated_at")),
-                DB::raw('count(*) as count'),
-            ])
-            ->pluck('count', 'updated_at');
-
-
-        $ciclo_Negativos = array_merge_numeric_values($Negativos);
-        $dates = $dates->merge($ciclo_Negativos);
-        
-        $data = [];
-        $days = [];
-        foreach ($dates as $key => $value) {
-            $data[] = $value;
-            $days[] = $key;
-        }
-
-        return response()->json(['data' => $data, 'days' => $days]);
-    }
-
     // ACUMULADO DE DE TEST
     public function currentMonthChart()
     {
@@ -201,8 +152,10 @@ class HomeController extends Controller
             $dates->put($date, 0);
         }
 
+
         $date_range = Carbon::today()->subYear()->format('Y-m-d');
-        $search_steamok1 = ['machine_name' => 'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
+
+        $search_steamok1 = ['machine_name' =>  'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
         $Steam1ok = Discharge::where('updated_at', '>=', $date_range)
             ->where($search_steamok1)
             ->select([
@@ -212,7 +165,7 @@ class HomeController extends Controller
             ->groupBy('month')->orderBy('month')
             ->get()->pluck('count', 'month');
 
-        $search_steamFail1 = ['machine_name' => 'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
+        $search_steamFail1 = ['machine_name' =>  'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
         $Steam1fail = Discharge::where('updated_at', '>=', $date_range)
             ->where($search_steamFail1)
             ->select([
@@ -222,7 +175,7 @@ class HomeController extends Controller
             ->groupBy('month')->orderBy('month')
             ->get()->pluck('count', 'month');
 
-        $search_steamok2 = ['machine_name' => 'MATACHANA 2', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
+        $search_steamok2 = ['machine_name' => 'CISA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
         $Steam2ok = Discharge::where('updated_at', '>=', $date_range)
             ->where($search_steamok2)
             ->select([
@@ -232,7 +185,7 @@ class HomeController extends Controller
             ->groupBy('month')->orderBy('month')
             ->get()->pluck('count', 'month');
 
-        $search_steamFail2 = ['machine_name' => 'MATACHANA 2', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
+        $search_steamFail2 = ['machine_name' => 'CISA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
         $Steam2fail = Discharge::where('updated_at', '>=', $date_range)
             ->where($search_steamFail2)
             ->select([
@@ -242,7 +195,7 @@ class HomeController extends Controller
             ->groupBy('month')->orderBy('month')
             ->get()->pluck('count', 'month');
 
-        $search_HPOOK = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
+        $search_HPOOK = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Peroxido', 'status_cycle' => 'Ciclo Aprobado'];
         $HPO_OK = Discharge::where('updated_at', '>=', $date_range)
             ->where($search_HPOOK)
             ->select([
@@ -252,7 +205,7 @@ class HomeController extends Controller
             ->groupBy('month')->orderBy('month')
             ->get()->pluck('count', 'month');
 
-        $search_HPOFAIL = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
+        $search_HPOFAIL = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Peroxido', 'status_cycle' => 'Ciclo Falla'];
         $HPO_FAIL = Discharge::where('updated_at', '>=', $date_range)
             ->where($search_HPOFAIL)
             ->select([
@@ -322,6 +275,49 @@ class HomeController extends Controller
         ]);
     }
 
+
+    // TOTAL DE PRODUCION 
+
+    public function currentMonthProductionChart()
+    {
+        abort_if(!request()->ajax(), 404);
+
+        $search_steamok1 = ['machine_name' =>  'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
+        $search_steamFail1 = ['machine_name' =>  'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
+        $search_steamok2 = ['machine_name' => 'CISA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
+        $search_steamFail2 = ['machine_name' => 'CISA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
+        $search_HPOOK = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Peroxido', 'status_cycle' => 'Ciclo Aprobado'];
+        $search_HPOFAIL = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Peroxido', 'status_cycle' => 'Ciclo Falla'];
+        $Steam1ok = Discharge::where($search_steamok1)->whereMonth('updated_at', date('m'))
+            ->whereYear('updated_at', date('Y'))
+            ->count();
+        $Steam1fail = Discharge::where($search_steamFail1)->whereMonth('updated_at', date('m'))
+            ->whereYear('updated_at', date('Y'))
+            ->count();
+        $Steam2ok = Discharge::where($search_steamok2)->whereMonth('updated_at', date('m'))
+            ->whereYear('updated_at', date('Y'))
+            ->count();
+        $Steam2fail = Discharge::where($search_steamFail2)->whereMonth('updated_at', date('m'))
+            ->whereYear('updated_at', date('Y'))
+            ->count();
+        $HPO_OK = Discharge::where($search_HPOOK)->whereMonth('updated_at', date('m'))
+            ->whereYear('updated_at', date('Y'))
+            ->count();
+        $HPO_FAIL = Discharge::where($search_HPOFAIL)->whereMonth('updated_at', date('m'))
+            ->whereYear('updated_at', date('Y'))
+            ->count();
+       
+
+        return response()->json([
+            'Steam1ok'     => $Steam1ok,
+            'Steam1fail'     => $Steam1fail,
+            'Steam2ok' => $Steam2ok,
+            'Steam2fail'  => $Steam2fail,
+            'HPO_OK' => $HPO_OK,
+            'HPO_FAIL'  => $HPO_FAIL,
+        ]);
+    }
+
     public function ProductionlabelsChart()
     {
         abort_if(!request()->ajax(), 404);
@@ -381,6 +377,71 @@ class HomeController extends Controller
         return response()->json([
             'label_steams' => $label_steams,
             'label_hpos' => $label_hpos,
+
+            'months' => $months,
+        ]);
+    }
+
+
+    public function ResultProductionChart()
+    {
+        abort_if(!request()->ajax(), 404);
+
+        $dates = collect();
+        foreach (range(-6, 0) as $i) {
+            $date = Carbon::now()->addMonths($i)->format('m-Y');
+            $dates->put($date, 0);
+        }
+
+        $date_range = Carbon::today()->subYear()->format('Y-m-d');
+        $search_esteril = ['product_ref_qr' => 'Esteril'];
+        $esteril = DischargeDetails::where('updated_at', '>=', $date_range)
+            ->where($search_esteril)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("count('*') as count")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('count', 'month');
+
+        $search_no_esteril = ['product_ref_qr' => 'No Esteril'];
+        $no_esteril = DischargeDetails::where('updated_at', '>=', $date_range)
+            ->where($search_no_esteril)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("count('*') as count")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('count', 'month');
+
+
+
+        $label_steril = array_merge_numeric_values($esteril);
+        $label_nosteril = array_merge_numeric_values($no_esteril);
+
+
+        $dates_esteril = $dates->merge($label_steril);
+        $dates_noesteil = $dates->merge($label_nosteril);
+
+        $esteril = [];
+        $no_esteril = [];
+
+        $months = [];
+
+        foreach ($dates_esteril as $key => $value) {
+            $esteril[] = $value;
+            $months[] = $key;
+        }
+
+        foreach ($dates_noesteil as $key => $value) {
+            $no_esteril[] = $value;
+        }
+
+
+
+        return response()->json([
+            'esteril' => $esteril,
+            'no_esteril' => $no_esteril,
 
             'months' => $months,
         ]);

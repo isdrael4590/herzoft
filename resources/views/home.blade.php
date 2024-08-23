@@ -44,7 +44,7 @@
                 <div class="col-md-12">
                     <div class="row">
                         @can('access_dirty_area')
-                            <div class="col-md-6 col-lg-3">
+                            <div class="col-md-6 col-lg-2">
                                 <div class="card border-0">
                                     <div class="card-body p-0 d-flex align-items-center shadow-sm">
                                         <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
@@ -69,40 +69,40 @@
                                         </div>
                                         <div>
                                             <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO PREPARACIÓN</div>
-                                            <div class="text-value text-primary"><a href="{{ route('preparations.index') }}">Stock
+                                            <div class="text-value text-primary"><a
+                                                    href="{{ route('preparationDetails.index') }}">Stock
                                                     en Preparación</a>
                                             </div>
-                                            @can('access_labelqrs')
-                                                <div class="text-value text-primary"><a href="{{ route('labelqrs.create') }}">Generar
-                                                        Etiqueta</a>
-                                                </div>
-                                            @endcan
-                                            @can('create_Testbds')
-                                                <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO TEST DE BOWIE &
-                                                    DICK</div>
-                                                <div class="text-value text-primary"><a href="{{ route('testbds.index') }}">Ver
-                                                        Test de B&D</a>
-                                                </div>
-                                            @endcan
+                                            <div class="text-value text-primary"><a
+                                                    href="{{ route('RecepReprocess.create') }}">Reprocesar Instrumental</a>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-6 col-lg-3">
                                 <div class="card border-0">
                                     <div class="card-body p-0 d-flex align-items-center shadow-sm">
                                         <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
-                                            <h1>HPO</h1>
+                                            <h1>PROD</h1>
                                         </div>
 
                                         <div>
-                                            <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO PREPARACIÓN</div>
-                                            <div class="text-value text-primary"><a
-                                                    href="{{ route('preparations.index') }}">Instrumental en Preparación</a>
+                                            <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO CARGA / DESCARGA
                                             </div>
                                             @can('access_labelqrs')
-                                                <div class="text-value text-primary"><a href="{{ route('labelqrshpo.create') }}">Generar
-                                                        Etiqueta</a>
+                                                <div class="text-value text-primary"><a href="{{ route('labelqrs.index') }}">GENERAR
+                                                        ETIQUETAS</a>
+                                                </div>
+                                            @endcan
+
+                                            @can('create_discharges')
+                                                <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE DESCARGA
+                                                </div>
+                                                <div class="text-value text-primary"><a
+                                                        href="{{ route('discharges.index') }}">LIBERACION </a>
                                                 </div>
                                             @endcan
 
@@ -120,19 +120,14 @@
                                         </div>
 
                                         <div>
-                                            @can('create_discharges')
-                                                <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE DESCARGA
-                                                </div>
-                                                <div class="text-value text-primary"><a
-                                                        href="{{ route('discharges.index') }}">Liberación de Ciclos</a>
-                                                </div>
-                                            @endcan
+
                                             @can('access_almacen_area')
                                                 <div>
                                                     <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE
                                                         ALMACÉN Y DESPACHO.
                                                     </div>
-                                                    <div class="text-value text-primary"><a href="{{ route('stocks.index') }}">Stock
+                                                    <div class="text-value text-primary"><a
+                                                            href="{{ route('preparationDetails.index') }}">Stock
                                                             Esteril</a>
                                                     </div>
                                                     @can('access_expedition')
@@ -156,60 +151,83 @@
         @can('show_test')
             <div class="row mb-4">
                 @can('show_test_bd')
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Resultado de Test de Bowie & Dick  / Vacío (7 días Últimos)
-                            </div>
-                            <div class="card-body">
-                                <canvas id="testBowiesChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                @endcan
-                @can('show_test_vacuum')
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header">
-                                Overview of Tests {{ now()->format('F, Y') }}
+                                Resultado de Test de Bowie & Dick / Vacío
                             </div>
                             <div class="card-body d-flex justify-content-center">
+                                <div class="chart-container" style="position: relative; height:auto; width:580px">
+                                    <strong class="text-align: center">Mensual de Test de Bowie & Dick / Vacío</strong>
+                                    <canvas id="testBowiesChart"></canvas>
+                                </div>
+
                                 <div class="chart-container" style="position: relative; height:auto; width:280px">
-                                    <canvas id="currentMonthChart"></canvas>
+                                    <strong># Test Bowie & Dick Total<strong>
+                                            <canvas id="currentMonthChart"></canvas>
                                 </div>
-                                <div class="chart-container" style="position: relative; height:auto; width:290px">
-                                    <canvas id="currentMonthChart2"></canvas>
-                                </div>
+                                @can('show_test_vacuum')
+                                    <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                        <strong># Test Vacio Total<strong>
+                                                <canvas id="currentMonthChart2"></canvas>
+                                    </div>
+                                @endcan
                             </div>
                         </div>
                     </div>
                 @endcan
+
             </div>
         @endcan
 
         @can('show_production')
             <div class="row mb-4">
                 @can('show_production_steam')
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
                                 Producción Mensual Esterilización.
                             </div>
-                            <div class="card-body">
-                                <canvas id="ProductionsChart"></canvas>
+                            <div class="card-body d-flex justify-content-center">
+                                <div class="chart-container" style="position: relative; height:auto; width:680px">
+                                    <canvas id="ProductionsChart"></canvas>
+                                </div>
+                                <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                    <strong># Test Vacio Total<strong>
+                                            <canvas id="currentMonthProductionChart"></canvas>
+                                </div>
+                                <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                    <strong># Test Vacio Total<strong>
+                                            <canvas id="currentMonthProductionChart2"></canvas>
+                                </div>
                             </div>
-                            
                         </div>
                     </div>
                 @endcan
+            </div>
+            <div class="row mb-4">
                 @can('show_production_hpo')
                     <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
-                                Instrumental Procesado ( Etiquetas Generadas).
+                                Instrumental Procesado.
                             </div>
-                            <div class="card-body">
-                                <canvas id="ProductionlabelsChart"></canvas>
+                            <div class="card-body d-flex justify-content-center">
+                                <div class="card-body">
+                                            <canvas id="ProductionlabelsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Rendimiento Paquetes.
+                            </div>
+                            <div class="card-body d-flex justify-content-center">
+                                <div class="card-body">
+                                            <canvas id="ResultProductionChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>

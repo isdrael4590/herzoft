@@ -10,13 +10,13 @@ class SearchProducttoREPROC extends Component
 {
 
     public $query;
-    public $search_results;
+    public $search_resultREPROCs;
     public $how_many;
 
     public function mount() {
         $this->query = '';
         $this->how_many = 10;
-        $this->search_results = Collection::empty();
+        $this->search_resultREPROCs = Collection::empty();
     }
 
     public function render() {
@@ -24,7 +24,7 @@ class SearchProducttoREPROC extends Component
     }
 
     public function updatedQuery() {
-        $this->search_results = DischargeDetails::where('product_name', 'like', '%' . $this->query . '%')
+        $this->search_resultREPROCs = DischargeDetails::where('product_name', 'like', '%' . $this->query . '%')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
             ->take($this->how_many)->get();
     }
@@ -37,7 +37,7 @@ class SearchProducttoREPROC extends Component
     public function resetQuery() {
         $this->query = '';
         $this->how_many = 10;
-        $this->search_results = Collection::empty();
+        $this->search_resultREPROCs = Collection::empty();
     }
 
     public function selectProduct($product) {
