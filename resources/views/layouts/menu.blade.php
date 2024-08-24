@@ -61,7 +61,7 @@
         class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('testbds.*') || request()->routeIs('testbds.*') ? 'c-show' : '' }}">
         @can('create_testbds')
             <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-                <i class="c-sidebar-nav-icon bi bi-box-seam" style="line-height: 1;"></i> TESTS DE EQUPOS
+                <i class="c-sidebar-nav-icon bi bi-box-seam" style="line-height: 1;"></i> TESTS DE EQUIPOS
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
 

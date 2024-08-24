@@ -40,7 +40,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <label>Persona que entrega</label>
+                                    <label>Area </label>
                                     <select class="form-control" name="area" id="area" required>
                                         <option value="Zona Esteril">Zona Esteril</option>
                                     </select>

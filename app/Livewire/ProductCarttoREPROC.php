@@ -78,6 +78,7 @@ class ProductCarttoREPROC extends Component
 
             'options' => [
                 'code'    => $discharge_detail['product_code'],
+                'product_id' =>$discharge_detail['product_id'],
                 'product_type_process'    => $discharge_detail['product_type_process'],
                 'product_type_dirt' => 'REPROCESADO', 
                 'product_state_rumed' => 'BUENO' 
@@ -104,7 +105,7 @@ class ProductCarttoREPROC extends Component
 
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
-                'code'                   => $cart_item->options->code,
+                'code'                   => $cart_item->options->code,                'product_id'      => $cart_item->options->product_id,
                 'product_type_dirt'      => $cart_item->options->product_type_dirt,
                 'product_state_rumed'    => $cart_item->options->product_state_rumed,
                 'product_type_process'    => $cart_item->options->product_type_process,
@@ -123,7 +124,8 @@ class ProductCarttoREPROC extends Component
     public function updateCartOptions($row_id, $discharge_detail, $cart_item)
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
-            'code'                  => $cart_item->options->code,
+
+            'code'                  => $cart_item->options->code,                'product_id'      => $cart_item->options->product_id,
             'product_type_process'=> $cart_item->options->product_type_process,
             'product_type_dirt'     => $this->type_dirt[$discharge_detail],
             'product_state_rumed'   => $this->state_rumed[$discharge_detail],

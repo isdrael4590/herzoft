@@ -1,20 +1,33 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Registrar Despacho'); ?>
 
-@section('title', 'Registrar Despacho')
-
-@section('breadcrumb')
+<?php $__env->startSection('breadcrumb'); ?>
     <ol class="breadcrumb border-0 m-0">
-        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('expeditions.index') }}">Generador Despacho</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo e(route('home')); ?>">Home</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo e(route('expeditions.index')); ?>">Generador Despacho</a></li>
         <li class="breadcrumb-item active">Añadir</li>
     </ol>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-12">
-                <livewire:search-producttoEXP />
+                <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('search-producttoEXP', []);
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-3823457683-0', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
             </div>
         </div>
 
@@ -22,16 +35,16 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @include('utils.alerts')
-                        <form id="expedition-form" action="{{ route('expeditions.update',$expedition) }}" method="POST">
-                            @csrf
-                            @method('patch')
+                        <?php echo $__env->make('utils.alerts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                        <form id="expedition-form" action="<?php echo e(route('expeditions.update',$expedition)); ?>" method="POST">
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('patch'); ?>
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="reference">Referencia <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="reference" required 
-                                            value="{{ $expedition->reference }}" readonly>
+                                            value="<?php echo e($expedition->reference); ?>" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -40,10 +53,12 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_expedition" id="status_expedition"
                                             required>
-                                            <option {{ $expedition->status_expedition == 'Despachar' ? 'selected' : '' }}
+                                            <option <?php echo e($expedition->status_expedition == 'Despachar' ? 'selected' : ''); ?>
+
                                                 value="Despachar">
                                                 Despachar</option>
-                                            <option {{ $expedition->status_expedition == 'Pendiente' ? 'selected' : '' }}
+                                            <option <?php echo e($expedition->status_expedition == 'Pendiente' ? 'selected' : ''); ?>
+
                                                 value="Pendiente">
                                                 Pendiente</option>
                                         </select>
@@ -55,7 +70,7 @@
                                         <label for="temp_ambiente">Temperatura del Ambiente <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_ambiente" required
-                                        value="{{ $expedition->temp_ambiente }}" >
+                                        value="<?php echo e($expedition->temp_ambiente); ?>" >
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -63,10 +78,10 @@
                                         <label for="area_expedition">Area de expedición <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" id="area_expedition" name="area_expedition" required>
-                                            @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                                <option {{ $expedition->area_expedition == $area->area_name ? 'selected' : '' }} value="{{$area->area_name }}">
-                                                    {{ $area->area_name }}</option>
-                                            @endforeach
+                                            <?php $__currentLoopData = \Modules\Informat\Entities\Area::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $area): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option <?php echo e($expedition->area_expedition == $area->area_name ? 'selected' : ''); ?> value="<?php echo e($area->area_name); ?>">
+                                                    <?php echo e($area->area_name); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
                                 </div>
@@ -75,7 +90,7 @@
                                         <label for="staff_expedition">Persona quién Recibe <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="staff_expedition" required
-                                        value="{{ $expedition->staff_expedition }}" >
+                                        value="<?php echo e($expedition->staff_expedition); ?>" >
                                     </div>
                                 </div>
 
@@ -84,13 +99,28 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                            placeholder= "<?php echo e(Auth::user()->name); ?>" value="<?php echo e(Auth::user()->name); ?>">
                                     </div>
                                 </div>
                             </div>
                     </div>
 
-                    <livewire:product-carttoEXP :cartInstance="'expedition'" />
+                    <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('product-carttoEXP', ['cartInstance' => 'expedition']);
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-3823457683-1', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
 
                     <div class="form-row">
 
@@ -111,7 +141,9 @@
         </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('page_scripts')
-@endpush
+<?php $__env->startPush('page_scripts'); ?>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/Modules/Expedition/Resources/views/expeditions/edit.blade.php ENDPATH**/ ?>

@@ -22,6 +22,8 @@ class PreparationDetailsDataTable extends DataTable
             })
             ->addColumn('dates2', function ($data) {
                 return view('preparation::partials.dates2', compact('data'));
+            })->addColumn('product_coming_zone', function ($data) {
+                return view('preparation::partials.product_coming_zone', compact('data'));
             })
             ->addColumn('action2', function ($data) {
                 return view('preparation::partials.actions2', compact('data'));
@@ -46,7 +48,7 @@ class PreparationDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'orderBy' => [[6, 'desc']],
+                'order' => [[6, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -71,7 +73,7 @@ class PreparationDetailsDataTable extends DataTable
                 ->title('Fecha Ingreso')
                 ->className('text-center align-middle'),
             Column::make('dates2')
-                ->title('Fecha Actualidado')
+                ->title('Fecha Ult. Proceso')
                 ->className('text-center align-middle'),
             Column::make('product_name')
                 ->title('Nombre del producto')
@@ -88,7 +90,7 @@ class PreparationDetailsDataTable extends DataTable
                 ->className('text-center align-middle'),
             Column::computed('action2')
                 ->exportable(false)
-                ->printable(false)
+                ->printable(true)
                 ->className('text-center align-middle'),
 
         ];

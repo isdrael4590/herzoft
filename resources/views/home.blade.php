@@ -151,7 +151,7 @@
         @can('show_test')
             <div class="row mb-4">
                 @can('show_test_bd')
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
                                 Resultado de Test de Bowie & Dick / Vacío
@@ -161,6 +161,17 @@
                                     <strong class="text-align: center">Mensual de Test de Bowie & Dick / Vacío</strong>
                                     <canvas id="testBowiesChart"></canvas>
                                 </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Resultado de Test de Bowie & Dick / Vacío
+                            </div>
+                            <div class="card-body d-flex justify-content-center">
 
                                 <div class="chart-container" style="position: relative; height:auto; width:280px">
                                     <strong># Test Bowie & Dick Total<strong>
@@ -183,7 +194,7 @@
         @can('show_production')
             <div class="row mb-4">
                 @can('show_production_steam')
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
                                 Producción Mensual Esterilización.
@@ -192,12 +203,22 @@
                                 <div class="chart-container" style="position: relative; height:auto; width:680px">
                                     <canvas id="ProductionsChart"></canvas>
                                 </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Producción Total Esterilización.
+                            </div>
+                            <div class="card-body d-flex justify-content-center">
                                 <div class="chart-container" style="position: relative; height:auto; width:280px">
-                                    <strong># Test Vacio Total<strong>
+                                    <strong># Produccion Vapor<strong>
                                             <canvas id="currentMonthProductionChart"></canvas>
                                 </div>
                                 <div class="chart-container" style="position: relative; height:auto; width:280px">
-                                    <strong># Test Vacio Total<strong>
+                                    <strong># Produccion Peroxido<strong>
                                             <canvas id="currentMonthProductionChart2"></canvas>
                                 </div>
                             </div>
@@ -214,7 +235,7 @@
                             </div>
                             <div class="card-body d-flex justify-content-center">
                                 <div class="card-body">
-                                            <canvas id="ProductionlabelsChart"></canvas>
+                                    <canvas id="ProductionlabelsChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +247,7 @@
                             </div>
                             <div class="card-body d-flex justify-content-center">
                                 <div class="card-body">
-                                            <canvas id="ResultProductionChart"></canvas>
+                                    <canvas id="ResultProductionChart"></canvas>
                                 </div>
                             </div>
                         </div>

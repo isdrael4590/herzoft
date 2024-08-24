@@ -1,20 +1,33 @@
-@extends('layouts.app')
-
-@section('title', 'Editar Etiquetas')
+<?php $__env->startSection('title', 'Editar Etiquetas'); ?>
 
 
-@section('breadcrumb')
+<?php $__env->startSection('breadcrumb'); ?>
     <ol class="breadcrumb border-0 m-0">
-        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('labelqrs.index') }}">Generador Etiquetas</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo e(route('home')); ?>">Home</a></li>
+        <li class="breadcrumb-item"><a href="<?php echo e(route('labelqrs.index')); ?>">Generador Etiquetas</a></li>
         <li class="breadcrumb-item active">Editar Etiquetas</li>
     </ol>
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-12">
-                <livewire:search-producttoQR/>
+                <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('search-producttoQR', []);
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-1728631701-0', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
             </div>
         </div>
 
@@ -22,24 +35,24 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @include('utils.alerts')
-                        <form id="labelqr-form" action="{{ route('labelqrs.update', $labelqr) }}" method="POST">
-                            @csrf
-                            @method('patch')
-                            @if ($labelqr->machine_type =='Autoclave')
+                        <?php echo $__env->make('utils.alerts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                        <form id="labelqr-form" action="<?php echo e(route('labelqrs.update', $labelqr)); ?>" method="POST">
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('patch'); ?>
+                            <?php if($labelqr->machine_type =='Autoclave'): ?>
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="machine_type">Tipo Esterilización <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="machine_type" required readonly
-                                        value="{{ $labelqr->machine_type }}">
+                                        value="<?php echo e($labelqr->machine_type); ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="reference">Referencia <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="reference" required
-                                            value="{{ $labelqr->reference }}" readonly>
+                                            value="<?php echo e($labelqr->reference); ?>" readonly>
                                     </div>
                                 </div>
 
@@ -48,13 +61,13 @@
                                         <label for="machine_name">Nombre del Equipo <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" id="machine_name" name="machine_name">
-                                            @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
-                                                @if ($machines->machine_type == 'Autoclave')
+                                            <?php $__currentLoopData = \Modules\Informat\Entities\Machine::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $machines): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php if($machines->machine_type == 'Autoclave'): ?>
                                                     <option
-                                                        {{ $labelqr->machine_name == $machines->machine_name ? 'selected' : '' }}value="{{ $machines->machine_name }}">
-                                                        {{ $machines->machine_name }}</option>
-                                                @endif
-                                            @endforeach
+                                                        <?php echo e($labelqr->machine_name == $machines->machine_name ? 'selected' : ''); ?>value="<?php echo e($machines->machine_name); ?>">
+                                                        <?php echo e($machines->machine_name); ?></option>
+                                                <?php endif; ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
                                 </div>
@@ -62,7 +75,7 @@
                                     <div class="form-group">
                                         <label for="lote_machine">Lote del Equipo <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="lote_machine" required
-                                            value="{{ $labelqr->lote_machine }}">
+                                            value="<?php echo e($labelqr->lote_machine); ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -70,22 +83,27 @@
                                         <label for="temp_machine">Temperatura del Equipo <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_machine" required
-                                            value="{{ $labelqr->temp_machine }}">
+                                            value="<?php echo e($labelqr->temp_machine); ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="expiration">TIPO DE PROGRAMA</label>
                                         <select class="form-control" id="type_program" name="type_program">
-                                            <option {{ $labelqr->type_program == '134C ESTANDAR' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->type_program == '134C ESTANDAR' ? 'selected' : ''); ?>
+
                                                 value="134C ESTANDAR">134C ESTANDAR</option>
-                                            <option {{ $labelqr->type_program == '121C ESTANDAR' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->type_program == '121C ESTANDAR' ? 'selected' : ''); ?>
+
                                                 value="121C ESTANDAR">121C ESTANDAR</option>
-                                            <option {{ $labelqr->type_program == 'CONTENEDORES' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->type_program == 'CONTENEDORES' ? 'selected' : ''); ?>
+
                                                 value="CONTENEDORES">CONTENEDORES</option>
-                                            <option {{ $labelqr->type_program == 'RAPID' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->type_program == 'RAPID' ? 'selected' : ''); ?>
+
                                                 value="RAPID">RAPID</option>
-                                            <option {{ $labelqr->type_program == 'ESPORAS' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->type_program == 'ESPORAS' ? 'selected' : ''); ?>
+
                                                 value="ESPORAS">ESPORAS</option>
                                         </select>
                                     </div>
@@ -95,16 +113,16 @@
                                         <label for="lote_biologic">Lote del Insumo Biológico <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" id="lote_biologic" name="lote_biologic" required>
-                                            @foreach (\Modules\Informat\Entities\Informat::all() as $informat)
-                                                @if (
+                                            <?php $__currentLoopData = \Modules\Informat\Entities\Informat::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $informat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php if(
                                                     ($informat->insumo_type == 'INDICADORES BIOLOGICOS') &
                                                         ($informat->insumo_status == 'Activo') &
-                                                        ($informat->insumo_temp == 'ALTA TEMPERATURA'))
+                                                        ($informat->insumo_temp == 'ALTA TEMPERATURA')): ?>
                                                     <option
-                                                        {{ $labelqr->lote_biologic == $informat->insumo_lot ? 'selected' : '' }}value="{{ $informat->insumo_lot }}">
-                                                        {{ $informat->insumo_lot }}</option>
-                                                @endif
-                                            @endforeach
+                                                        <?php echo e($labelqr->lote_biologic == $informat->insumo_lot ? 'selected' : ''); ?>value="<?php echo e($informat->insumo_lot); ?>">
+                                                        <?php echo e($informat->insumo_lot); ?></option>
+                                                <?php endif; ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
                                 </div>
@@ -114,7 +132,7 @@
                                         <select class="form-control" name="validation_biologic" id="validation_biologic"
                                             readonly required>
                                             <option
-                                                {{ $labelqr->validation_biologic == 'sin_validar' ? 'selected' : '' }}value="sin_validar">
+                                                <?php echo e($labelqr->validation_biologic == 'sin_validar' ? 'selected' : ''); ?>value="sin_validar">
                                                 Sin Validar</option>
                                           
                                         </select>
@@ -127,9 +145,11 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_cycle" id="status_cycle" required>
 
-                                            <option {{ $labelqr->status_cycle == 'Pendiente' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->status_cycle == 'Pendiente' ? 'selected' : ''); ?>
+
                                                 value="Pendiente">Pendiente</option>
-                                            <option {{ $labelqr->status_cycle == 'Cargar' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->status_cycle == 'Cargar' ? 'selected' : ''); ?>
+
                                                 value="Cargar">Cargar</option>
                                            
                                         </select>
@@ -140,33 +160,33 @@
                                         <label for="temp_ambiente">Temperatura del Ambiente <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_ambiente" required
-                                            value="{{ $labelqr->temp_ambiente }}">
+                                            value="<?php echo e($labelqr->temp_ambiente); ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                            placeholder= "<?php echo e(Auth::user()->name); ?>" value="<?php echo e(Auth::user()->name); ?>">
                                     </div>
                                 </div>
 
 
                             </div>
-                            @elseif ($labelqr->machine_type =='Peroxido')
+                            <?php elseif($labelqr->machine_type =='Peroxido'): ?>
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="machine_type">Tipo Esterilización <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="machine_type" required readonly
-                                        value="{{ $labelqr->machine_type }}">
+                                        value="<?php echo e($labelqr->machine_type); ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="reference">Referencia <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="reference" required
-                                            value="{{ $labelqr->reference }}" readonly>
+                                            value="<?php echo e($labelqr->reference); ?>" readonly>
                                     </div>
                                 </div>
 
@@ -175,13 +195,13 @@
                                         <label for="machine_name">Nombre del Equipo <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" id="machine_name" name="machine_name">
-                                            @foreach (\Modules\Informat\Entities\Machine::all() as $machines)
-                                                @if ($machines->machine_type == 'Peroxido')
+                                            <?php $__currentLoopData = \Modules\Informat\Entities\Machine::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $machines): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php if($machines->machine_type == 'Peroxido'): ?>
                                                     <option
-                                                        {{ $labelqr->machine_name == $machines->machine_name ? 'selected' : '' }}value="{{ $machines->machine_name }}">
-                                                        {{ $machines->machine_name }}</option>
-                                                @endif
-                                            @endforeach
+                                                        <?php echo e($labelqr->machine_name == $machines->machine_name ? 'selected' : ''); ?>value="<?php echo e($machines->machine_name); ?>">
+                                                        <?php echo e($machines->machine_name); ?></option>
+                                                <?php endif; ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
                                 </div>
@@ -189,7 +209,7 @@
                                     <div class="form-group">
                                         <label for="lote_machine">Lote del Equipo <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="lote_machine" required
-                                            value="{{ $labelqr->lote_machine }}">
+                                            value="<?php echo e($labelqr->lote_machine); ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -197,7 +217,7 @@
                                         <label for="temp_machine">Temperatura del Equipo <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="temp_machine" id="temp_machine" readonly>
-                                            <option {{ $labelqr->temp_machine == '52' ? 'selected' : '' }} value="52">
+                                            <option <?php echo e($labelqr->temp_machine == '52' ? 'selected' : ''); ?> value="52">
                                                 52ºC</option>
                                         </select>
                                     </div>
@@ -206,11 +226,14 @@
                                     <div class="form-group">
                                         <label for="expiration">TIPO DE PROGRAMA</label>
                                         <select class="form-control" id="type_program" name="type_program">
-                                            <option {{ $labelqr->type_program == 'ESTANDAR' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->type_program == 'ESTANDAR' ? 'selected' : ''); ?>
+
                                                 value="ESTANDAR">ESTANDAR</option>
-                                            <option {{ $labelqr->type_program == 'AVANZADO' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->type_program == 'AVANZADO' ? 'selected' : ''); ?>
+
                                                 value="AVANZADO">AVANZADO</option>
-                                            <option {{ $labelqr->type_program == 'RAPID' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->type_program == 'RAPID' ? 'selected' : ''); ?>
+
                                                 value="RAPID">RAPID</option>
                                         </select>
                                     </div>
@@ -220,16 +243,16 @@
                                         <label for="lote_biologic">Lote del Insumo Biológico <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" id="lote_biologic" name="lote_biologic" required>
-                                            @foreach (\Modules\Informat\Entities\Informat::all() as $informat)
-                                                @if (
+                                            <?php $__currentLoopData = \Modules\Informat\Entities\Informat::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $informat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php if(
                                                     ($informat->insumo_type == 'INDICADORES BIOLOGICOS') &
                                                         ($informat->insumo_status == 'Activo') &
-                                                        ($informat->insumo_temp == 'BAJA TEMPERATURA'))
+                                                        ($informat->insumo_temp == 'BAJA TEMPERATURA')): ?>
                                                     <option
-                                                        {{ $labelqr->lote_biologic == $informat->insumo_lot ? 'selected' : '' }}value="{{ $informat->insumo_lot }}">
-                                                        {{ $informat->insumo_lot }}</option>
-                                                @endif
-                                            @endforeach
+                                                        <?php echo e($labelqr->lote_biologic == $informat->insumo_lot ? 'selected' : ''); ?>value="<?php echo e($informat->insumo_lot); ?>">
+                                                        <?php echo e($informat->insumo_lot); ?></option>
+                                                <?php endif; ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
                                 </div>
@@ -238,7 +261,8 @@
                                         <label for="validation_biologic">Validación Ciclo Biológico</label>
                                         <select class="form-control" name="validation_biologic" id="validation_biologic"
                                             readonly>
-                                            <option {{ $labelqr->validation_biologic == 'sin_validar' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->validation_biologic == 'sin_validar' ? 'selected' : ''); ?>
+
                                                 value="sin_validar">
                                                 Sin Validar</option>
                                         </select>
@@ -250,9 +274,11 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_cycle" id="status_cycle" required>
 
-                                            <option {{ $labelqr->status_cycle == 'Pendiente' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->status_cycle == 'Pendiente' ? 'selected' : ''); ?>
+
                                                 value="Pendiente">Pendiente</option>
-                                            <option {{ $labelqr->status_cycle == 'Cargar' ? 'selected' : '' }}
+                                            <option <?php echo e($labelqr->status_cycle == 'Cargar' ? 'selected' : ''); ?>
+
                                                 value="Cargar">Cargar</option>
 
                                         </select>
@@ -263,22 +289,37 @@
                                         <label for="temp_ambiente">Temperatura del Ambiente <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_ambiente" required
-                                            value="{{ $labelqr->temp_ambiente }}">
+                                            value="<?php echo e($labelqr->temp_ambiente); ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                            placeholder= "<?php echo e(Auth::user()->name); ?>" value="<?php echo e(Auth::user()->name); ?>">
                                     </div>
                                 </div>
                             </div>
-                            @endif
-                            <livewire:product-carttoQR :cartInstance="'labelqr'" :data="$labelqr" />
+                            <?php endif; ?>
+                            <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('product-carttoQR', ['cartInstance' => 'labelqr','data' => $labelqr]);
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-1728631701-1', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                             <div class="form-group">
                                 <label for="note_labelqr">Nota (Si se necesita)</label>
-                                <textarea name="note_labelqr" id="note_labelqr" rows="5" class="form-control">{{ $labelqr->note_labelqr }}</textarea>
+                                <textarea name="note_labelqr" id="note_labelqr" rows="5" class="form-control"><?php echo e($labelqr->note_labelqr); ?></textarea>
                             </div>
 
                             <div class="mt-3">
@@ -292,7 +333,9 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('page_scripts')
-@endpush
+<?php $__env->startPush('page_scripts'); ?>
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/Modules/Labelqr/Resources/views/labelqrs/edit.blade.php ENDPATH**/ ?>
