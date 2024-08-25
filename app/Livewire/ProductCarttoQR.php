@@ -123,6 +123,7 @@ class ProductCarttoQR extends Component
             'options' => [
                 'code'                   => $cart_item->options->code,
                 'product_id'      => $cart_item->options->product_id,
+                'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
                 'product_package_wrap'      => $cart_item->options->product_package_wrap,
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
                 'product_eval_package'      => $cart_item->options->product_eval_package,
@@ -148,6 +149,7 @@ class ProductCarttoQR extends Component
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code'                  => $cart_item->options->code,
             'product_id'            => $cart_item->options->product_id,
+            'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
             'product_type_process'  => $cart_item->options->product_type_process,
             'product_package_wrap'  => $this->package_wrap[$preparation_detail_id],
             'product_ref_qr'        => $this->ref_qr[$preparation_detail_id],

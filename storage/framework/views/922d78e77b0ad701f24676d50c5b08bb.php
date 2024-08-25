@@ -58,7 +58,7 @@ if (isset($__slots)) unset($__slots);
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_expedition" id="status_expedition"
                                             required>
-                                            <option selected value="Despachar">Despachar</option>
+                                            <option selected value="Despachado">Despachar</option>
                                             <option value="Pendiente">Pendiente</option>
                                         </select>
                                     </div>

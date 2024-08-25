@@ -53,9 +53,9 @@ if (isset($__slots)) unset($__slots);
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_expedition" id="status_expedition"
                                             required>
-                                            <option <?php echo e($expedition->status_expedition == 'Despachar' ? 'selected' : ''); ?>
+                                            <option <?php echo e($expedition->status_expedition == 'Despachado' ? 'selected' : ''); ?>
 
-                                                value="Despachar">
+                                                value="Despachado">
                                                 Despachar</option>
                                             <option <?php echo e($expedition->status_expedition == 'Pendiente' ? 'selected' : ''); ?>
 

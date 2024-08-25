@@ -405,8 +405,10 @@ class HomeController extends Controller
             ->get()->pluck('count', 'month');
 
         $search_no_esteril = ['product_ref_qr' => 'No Esteril'];
+        $search_no_esteril2 = ['product_ref_qr' => 'Reprocesar'];
         $no_esteril = DischargeDetails::where('updated_at', '>=', $date_range)
             ->where($search_no_esteril)
+            ->Orwhere($search_no_esteril2)
             ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
                 DB::raw("count('*') as count")

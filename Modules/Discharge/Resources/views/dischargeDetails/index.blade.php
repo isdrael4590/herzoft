@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Discharges')
+@section('title', 'Stock')
 
 @section('third_party_stylesheets')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
@@ -9,7 +9,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item active">Descargar Ciclo</li>
+        <li class="breadcrumb-item active">Descarga Detalles</li>
     </ol>
 @endsection
 
@@ -19,15 +19,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        @can('edit_dischargeDetails')
-                            <a href="{{ route('dischargeDetails.index') }}" class="btn btn-primary">
-                                Instrumental Listado <i class="bi bi-plus"></i>
-                            </a>
-                            <hr>
-                        @endcan
+                        
+                        <hr>
                         <div class="table-responsive">
                             {!! $dataTable->table() !!}
                         </div>
+                        
                     </div>
                 </div>
             </div>

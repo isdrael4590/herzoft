@@ -19,10 +19,7 @@
                         <div>
                             Referencia: <strong>{{ $labelqr->reference }}</strong>
                         </div>
-                        <a target="_blank" class="btn btn-sm btn-warning mfs-auto mfe-1 d-print-none"
-                            href="{{ route('labelqr-discharges.create', $labelqr->id) }}">
-                            <i class="bi bi-printer"></i> Enviar Ciclo
-                        </a>
+                        
                         <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
                             href="{{ route('labelqrs_label.pdf', $labelqr->id) }}">
                             <i class="bi bi-printer"></i> Imprimir Etiquetas

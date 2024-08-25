@@ -31,7 +31,7 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <h8 class="page-title">{{ $greet }}{{ Session::get('name') }}!</h8>
+                <h4 class="page-title">{{ $greet }} <strong>{{ Auth::user()->name }}!</strong></h4>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active">Panel Principal</li>
                 </ul>
@@ -157,7 +157,7 @@
                                 Resultado de Test de Bowie & Dick / Vacío
                             </div>
                             <div class="card-body d-flex justify-content-center">
-                                <div class="chart-container" style="position: relative; height:auto; width:580px">
+                                <div class="card-body">
                                     <strong class="text-align: center">Mensual de Test de Bowie & Dick / Vacío</strong>
                                     <canvas id="testBowiesChart"></canvas>
                                 </div>
@@ -173,12 +173,12 @@
                             </div>
                             <div class="card-body d-flex justify-content-center">
 
-                                <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                <div class="chart-container" style="position: relative; height:auto; width:auto">
                                     <strong># Test Bowie & Dick Total<strong>
                                             <canvas id="currentMonthChart"></canvas>
                                 </div>
                                 @can('show_test_vacuum')
-                                    <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                    <div class="chart-container" style="position: relative; height:auto; width:auto">
                                         <strong># Test Vacio Total<strong>
                                                 <canvas id="currentMonthChart2"></canvas>
                                     </div>
@@ -200,7 +200,7 @@
                                 Producción Mensual Esterilización.
                             </div>
                             <div class="card-body d-flex justify-content-center">
-                                <div class="chart-container" style="position: relative; height:auto; width:680px">
+                                <div class="card-body">
                                     <canvas id="ProductionsChart"></canvas>
                                 </div>
                               
@@ -213,11 +213,11 @@
                                 Producción Total Esterilización.
                             </div>
                             <div class="card-body d-flex justify-content-center">
-                                <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                <div class="chart-container" style="position: relative; height:auto; width:auto">
                                     <strong># Produccion Vapor<strong>
                                             <canvas id="currentMonthProductionChart"></canvas>
                                 </div>
-                                <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                <div class="chart-container" style="position: relative; height:auto; width:auto">
                                     <strong># Produccion Peroxido<strong>
                                             <canvas id="currentMonthProductionChart2"></canvas>
                                 </div>

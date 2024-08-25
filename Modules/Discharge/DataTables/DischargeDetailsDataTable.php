@@ -1,39 +1,28 @@
 <?php
 
-namespace Modules\Reception\DataTables;
+namespace Modules\Discharge\DataTables;
 
-use Modules\Reception\Entities\Reception;
-use Modules\Reception\Entities\ReceptionDetails;
+use Modules\Discharge\Entities\DischargeDetails;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rules\Can;
-use ZipStream\Zip64\EndOfCentralDirectory;
-
-class ReceptionDataTable extends DataTable
+class DischargeDetailsDataTable extends DataTable
 {
 
     public function dataTable($query)
     {
         return datatables()
             ->eloquent($query)
-       
-            ->addColumn('reference', function ($data) {
-                return view('reception::partials.reference', compact('data'));
-            })
+
             ->addColumn('action', function ($data) {
-                return view('reception::partials.actions', compact('data'));
-            })
-            ->addColumn('dates', function ($data) {
-                return view('reception::partials.dates', compact('data'));
+                return view('discharge::partials.actionDetails', compact('data'));
             });
     }
 
-    public function query(Reception $model)
+    public function query(DischargeDetails $model)
     {
         return $model->newQuery();
     }
@@ -41,14 +30,15 @@ class ReceptionDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('receptions-table')
+            ->setTableId('dischargeDetails-table')
+
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[3, 'desc']],
+                'order' => [[1, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -65,46 +55,40 @@ class ReceptionDataTable extends DataTable
     protected function getColumns()
     {
         return [
-
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
-            Column::make('dates')
-                ->title('Fecha')
+
+            Column::make('product_name')
+                ->title('Nombre del producto')
                 ->className('text-center align-middle'),
-
-            Column::make('reference')
-                ->title('Referencia')
-                ->className('text-center align-middle'),
-
-
-            Column::make('delivery_staff')
-                ->title('Persona Entrega')
-                ->className('text-center align-middle'),
-
-            Column::make('area')
-                ->title('Área Procedente')
-                ->className('text-center align-middle'),
-
-            Column::make('note')
-                ->title('Notas')
-                ->className('text-center align-middle'),
-
-            Column::make('operator')
-                ->title('Operador')
-                ->className('text-center align-middle'),
-
-            Column::make('status')
-                ->title('Estado')
+            Column::make('product_code')
+                ->title('Código del producto')
                 ->className('text-center align-middle'),
 
 
+            Column::make('product_ref_qr')
+                ->title('Referencia Estado')
+                ->className('text-center align-middle'),
+
+            Column::computed('product_eval_package')
+                ->title('Validación Paquete')
+                ->className('text-center align-middle'),
+
+            Column::make('product_expiration')
+                ->title('Fecha de expiración')
+
+                ->className('text-center align-middle'),
+
+
+            Column::make('created_at')
+                ->visible(false)
         ];
     }
 
     protected function filename(): string
     {
-        return 'Reception_' . date('YmdHis');
+        return 'DischargeDetails_' . date('YmdHis');
     }
 }

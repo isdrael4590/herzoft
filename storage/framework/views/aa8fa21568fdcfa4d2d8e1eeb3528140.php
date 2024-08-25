@@ -1,4 +1,4 @@
-<?php $__env->startSection('title', 'Discharges'); ?>
+<?php $__env->startSection('title', 'Stock'); ?>
 
 <?php $__env->startSection('third_party_stylesheets'); ?>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
@@ -7,7 +7,7 @@
 <?php $__env->startSection('breadcrumb'); ?>
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="<?php echo e(route('home')); ?>">Home</a></li>
-        <li class="breadcrumb-item active">Descargar Ciclo</li>
+        <li class="breadcrumb-item active">Descarga Detalles</li>
     </ol>
 <?php $__env->stopSection(); ?>
 
@@ -17,16 +17,13 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('edit_dischargeDetails')): ?>
-                            <a href="<?php echo e(route('dischargeDetails.index')); ?>" class="btn btn-primary">
-                                Instrumental Listado <i class="bi bi-plus"></i>
-                            </a>
-                            <hr>
-                        <?php endif; ?>
+                        
+                        <hr>
                         <div class="table-responsive">
                             <?php echo $dataTable->table(); ?>
 
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -39,4 +36,4 @@
 
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/Modules/Discharge/Resources/views/discharges/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/Modules/Discharge/Resources/views/dischargeDetails/index.blade.php ENDPATH**/ ?>

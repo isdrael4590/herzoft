@@ -40,8 +40,8 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_expedition" id="status_expedition"
                                             required>
-                                            <option {{ $expedition->status_expedition == 'Despachar' ? 'selected' : '' }}
-                                                value="Despachar">
+                                            <option {{ $expedition->status_expedition == 'Despachado' ? 'selected' : '' }}
+                                                value="Despachado">
                                                 Despachar</option>
                                             <option {{ $expedition->status_expedition == 'Pendiente' ? 'selected' : '' }}
                                                 value="Pendiente">
