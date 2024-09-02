@@ -30,3 +30,5 @@ database/credenciales/*
 credenciales/*
 # Composer log que no es necesario
 composer.lock
+# Archivos autogenerados
+storage/framework/views/*
