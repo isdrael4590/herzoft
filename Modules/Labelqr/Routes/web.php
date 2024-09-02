@@ -34,12 +34,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/labelqrs_label/pdf/{id}', [PrinterLabelQrController::class, 'printerLabelqr'])->name('labelqrs_label.pdf');
 
+
     Route::get('/labelqr-discharges/{labelqr}', 'LabelqrDischargeController')->name('labelqr-discharges.create');
 
     //labelqrs
     Route::resource('labelqrs', 'LabelqrController');
     Route::resource('labelqrDetails', 'LabelqrDetailsController');
 
+    
     Route::resource('labelqrshpo', 'LabelqrHPOController');
 });
 

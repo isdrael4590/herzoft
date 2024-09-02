@@ -16,7 +16,7 @@ class SearchProducttoEXP extends Component
 
     public function mount() {
         $this->query = '';
-        $this->how_many = 5;
+        $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
 
@@ -26,18 +26,20 @@ class SearchProducttoEXP extends Component
 
     public function updatedQuery() {
         $this->search_results = StockDetails::where('product_name', 'like', '%' . $this->query . '%')
+            ->where('product_status_stock','=','Disponible')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
+            ->where('product_status_stock','=','Disponible')
             ->take($this->how_many)->get();
     }
 
     public function loadMore() {
-        $this->how_many += 5;
+        $this->how_many += 10;
         $this->updatedQuery();
     }
 
     public function resetQuery() {
         $this->query = '';
-        $this->how_many = 5;
+        $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
 

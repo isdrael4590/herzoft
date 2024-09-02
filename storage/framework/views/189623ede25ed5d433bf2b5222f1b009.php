@@ -34,7 +34,6 @@
                     <ul class="list-group list-group-flush">
 
                         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $search_results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $result): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <!--[if BLOCK]><![endif]--><?php if($result->product_state_preparation == 'Disponible'): ?>
                                 <li class="list-group-item list-group-item-action">
                                     <a wire:click="resetQuery" wire:click.prevent="selectProduct(<?php echo e($result); ?>)"
                                         href="#">
@@ -42,7 +41,6 @@
                                         <?php echo e($result->product_name); ?> | <?php echo e($result->product_code); ?> ==> ( <?php echo e($result->product_coming_zone); ?>)
                                     </a>
                                 </li>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <!--[if BLOCK]><![endif]--><?php if($search_results->count() >= $how_many): ?>
                             <li class="list-group-item list-group-item-action text-center">

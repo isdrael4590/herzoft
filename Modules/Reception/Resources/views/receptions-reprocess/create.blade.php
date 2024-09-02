@@ -5,7 +5,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Registrar Ingreso')
+@section('title', 'Reprocesar Instrumental')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
@@ -40,13 +40,15 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <label>Area </label>
-                                    <select class="form-control" name="area" id="area" required>
+                                    <div class="form-group">
+                                        <label>Área Procedente</label>
+                                        <select class="form-control" name="area" id="area" required>
                                         <option value="Zona Esteril">Zona Esteril</option>
                                     </select>
+                                    </div>
                                 </div>
                                 <div class="col-lg-3">
-                                <div class="form-group">
+                                    <div class="form-group">
                                         <label>Persona que entrega</label>
                                         <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
                                             placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
@@ -62,7 +64,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <livewire:product-carttoREPROC :cartInstance="'RecepReprocess'"/>
+                            <livewire:product-carttoREPROC :cartInstance="'RecepReprocess'" />
                             <div class="form-row">
                                 <div class="col-lg-4">
                                     <div class="form-group">

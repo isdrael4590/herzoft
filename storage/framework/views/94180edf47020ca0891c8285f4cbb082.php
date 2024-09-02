@@ -3,109 +3,114 @@
 
 <head>
     <title>QR ETIQUETAS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" >
     <meta charset="UTF-8">
 
     <!-- External CSS libraries -->
-    <link type="text/css" rel="stylesheet" href="<?php echo e(asset('assets/printer/css/bootstrap.min.css')); ?>">
+   <style>
 
-    <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+/** Print ticket **/
+@media print {
+    .cabecera-ticket {
+    }
+        }
+    
+
+/*css para etiquetas */
+   /*Informacion equipo tickets */
+   table, th, td {
+    border: 1px solid black;
+    border-style:  dotted;
+    border-collapse: collapse;
+    padding-top: 1px;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+}
+ 
+
+
+@page {
+		margin-left: 1cm;
+		margin-right: 0.3cm;
+        margin-top: 0.2cm;
+		margin-bottom: 0.2cm;
+
+	}
+    .verticalText {
+transform: rotate(90deg);
+}
+
+
+
+p{
+font-size: 7px;
+line-height:1;
+
+}
+
+   </style>
+
 
     <!-- Custom Stylesheet -->
-    <link type="text/css" rel="stylesheet" href="<?php echo e(asset('assets/printer/css/style.css')); ?>">
 </head>
-
 <body>
-    <div class="printer-16 printer-content">
-
-
-
-        <?php $__currentLoopData = $labelqr->labelqrDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="cabecera-ticket ">
-                <header>
-                    <div class="upper-ticket col-xs-12 text-center">
-                        <strong><?php echo e(institutes()->institute_name); ?></strong>
-                        <small> <?php echo e(institutes()->institute_area); ?> - <?php echo e(institutes()->institute_city); ?> -
-                            <?php echo e(institutes()->institute_country); ?></small>
-                    </div>
-
-
-
-
-                    <div class="upper-ticket col-xs-4 text-center">
-                        <div class="box">
-                            <?php echo QrCode::size(80)->style('square')->generate(
-                                    "$labelqr->reference" .
-                                        ' // Lote: ' .
-                                        "$labelqr->lote_machine" .
-                                        ' // Elab: ' .
-                                        Carbon\Carbon::parse($item->updated_at)->format('d M, Y') .
-                                        ' // Venc: ' .
-                                        Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y'),
-                                ); ?>
-
-
-                            <strong> <?php echo e($labelqr->reference); ?></strong>
-                        </div>
-                    </div>
-                    <div class="upper-ticket col-xs-4 text-center">
-
-                        <strong>Venc. <?php echo Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y'); ?></strong>
-                        <small>Elab. <?php echo Carbon\Carbon::parse($item->updated_at)->format('d M, Y'); ?></small>
-                        <small><?php echo e($labelqr->machine_name); ?></small>
-                        <small><?php echo e($labelqr->type_program); ?></small>
-                        <strong>Lote: <?php echo e($labelqr->lote_machine); ?></strong>
-                        <strong><em><?php echo e($item->product_name); ?></em></strong>
-                        <small><em><?php echo e($item->product_code); ?></em></small>
-                        <small>Operario: <?php echo e($labelqr->operator); ?> </small>
-
-
-                    </div>
-                </header>
-
-
-
-                <section class="strap">
-                    <div class="box">
-                        <div class="">
-                            <small>El producto no se considera ESTERIL, si el empaque esta ABIERTO o
-                                HUMEDO</small>
-
-                        </div>
-
-                    </div>
-
-                </section>
-            </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-
-
-
-
-
+    <?php $__currentLoopData = $labelqr->labelqrDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <div>
-           
-            <button id="download" class="mt-2 btn btn-info text-light" onclick="downloadSVG()">Imprimir</button>
-
+            <table style="width:100%">
+                <head>
+                    <tr style="font-size: 11px;">
+                    <th colspan="2"> <?php echo e(institutes()->institute_name); ?><br>
+                            <p style="font-size: 8px;"> <?php echo e(institutes()->institute_area); ?> - <?php echo e(institutes()->institute_city); ?> -<?php echo e(institutes()->institute_country); ?></p>
+                    </th>
+                 
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td><img src="data:image/png;base64, <?php echo e(base64_encode(QrCode::format('png')->size(120)->generate($dataqr. $item->product_code ))); ?>">
+                        </td>
+                        <td>
+                        <i style="font-size: 16px;">
+                        <strong >Venc. <?php echo Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y'); ?></strong><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                            <small>Elab. <?php echo Carbon\Carbon::parse($item->updated_at)->format('d M, Y'); ?></small><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                        <strong><?php echo e($labelqr->machine_name); ?> Lote: <?php echo e($labelqr->lote_machine); ?> </strong><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                        <small><?php echo e($labelqr->type_program); ?></small><br>
+                        </i>
+                        <i style="font-size: 10px;">
+                        <strong><?php echo e($labelqr->reference); ?></strong><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                        <strong><?php echo e($item->product_name); ?></strong><br>
+                        </i>
+                        <i style="font-size: 15px;">
+                        <small><?php echo e($item->product_code); ?></small><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                        <small>Operario: <?php echo e($labelqr->operator); ?> </small>
+                        </i>
+                        </td>
+                    </tr>
+                    <tr style="font-size: 6px;">
+                            <td  style="text-align: center;" colspan="2">
+                            <i style="font-size: 8px;">
+                                <small>El producto no se considera ESTERIL, si el empaque esta ABIERTO o
+                                HUMEDO</small>
+                            </i>   
+                            
+                        </td>
+                       
+                    </tr>
+                   
+                </head>
+            </table>
         </div>
-
-    </div>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 </body>
 
 </html>
-<script>
-
-    function downloadSVG() {
-      const svg = document.getElementById('cabecera-ticket').innerHTML;
-      const blob = new Blob([svg.toString()]);
-      const element = document.createElement("a");
-      element.download = "w3c.svg";
-      element.href = window.URL.createObjectURL(blob);
-      element.click();
-      element.remove();
-    }
-    </script><?php /**PATH /var/www/html/Modules/Labelqr/Resources/views/labelqrs/print.blade.php ENDPATH**/ ?>
+  <?php /**PATH /var/www/html/Modules/Labelqr/Resources/views/labelqrs/print.blade.php ENDPATH**/ ?>

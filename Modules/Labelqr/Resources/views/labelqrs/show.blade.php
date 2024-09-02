@@ -73,6 +73,7 @@
                                         <th class="align-middle">Validación Ind. Químico</th>
                                         <th class="align-middle">Fecha de vencimiento</th>
                                         <th class="align-middle">QR Paquete</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -104,11 +105,9 @@
                                                     <span>
                                                        Lote: {{ $labelqr->lote_machine }}  <br> Código: {{ $item->product_code }}
                                                     </span>
-                                                
                                                 </div>
-                                       
-                                             
                                             </td>
+                                          
                                         </tr>
                                     @endforeach
                                 </tbody>

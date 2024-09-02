@@ -65,7 +65,8 @@ class ExpeditionController extends Controller
                 ]);
 
 
-                if ($request->status_expedition == 'Despachar'){
+                if ($request->status_expedition == 'Despachado'){
+
                     $stock_detail = StockDetails::findOrFail($cart_item->id);
                     $stock_detail->update([
                         'product_status_stock' => 'Despachado',
@@ -158,7 +159,7 @@ class ExpeditionController extends Controller
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' => $cart_item->options->product_expiration,
                 ]);
-                if ($request->status_expedition == 'Despachar'){
+                if ($request->status_expedition == 'Despachado'){
                     $stock_detail = StockDetails::where('id', $cart_item->options->stock_detail_id);
                     $stock_detail->update([
                         'product_status_stock' => 'Despachado',

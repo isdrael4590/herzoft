@@ -29,9 +29,6 @@
                                             value="PRE">
                                     </div>
                                 </div>
-                              
-
-                         
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>
@@ -40,18 +37,12 @@
                                     </div>
                                 </div>
                             </div>
-
                            <livewire:product-carttoPRE :cartInstance="'preparation'" :data="$preparation"/>
-
-
-
                             <div class="form-group">
                                 <label for="note">Nota (Si se necesita)</label>
                                 <textarea name="note" id="note" rows="5" class="form-control">{{ $preparation->note }}</textarea>
                             </div>
-
                             <input type="hidden" name="reception_id" value="{{ $reception_id }}">
-
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-primary">
                                     Enviar a preparación<i class="bi bi-check"></i>
@@ -64,3 +55,5 @@
         </div>
     </div>
 @endsection
+@push('page_scripts')
+@endpush

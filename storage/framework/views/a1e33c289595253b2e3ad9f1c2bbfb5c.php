@@ -17,10 +17,7 @@
                         <div>
                             Referencia: <strong><?php echo e($labelqr->reference); ?></strong>
                         </div>
-                        <a target="_blank" class="btn btn-sm btn-warning mfs-auto mfe-1 d-print-none"
-                            href="<?php echo e(route('labelqr-discharges.create', $labelqr->id)); ?>">
-                            <i class="bi bi-printer"></i> Enviar Ciclo
-                        </a>
+                        
                         <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
                             href="<?php echo e(route('labelqrs_label.pdf', $labelqr->id)); ?>">
                             <i class="bi bi-printer"></i> Imprimir Etiquetas
@@ -75,6 +72,7 @@
                                         <th class="align-middle">Validación Ind. Químico</th>
                                         <th class="align-middle">Fecha de vencimiento</th>
                                         <th class="align-middle">QR Paquete</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -112,11 +110,9 @@
                                                        Lote: <?php echo e($labelqr->lote_machine); ?>  <br> Código: <?php echo e($item->product_code); ?>
 
                                                     </span>
-                                                
                                                 </div>
-                                       
-                                             
                                             </td>
+                                          
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>

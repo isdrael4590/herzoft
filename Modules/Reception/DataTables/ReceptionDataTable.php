@@ -48,7 +48,7 @@ class ReceptionDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[3, 'desc']],
+                'order' => [[1, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -69,6 +69,9 @@ class ReceptionDataTable extends DataTable
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
+                ->className('text-center align-middle'),
+            Column::make('id')
+                ->title('ID')
                 ->className('text-center align-middle'),
             Column::make('dates')
                 ->title('Fecha')

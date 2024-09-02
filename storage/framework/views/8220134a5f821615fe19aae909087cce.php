@@ -43,22 +43,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="font-weight-bold" for="machine_identificator">Indicador de Equipo <span
-                                class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <select class="form-control" name="machine_identificator" id="machine_identificator"
-                                required>
-                                <option value="" selected disabled>Selección Contador
-                                </option>
-                                <option value="Autoclave1">Autoclave1</option>
-                                <option value="Autoclave2">Autoclave2</option>
-                                <option value="Peroxido1">Peroxido1</option>
-                                <option value="Peroxido2">Peroxido2</option>
-
-                            </select>
-                        </div>
-                    </div>
+                   
 
                     <div class="form-group">
                         <label class="font-weight-bold" for="machine_serial">Serie del Equipo <span

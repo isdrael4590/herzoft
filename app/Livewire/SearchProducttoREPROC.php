@@ -25,7 +25,9 @@ class SearchProducttoREPROC extends Component
 
     public function updatedQuery() {
         $this->search_resultREPROCs = DischargeDetails::where('product_name', 'like', '%' . $this->query . '%')
+            ->where('product_ref_qr','=','Reprocesar')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
+            ->where('product_ref_qr','=','Reprocesar')
             ->take($this->how_many)->get();
     }
 

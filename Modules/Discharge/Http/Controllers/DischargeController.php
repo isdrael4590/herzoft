@@ -82,7 +82,6 @@ class DischargeController extends Controller
 
             foreach (Cart::instance('discharge')->content() as $cart_item) {
 
-                //$labelqr_detail = LabelqrDetails::where("preparation_detail_id", $cart_item->id)->get()->first();
                 $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
 
                 DischargeDetails::create([
@@ -176,11 +175,7 @@ class DischargeController extends Controller
             foreach ($discharge->dischargeDetails as $discharge_detail) {
                 $discharge_detail->delete();
             }
-            $labelqr = Labelqr::findOrFail($request->labelqr_id);
-            $labelqr->update([
-                'status_cycle' => $request->status_cycle,
-
-            ]);
+           
 
             $discharge->update([
                 'labelqr_id' => $request->labelqr_id,
@@ -197,7 +192,19 @@ class DischargeController extends Controller
                 'note' => $request->note,
                 'operator' => $request->operator
             ]);
+            if ($request->validation_biologic == 'Falla' || $request->status_cycle == 'Ciclo Falla') {
+            $labelqr = Labelqr::findOrFail($request->labelqr_id);
+            $labelqr->update([
+                'status_cycle' => "Ciclo Falla",
 
+            ]);
+            } elseif ($request->validation_biologic == 'Correcto' && $request->status_cycle == 'Ciclo Aprobado') {
+                $labelqr = Labelqr::findOrFail($request->labelqr_id);
+                $labelqr->update([
+                    'status_cycle' => "Ciclo Aprobado",
+
+                ]);
+            }
 
             foreach (Cart::instance('discharge')->content() as $cart_item) {
 
@@ -238,7 +245,7 @@ class DischargeController extends Controller
                     ]);
                 } elseif ($request->validation_biologic == 'Correcto' && $request->status_cycle == 'Ciclo Aprobado') {
                     $labelqr_detail->update([
-                        'product_ref_qr' => 'Falla',
+                        'product_ref_qr' => 'Aprobado',
                     ]);
                     $preparation_detail->update([
                         'product_state_preparation' => 'Procesado',
