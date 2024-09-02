@@ -16,6 +16,7 @@ use Modules\Discharge\Entities\Discharge;
 use Modules\Discharge\Entities\DischargeDetails;
 use Modules\Discharge\Http\Requests\StoreReceptionRequest;
 use Modules\Labelqr\Entities\Labelqr;
+use \PDF;
 
 class PrinterDischargeController extends Controller
 
@@ -31,13 +32,17 @@ class PrinterDischargeController extends Controller
             ->orderBy('id', 'DESC')
             ->get();
         $institute = Institute::all()->first();
-     //   dd($labelqrfisrt, $labelqr);
-        return view('discharge::discharges.print', [
-            'discharge' => $discharge,
+        $data = $labelqr->reference."/".$discharge->reference."/".$discharge->machine_name."/".$discharge->lote_machine."/".$discharge->updated_at->format('d M, Y'); 
+        $pdf = PDF::loadView('discharge::discharges.print', [
+          'discharge' => $discharge,
             'dischargeDetails' => $dischargeDetails,
             'institute' => $institute,
             'labelqr' => $labelqr,
-
-        ]);
+            'data'=> $data,
+        ])->setOptions(['dpi'=>150,'defaultFont' => 'sans-serif']);
+        
+        return $pdf->stream('discharges.pdf');
     }
+
+
 }

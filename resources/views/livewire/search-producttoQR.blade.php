@@ -34,7 +34,6 @@
                     <ul class="list-group list-group-flush">
 
                         @foreach ($search_results as $result)
-                            @if ($result->product_state_preparation == 'Disponible')
                                 <li class="list-group-item list-group-item-action">
                                     <a wire:click="resetQuery" wire:click.prevent="selectProduct({{ $result }})"
                                         href="#">
@@ -42,7 +41,6 @@
                                         {{ $result->product_name }} | {{ $result->product_code }} ==> ( {{ $result->product_coming_zone }})
                                     </a>
                                 </li>
-                            @endif
                         @endforeach
                         @if ($search_results->count() >= $how_many)
                             <li class="list-group-item list-group-item-action text-center">

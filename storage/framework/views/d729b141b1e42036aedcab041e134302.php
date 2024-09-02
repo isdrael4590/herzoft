@@ -5,7 +5,7 @@
 
 
 
-<?php $__env->startSection('title', 'Registrar Ingreso'); ?>
+<?php $__env->startSection('title', 'Reprocesar Instrumental'); ?>
 
 <?php $__env->startSection('breadcrumb'); ?>
     <ol class="breadcrumb border-0 m-0">
@@ -55,13 +55,15 @@ if (isset($__slots)) unset($__slots);
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <label>Persona que entrega</label>
-                                    <select class="form-control" name="area" id="area" required>
+                                    <div class="form-group">
+                                        <label>Área Procedente</label>
+                                        <select class="form-control" name="area" id="area" required>
                                         <option value="Zona Esteril">Zona Esteril</option>
                                     </select>
+                                    </div>
                                 </div>
                                 <div class="col-lg-3">
-                                <div class="form-group">
+                                    <div class="form-group">
                                         <label>Persona que entrega</label>
                                         <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
                                             placeholder= "<?php echo e(Auth::user()->name); ?>" value="<?php echo e(Auth::user()->name); ?>"
@@ -125,5 +127,4 @@ if (isset($__slots)) unset($__slots);
 
 <?php $__env->startPush('page_scripts'); ?>
 <?php $__env->stopPush(); ?>
-
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/Modules/Reception/Resources/views/receptions-reprocess/create.blade.php ENDPATH**/ ?>

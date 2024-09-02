@@ -54,7 +54,6 @@ class PreparationDetailsController extends Controller
         ]);
 
         preparationDetails::findOrFail($id)->update([
-            'product_state_preparation' => $request->product_state_preparation,
             'product_name' => $request->product_name,
             'product_code' => $request->product_code,
             'product_state_preparation' => $request->product_state_preparation,

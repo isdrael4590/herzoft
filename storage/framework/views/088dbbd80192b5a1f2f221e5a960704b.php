@@ -17,10 +17,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        
-
-                        <hr>
-
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('edit_dischargeDetails')): ?>
+                            <a href="<?php echo e(route('dischargeDetails.index')); ?>" class="btn btn-primary">
+                                Instrumental Listado <i class="bi bi-plus"></i>
+                            </a>
+                            <hr>
+                        <?php endif; ?>
                         <div class="table-responsive">
                             <?php echo $dataTable->table(); ?>
 

@@ -86,6 +86,7 @@ class ProductCarttoQR extends Component
             'weight'     => 1,
 
             'options' => [
+                'product_id' => $preparation_detail['product_id'],
                 'code'    => $preparation_detail['product_code'],
                 'product_type_process'    => $preparation_detail['product_type_process'],
                 'product_package_wrap' =>  'Contenedor', //ESTE ES EL DATO A MODIFICAR
@@ -121,6 +122,8 @@ class ProductCarttoQR extends Component
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
                 'code'                   => $cart_item->options->code,
+                'product_id'      => $cart_item->options->product_id,
+                'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
                 'product_package_wrap'      => $cart_item->options->product_package_wrap,
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
                 'product_eval_package'      => $cart_item->options->product_eval_package,
@@ -144,12 +147,14 @@ class ProductCarttoQR extends Component
     public function updateCartOptions($row_id, $preparation_detail_id, $cart_item)
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
-            'code' => $cart_item->options->code,
-            'product_type_process' => $cart_item->options->product_type_process,
-            'product_package_wrap'     => $this->package_wrap[$preparation_detail_id],
-            'product_ref_qr'   => $this->ref_qr[$preparation_detail_id],
-            'product_eval_package'     => $this->eval_package[$preparation_detail_id],
-            'product_eval_indicator'   => $this->eval_indicator[$preparation_detail_id],
+            'code'                  => $cart_item->options->code,
+            'product_id'            => $cart_item->options->product_id,
+            'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
+            'product_type_process'  => $cart_item->options->product_type_process,
+            'product_package_wrap'  => $this->package_wrap[$preparation_detail_id],
+            'product_ref_qr'        => $this->ref_qr[$preparation_detail_id],
+            'product_eval_package'  => $this->eval_package[$preparation_detail_id],
+            'product_eval_indicator'=> $this->eval_indicator[$preparation_detail_id],
             'product_expiration'   => $this->expiration[$preparation_detail_id],
         ]]);
     }

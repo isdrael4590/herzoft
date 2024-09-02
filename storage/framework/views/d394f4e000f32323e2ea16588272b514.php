@@ -129,5 +129,4 @@ if (isset($__slots)) unset($__slots);
 
 <?php $__env->startPush('page_scripts'); ?>
 <?php $__env->stopPush(); ?>
-
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/Modules/Reception/Resources/views/receptions/create.blade.php ENDPATH**/ ?>

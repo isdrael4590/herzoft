@@ -15,7 +15,8 @@
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Operario
         </a>
     @endif
-    
+@endcan
+@can('edit_admin')
     <a href="{{ route('receptions.edit', $data->id) }}" class="dropdown-item">
         <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Supervisor
     </a>

@@ -53,7 +53,7 @@ class LabelqrHPOController extends Controller
                 LabelqrDetails::create([
                     'labelqr_id' => $labelqrhpo->id,
                     'preparation_detail_id' => $preparation_detail->id,
-                    'product_id' => $cart_item->id,
+                    'product_id' => $cart_item->options->product_id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
@@ -63,10 +63,12 @@ class LabelqrHPOController extends Controller
                     'product_eval_indicator' => $cart_item->options->product_eval_indicator,
                     'product_expiration' => $cart_item->options->product_expiration
                 ]);
-                $preparation_detail1 = PreparationDetails::findOrFail($preparation_detail->id);
-                $preparation_detail1->update([
-                    'product_state_preparation' => 'Cargado',
-                ]);
+                if ($request->status_cycle == 'Cargar') {
+                    $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
+                    $preparation_detail->update([
+                        'product_state_preparation' => 'Cargado',
+                    ]);
+                }
             }
 
             Cart::instance('labelqrhpo')->destroy();
@@ -96,13 +98,14 @@ class LabelqrHPOController extends Controller
 
         foreach ($labelqr_details as $labelqr_detail) {
             $cart->add([
-                'id' => $labelqr_detail->product_id,
+                'id' => $labelqr_detail->id,
                 'name' => $labelqr_detail->product_name,
                 'qty' => 1,
                 'price' => 1,
                 'weight' => 1,
                 'options' => [
                     'code' => $labelqr_detail->product_code,
+                    'product_id'   => $labelqr_detail->product_id,
                     'product_type_process' => $labelqr_detail->product_type_process,
                     'product_package_wrap' => $labelqr_detail->product_package_wrap,
                     'product_ref_qr' => $labelqr_detail->product_ref_qr,
@@ -142,7 +145,7 @@ class LabelqrHPOController extends Controller
                 LabelqrDetails::create([
                     'labelqr_id' => $labelqr->id,
                     'preparation_detail_id' => $preparation_detail->id,
-                    'product_id' => $cart_item->id,
+                    'product_id' => $cart_item->options->product_id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
@@ -153,10 +156,12 @@ class LabelqrHPOController extends Controller
                     'product_expiration' => $cart_item->options->product_expiration
 
                 ]);
-                $preparation_detail1 = PreparationDetails::findOrFail($preparation_detail->id);
-                $preparation_detail1->update([
-                    'product_state_preparation' => 'Cargado',
-                ]);
+                if ($request->status_cycle == 'Cargar') {
+                    $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
+                    $preparation_detail->update([
+                        'product_state_preparation' => 'Cargado',
+                    ]);
+                }
             }
 
             Cart::instance('labelqrhpo')->destroy();

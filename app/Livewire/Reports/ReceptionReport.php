@@ -42,7 +42,7 @@ class ReceptionReport extends Component
                 return $query->where('status', $this->status_reception);
             })
             
-            ->orderBy('updated_at', 'desc')->paginate(10);
+            ->orderBy('updated_at', 'desc')->paginate(20);
 
         return view('livewire.reports.receptions-report', [
             'receptions' => $receptions

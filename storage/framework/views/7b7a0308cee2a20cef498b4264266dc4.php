@@ -33,7 +33,6 @@
                 <div class="card-body shadow">
                     <ul class="list-group list-group-flush">
                         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $search_resultREPROCs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $result): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <!--[if BLOCK]><![endif]--><?php if($result->product_ref_qr == 'Reprocesar'): ?>
                                 <li class="list-group-item list-group-item-action">
                                     <a wire:click="resetQuery" wire:click.prevent="selectProduct(<?php echo e($result); ?>)"
                                         href="#">
@@ -41,7 +40,6 @@
 
                                     </a>
                                 </li>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <!--[if BLOCK]><![endif]--><?php if($search_resultREPROCs->count() >= $how_many): ?>
                             <li class="list-group-item list-group-item-action text-center">

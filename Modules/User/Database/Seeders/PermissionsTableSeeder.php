@@ -61,7 +61,7 @@ class PermissionsTableSeeder extends Seeder
             'create_importproducts',
             //Barcode Printing
             'print_barcodes',
-            
+
             //Settings
             'access_settings',
             //Units
@@ -170,6 +170,11 @@ class PermissionsTableSeeder extends Seeder
             'delete_discharges',
             'print_discharges',
             'access_release_cycle',
+
+            // descarga detalles 
+            'edit_dischargeDetails',
+            'delete_dischargeDetails',
+
             // ZONA ALMACEN 
             'access_almacen_area',
             'access_expeditions',
@@ -188,6 +193,10 @@ class PermissionsTableSeeder extends Seeder
             'show_stockManual',
             'edit_stockManual',
             'delete_stockManual',
+
+            // roles admin
+            'edit_admin',
+            'access_buttontables_admin',
 
         ];
 

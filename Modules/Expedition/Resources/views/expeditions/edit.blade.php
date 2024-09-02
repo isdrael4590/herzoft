@@ -42,7 +42,7 @@
                                             required>
                                             <option {{ $expedition->status_expedition == 'Despachado' ? 'selected' : '' }}
                                                 value="Despachado">
-                                                Despachado</option>
+                                                Despachar</option>
                                             <option {{ $expedition->status_expedition == 'Pendiente' ? 'selected' : '' }}
                                                 value="Pendiente">
                                                 Pendiente</option>

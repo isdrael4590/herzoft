@@ -24,8 +24,9 @@ class SearchProducttoQR extends Component
 
     public function updatedQuery() {
         $this->search_results = PreparationDetails::where('product_name', 'like', '%' . $this->query . '%')
+            ->where('product_state_preparation','=','Disponible')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
-
+            ->where('product_state_preparation','=','Disponible')
             ->take($this->how_many)->get();
     }
 
@@ -36,7 +37,7 @@ class SearchProducttoQR extends Component
 
     public function resetQuery() {
         $this->query = '';
-        $this->how_many = 5;
+        $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
 

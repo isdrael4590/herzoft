@@ -11,7 +11,8 @@
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Operario
         </a>
     <?php endif; ?>
-    
+<?php endif; ?>
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('edit_admin')): ?>
     <a href="<?php echo e(route('receptions.edit', $data->id)); ?>" class="dropdown-item">
         <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Supervisor
     </a>

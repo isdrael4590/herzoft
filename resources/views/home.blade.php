@@ -31,7 +31,7 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <h8 class="page-title">{{ $greet }}{{ Session::get('name') }}!</h8>
+                <h4 class="page-title">{{ $greet }} <strong>{{ Auth::user()->name }}!</strong></h4>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active">Panel Principal</li>
                 </ul>
@@ -44,7 +44,7 @@
                 <div class="col-md-12">
                     <div class="row">
                         @can('access_dirty_area')
-                            <div class="col-md-6 col-lg-2">
+                            <div class="col-md-6 col-lg-3">
                                 <div class="card border-0">
                                     <div class="card-body p-0 d-flex align-items-center shadow-sm">
                                         <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
@@ -52,7 +52,7 @@
                                         </div>
                                         <div>
                                             <div class="text-muted text-uppercase font-weight-bold small">Módulo Recepción</div>
-                                            <div class="text-value text-primary"><a href="{{ route('receptions.index') }}">Ver todos
+                                            <div class="text-value text-primary"><a href="{{ route('receptions.index') }}">Todos
                                                     los ingresos</a>
                                             </div>
                                         </div>
@@ -64,17 +64,17 @@
                             <div class="col-md-6 col-lg-3">
                                 <div class="card border-0">
                                     <div class="card-body p-0 d-flex align-items-center shadow-sm">
-                                        <div class="bg-gradient-warning-primary p-4 mfe-3 rounded-left">
-                                            <img src="{{ URL::to('assets/img/logos_equipos/LOGO-STEAM.png') }}" height="60">
+                                    <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
+                                            <h1>PRE</h1>
                                         </div>
                                         <div>
                                             <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO PREPARACIÓN</div>
                                             <div class="text-value text-primary"><a
                                                     href="{{ route('preparationDetails.index') }}">Stock
-                                                    en Preparación</a>
+                                            </a>
                                             </div>
                                             <div class="text-value text-primary"><a
-                                                    href="{{ route('RecepReprocess.create') }}">Reprocesar Instrumental</a>
+                                                    href="{{ route('RecepReprocess.create') }}">Reprocesar </a>
                                             </div>
 
                                         </div>
@@ -86,15 +86,14 @@
                                 <div class="card border-0">
                                     <div class="card-body p-0 d-flex align-items-center shadow-sm">
                                         <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
-                                            <h1>PROD</h1>
+                                            <h1>PRO</h1>
                                         </div>
 
                                         <div>
-                                            <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO CARGA / DESCARGA
+                                            <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO CARGA
                                             </div>
                                             @can('access_labelqrs')
-                                                <div class="text-value text-primary"><a href="{{ route('labelqrs.index') }}">GENERAR
-                                                        ETIQUETAS</a>
+                                                <div class="text-value text-primary"><a href="{{ route('labelqrs.index') }}">Generar Ciclo</a>
                                                 </div>
                                             @endcan
 
@@ -102,7 +101,7 @@
                                                 <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE DESCARGA
                                                 </div>
                                                 <div class="text-value text-primary"><a
-                                                        href="{{ route('discharges.index') }}">LIBERACION </a>
+                                                        href="{{ route('discharges.index') }}">Liberar Ciclo</a>
                                                 </div>
                                             @endcan
 
@@ -123,16 +122,18 @@
 
                                             @can('access_almacen_area')
                                                 <div>
-                                                    <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE
-                                                        ALMACÉN Y DESPACHO.
+                                                    <div class="text-muted text-uppercase font-weight-bold small">MÓDULO
+                                                        ALMACÉN.
                                                     </div>
                                                     <div class="text-value text-primary"><a
                                                             href="{{ route('preparationDetails.index') }}">Stock
                                                             Esteril</a>
                                                     </div>
                                                     @can('access_expedition')
-                                                        <div class="text-value text-primary"><a href="{{ route('expeditions.index') }}">VER
-                                                                DESPACHOS</a>
+                                                    <div class="text-muted text-uppercase font-weight-bold small">
+                                                        DESPACHO.
+                                                    </div>
+                                                        <div class="text-value text-primary"><a href="{{ route('expeditions.index') }}">Ver Despachos</a>
                                                         </div>
                                                     @endcan
 
@@ -151,25 +152,36 @@
         @can('show_test')
             <div class="row mb-4">
                 @can('show_test_bd')
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
                                 Resultado de Test de Bowie & Dick / Vacío
                             </div>
                             <div class="card-body d-flex justify-content-center">
-                                <div class="chart-container" style="position: relative; height:auto; width:580px">
+                                <div class="card-body">
                                     <strong class="text-align: center">Mensual de Test de Bowie & Dick / Vacío</strong>
                                     <canvas id="testBowiesChart"></canvas>
                                 </div>
 
-                                <div class="chart-container" style="position: relative; height:auto; width:280px">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header" >
+                                Resultado de Test de Bowie & Dick / Vacío
+                            </div>
+                            <div class="card-body d-flex content-center">
+
+                                <div class=" display: flex; min-height: 50vhr">
                                     <strong># Test Bowie & Dick Total<strong>
-                                            <canvas id="currentMonthChart"></canvas>
+                                            <canvas  id="currentMonthChart"  width="200" height="220"></canvas>
                                 </div>
                                 @can('show_test_vacuum')
-                                    <div class="chart-container" style="position: relative; height:auto; width:280px">
+                                <div class=" display: flex; min-height: 50vhr">
                                         <strong># Test Vacio Total<strong>
-                                                <canvas id="currentMonthChart2"></canvas>
+                                                <canvas  id="currentMonthChart2" width="200" height="200"></canvas>
                                     </div>
                                 @endcan
                             </div>
@@ -183,22 +195,32 @@
         @can('show_production')
             <div class="row mb-4">
                 @can('show_production_steam')
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header">
                                 Producción Mensual Esterilización.
                             </div>
                             <div class="card-body d-flex justify-content-center">
-                                <div class="chart-container" style="position: relative; height:auto; width:680px">
+                                <div class="card-body">
                                     <canvas id="ProductionsChart"></canvas>
                                 </div>
-                                <div class="chart-container" style="position: relative; height:auto; width:280px">
-                                    <strong># Test Vacio Total<strong>
-                                            <canvas id="currentMonthProductionChart"></canvas>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header">
+                                Producción Total Esterilización.
+                            </div>
+                            <div class="card-body d-flex content-center">
+                                <div class=" display: flex; min-height: 50vhr">
+                                    <strong># Produccion Vapor<strong>
+                                            <canvas id="currentMonthProductionChart" width="200" height="200"></canvas>
                                 </div>
-                                <div class="chart-container" style="position: relative; height:auto; width:280px">
-                                    <strong># Test Vacio Total<strong>
-                                            <canvas id="currentMonthProductionChart2"></canvas>
+                                <div class=" display: flex; min-height: 50vhr">
+                                    <strong># Produccion Peroxido<strong>
+                                            <canvas id="currentMonthProductionChart2" width="200" height="200"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +236,7 @@
                             </div>
                             <div class="card-body d-flex justify-content-center">
                                 <div class="card-body">
-                                            <canvas id="ProductionlabelsChart"></canvas>
+                                    <canvas id="ProductionlabelsChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +248,7 @@
                             </div>
                             <div class="card-body d-flex justify-content-center">
                                 <div class="card-body">
-                                            <canvas id="ResultProductionChart"></canvas>
+                                    <canvas id="ResultProductionChart"></canvas>
                                 </div>
                             </div>
                         </div>

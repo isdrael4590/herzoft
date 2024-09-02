@@ -27,9 +27,6 @@
                                             value="PRE">
                                     </div>
                                 </div>
-                              
-
-                         
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>
@@ -38,7 +35,6 @@
                                     </div>
                                 </div>
                             </div>
-
                            <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -55,16 +51,11 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-
-
-
                             <div class="form-group">
                                 <label for="note">Nota (Si se necesita)</label>
                                 <textarea name="note" id="note" rows="5" class="form-control"><?php echo e($preparation->note); ?></textarea>
                             </div>
-
                             <input type="hidden" name="reception_id" value="<?php echo e($reception_id); ?>">
-
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-primary">
                                     Enviar a preparación<i class="bi bi-check"></i>
@@ -77,5 +68,7 @@ if (isset($__slots)) unset($__slots);
         </div>
     </div>
 <?php $__env->stopSection(); ?>
+<?php $__env->startPush('page_scripts'); ?>
+<?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/html/Modules/Reception/Resources/views/reception-preparations/create.blade.php ENDPATH**/ ?>

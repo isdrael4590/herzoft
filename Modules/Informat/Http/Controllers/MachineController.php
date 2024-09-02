@@ -24,7 +24,7 @@ class MachineController extends Controller
         $request->validate([
             'machine_code' => 'required',
             'machine_name' => 'required',
-            'machine_identificator' => 'required',
+           // 'machine_identificator' => 'required',
             'machine_model' => 'nullable',
             'machine_type' => 'nullable',
             'machine_serial' => 'nullable',
@@ -35,7 +35,7 @@ class MachineController extends Controller
         Machine::create([
             'machine_code' => $request->machine_code,
             'machine_name' => $request->machine_name,
-            'machine_identificator' => $request->machine_identificator,
+           //  'machine_identificator' => $request->machine_identificator,
             'machine_model' => $request->machine_model,
             'machine_type' => $request->machine_type,
             'machine_serial' => $request->machine_serial,
@@ -69,7 +69,7 @@ class MachineController extends Controller
         $request->validate([
             'machine_code' => 'required|unique:machines,machine_code,' . $id,
             'machine_name' => 'required',
-            'machine_identificator' => 'required',
+           //  'machine_identificator' => 'required',
             'machine_model' => 'nullable',
             'machine_type' => 'nullable',
             'machine_serial' => 'nullable',
@@ -80,7 +80,7 @@ class MachineController extends Controller
         Machine::findOrFail($id)->update([
             'machine_code' => $request->machine_code,
             'machine_name' => $request->machine_name,
-            'machine_identificator' => $request->machine_identificator,
+           //  'machine_identificator' => $request->machine_identificator,
             'machine_model' => $request->machine_model,
             'machine_type' => $request->machine_type,
             'machine_serial' => $request->machine_serial,

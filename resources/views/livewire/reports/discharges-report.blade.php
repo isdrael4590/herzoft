@@ -54,8 +54,8 @@
                                     <label>Validación Proceso</label>
                                     <select wire:model="status_cycle" class="form-control" name="status_cycle">
                                         <option value="">Selecione el Estado de Proceso</option>
-                                        <option value="Correcto">Correcto</option>
-                                        <option value="Falla">Falla</option>
+                                        <option value="Ciclo Aprobado ">Ciclo Aprobado</option>
+                                        <option value="Ciclo Falla">Ciclo Falla</option>
                                     </select>
                                 </div>
                             </div>
