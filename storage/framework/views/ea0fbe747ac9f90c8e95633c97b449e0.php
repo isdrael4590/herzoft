@@ -1,1 +1,0 @@
-<?php echo Carbon\Carbon::parse(($data->updated_at))->addMonth($data->product_expiration)->format('d M, Y'); ?><?php /**PATH /var/www/html/Modules/Labelqr/Resources/views/partials/date_expirations.blade.php ENDPATH**/ ?>
