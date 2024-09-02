@@ -42,7 +42,7 @@ class TestbdReport extends Component
                 return $query->where('validation_bd', $this->testbd_validation);
             })
             
-            ->orderBy('updated_at', 'desc')->paginate(10);
+            ->orderBy('updated_at', 'desc')->paginate(20);
 
         return view('livewire.reports.testbds-report', [
             'testbds' => $testbds

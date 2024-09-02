@@ -16,57 +16,61 @@ use Modules\Informat\Entities\Institute;
 use Modules\Labelqr\Entities\Labelqr;
 use Modules\Labelqr\Entities\LabelqrDetails;
 use Modules\Labelqr\Http\Requests\StoreReceptionRequest;
-use SnappyImage;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\App;
+use \PDF;
 
 class PrinterLabelQrController extends Controller
 {
-    public function printerLabelqr(int $id)
+
+   public function printerLabelqr(Int $id)
     {
         $labelqr = Labelqr::where('id', $id)->first();
-        $labelqrDetails = LabelqrDetails::with('product')->where('id', $id)->orderBy('id', 'DESC')->get();
+        $labelqrDetails = LabelqrDetails::with('product')
+            ->where('id', $id)
+            ->orderBy('id', 'DESC')
+            ->get();
         $institute = Institute::all()->first();
-        return view('labelqr::labelqrs.print', [
+       
+        $dataqr=$labelqr->reference."/".$labelqr->lote_machine."/";
+       /*  CONFIURAR EL TAMAÑO DE LA ETIQUETA.
+        producto 70x35 mm
+         1 inch = 72 point
+         1 inch = 2.54 cm
+         70 mm ==  70/25.4*72 = 198.4251968
+         35 mm ==  35/25.4*72 = 99.2125984248
+        s*/ 
+         
+        $customPaper = array(0,0,99.2125984248,198.4251968);
+            $pdf = PDF::loadView('labelqr::labelqrs.print', [
             'labelqr' => $labelqr,
             'labelqrDetails' => $labelqrDetails,
             'institute' => $institute,
-        ]);
+            'dataqr'  =>  $dataqr,
+          ])->setOptions(['dpi'=>150,'defaultFont' => 'sans-serif'])->setpaper($customPaper, 'landscape');
+          
+          return $pdf->stream('Labelqr.pdf');
+    
     }
 
-    public function sendLabeltoPrinter(int $id)
-    {
-        # Permite guardar la imagen
-        $img_filename = 'etiqueta_' . $id . '.png';
-        $labelqr = Labelqr::where('id', $id)->first();
-        $labelqrDetails = LabelqrDetails::with('product')->where('id', $id)->orderBy('id', 'DESC')->get();
-        $institute = Institute::all()->first();
 
-        $image_view = SnappyImage::loadView('labelqr::labelqrs.print-only', [
+    /* 
+    public function printerLabelqr(Int $id)
+    {
+        $labelqr = Labelqr::where('id', $id)->first();
+        $labelqrDetails = LabelqrDetails::with('product')
+            ->where('id', $id)
+            ->orderBy('id', 'DESC')
+            ->get();
+            $institute = Institute::all()->first();
+     
+            $dataqr="/".$labelqr->reference."/".$labelqr->lote_machine;
+        return view('labelqr::labelqrs.print2', [
             'labelqr' => $labelqr,
             'labelqrDetails' => $labelqrDetails,
             'institute' => $institute,
+            'dataqr'  =>  $dataqr,
         ]);
-        $image = $image_view->inline($img_filename);
-        // Obtiene la dirección IP del cliente
-        $clientIp = request()->ip();
-        // Definir la dirección del servidor local hacia a donde mandar la imagen
-        $clientServerUrl = "http://$clientIp:3000/";
-        // Envia el request hacia el servidor y procesa la respuesta
-        $mensaje = "";
-        $estado = 'error';
-        try{
-            $response = Http::withBody(base64_encode($image->content()), 'text/plain')->post($clientServerUrl);
-            $estado = ($response->status() == 200) ? 'exito': 'advertencia';
-            $mensaje = $response->body();
-        }
-        catch(\Illuminate\Http\Client\ConnectionException $e){
-            $mensaje = 'Error al imprimir la etiqueta, por favor revise que la impresora esté conectada';
-        }
-        catch(\Exception $e){
-            $mensaje = 'Error, por favor requiera asistencia, detalles: ' . $e->getMessage();
-        }
-        return redirect()->route('labelqrs_label.pdf', $id)->with($estado, $mensaje);
+
+     
     }
+    */
 }

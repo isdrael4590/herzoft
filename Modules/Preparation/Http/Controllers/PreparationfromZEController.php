@@ -5,30 +5,19 @@ namespace Modules\Preparation\Http\Controllers;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Modules\Product\Entities\Product;
-
-use Modules\Preparation\Entities\Preparation;
-use Modules\Preparation\DataTables\PreparationDetailsDataTable;
-use Modules\Preparation\DataTables\PreparationDataTable;
-use Modules\Reception\Entities\Reception;
-use Modules\Reception\Entities\ReceptionDetails;
-
+use Modules\Preparation\Entities\Preparationze;
+use Modules\Preparation\DataTables\PreparationzeDataTable;
 use Modules\Preparation\Entities\PreparationDetails;
-
-use Modules\Preparation\Http\Requests\StorePreparationRequest;
-use Modules\Preparation\Http\Requests\UpdatePreparationRequest;
-use Modules\Reception\Http\Requests\StoreReceptionRequest;
+use Modules\Preparation\Http\Requests\StorePreparationzeRequest;
+use Modules\Preparation\Http\Requests\UpdatePreparationzeRequest;
 use Modules\Discharge\Entities\Discharge;
 
 
 class PreparationfromZEController extends Controller
 {
-    public function index( PreparationDataTable $dataTable)
+    public function index( PreparationzeDataTable $dataTable)
     {
         abort_if(Gate::denies('access_preparations'), 403);
 
@@ -48,13 +37,12 @@ class PreparationfromZEController extends Controller
     }
 
 
-    public function store(StorePreparationRequest $request)
+    public function store(StorePreparationzeRequest $request)
     {
         DB::transaction(function () use ($request) {
-            $preparation = Preparation::create([
-                'reception_id' => $request->discharge_id,
+            $preparationze = Preparationze::create([
+                'discharge_id' => $request->discharge_id,
                 'operator' => $request->operator,
-                'note' => $request->note,
             ]);
 
             $discharge = discharge::findOrFail($request->discharge_id);
@@ -63,7 +51,7 @@ class PreparationfromZEController extends Controller
             ]);
             foreach (Cart::instance('preparation')->content() as $cart_item) {
                 PreparationDetails::create([
-                    'preparation_id' => $preparation->id,
+                    'preparation_id' => $preparationze->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -84,7 +72,7 @@ class PreparationfromZEController extends Controller
         return redirect()->route('preparationDetails.index');
     }
 
-    public function show(Preparation $preparation)
+    public function show(Preparationze $preparationze)
     {
         abort_if(Gate::denies('show_preparations'), 403);
 
@@ -92,11 +80,11 @@ class PreparationfromZEController extends Controller
         return view('preparation::preparations.show', compact('preparation'));
     }
 
-    public function edit(Preparation $preparation)
+    public function edit(Preparationze $preparationze)
     {
         abort_if(Gate::denies('edit_preparations'), 403);
 
-        $preparation_details = $preparation->preparationDetails;
+        $preparation_details = $preparationze->preparationDetails;
 
         Cart::instance('preparation')->destroy();
 
@@ -122,14 +110,14 @@ class PreparationfromZEController extends Controller
         return view('preparation::preparations.edit', compact('preparation'));
     }
 
-    public function update(UpdatePreparationRequest $request, Preparation $preparation)
+    public function update(UpdatePreparationzeRequest $request, Preparationze $preparationze)
     {
-        DB::transaction(function () use ($request, $preparation) {
-            foreach ($preparation->preparationDetails as $preparation_detail) {
+        DB::transaction(function () use ($request, $preparationze) {
+            foreach ($preparationze->preparationDetails as $preparation_detail) {
                 $preparation_detail->delete();
             }
 
-            $preparation->update([
+            $preparationze->update([
                 'discharge_id' => $request->discharge_id,
                 'reference' => $request->reference,
                 'operator' => $request->operator,
@@ -144,7 +132,7 @@ class PreparationfromZEController extends Controller
 
             foreach (Cart::instance('preparation')->content() as $cart_item) {
                 PreparationDetails::create([
-                    'preparation_id' => $preparation->id,
+                    'preparation_id' => $preparationze->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
@@ -164,11 +152,11 @@ class PreparationfromZEController extends Controller
         return redirect()->route('preparations.index');
     }
 
-    public function destroy(Preparation $preparation)
+    public function destroy(Preparationze $preparationze)
     {
         abort_if(Gate::denies('delete_preparations'), 403);
 
-        $preparation->delete();
+        $preparationze->delete();
 
         toast('Preparación Eliminado!', 'warning');
 

@@ -1,56 +1,116 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="es">
 
 <head>
     <title>QR ETIQUETAS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" >
     <meta charset="UTF-8">
 
     <!-- External CSS libraries -->
-    <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/bootstrap.min.css') }}">
+   <style>
 
-    <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+/** Print ticket **/
+@media print {
+    .cabecera-ticket {
+    }
+        }
+    
+
+/*css para etiquetas */
+   /*Informacion equipo tickets */
+   table, th, td {
+    border: 1px solid black;
+    border-style:  dotted;
+    border-collapse: collapse;
+    padding-top: 1px;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+}
+ 
+
+
+@page {
+		margin-left: 1cm;
+		margin-right: 0.3cm;
+        margin-top: 0.2cm;
+		margin-bottom: 0.2cm;
+
+	}
+    .verticalText {
+transform: rotate(90deg);
+}
+
+
+
+p{
+font-size: 7px;
+line-height:1;
+
+}
+
+   </style>
+
 
     <!-- Custom Stylesheet -->
-    <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/style.css') }}">
 </head>
-
 <body>
-    <div class="container">
-        @if (session()->has('exito'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('exito') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @elseif(session()->has('advertencia'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {{ session('advertencia') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @elseif(session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        <div class="row">
-            <div class="printer-16 printer-content">
-                @include('labelqr::labelqrs.print-only', [
-                    'labelqr' => $labelqr,
-                    'labelqrDetails' => $labelqrDetails,
-                    'institute' => $institute,
-                ])
-            </div>
-            <div class="printer-btn-section clearfix d-print-none">
-                <a href="{{ route('labelqrs_label.img', $labelqr->id) }}" class="btn btn-lg btn-print">
-                    Imprimir
-                </a>
-            </div>
+    @foreach ($labelqr->labelqrDetails as $item)
+        <div>
+            <table style="width:100%">
+                <head>
+                    <tr style="font-size: 11px;">
+                    <th colspan="2"> {{ institutes()->institute_name }}<br>
+                            <p style="font-size: 8px;"> {{ institutes()->institute_area }} - {{ institutes()->institute_city }} -{{ institutes()->institute_country }}</p>
+                    </th>
+                 
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(120)->generate($dataqr. $item->product_code )) }}">
+                        </td>
+                        <td>
+                        <i style="font-size: 16px;">
+                        <strong >Venc. {!! Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y') !!}</strong><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                            <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d M, Y') !!}</small><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                        <strong>{{ $labelqr->machine_name }} Lote: {{ $labelqr->lote_machine }} </strong><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                        <small>{{ $labelqr->type_program }}</small><br>
+                        </i>
+                        <i style="font-size: 10px;">
+                        <strong>{{ $labelqr->reference }}</strong><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                        <strong>{{ $item->product_name }}</strong><br>
+                        </i>
+                        <i style="font-size: 15px;">
+                        <small>{{ $item->product_code }}</small><br>
+                        </i>
+                        <i style="font-size: 8px;">
+                        <small>Operario: {{ $labelqr->operator }} </small>
+                        </i>
+                        </td>
+                    </tr>
+                    <tr style="font-size: 6px;">
+                            <td  style="text-align: center;" colspan="2">
+                            <i style="font-size: 8px;">
+                                <small>El producto no se considera ESTERIL, si el empaque esta ABIERTO o
+                                HUMEDO</small>
+                            </i>   
+                            
+                        </td>
+                       
+                    </tr>
+                   
+                </head>
+            </table>
         </div>
-    </div>
+    @endforeach
 </body>
 
 </html>
+  

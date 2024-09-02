@@ -2,13 +2,12 @@
 
 namespace Modules\Preparation\Http\Controllers;
 
+use Illuminate\Routing\Controller;
 use Modules\Preparation\DataTables\PreparationDetailsDataTable;
-use Modules\Preparation\DataTables\PreparationDataTable;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+
 use Illuminate\Support\Facades\Gate;
-use Modules\Preparation\Entities\Preparation;
 use Modules\Preparation\Entities\PreparationDetails;
 
 
@@ -18,27 +17,12 @@ use Modules\Preparation\Entities\PreparationDetails;
 class PreparationDetailsController extends Controller
 {
 
-    public function index(PreparationDetailsDataTable $dataTable, PreparationDataTable $PreparationDataTable)
+    public function index(PreparationDetailsDataTable $dataTable)
     {
-        abort_if(Gate::denies('access_preparations'), 403);
+        abort_if(Gate::denies('access_labelqrs'), 403);
 
         return $dataTable->render('preparation::preparationDetails.index');
-        /*return view('preparation::preparationDetails.index', [
-            'PreparationDataTable'=> $PreparationDataTable->html(),
-            'PreparationDetailsDataTable'=> $PreparationDetailsDataTable->html()
-        ]);
-    }
 
-    public function getdata1(PreparationDetailsDataTable $PreparationDetailsDataTable)
-    {
-        return $PreparationDetailsDataTable->render('preparation::preparationDetails.index');
-    }
-
-
-    public function getdata2(PreparationDataTable $PreparationDataTable)
-    {
-        return $PreparationDataTable->render('preparation::preparationDetails.index');
-        */
     }
 
 
@@ -61,7 +45,6 @@ class PreparationDetailsController extends Controller
     {
         abort_if(Gate::denies('edit_preparationDetails'), 403);
         $request->validate([
-            'product_state_preparation' => 'required',
             'product_name' => 'required',
             'product_code' => 'required',
             'product_state_preparation' => 'required',
@@ -71,7 +54,6 @@ class PreparationDetailsController extends Controller
         ]);
 
         preparationDetails::findOrFail($id)->update([
-            'product_state_preparation' => $request->product_state_preparation,
             'product_name' => $request->product_name,
             'product_code' => $request->product_code,
             'product_state_preparation' => $request->product_state_preparation,
@@ -88,7 +70,7 @@ class PreparationDetailsController extends Controller
 
     public function destroy($id)
     {
-        abort_if(Gate::denies('delete_preparations'), 403);
+        abort_if(Gate::denies('delete_preparationDetails'), 403);
         $preparationDetails = PreparationDetails::findOrFail($id);
         $preparationDetails->delete();
         toast('Producto preparation Eliminado!', 'warning');

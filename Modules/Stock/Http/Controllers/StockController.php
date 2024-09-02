@@ -65,7 +65,7 @@ class StockController extends Controller
                 $date_sterelized= Carbon::parse($cart_item->options->product_date_sterilized);
                 StockDetails::create([
                     'stock_id' => $stock->id,
-                    'product_id' => $cart_item->id,
+                    'product_id' =>$cart_item->options->product_id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
@@ -107,13 +107,14 @@ class StockController extends Controller
         foreach ($stock_details as $stock_detail) {
             $expiration= Carbon::parse($stock_detail->updated_at)->addMonth($stock_detail->product_expiration) ;
             $cart->add([
-                'id'      => $stock_detail->product_id,
+                'id'      => $stock_detail->id,
                 'name'    => $stock_detail->product_name,
                 'qty'     => 1,
                 'price'     => 1,
                 'weight'     => 1,
                 'options' => [
                     'code'     => $stock_detail->product_code,
+                    'product_id'   => $stock_detail->product_id,
                     'product_type_process'   => $stock_detail->product_type_process,
                     'product_package_wrap'   => $stock_detail->product_package_wrap,
                     'product_ref_qr'   => $stock_detail->product_ref_qr,
@@ -156,7 +157,7 @@ class StockController extends Controller
             foreach (Cart::instance('stock')->content() as $cart_item) {
                 stockDetails::create([
                     'stock_id' => $stock->id,
-                    'product_id' => $cart_item->id,
+                    'product_id' => $cart_item->options->product_id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,

@@ -19,12 +19,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        {{--<a href="{{ route('discharges.create') }}" class="btn btn-primary">
-                            Generación de Etiquetas <i class="bi bi-plus"></i>
-                        </a>--}}
-
-                        <hr>
-
+                        @can('edit_dischargeDetails')
+                            <a href="{{ route('dischargeDetails.index') }}" class="btn btn-primary">
+                                Instrumental Listado <i class="bi bi-plus"></i>
+                            </a>
+                            <hr>
+                        @endcan
                         <div class="table-responsive">
                             {!! $dataTable->table() !!}
                         </div>

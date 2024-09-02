@@ -1,22 +1,22 @@
-
-
 @can('print_expeditions')
-    @if ($data->status_expedition == 'Despachado') 
-    <a href="{{ route('expeditions.pdf', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
-    </a>
+    @if ($data->status_expedition == 'Despachado')
+        <a href="{{ route('expeditions.pdf', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
+        </a>
     @endif
 @endcan
 @can('edit_expeditions')
-    <a href="{{ route('expeditions.edit', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar 
-    </a>
+    @if ($data->status_expedition != 'Despachado')
+        <a href="{{ route('expeditions.edit', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar
+        </a>
+    @endif
+
 @endcan
 @can('show_expeditions')
-        <a href="{{ route('expeditions.show', $data->id) }}" class="dropdown-item">
-            <i class="bi bi-eye mr-2 text-info" style="line-height: 1;"></i> Detalles
-        </a>
-   
+    <a href="{{ route('expeditions.show', $data->id) }}" class="dropdown-item">
+        <i class="bi bi-eye mr-2 text-info" style="line-height: 1;"></i> Detalles
+    </a>
 @endcan
 
 
@@ -35,4 +35,3 @@
         </form>
     </button>
 @endcan
-

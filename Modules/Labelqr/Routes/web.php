@@ -33,11 +33,15 @@ Route::group(['middleware' => 'auth'], function () {
     //Descargas Form labelqr
 
     Route::get('/labelqrs_label/pdf/{id}', [PrinterLabelQrController::class, 'printerLabelqr'])->name('labelqrs_label.pdf');
-    Route::get('/labelqrs_label/img/{id}', [PrinterLabelQrController::class, 'sendLabeltoPrinter'])->name('labelqrs_label.img');
 
-    Route::get('/labelqr-discharges/{labelqr}', 'LabelqrDischargeController')->name('labelqr-discharges.create');    
+
+    Route::get('/labelqr-discharges/{labelqr}', 'LabelqrDischargeController')->name('labelqr-discharges.create');
+
     //labelqrs
     Route::resource('labelqrs', 'LabelqrController');
+    Route::resource('labelqrDetails', 'LabelqrDetailsController');
+
+    
     Route::resource('labelqrshpo', 'LabelqrHPOController');
 });
 

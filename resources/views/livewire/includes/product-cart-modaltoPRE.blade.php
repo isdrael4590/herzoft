@@ -36,6 +36,8 @@
                         <select wire:model.live="state_preparation.{{ $cart_item->id }}" class="form-control" required>
                             <option value="Procesado">Procesado</option>
                             <option value="Disponible">Disponible</option>
+                            <option value="Reprocesar">Reprocesar</option>
+
                         </select>
                     </div>
                 </div>

@@ -24,7 +24,7 @@ class TestbdDataTable extends DataTable
             ->addColumn('validation_bd', function ($data) {
                 return view('testbd::testbds.partials.validation_bd', compact('data'));
             })->addColumn('dates', function ($data) {
-                return view('testbd::testbds.partials..dates', compact('data'));
+                return view('testbd::testbds.partials.dates', compact('data'));
             });
     }
 

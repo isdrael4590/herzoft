@@ -2,8 +2,10 @@
 
 namespace Modules\Preparation\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Discharge\Entities\Discharge;
 use Modules\Preparation\Database\factories\PreparationFactory;
 use Modules\Product\Entities\Product;
 use Modules\Reception\Entities\Reception;
@@ -33,6 +35,9 @@ class Preparation extends Model
 
     public function ReceptiontoPreparation() {
         return $this->hasMany(Reception::class, 'reception_id', 'id');
+    }
+    public function ReceptiontofromDischa() {
+        return $this->hasMany(Discharge::class, 'discharge_id', 'id');
     }
 
 }

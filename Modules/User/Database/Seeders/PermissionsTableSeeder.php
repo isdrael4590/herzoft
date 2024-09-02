@@ -58,9 +58,10 @@ class PermissionsTableSeeder extends Seeder
             'edit_products',
             'delete_products',
             'access_product_categories',
+            'create_importproducts',
             //Barcode Printing
             'print_barcodes',
-            
+
             //Settings
             'access_settings',
             //Units
@@ -141,6 +142,14 @@ class PermissionsTableSeeder extends Seeder
             'delete_testbds',
             'print_testbds',
 
+            'access_testvacuums',
+            'create_testvacuums',
+            'show_testvacuums',
+            'edit_testvacuums',
+            'delete_testvacuums',
+            'print_testvacuums',
+
+
             // generacion de etiquetas
             'access_labelqrs',
             'create_labelqrs',
@@ -148,6 +157,8 @@ class PermissionsTableSeeder extends Seeder
             'edit_labelqrs',
             'delete_labelqrs',
             'print_labelqrs',
+            'edit_labelqrDetails',
+            'delete_labelqrDetails',
             'create_labelqr_discharges',
 
             //ZONA ESTERIL LIMPIA
@@ -159,6 +170,11 @@ class PermissionsTableSeeder extends Seeder
             'delete_discharges',
             'print_discharges',
             'access_release_cycle',
+
+            // descarga detalles 
+            'edit_dischargeDetails',
+            'delete_dischargeDetails',
+
             // ZONA ALMACEN 
             'access_almacen_area',
             'access_expeditions',
@@ -177,6 +193,10 @@ class PermissionsTableSeeder extends Seeder
             'show_stockManual',
             'edit_stockManual',
             'delete_stockManual',
+
+            // roles admin
+            'edit_admin',
+            'access_buttontables_admin',
 
         ];
 

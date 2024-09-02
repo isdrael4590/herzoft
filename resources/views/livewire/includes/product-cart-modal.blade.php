@@ -34,9 +34,10 @@
                         <label>Nivel de Infección <span class="text-danger">*</span></label>
                         <select wire:model.live="type_dirt.{{ $cart_item->id }}" class="form-control" required>
                             <option  disabled>-- SELECCIONAR EL NIVEL DE INFECCION--</option>
-                            <option value="NO CRITICO"> NO CRITICO</option>
+                            <option value="NO REPROCESADO"> NO CRITICO</option>
                             <option value="SEMICRITICO"> SEMI-CRITICO</option>
                             <option selected value="CRITICO"> CRÍTICO</option>
+                            <option selected value="REPROCESADO"> REPROCESADO</option>
                         </select>
                     </div>
                     <div class="form-group">

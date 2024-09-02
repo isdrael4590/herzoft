@@ -17,7 +17,9 @@ class StockDetailsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-
+            ->orderColumn('product_status_stock', function ($query) {
+                $query->orderBy('status', 'Disponible');
+            })
             ->addColumn('dates', function ($data) {
                 return view('stock::partials.dates', compact('data'));
             })
@@ -51,7 +53,7 @@ class StockDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[1, 'desc']],
+                'order' => [[1, 'dsc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -89,17 +91,18 @@ class StockDetailsDataTable extends DataTable
                 ->title('Tipo de embalaje')
                 ->className('text-center align-middle'),
 
-            Column::make('status_stock')
-                ->title('Estado del Stock')
+            Column::make('product_status_stock')
+                ->title('Estado Disponibilidad')
                 ->className('text-center align-middle'),
 
+            /* Column::make('status_stock')
+                ->title('Estado del Stock')
+                ->className('text-center align-middle'),
+*/
             Column::make('dates')
                 ->title('Fecha de vencimiento')
                 ->className('text-center align-middle'),
-            /*
-            Column::make('details_process')
-                ->title('Información del proceso')
-                ->className('text-center align-middle'),*/
+
         ];
     }
     protected function filename(): string

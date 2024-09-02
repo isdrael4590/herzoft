@@ -61,16 +61,15 @@
         class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('testbds.*') || request()->routeIs('testbds.*') ? 'c-show' : '' }}">
         @can('create_testbds')
             <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-                <i class="c-sidebar-nav-icon bi bi-box-seam" style="line-height: 1;"></i> TEST BD & DICK
+                <i class="c-sidebar-nav-icon bi bi-box-seam" style="line-height: 1;"></i> TESTS DE EQUIPOS
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
 
 
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link {{ request()->routeIs('testbds.create') ? 'c-active' : '' }}"
-                        href="{{ route('testbds.create') }}">
-                        <i class="c-sidebar-nav-icon bi bi-bookmark-plus" style="line-height: 1;"></i> Registro de Test BD &
-                        Dick.
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('testvacuums.index') ? 'c-active' : '' }}"
+                        href="{{ route('testvacuums.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-bookmark-plus" style="line-height: 1;"></i> Test de Vacio.
                     </a>
                 </li>
 
@@ -78,7 +77,7 @@
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('testbds.index') ? 'c-active' : '' }}"
                         href="{{ route('testbds.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-card-checklist" style="line-height: 1;"></i> Todos los Test de BD &
+                        <i class="c-sidebar-nav-icon bi bi-card-checklist" style="line-height: 1;"></i>Test de Bowie &
                         Dick
                     </a>
                 </li>
@@ -87,41 +86,64 @@
         @endcan
     </li>
     @can('access_preparations')
+    <br>
+    <br>
         <li
-            class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('labelqrs.*') || request()->routeIs('preparations.*') ? 'c-show' : '' }}">
+            class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('RecepReprocess.*') || request()->routeIs('preparations.*') ? 'c-show' : '' }}">
 
             <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-                <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> PREPARA. / REG. PROCESO
+                <i class="c-sidebar-nav-icon bi bi-exclamation-square" style="line-height: 1;"></i> PREPARACIÓN
             </a>
 
             <ul class="c-sidebar-nav-dropdown-items">
-
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('RecepReprocess.index') ? 'c-active' : '' }}"
+                        href="{{ route('RecepReprocess.create') }}">
+                        <i class="c-sidebar-nav-icon bi-bootstrap-reboot" style="line-height: 1;"></i> Reprocesar Instrumental.
+                    </a>
+                </li>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('preparations.index') ? 'c-active' : '' }}"
                         href="{{ route('preparationDetails.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Stock_Preparación.
+                        <i class="c-sidebar-nav-icon bi bi-list-stars" style="line-height: 1;"></i> Stock Preparación.
                     </a>
                 </li>
 
-                @can('access_labelqrs')
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.create') ? 'c-active' : '' }}"
-                            href="{{ route('labelqrs.create') }}">
-                            <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Etiqueta
-
-                        </a>
-                    </li>
-
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.index') ? 'c-active' : '' }}"
-                            href="{{ route('labelqrs.index') }}">
-                            <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los ciclos generados QR.
-                        </a>
-                    </li>
-                @endcan
             </ul>
         </li>
     @endcan
+    @can('access_labelqrs')
+        <li class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('labelqrs.*') ? 'c-show' : '' }}">
+
+            <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+                <i class="c-sidebar-nav-icon bi bi-upc-scan" style="line-height: 1;"></i> PRODUCCIÓN
+            </a>
+
+            <ul class="c-sidebar-nav-dropdown-items">
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.create') ? 'c-active' : '' }}"
+                        href="{{ route('labelqrs.create') }}">
+                        <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Etiqueta
+
+                    </a>
+                </li>
+
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.index') ? 'c-active' : '' }}"
+                        href="{{ route('labelqrs.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los ciclos generados.
+                    </a>
+                </li>
+
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrDetails.index') ? 'c-active' : '' }}"
+                        href="{{ route('labelqrDetails.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-list-check" style="line-height: 1;"></i> Instrumental Procesado.
+                    </a>
+                </li>
+            @endcan
+        </ul>
+    </li>
 @endcan
 
 @can('access_esteril_area')
@@ -131,7 +153,7 @@
         <li
             class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('discharges.*') || request()->routeIs('discharges.*') ? 'c-show' : '' }}">
             <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-                <i class="c-sidebar-nav-icon bi bi-box-arrow-up-right" style="line-height: 1;"></i> DESCARGA DE INSTRUMENTAL
+                <i class="c-sidebar-nav-icon bi bi-box-arrow-up-right" style="line-height: 1;"></i> DESCARGA PROCESOS
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
                 @can('access_discharges')
@@ -259,6 +281,14 @@
                     <i class="c-sidebar-nav-icon bi bi-journals" style="line-height: 1;"></i> Todos los Paquetes
                 </a>
             </li>
+            @can('create_importproducts')
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('import-products.create') ? 'c-active' : '' }}"
+                        href="{{ route('import-products.create') }}">
+                        <i class="c-sidebar-nav-icon bi bi-arrow-down-square" style="line-height: 1;"></i> Importar Paquetes
+                    </a>
+                </li>
+            @endcan
             @can('print_barcodes')
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('barcode.print') ? 'c-active' : '' }}"
@@ -267,6 +297,7 @@
                     </a>
                 </li>
             @endcan
+
         </ul>
     </li>
 @endcan
@@ -279,7 +310,7 @@
     <li
         class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('informats.*') || request()->routeIs('institute.*') || request()->routeIs('area.*') || request()->routeIs('units.*') || request()->routeIs('machine.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-            <i class="c-sidebar-nav-icon bi bi-journal-bookmark" style="line-height: 1;"></i> Configuración Servicio.
+            <i class="c-sidebar-nav-icon bi bi-wrench" style="line-height: 1;"></i> Configuración Servicio.
         </a>
 
         <ul class="c-sidebar-nav-dropdown-items">
@@ -303,7 +334,7 @@
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('lote.*') ? 'c-active' : '' }}"
                         href="{{ route('lote.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Lote Procesados
+                        <i class="c-sidebar-nav-icon bi bi-bookmark-check" style="line-height: 1;"></i> Lote Procesados
                     </a>
                 </li>
             @endcan

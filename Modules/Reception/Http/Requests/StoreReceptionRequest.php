@@ -18,7 +18,7 @@ class StoreReceptionRequest extends FormRequest
             'reference' => 'required|string|max:255',
             'operator' => 'required|string|max:255',
             'delivery_staff' => 'required|string|max:255',
-            'area' => 'required|string|max:255',
+            'area' => 'nullable|string|max:255',
             'status' => 'required|string|max:255',
             'note' => 'nullable|string|max:255'
         ];

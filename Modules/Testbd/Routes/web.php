@@ -19,8 +19,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     //testbd
     Route::resource('testbds', 'TestbdController');
-
+    Route::resource('testvacuums', 'TestvacuumController');
 
     Route::get('/testbds/pdf/{id}', [PrinterTbdController::class, 'printerTestbdA4'])->name('testbds.pdf');
+    Route::get('/testvacuums/pdf/{id}', [PrinterTbdController::class, 'printerTestvacuumA4'])->name('testvacuums.pdf');
 
 });

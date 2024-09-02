@@ -14,9 +14,7 @@ use Modules\Discharge\Http\Controllers\PrinterDischargeController;
 
 Route::group(['middleware' => 'auth'], function () {
 
-    //POS
-    //Route::get('/app/pos', 'PosController@index')->name('app.pos.index');
-    //Route::post('/app/pos', 'PosController@store')->name('app.pos.store');
+ 
 
     //Generate PDF
    /* Route::get('/discharges/pdf/{id}', function ($id) {
@@ -52,9 +50,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Almacen desde Descargas
     Route::get('/discharges-stock/{discharge}', 'DischargetoStockController')->name('discharges-stock.create');
-    
-    
-    // Almacen desde preparacion
+    Route::resource('dischargeDetails', 'DischargeDetailsController');
 
-    Route::get('/discharges-preparation/{discharge}', 'DischargetoPreparationController')->name('discharges-preparation.create');
+ 
+
 });

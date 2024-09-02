@@ -20,6 +20,7 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
+                        <th class="align-middle">id</th>
                         <th class="align-middle">Código</th>
                         <th class="align-middle text-center">Nivel de Infección </th>
                         <th class="align-middle text-center">Estado del instrumental</th>
@@ -30,6 +31,10 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
+                                <td class="align-middle">
+                                    {{ $cart_item->id }} <br>
+
+                                </td>
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-info">
@@ -51,32 +56,19 @@
                                         <span class="badge badge-danger">
                                             {{ $cart_item->options->product_type_dirt }}
                                         </span>
+                                    @elseif($cart_item->options->product_type_dirt == 'REPROCESADO')
+                                        <span class="badge badge-secondary">
+                                            {{ $cart_item->options->product_type_dirt }}
+                                        </span>
                                     @endif
-                                    {{--
-                                    <div class="form-group form-focus select-focus">
-                                        <select wire:model.live="type_dirt.{{ $cart_item->id }}" class="form-control" required>
-                                            <option  disabled>-- SELECCIONAR EL NIVEL DE INFECCION--</option>
-                                            <option value=" "> NO CRITICO</option>
-                                            <option value="SEMICRITICO"> SEMI-CRITICO</option>
-                                            <option selected value="CRITICO"> CRÍTICO</option>
-                                        </select>
-                                    </div>
-                                    --}}
+                             
                                 </td>
 
                                 <td class="align-middle text-center">
                                     <span class="badge badge-secondary">
                                         {{ $cart_item->options->product_state_rumed }}
                                     </span>
-                                    {{--
-                                    <div class="form-group">
-                                        <select wire:model.live="state_rumed.{{ $cart_item->id }}" class="form-control" required>
-                                            <option value="BUENO">BUENO</option>
-                                            <option value="REGULAR">REGULAR</option>
-                                            <option value="MALO">MALO</option>
-                                        </select>
-                                    </div>
-                                    --}}
+                        
                                 </td>
 
                                 <td class="align-middle text-center">

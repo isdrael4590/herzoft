@@ -15,6 +15,8 @@ use Modules\Product\Entities\Product;
 use Modules\Preparation\Entities\Preparation;
 use Modules\Preparation\DataTables\PreparationDetailsDataTable;
 use Modules\Preparation\DataTables\PreparationDataTable;
+use Modules\Preparation\DataTables\PreparationzeDataTable;
+
 use Modules\Reception\Entities\Reception;
 use Modules\Reception\Entities\ReceptionDetails;
 
@@ -32,7 +34,7 @@ class PreparationController extends Controller
         abort_if(Gate::denies('access_preparations'), 403);
 
 
-        return $dataTable->render('preparation::preparations.index');
+        return $dataTable->render('preparation::preparations.index', compact('dataTable'));
     }
 
 

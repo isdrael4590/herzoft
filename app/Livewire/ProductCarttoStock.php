@@ -87,7 +87,7 @@ class ProductCarttoStock extends Component
                 'code'    => $product['product_code'],
                 'product_type_process'    => $product['product_type_process'],
                 'product_package_wrap' =>  $product['product_package_wrap'], //ESTE ES EL DATO A MODIFICAR
-                'product_ref_qr' =>  $product['product_ref_qr'], //ESTE ES EL DATO A MODIFICAR
+                'product_ref_qr' =>  'Esterelizado', //ESTE ES EL DATO A MODIFICAR
                 'product_expiration' =>  $product['product_expiration'], //ESTE ES EL DATO A MODIFICAR
                 'product_status_stock' =>  'Disponible', //ESTE ES EL DATO A MODIFICAR
                 'product_date_sterilized' =>  $product['updated_at'],

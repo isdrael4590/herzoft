@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use \PDF;
 use Modules\Product\Entities\Product;
 use \Modules\Informat\Entities\Institute;
 use Modules\Expedition\Entities\Expedition;
@@ -20,22 +21,25 @@ class PrinterExpeditionController extends Controller
 
 {
 
+
     public function printerExpeditionA4(Int $id)
     {
+       
         $expedition = Expedition::where('id', $id)->first();
         $expeditionDetails = ExpeditionDetails::with('product')
             ->where('id', $id)
             ->orderBy('id', 'DESC')
             ->get();
             $institute = Institute::all()->first();
-     
-
-        return view('expedition::expeditions.print', [
+       
+        $pdf = PDF::loadView('expedition::expeditions.print', [
             'expedition' => $expedition,
             'expeditionDetails' => $expeditionDetails,
             'institute' => $institute,
-        ]);
+        ])->setOptions(['dpi'=>150,'defaultFont' => 'sans-serif']);
+        
+        return $pdf->stream('expeditions.pdf');
 
-     
+
     }
 }
