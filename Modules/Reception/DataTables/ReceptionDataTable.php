@@ -11,6 +11,8 @@ use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Can;
+use ZipStream\Zip64\EndOfCentralDirectory;
 
 class ReceptionDataTable extends DataTable
 {
@@ -19,17 +21,9 @@ class ReceptionDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            /*  ->addColumn('details_reception', function ($data) {
-
-                $datadetails=ReceptionDetails::where("reception_id", $data->id );
-                return view('reception::partials.details_reception', compact('datadetails'));
-                
-                $datadetails = DB::table("reception_details")->where("reception_id", $data->id)->get();
-                
-                return view('reception::partials.details_reception', compact('datadetails'));
-            })*/
-            ->addColumn('status', function ($data) {
-                return view('reception::partials.status', compact('data'));
+       
+            ->addColumn('reference', function ($data) {
+                return view('reception::partials.reference', compact('data'));
             })
             ->addColumn('action', function ($data) {
                 return view('reception::partials.actions', compact('data'));
@@ -54,7 +48,7 @@ class ReceptionDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[2, 'desc']],
+                'order' => [[1, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -76,6 +70,9 @@ class ReceptionDataTable extends DataTable
                 ->exportable(false)
                 ->printable(false)
                 ->className('text-center align-middle'),
+            Column::make('id')
+                ->title('ID')
+                ->className('text-center align-middle'),
             Column::make('dates')
                 ->title('Fecha')
                 ->className('text-center align-middle'),
@@ -84,11 +81,7 @@ class ReceptionDataTable extends DataTable
                 ->title('Referencia')
                 ->className('text-center align-middle'),
 
-            /*Column::computed('details_reception')
-                ->title('Detalles de Recepción')
 
-                ->className('text-center align-middle'),
-*/
             Column::make('delivery_staff')
                 ->title('Persona Entrega')
                 ->className('text-center align-middle'),
@@ -105,7 +98,7 @@ class ReceptionDataTable extends DataTable
                 ->title('Operador')
                 ->className('text-center align-middle'),
 
-            Column::computed('status')
+            Column::make('status')
                 ->title('Estado')
                 ->className('text-center align-middle'),
 

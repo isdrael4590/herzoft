@@ -42,21 +42,20 @@ class ExpeditionController extends Controller
     {
         DB::transaction(function () use ($request) {
             $expedition = Expedition::create([
-                'area_expedition'=> $request->area_expedition,
-                'staff_expedition'=> $request->staff_expedition,
+                'area_expedition' => $request->area_expedition,
+                'staff_expedition' => $request->staff_expedition,
                 'temp_ambiente' => $request->temp_ambiente,
                 'status_expedition' => $request->status_expedition,
                 'note' => $request->note,
                 'operator' => $request->operator,
             ]);
 
-
             foreach (Cart::instance('expedition')->content() as $cart_item) {
                 $stock_detail = StockDetails::findOrFail($cart_item->id);
                 ExpeditionDetails::create([
                     'expedition_id' => $expedition->id,
                     'stock_detail_id' => $stock_detail->id,
-                    'product_id' => $cart_item->id,
+                    'product_id' => $cart_item->options->product_id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
@@ -64,17 +63,20 @@ class ExpeditionController extends Controller
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' => $cart_item->options->product_expiration,
                 ]);
-                $stock_detail = StockDetails::findOrFail($cart_item->id);
-                $stock_detail->update([
-                    'product_status_stock'=> 'Despachado',
-                ]);
 
+
+                if ($request->status_expedition == 'Despachado'){
+
+                    $stock_detail = StockDetails::findOrFail($cart_item->id);
+                    $stock_detail->update([
+                        'product_status_stock' => 'Despachado',
+                    ]);
+                }
+                  
             }
 
 
             Cart::instance('expedition')->destroy();
-
-    
         });
 
         toast('Despacho Generado!', 'success');
@@ -103,18 +105,20 @@ class ExpeditionController extends Controller
 
         foreach ($expedition_details as $expedition_detail) {
             $cart->add([
-                'id'      => $expedition_detail->product_id,
+                'id'      => $expedition_detail->id,
                 'name'    => $expedition_detail->product_name,
                 'qty'     => 1,
                 'price'     => 1,
                 'weight'     => 1,
                 'options' => [
                     'code'     => $expedition_detail->product_code,
+                    'product_id'   => $expedition_detail->product_id,
+                    'stock_detail_id'   => $expedition_detail->stock_detail_id,
                     'product_type_process'   => $expedition_detail->product_type_process,
                     'product_package_wrap'   => $expedition_detail->product_package_wrap,
                     'product_ref_qr'   => $expedition_detail->product_ref_qr,
                     'product_expiration'   => $expedition_detail->product_expiration,
-                 
+
                 ]
             ]);
         }
@@ -132,22 +136,22 @@ class ExpeditionController extends Controller
             }
 
             $expedition->update([
-                'area_expedition'=> $request->area_expedition,
-                'staff_expedition'=> $request->staff_expedition,
+                'area_expedition' => $request->area_expedition,
+                'staff_expedition' => $request->staff_expedition,
                 'temp_ambiente' => $request->temp_ambiente,
                 'status_expedition' => $request->status_expedition,
                 'note' => $request->note,
                 'operator' => $request->operator
             ]);
-     
+
 
             foreach (Cart::instance('expedition')->content() as $cart_item) {
-                $stock_detail = StockDetails::findOrFail($cart_item->id);
+                //$stock_detail = StockDetails::findOrFail($cart_item->id);
 
                 ExpeditionDetails::create([
                     'expedition_id' => $expedition->id,
-                    'stock_detail_id' => $stock_detail->id,
-                    'product_id' => $cart_item->id,
+                    'stock_detail_id' => $cart_item->options->stock_detail_id,
+                    'product_id' => $cart_item->options->product_id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
@@ -155,10 +159,12 @@ class ExpeditionController extends Controller
                     'product_ref_qr' => $cart_item->options->product_ref_qr,
                     'product_expiration' => $cart_item->options->product_expiration,
                 ]);
-                $stock_detail = StockDetails::findOrFail($cart_item->id);
-                $stock_detail->update([
-                    'product_status_stock'=> 'Despachado',
-                ]);
+                if ($request->status_expedition == 'Despachado'){
+                    $stock_detail = StockDetails::where('id', $cart_item->options->stock_detail_id);
+                    $stock_detail->update([
+                        'product_status_stock' => 'Despachado',
+                    ]);
+                }
             }
 
             Cart::instance('expedition')->destroy();

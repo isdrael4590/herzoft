@@ -53,7 +53,7 @@ class StockDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'orderBy' => [[7, 'dsc']],
+                'order' => [[1, 'dsc']],
             ])
             ->buttons(
                 Button::make('excel')

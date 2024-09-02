@@ -116,12 +116,7 @@
                                             <option
                                                 {{ $labelqr->validation_biologic == 'sin_validar' ? 'selected' : '' }}value="sin_validar">
                                                 Sin Validar</option>
-                                            {{-- <option {{ $labelqr->validation_biologic == 'Correcto' ? 'selected' : '' }}
-                                                value="Correcto">
-                                                Correcto</option>
-                                            <option {{ $labelqr->validation_biologic == 'Falla' ? 'selected' : '' }}
-                                                value="Falla">
-                                                Falla</option> --}}
+                                          
                                         </select>
                                     </div>
                                 </div>
@@ -136,9 +131,7 @@
                                                 value="Pendiente">Pendiente</option>
                                             <option {{ $labelqr->status_cycle == 'Cargar' ? 'selected' : '' }}
                                                 value="Cargar">Cargar</option>
-                                            {{--
-                                            <option {{ $labelqr->status_cycle == 'cycle_ok' ? 'selected' : '' }} value="cycle_ok">Ciclo Aprobado</option>
-                                            <option {{ $labelqr->status_cycle == 'cycle_fail' ? 'selected' : '' }} value="cycle_fail">Ciclo Con Falla</option> --}}
+                                           
                                         </select>
                                     </div>
                                 </div>
@@ -259,8 +252,8 @@
 
                                             <option {{ $labelqr->status_cycle == 'Pendiente' ? 'selected' : '' }}
                                                 value="Pendiente">Pendiente</option>
-                                            <option {{ $labelqr->status_cycle == 'En Curso' ? 'selected' : '' }}
-                                                value="En Curso">En curso</option>
+                                            <option {{ $labelqr->status_cycle == 'Cargar' ? 'selected' : '' }}
+                                                value="Cargar">Cargar</option>
 
                                         </select>
                                     </div>

@@ -15,7 +15,7 @@ use \Modules\Informat\Entities\Institute;
 use Modules\Reception\Entities\Reception;
 use Modules\Reception\Entities\ReceptionDetails;
 use Modules\Reception\Http\Requests\StoreReceptionRequest;
-
+use \PDF;
 class PrinterController extends Controller
 
 {
@@ -33,12 +33,15 @@ class PrinterController extends Controller
 
         $institute = Institute::all()->first();
       
-        return view('reception::receptions.print', [
+       
+
+        $pdf = PDF::loadView('reception::receptions.print', [
             'reception' => $reception,
             'receptionDetails' => $receptionDetails,
             'institute' => $institute,
-        ]);
-
+          ])->setOptions(['dpi'=>150,'defaultFont' => 'sans-serif']);
+          
+          return $pdf->stream('receptions.pdf');
      
     }
 }

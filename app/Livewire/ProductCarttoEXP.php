@@ -79,6 +79,7 @@ class ProductCarttoEXP extends Component
             'price'     => 1,
             'weight'     => 1,
             'options' => [
+                'product_id' =>$product['product_id'],
                 'code'    => $product['product_code'],
                 'product_type_process'    => $product['product_type_process'],
                 'product_package_wrap' =>  $product['product_package_wrap'], //ESTE ES EL DATO A MODIFICAR
@@ -111,6 +112,7 @@ class ProductCarttoEXP extends Component
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
                 'code'                   => $cart_item->options->code,
+                'product_id'      => $cart_item->options->product_id,
                 'product_package_wrap'      => $cart_item->options->product_package_wrap,
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
                 'product_expiration'    => $cart_item->options->product_expiration,
@@ -130,7 +132,9 @@ class ProductCarttoEXP extends Component
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code' => $cart_item->options->code,
-            'product_type_process'=> $cart_item->options->product_type_process,
+            'product_id'            => $cart_item->options->product_id,
+            'product_type_process'=> 
+            $cart_item->options->product_type_process,
             'product_package_wrap'      => $this->package_wrap[$product_id],
             'product_expiration'   => $this->expiration[$product_id],
            

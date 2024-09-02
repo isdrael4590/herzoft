@@ -86,7 +86,7 @@
 
             <p class="text-center mt-10 lead">
                Desarrollado por 
-                <a href="http://www.herzgroup.net/" class="font-weight-bold text-primary">Herz Group</a>
+                <a href="http://www.herzgroup.net/" class="font-weight-bold text-primary"> {{ Settings()->company_name }}</a>
        <br>
                 Derechos Contratados por 
                  <a href="http://www.alem.com.ec/" class="font-weight-bold text-primary">Alem Cia. Ltda.</a>

@@ -43,7 +43,7 @@ class LabelqrDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[1, 'desc']],
+                'order' => [[0, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')

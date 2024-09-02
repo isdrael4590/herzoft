@@ -173,8 +173,8 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
-        Barryvdh\Snappy\ServiceProvider::class,
-        //Barryvdh\DomPDF\ServiceProvider::class,
+        //Barryvdh\Snappy\ServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         /*
          * Application Service Providers...
@@ -245,8 +245,8 @@ return [
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
         'Module' => Nwidart\Modules\Facades\Module::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-        //'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
-        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        //'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],

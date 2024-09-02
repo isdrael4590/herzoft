@@ -1,25 +1,20 @@
-@php
-    $Reception_max_id = \Modules\Reception\Entities\Reception::max('id') + 1;
-    $reception_code = 'ING-RE_' . str_pad($Reception_max_id, 5, '0', STR_PAD_LEFT);
-@endphp
-
 @extends('layouts.app')
 
-@section('title', 'Registrar Ingreso')
+@section('title', 'Editar Reprocesar Instrumental')
+
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('RecepReprocess.index') }}">Reprocesado de Instrumental</a></li>
-        <li class="breadcrumb-item active">Añadir</li>
+        <li class="breadcrumb-item"><a href="{{ route('receptions.index') }}">Recepción Instrumental</a></li>
+        <li class="breadcrumb-item active">Editar</li>
     </ol>
 @endsection
-
 @section('content')
     <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-12">
-                <livewire:search-product />
+            <livewire:search-producttoREPROC />
             </div>
         </div>
 
@@ -28,55 +23,63 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="RecepReprocess-form" action="{{ route('RecepReprocess.store') }}" method="POST">
+                        <form id="reception-form" action="{{ route('RecepReprocess.update', $reception) }}" method="POST">
                             @csrf
-
+                            @method('patch')
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="reference">Referencia <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reference" required readonly
-                                            value="{{ $reception_code }}">
+                                        <input type="text" class="form-control" name="reference" required value="{{ $reception->reference }}" readonly>
                                     </div>
                                 </div>
-
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Área Procedente</label>
+                                        <input class="form-control" type="text" id="area" name="area"
+                                        value="{{ $reception->area }}" required>
+                                    </div>
+                                </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Persona que entrega</label>
                                         <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
-                                            required>
+                                        value="{{ $reception->delivery_staff }}" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label>Operador</label>
-                                        <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
-                                            required>
+                                    <div class="from-group">
+                                        <div class="form-group">
+                                            <label>Operador</label>
+                                            <input class="form-control" type="text" id="operator" name="operator"
+                                                placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <livewire:product-carttoREPROC :cartInstance="'RecepReprocess'" />
+
+                            <livewire:product-carttoREPROC :cartInstance="'RecepReprocess'" :data="$reception"/>
+
                             <div class="form-row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="status">Estado de Ingreso <span class="text-danger">*</span></label>
                                         <select class="form-control" name="status" id="status" required>
-                                            <option value="Pendiente">Pendiente</option>
-                                            <option value="Registrado">Registrado</option>
+                                            <option {{ $reception->status == 'Pendiente' ? 'selected' : '' }} value="Pendiente">Pendiente</option>
+                                            <option {{ $reception->status == 'Registrado' ? 'selected' : '' }} value="Registrado">Registrado</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="note">Nota (Si se necesita)</label>
-                                <textarea name="note" id="note" rows="5" class="form-control"></textarea>
+                                <textarea name="note" id="note" rows="5" class="form-control">{{ $reception->note }}</textarea>
                             </div>
 
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-primary">
-                                    Registrar Ingreso <i class="bi bi-check"></i>
+                                    Actualización Ingreso <i class="bi bi-check"></i>
                                 </button>
                             </div>
                         </form>
@@ -85,8 +88,8 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('page_scripts')
+
 @endpush

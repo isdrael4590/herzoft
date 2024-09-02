@@ -33,14 +33,12 @@
                 <div class="card-body shadow">
                     <ul class="list-group list-group-flush">
                         @foreach ($search_resultREPROCs as $result)
-                            @if ($result->product_ref_qr == 'Reprocesar')
                                 <li class="list-group-item list-group-item-action">
                                     <a wire:click="resetQuery" wire:click.prevent="selectProduct({{ $result }})"
                                         href="#">
                                         {{ $result->product_name }} | {{ $result->product_code }}
                                     </a>
                                 </li>
-                            @endif
                         @endforeach
                         @if ($search_resultREPROCs->count() >= $how_many)
                             <li class="list-group-item list-group-item-action text-center">

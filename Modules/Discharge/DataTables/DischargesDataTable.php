@@ -116,6 +116,6 @@ class DischargesDataTable extends DataTable
 
     protected function filename(): string
     {
-        return 'Reception_' . date('YmdHis');
+        return 'Discharge_' . date('YmdHis');
     }
 }

@@ -46,12 +46,11 @@ class ReceptionReprocessController extends Controller
             ]);
 
             foreach (Cart::instance('RecepReprocess')->content() as $cart_item) {
-                $product_id_select = DischargeDetails::where('product_id', $cart_item->id)->get()->first();
-                //dd($product_id_select);
+         
 
                 ReceptionDetails::create([
                     'reception_id' => $reception->id,
-                    'product_id' => $cart_item->id,
+                    'product_id' => $cart_item->options->product_id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_dirt' => $cart_item->options->product_type_dirt,
@@ -93,13 +92,14 @@ class ReceptionReprocessController extends Controller
 
         foreach ($reception_details as $reception_detail) {
             $cart->add([
-                'id'      => $reception_detail->product_id,
+                'id'      => $reception_detail->id,
                 'name'    => $reception_detail->product_name,
                 'qty'     => 1,
                 'price'     => 1,
                 'weight'     => 1,
                 'options' => [
                     'code'     => $reception_detail->product_code,
+                    'product_id'   => $reception_detail->product_id,
                     'product_type_dirt'   => $reception_detail->product_type_dirt,
                     'product_type_process'   => $reception_detail->product_type_process,
                     'product_state_rumed'   => $reception_detail->product_state_rumed
@@ -129,7 +129,7 @@ class ReceptionReprocessController extends Controller
             foreach (Cart::instance('reception')->content() as $cart_item) {
                 ReceptionDetails::create([
                     'reception_id' => $reception->id,
-                    'product_id' => $cart_item->id,
+                    'product_id' => $cart_item->options->product_id,
                     'product_name' => $cart_item->name,
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
