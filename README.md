@@ -68,3 +68,11 @@ Comercial, Todos los derechos reservados Herzoft© 2024
 # Problemas conocidos
 
 - No se cargan los códigos RUMED descritos en la carpeta `init/codigos_rumed.sql`: Por favor borre el volumen `docker compose down && docker volume rm herzoft_sail-mysql`
+
+## Despliegue
+`docker-compose run --rm certbot certonly --webroot --webroot-path=/var/www/certbot -d herzoft.com -d www.herzoft.com`
+
+docker run -it --rm --name certbot \
+            -v "./certbot/conf:/etc/letsencrypt" \
+            -v "./certbot/www:/var/lib/letsencrypt" \
+            certbot/certbot certonly
