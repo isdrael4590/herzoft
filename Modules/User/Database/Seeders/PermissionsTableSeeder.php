@@ -41,15 +41,10 @@ class PermissionsTableSeeder extends Seeder
             //Dashboard
             'show_total_stats',
             'show_test',
-            'show_test_bd',
-            'show_test_bd_overview',
-            'show_test_vacuum',
             'show_production',
-            'show_production_steam',
-            'show_production_hpo',
+            'show_types_rumed',
             'show_result_biologic',
-            'show_biologic_steam',
-            'show_biologic_hpo',
+            'show_production_areas',
             'show_notifications',
             //Products
             'access_products',
@@ -113,6 +108,7 @@ class PermissionsTableSeeder extends Seeder
             'show_receptions',
             'delete_receptions',
             'print_receptions',
+            'print_receptionsticket',
             'edit_receptions',
             'show_wash_area',
             'create_wash_area',
@@ -127,11 +123,11 @@ class PermissionsTableSeeder extends Seeder
             'show_preparations',
             'edit_preparations',
             'delete_preparations',
-            'access_preparationDetails',
-            'create_preparationDetails',
-            'show_preparationDetails',
-            'edit_preparationDetails',
-            'delete_preparationDetails',
+            'access_reprocess',
+            'create_reprocess',
+            'show_reprocess',
+            'edit_reprocess',
+            'delete_reprocess',
 
             //ZONA NO ESTERIL
             'access_zne_area',
@@ -153,6 +149,7 @@ class PermissionsTableSeeder extends Seeder
             // generacion de etiquetas
             'access_labelqrs',
             'create_labelqrs',
+            'create_labelqrshpo',
             'show_labelqrs',
             'edit_labelqrs',
             'delete_labelqrs',
@@ -195,8 +192,12 @@ class PermissionsTableSeeder extends Seeder
             'delete_stockManual',
 
             // roles admin
+            'access_admin',
+            'create_admin',
+            'show_admin',
             'edit_admin',
-            'access_buttontables_admin',
+            'delete_admin',
+            'print_admin',
 
         ];
 

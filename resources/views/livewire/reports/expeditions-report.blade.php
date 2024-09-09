@@ -27,7 +27,7 @@
                                 <div class="form-group">
                                     <label>Área</label>
                                     <select wire:model="area_expedition" class="form-control" name="area_expedition">
-                                        <option value="">Seleccione el Equipo</option>
+                                        <option value="">Seleccione el Área</option>
                                         @foreach (\Modules\Informat\Entities\Area::all() as $area)
                                             <option value="{{ $area->area_name }}">{{ $area->area_name }}
                                             </option>

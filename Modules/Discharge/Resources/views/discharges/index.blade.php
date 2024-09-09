@@ -19,7 +19,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        @can('edit_dischargeDetails')
+                        @can('access_discharge_Details')
                             <a href="{{ route('dischargeDetails.index') }}" class="btn btn-primary">
                                 Instrumental Listado <i class="bi bi-plus"></i>
                             </a>

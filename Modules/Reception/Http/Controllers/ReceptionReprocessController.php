@@ -22,7 +22,7 @@ class ReceptionReprocessController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('create_receptions'), 403);
+        abort_if(Gate::denies('create_reprocess'), 403);
 
         Cart::instance('RecepReprocess')->destroy();
 
@@ -74,7 +74,7 @@ class ReceptionReprocessController extends Controller
 
     public function show(Reception $reception)
     {
-        abort_if(Gate::denies('show_receptions'), 403);
+        abort_if(Gate::denies('show_reprocess'), 403);
 
 
         return view('reception::receptions.show', compact('reception'));
@@ -82,7 +82,7 @@ class ReceptionReprocessController extends Controller
 
     public function edit(Reception $reception)
     {
-        abort_if(Gate::denies('edit_receptions'), 403);
+        abort_if(Gate::denies('edit_reprocess'), 403);
 
         $reception_details = $reception->receptionDetails;
 
@@ -148,7 +148,7 @@ class ReceptionReprocessController extends Controller
 
     public function destroy(Reception $reception)
     {
-        abort_if(Gate::denies('delete_receptions'), 403);
+        abort_if(Gate::denies('delete_reprocess'), 403);
 
         $reception->delete();
 

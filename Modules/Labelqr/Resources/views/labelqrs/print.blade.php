@@ -66,7 +66,7 @@ line-height:1;
                  
                     </tr>
                     <tr style="text-align: center;">
-                        <td><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(120)->generate($dataqr. $item->product_code )) }}">
+                        <td><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(120)->generate($item->product_code.$dataqr)) }}">
                         </td>
                         <td>
                         <i style="font-size: 16px;">

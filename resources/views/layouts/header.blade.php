@@ -9,7 +9,7 @@
 </button>
 
 <ul class="c-header-nav ml-auto">
-   
+
 </ul>
 <ul class="c-header-nav ml-auto mr-4">
 
@@ -56,9 +56,11 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right pt-0">
             <div class="dropdown-header bg-light py-2"><strong>Cuenta</strong></div>
-            <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                <i class="mfe-2  bi bi-person" style="font-size: 1.2rem;"></i> Perfil
-            </a>
+            @can('edit_own_profile')
+                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                    <i class="mfe-2  bi bi-person" style="font-size: 1.2rem;"></i> Perfil
+                </a>
+            @endcan
             <a class="dropdown-item" href="#"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="mfe-2  bi bi-box-arrow-left" style="font-size: 1.2rem;"></i> Salir

@@ -64,8 +64,7 @@
                                                             id="show_total_stats" name="permissions[]"
                                                             value="show_total_stats"
                                                             {{ old('show_total_stats') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="show_total_stats">Produción
-                                                            actual</label>
+                                                        <label class="custom-control-label" for="show_total_stats">Todas las Gráficas</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -81,64 +80,54 @@
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_test_bd" name="permissions[]" value="show_test_bd"
-                                                            {{ old('show_test_bd') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label" for="show_test_bd">Producción
-                                                            Test Bowie</label>
+                                                            id="show_test" name="permissions[]" value="show_test"
+                                                            {{ old('show_test') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label" for="show_test">Resultados 
+                                                            Tests B&D - Vacío</label>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_production" name="permissions[]"
+                                                            value="show_production"
+                                                            {{ old('show_production') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="show_production">Producción de Esterilización</label>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_types_rumed" name="permissions[]"
+                                                            value="show_types_rumed"
+                                                            {{ old('show_types_rumed') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="show_types_rumed">Rendimiento de Instrumental</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_test_vacuum" name="permissions[]"
-                                                            value="show_test_vacuum"
-                                                            {{ old('show_test_vacuum') ? 'checked' : '' }}>
+                                                            id="show_result_biologic" name="permissions[]"
+                                                            value="show_result_biologic"
+                                                            {{ old('show_result_biologic') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="show_test_vacuum">Producción Test Vacio</label>
+                                                            for="show_result_biologic">Estadísticas biológicos</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_production_steam" name="permissions[]"
-                                                            value="show_production_steam"
-                                                            {{ old('show_production_steam') ? 'checked' : '' }}>
+                                                            id="show_production_areas" name="permissions[]"
+                                                            value="show_production_areas"
+                                                            {{ old('show_production_areas') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="show_production_steam">Producción Vapor</label>
+                                                            for="show_production_areas">Estadísticas Áreas</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="show_production_hpo" name="permissions[]"
-                                                            value="show_production_hpo"
-                                                            {{ old('show_production_hpo') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label"
-                                                            for="show_production_hpo">Producción Baja temperatura</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="show_biologic_steam" name="permissions[]"
-                                                            value="show_biologic_steam"
-                                                            {{ old('show_biologic_steam') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label"
-                                                            for="show_biologic_steam">Estadísticas biológicos Vapor</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="show_biologic_hpo" name="permissions[]"
-                                                            value="show_biologic_hpo"
-                                                            {{ old('show_biologic_hpo') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label"
-                                                            for="show_biologic_hpo">Estadísticas biológicos Baja
-                                                            temperatura</label>
-                                                    </div>
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -447,6 +436,16 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
+                                                            id="print_receptionsticket" name="permissions[]"
+                                                            value="print_receptionsticket"
+                                                            {{ old('print_receptionsticket') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="print_receptionsticket">Imprimir Ticket</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
                                                             id="delete_receptions" name="permissions[]"
                                                             value="delete_receptions"
                                                             {{ old('delete_receptions') ? 'checked' : '' }}>
@@ -731,7 +730,7 @@
                                 <div class="col-lg-4 col-md-6 mb-3">
                                     <div class="card h-100 border-0 shadow">
                                         <div class="card-header">
-                                            PREPARACION DETALLES
+                                            PREPARACION / REPROCESAR
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
@@ -739,51 +738,51 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="access_preparationDetails" name="permissions[]"
-                                                            value="access_preparationDetails"
-                                                            {{ old('access_preparationDetails') ? 'checked' : '' }}>
+                                                            id="access_reprocess" name="permissions[]"
+                                                            value="access_reprocess"
+                                                            {{ old('access_reprocess') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="access_preparationDetails">Acceso</label>
+                                                            for="access_reprocess">Acceso</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="show_preparationDetails" name="permissions[]"
-                                                            value="show_preparationDetails"
-                                                            {{ old('show_preparationDetails') ? 'checked' : '' }}>
+                                                            id="show_reprocess" name="permissions[]"
+                                                            value="show_reprocess"
+                                                            {{ old('show_reprocess') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="show_preparationDetails">Vista</label>
+                                                            for="show_reprocess">Vista</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="create_preparationDetails" name="permissions[]"
-                                                            value="create_preparationDetails"
-                                                            {{ old('create_preparationDetails') ? 'checked' : '' }}>
+                                                            id="create_reprocess" name="permissions[]"
+                                                            value="create_reprocess"
+                                                            {{ old('create_reprocess') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="create_preparationDetails">Crear</label>
+                                                            for="create_reprocess">Crear</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="edit_preparationDetails" name="permissions[]"
-                                                            value="edit_preparationDetails"
-                                                            {{ old('edit_preparationDetails') ? 'checked' : '' }}>
+                                                            id="edit_reprocess" name="permissions[]"
+                                                            value="edit_reprocess"
+                                                            {{ old('edit_reprocess') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="edit_preparationDetails">Editar</label>
+                                                            for="edit_reprocess">Editar</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
-                                                            id="delete_preparationDetails" name="permissions[]"
-                                                            value="delete_preparationDetails"
-                                                            {{ old('delete_preparationDetails') ? 'checked' : '' }}>
+                                                            id="delete_reprocess" name="permissions[]"
+                                                            value="delete_reprocess"
+                                                            {{ old('delete_reprocess') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="delete_preparationDetails">Borrar</label>
+                                                            for="delete_reprocess">Borrar</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -824,7 +823,17 @@
                                                             value="create_labelqrs"
                                                             {{ old('create_labelqrs') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
-                                                            for="create_labelqrs">Crear</label>
+                                                            for="create_labelqrs">Crear STEAM</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="create_labelqrshpo" name="permissions[]"
+                                                            value="create_labelqrshpo"
+                                                            {{ old('create_labelqrshpo') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="create_labelqrshpo">Crear HPO</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -921,11 +930,31 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
+                                                            id="access_discharge_Details" name="permissions[]"
+                                                            value="access_discharge_Details"
+                                                            {{ old('access_discharge_Details') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="access_discharge_Details">Acceso Detalles</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
                                                             id="print_discharges" name="permissions[]"
                                                             value="print_discharges"
                                                             {{ old('print_discharges') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="print_discharges">Imprimir</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="create_discharges_stock" name="permissions[]"
+                                                            value="create_discharges_stock"
+                                                            {{ old('create_discharges_stock') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="create_discharges_stock">Enviar Almacén</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -1473,35 +1502,7 @@
                                                             for="show_lotes">Vista</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="create_lotes" name="permissions[]"
-                                                            value="create_lotes"
-                                                            {{ old('create_lotes') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label"
-                                                            for="create_lotes">Crear</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="edit_lotes" name="permissions[]" value="edit_lotes"
-                                                            {{ old('edit_lotes') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label"
-                                                            for="edit_lotes">Editar</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input"
-                                                            id="delete_lotes" name="permissions[]"
-                                                            value="delete_lotes"
-                                                            {{ old('delete_lotes') ? 'checked' : '' }}>
-                                                        <label class="custom-control-label"
-                                                            for="delete_lotes">Borrar</label>
-                                                    </div>
-                                                </div>
+                                             
                                             </div>
                                         </div>
                                     </div>
@@ -1585,6 +1586,78 @@
                                                             {{ old('access_settings') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="access_settings">Access</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ACCESO ADMINISTRADOR -->
+                                <div class="col-lg-4 col-md-6 mb-3">
+                                    <div class="card h-100 border-0 shadow">
+                                        <div class="card-header">
+                                            ACCESO ADMINISTRADOR
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="access_admin" name="permissions[]"
+                                                            value="access_admin"
+                                                            {{ old('access_admin') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="access_admin">Acceso</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_admin" name="permissions[]"
+                                                            value="show_admin"
+                                                            {{ old('show_admin') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="show_admin">Vista</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="create_admin" name="permissions[]"
+                                                            value="create_admin"
+                                                            {{ old('create_admin') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="create_admin">Crear</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="edit_admin" name="permissions[]"
+                                                            value="edit_admin"
+                                                            {{ old('edit_admin') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="edit_admin">Editar</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="print_admin" name="permissions[]"
+                                                            value="print_admin"
+                                                            {{ old('print_admin') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="print_admin">Imprimir</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="delete_admin" name="permissions[]"
+                                                            value="delete_admin"
+                                                            {{ old('delete_admin') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="delete_admin">Borrar</label>
                                                     </div>
                                                 </div>
                                             </div>

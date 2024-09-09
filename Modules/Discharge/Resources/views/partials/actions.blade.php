@@ -17,6 +17,12 @@
         @endif
     @endif
 @endcan
+@can('edit_admin')
+            <a href="{{ route('discharges.edit', $data->id) }}" class="dropdown-item">
+                <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Admin
+            </a>
+           
+@endcan
 @can('show_discharges')
     @if (($data->status_cycle == 'Ciclo Aprobado') | ($data->status_cycle == 'Ciclo Falla'))
         <a href="{{ route('discharges.show', $data->id) }}" class="dropdown-item">

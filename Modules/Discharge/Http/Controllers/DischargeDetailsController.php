@@ -23,7 +23,7 @@ class DischargeDetailsController extends Controller
 
     public function edit($id)
     {
-        abort_if(Gate::denies('edit_dischargeDetails'), 403);
+        abort_if(Gate::denies('access_admin'), 403);
         $dischargeDetails = DischargeDetails::findorFail($id);
         return view('discharge::dischargeDetails.edit', compact('dischargeDetails'));
     }
@@ -31,7 +31,7 @@ class DischargeDetailsController extends Controller
 
     public function update(Request $request,  $id)
     {
-        abort_if(Gate::denies('edit_dischargeDetails'), 403);
+        abort_if(Gate::denies('access_admin'), 403);
 
         $request->validate([
             'product_name' => 'required',
@@ -58,7 +58,7 @@ class DischargeDetailsController extends Controller
 
     public function destroy($id)
     {
-        abort_if(Gate::denies('delete_dischargeDetails'), 403);
+        abort_if(Gate::denies('delete_admin'), 403);
         $dischargeDetails = DischargeDetails::findorFail($id);
 
         $dischargeDetails->delete();

@@ -12,7 +12,7 @@ class   UnitsController extends Controller
 {
 
     public function index() {
-        abort_if(Gate::denies('access_nformat_units'), 403);
+        abort_if(Gate::denies('access_informat_units'), 403);
         $units = Unit::all();
 
         return view('informat::units.index', [

@@ -13,7 +13,7 @@ class AreaController extends Controller
 {
 
     public function index(AreaDataTable $dataTable) {
-        abort_if(Gate::denies('access_Informat_areas'), 403);
+        abort_if(Gate::denies('access_informat_areas'), 403);
 
         return $dataTable->render('informat::areas.index');
     }

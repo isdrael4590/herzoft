@@ -19,10 +19,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <a href="{{ route('informats.create') }}" class="btn btn-primary">
-                            Añadir insumos <i class="bi bi-plus"></i>
-                        </a>
-
+                        @can('create_informats')
+                            <a href="{{ route('informats.create') }}" class="btn btn-primary">
+                                Añadir insumos <i class="bi bi-plus"></i>
+                            </a>
+                        @endcan
                         <hr>
 
                         <div class="table-responsive">
