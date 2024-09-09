@@ -7,6 +7,11 @@
     <a href="{{ route('receptions.pdf', $data->id) }}" class="dropdown-item">
         <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
     </a>
+    @can('print_receptionsticket')
+        <a href="{{ route('receptiontickets.pdf', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir Ticket
+        </a>
+    @endcan
 @endcan
 
 @can('edit_receptions')
@@ -18,7 +23,7 @@
 @endcan
 @can('edit_admin')
     <a href="{{ route('receptions.edit', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Supervisor
+        <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Admin
     </a>
 @endcan
 @can('show_receptions')

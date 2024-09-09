@@ -14,7 +14,7 @@ class LoteController extends Controller
 
     public function index(LoteDataTable $dataTable)
     {
-        abort_if(Gate::denies('access_Informat_lotes'), 403);
+        abort_if(Gate::denies('access_informat_lotes'), 403);
 
         return $dataTable->render('informat::lotes.index');
     }

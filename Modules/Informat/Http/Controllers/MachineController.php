@@ -12,7 +12,7 @@ class MachineController extends Controller
 {
 
     public function index(MachineDataTable $dataTable) {
-        abort_if(Gate::denies('access_Informat_machines'), 403);
+        abort_if(Gate::denies('access_informat_machines'), 403);
 
         return $dataTable->render('informat::machines.index');
     }

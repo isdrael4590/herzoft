@@ -30,7 +30,7 @@ class PrinterLabelQrController extends Controller
             ->get();
         $institute = Institute::all()->first();
        
-        $dataqr=$labelqr->reference."/".$labelqr->lote_machine."/";
+        $dataqr="/".$labelqr->reference."/".$labelqr->lote_machine;
        /*  CONFIURAR EL TAMAÑO DE LA ETIQUETA.
         producto 70x35 mm
          1 inch = 72 point

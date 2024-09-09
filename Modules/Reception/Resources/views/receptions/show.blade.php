@@ -19,14 +19,16 @@
                         <div>
                             Reference: <strong>{{ $reception->reference }}</strong>
                         </div>
-                        <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
-                            href="{{ route('receptions.pdf', $reception->id) }}">
-                            <i class="bi bi-printer"></i> Imprimir
-                        </a>
-                        <a target="_blank" class="btn btn-sm btn-info mfe-1 d-print-none"
-                            href="{{ route('receptions.pdf', $reception->id) }}">
-                            <i class="bi bi-save"></i> Guardar
-                        </a>
+                        @can('print_receptions')
+                            <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
+                                href="{{ route('receptions.pdf', $reception->id) }}">
+                                <i class="bi bi-printer"></i> Imprimir
+                            </a>
+                            <a target="_blank" class="btn btn-sm btn-info mfe-1 d-print-none"
+                                href="{{ route('receptions.pdf', $reception->id) }}">
+                                <i class="bi bi-save"></i> Guardar
+                            </a>
+                        @endcan
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
@@ -54,7 +56,7 @@
                                 <div>
                                     Status: <strong>{{ $reception->status }}</strong>
                                 </div>
-                            
+
                             </div>
 
                         </div>
@@ -74,19 +76,19 @@
                                         <tr>
                                             <td class="align-middle">
                                                 {{ $item->product_name }} <br>
-                                               
+
                                             </td>
 
                                             <td class="align-middle"> <span class="badge badge-success">
-                                                {{ $item->product_code }}
-                                            </span></td>
+                                                    {{ $item->product_code }}
+                                                </span></td>
 
                                             <td class="align-middle">
                                                 {{ $item->product_type_dirt }}
                                             </td>
 
                                             <td class="align-middle">
-                                                {{ ($item->product_state_rumed) }}
+                                                {{ $item->product_state_rumed }}
                                             </td>
                                         </tr>
                                     @endforeach

@@ -551,9 +551,10 @@
                                             <th><div class="logo">
                                         <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
                                             alt="Institute Image" class="img-fluid mb-2">
+                                
                                     </div>
                                             </th>
-                                            <th><h2># {{ $reception->reference }}</h2>
+                                            <th><h2>{{ $reception->reference }}</h2>
                                            <h3> <span>     {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}</span></h3>
 
                                             </th>
@@ -674,7 +675,7 @@
                   
                     <div class="printer-informeshon-footer">
                         <ul>
-                            <li><strong>Nota:</strong> Asegurarse que los productos previo al registro.</li>
+                            <li><strong>Nota:</strong> Asegurarse los productos sean los correctos previo al registro.</li>
                         </ul>
                         <ul>
                             <li><a href="#"> {{ Settings()->company_name }} - {{ Settings()->company_email }} -

@@ -3,7 +3,7 @@
         <i class="bi bi-three-dots-vertical"></i>
     </button>
     <div class="dropdown-menu"> --}}
-        
+
 @can('create_labelqr_discharges')
     @if ($data->status_cycle == 'Cargar')
         <a href="{{ route('labelqr-discharges.create', $data) }}" class="dropdown-item">
@@ -15,16 +15,20 @@
 
 @can('edit_labelqrs')
 
-    @if (($data->status_cycle == 'Cargar' || $data->status_cycle == 'Pendiente' ) & ($data->machine_type == 'Autoclave'))
+    @if (($data->status_cycle == 'Cargar' || $data->status_cycle == 'Pendiente') & ($data->machine_type == 'Autoclave'))
         <a href="{{ route('labelqrs.edit', $data->id) }}" class="dropdown-item">
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar STEAM
         </a>
-       @elseif (($data->status_cycle == 'Cargar' || $data->status_cycle == 'Pendiente' )& ($data->machine_type == 'Peroxido'))
-        <a href="{{ route('labelqrs.edit', [($data->id)])}}" class="dropdown-item">
+    @elseif (($data->status_cycle == 'Cargar' || $data->status_cycle == 'Pendiente') & ($data->machine_type == 'Peroxido'))
+        <a href="{{ route('labelqrs.edit', [$data->id]) }}" class="dropdown-item">
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar HPO
         </a>
-      
     @endif
+@endcan
+@can('edit_admin')
+    <a href="{{ route('labelqrs.edit', $data->id) }}" class="dropdown-item">
+        <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Admin
+    </a>
 @endcan
 @can('show_labelqrs')
     <a href="{{ route('labelqrs.show', $data->id) }}" class="dropdown-item">
