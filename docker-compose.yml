@@ -1,5 +1,5 @@
 services:
-    laravel.test:
+    herzoft:
         build:
             context: ./vendor/laravel/sail/runtimes/8.2
             dockerfile: Dockerfile
@@ -9,7 +9,7 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            #- '${APP_PORT:-80}:80'
+            - '${APP_PORT:-80}:80'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         secrets:
           - db_password
@@ -116,24 +116,6 @@ services:
         - sail
       depends_on:
         - mysql
-    # Web Server Service
-    nginx:
-      image: nginx:alpine
-      container_name: nginx
-      ports:
-        - "80:80"
-        - "443:443"
-      volumes:
-        - ./nginx:/etc/nginx/conf.d/
-        - ./public/:/var/www/public
-        - ./ssl:/etc/nginx/ssl # Mount SSL certificates
-        - ./certbot/conf:/etc/letsencrypt # Mounting certbot configurations
-        - ./certbot/www:/var/www/certbot # For Let's Encrypt validation
-      depends_on:
-        - laravel.test
-        - mysql
-      networks:
-        - sail
 
 secrets:
   db_root_password:
