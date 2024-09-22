@@ -2,9 +2,7 @@
 #https://github.com/Cyber-Duck/php-fpm-laravel/blob/8.1/Dockerfile
 FROM php:8.1-fpm
 
-MAINTAINER support@cyber-duck.co.uk
-
-ENV COMPOSER_MEMORY_LIMIT='-1'
+#ENV COMPOSER_MEMORY_LIMIT='-1'
 
 RUN apt-get update && \
     apt-get install -y --force-yes --no-install-recommends \
@@ -114,7 +112,7 @@ RUN chmod 0644 /etc/cron.d/laravel-scheduler
 #--------------------------------------------------------------------------
 #
 
-ADD ./laravel.ini /usr/local/etc/php/conf.d
+ADD ./docker/php-fpm/laravel.ini /usr/local/etc/php/conf.d
 
 #####################################
 # Aliases:
@@ -142,9 +140,10 @@ RUN rm -r /var/lib/apt/lists/*
 
 RUN usermod -u 1000 www-data
 
-WORKDIR /var/www
-
-COPY ./docker-entrypoint.sh /usr/local/bin/
+WORKDIR /var/www/html
+COPY . /var/www/html
+RUN chmod -R 777 /var/www/html
+COPY ./docker/php-fpm/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /
 ENTRYPOINT ["docker-entrypoint.sh"]

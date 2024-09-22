@@ -72,6 +72,19 @@ Comercial, Todos los derechos reservados Herzoft© 2024
 ## Despliegue
 `docker-compose run --rm certbot certonly --webroot --webroot-path=/var/www/certbot -d herzoft.com -d www.herzoft.com`
 
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+docker compose -f docker-compose.prod.yml exec php-fpm php artisan key:generate
+docker compose -f docker-compose.prod.yml exec php-fpm php artisan migrate:fresh --seed
+docker compose -f docker-compose.prod.yml exec php-fpm php artisan storage:link
+docker compose -f docker-compose.prod.yml exec php-fpm php artisan optimize
+```
+
+
+
+En caso de error 500, `docker compose -f docker-compose.prod.yml exec php-fpm php artisan cache:clear`
+
+
 docker run -it --rm --name certbot \
             -v "./certbot/conf:/etc/letsencrypt" \
             -v "./certbot/www:/var/lib/letsencrypt" \
