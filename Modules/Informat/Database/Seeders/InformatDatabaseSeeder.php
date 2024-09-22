@@ -38,7 +38,7 @@ class InformatDatabaseSeeder extends Seeder
         Machine::create([
             'machine_code' => '    Eq_01',
             'machine_name' => 'MATACHANA ',
-            'machine_identificator' => 'Autoclave1',
+            #'machine_identificator' => 'Autoclave1',
             'machine_model' => '1010E-2',
             'machine_type' => 'Autoclave',
             'machine_serial' => '12345 ',

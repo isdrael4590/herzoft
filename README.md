@@ -51,6 +51,21 @@
 8. Para inicializar las bases de datos por primera vez, se recomienda utilizar el comando `./vendor/bin/sail artisan migrate:fresh --seed`
 9. El proyecto correrá y estará disponible en la dirección [http://localhost](http://localhost)
 
+## Despliegue
+
+1. Inicializar contenedores `docker compose -f docker-compose.prod.yml up nginx laravel-horizon -d --build`
+2. Establecer las configuraciones iniciales de Laravel
+
+    ```bash
+    docker compose -f docker-compose.prod.yml exec app php artisan key:generate
+    docker compose -f docker-compose.prod.yml exec app php artisan migrate:fresh --seed
+    docker compose -f docker-compose.prod.yml exec app php artisan storage:link
+    docker compose -f docker-compose.prod.yml exec app php artisan optimize
+    ```
+
+3. Generar el certificado HTTPS de Let's Encrypt con el siguiente comando`docker compose -f docker-compose.prod.yml run --rm certbot`
+4. Reiniciar nginx con `docker compose -f docker-compose.prod.yml exec nginx nginx -s reload` para recargar las configuraciones.
+
 > **Important Note:** "herZoft" uses Laravel Snappy Package for PDFs. If you are using Linux then no configuration is needed. But in other Operating Systems please refer to [Laravel Snappy Documentation](https://github.com/barryvdh/laravel-snappy).
 >
 ## Credenciales
@@ -68,3 +83,4 @@ Comercial, Todos los derechos reservados Herzoft© 2024
 # Problemas conocidos
 
 - No se cargan los códigos RUMED descritos en la carpeta `init/codigos_rumed.sql`: Por favor borre el volumen `docker compose down && docker volume rm herzoft_sail-mysql`
+- En caso de error 500, `docker compose -f docker-compose.prod.yml exec app php artisan cache:clear` o revisar los permisos de la carpeta `storage/logs`

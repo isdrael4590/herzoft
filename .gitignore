@@ -32,3 +32,9 @@ credenciales/*
 composer.lock
 # Archivos autogenerados
 storage/framework/views/*.php
+
+docker/logs/*
+docker/letsencrypt/*
+docker/nginx/ssl/*
+docker/etc/letsencrypt
+certbot/*
