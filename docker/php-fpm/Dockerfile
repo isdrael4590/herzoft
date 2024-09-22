@@ -1,6 +1,6 @@
 # Copied from cyberduck/php-fpm-laravel
 #https://github.com/Cyber-Duck/php-fpm-laravel/blob/8.1/Dockerfile
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 #ENV COMPOSER_MEMORY_LIMIT='-1'
 
@@ -27,31 +27,7 @@ RUN apt-get update && \
         unzip
 
 # Install soap extention
-RUN docker-php-ext-install soap
-
-# Install for image manipulation
-RUN docker-php-ext-install exif
-
-# Install the PHP pcntl extention
-RUN docker-php-ext-install pcntl
-
-# Install the PHP zip extention
-RUN docker-php-ext-install zip
-
-# Install the PHP pdo_mysql extention
-RUN docker-php-ext-install pdo_mysql
-
-# Install the PHP pdo_pgsql extention
-RUN docker-php-ext-install pdo_pgsql
-
-# Install the PHP bcmath extension
-RUN docker-php-ext-install bcmath
-
-# Install the PHP intl extention
-RUN docker-php-ext-install intl
-
-# Install the PHP gmp extention
-RUN docker-php-ext-install gmp
+RUN docker-php-ext-install soap exif pcntl zip pdo_mysql pdo_pgsql bcmath intl gmp
 
 #####################################
 # PHPRedis:

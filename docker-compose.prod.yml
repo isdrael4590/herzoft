@@ -39,11 +39,10 @@ services:
         depends_on:
             - app
         volumes:
-            - ${NGINX_SSL_PATH}:/etc/nginx/ssl
             - ./:/var/www/html
             - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
             - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
-            - ./docker/etc/letsencrypt:/etc/letsencrypt
+            - ./docker/etc/letsencrypt:/etc/letsencrypt:ro
             - ./docker/certbot/data:/var/www/certbot
         ports:
 #            port mappings, host to docker
@@ -67,6 +66,9 @@ services:
         secrets:
           - db_password
           - admin_password
+        depends_on:
+            - mysql
+            - redis
 
     laravel-horizon:
         build:

@@ -70,19 +70,19 @@ Comercial, Todos los derechos reservados Herzoft© 2024
 - No se cargan los códigos RUMED descritos en la carpeta `init/codigos_rumed.sql`: Por favor borre el volumen `docker compose down && docker volume rm herzoft_sail-mysql`
 
 ## Despliegue
-`docker-compose run --rm certbot certonly --webroot --webroot-path=/var/www/certbot -d herzoft.com -d www.herzoft.com`
-
+1. Inicializar contenedores `docker compose -f docker-compose.prod.yml up nginx laravel-horizon -d --build`
+2. Establecer las configuraciones iniciales de Laravel
 ```bash
-docker compose -f docker-compose.prod.yml up --build -d
-docker compose -f docker-compose.prod.yml exec php-fpm php artisan key:generate
-docker compose -f docker-compose.prod.yml exec php-fpm php artisan migrate:fresh --seed
-docker compose -f docker-compose.prod.yml exec php-fpm php artisan storage:link
-docker compose -f docker-compose.prod.yml exec php-fpm php artisan optimize
+docker compose -f docker-compose.prod.yml exec app php artisan key:generate
+docker compose -f docker-compose.prod.yml exec app php artisan migrate:fresh --seed
+docker compose -f docker-compose.prod.yml exec app php artisan storage:link
+docker compose -f docker-compose.prod.yml exec app php artisan optimize
 ```
+3. Generar los`docker compose -f docker-compose.prod.yml run --rm certbot`
+4. Reiniciar nginx con `docker compose -f docker-compose.prod.yml exec nginx nginx -s reload`
 
 
-
-En caso de error 500, `docker compose -f docker-compose.prod.yml exec php-fpm php artisan cache:clear`
+En caso de error 500, `docker compose -f docker-compose.prod.yml exec app php artisan cache:clear`
 
 
 docker run -it --rm --name certbot \
