@@ -26,24 +26,7 @@ RUN apk --update add wget \
   postgresql-dev \
   gmp-dev
 
-# Install soap extention
-
-# Install for image manipulation
-
-# Install the PHP pcntl extention
-
-# Install the PHP zip extention
-
-# Install the PHP pdo_mysql extention
-
-# Install the PHP pdo_pgsql extention
-
-# Install the PHP bcmath extension
-
-# Install the PHP intl extention
-
-# Install the PHP gmp extention
-#Install Sockets package:
+# Install the PHP packages
 RUN docker-php-ext-install gmp soap exif pcntl zip pdo_mysql pdo_pgsql bcmath intl sockets
 
 

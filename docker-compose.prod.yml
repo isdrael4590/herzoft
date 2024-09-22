@@ -14,7 +14,6 @@ services:
             MYSQL_PASSWORD_FILE: '${DB_PASSWORD_FILE}'
         volumes:
             - 'sail-mysql:/var/lib/mysql'
-            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
         healthcheck:
@@ -38,6 +37,8 @@ services:
         restart: unless-stopped
         environment:
             - DOMAIN
+            - NGINX_FPM_CONTAINER
+            - NGINX_FPM_PORT
         depends_on:
             - app
         volumes:
@@ -46,7 +47,7 @@ services:
             - ./docker/etc/letsencrypt:/etc/letsencrypt:ro
             - ./docker/certbot/data:/var/www/certbot
         ports:
-#            port mappings, host to docker
+            # port mappings, host to docker
             - "${NGINX_HOST_HTTPS_PORT}:443"
             - "${NGINX_HOST_HTTP_PORT}:80"
         networks:
@@ -91,7 +92,6 @@ services:
         volumes:
             - ./docker/etc/letsencrypt:/etc/letsencrypt
             - ./docker/certbot/data:/var/www/certbot
-
 
 secrets:
   db_root_password:
