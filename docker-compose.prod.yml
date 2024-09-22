@@ -37,12 +37,14 @@ services:
         build:
             context: "./docker/nginx"
         depends_on:
-            - php-fpm
+            - app
         volumes:
             - ${NGINX_SSL_PATH}:/etc/nginx/ssl
             - ./:/var/www/html
             - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
             - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
+            - ./docker/etc/letsencrypt:/etc/letsencrypt
+            - ./docker/certbot/data:/var/www/certbot
         ports:
 #            port mappings, host to docker
             - "${NGINX_HOST_HTTPS_PORT}:443"
@@ -52,7 +54,7 @@ services:
         environment:
             - DOMAIN=$DOMAIN
 
-    php-fpm:
+    app:
         build:
             context: .
             dockerfile: "./docker/php-fpm/Dockerfile"
@@ -73,11 +75,22 @@ services:
             - ./:/var/www/html
             - ./docker/laravel-horizon/supervisord.d:/etc/supervisord.d
         depends_on:
-            - php-fpm
+            - app
         extra_hosts:
             - "dockerhost:${DOCKER_HOST_IP}"
         networks:
             - sail
+    certbot:
+        image: certbot/certbot:latest
+        depends_on:
+            - nginx
+        command: >-
+             certonly --reinstall --webroot --webroot-path=/var/www/certbot
+             --email ${EMAIL} --agree-tos --no-eff-email
+             -d ${DOMAIN}
+        volumes:
+            - ./docker/etc/letsencrypt:/etc/letsencrypt
+            - ./docker/certbot/data:/var/www/certbot
 
 
 secrets:
