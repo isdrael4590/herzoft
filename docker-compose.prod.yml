@@ -70,7 +70,7 @@ services:
         build:
             context: ./docker/laravel-horizon
         volumes:
-            - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+            - ./:/var/www/html
             - ./docker/laravel-horizon/supervisord.d:/etc/supervisord.d
         depends_on:
             - php-fpm
