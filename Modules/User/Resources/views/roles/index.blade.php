@@ -20,10 +20,11 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Button trigger modal -->
-                        <a href="{{ route('roles.create') }}" class="btn btn-primary">
-                            Añadir Role <i class="bi bi-plus"></i>
-                        </a>
-
+                        @can('create_roles')
+                            <a href="{{ route('roles.create') }}" class="btn btn-primary">
+                                Añadir Role <i class="bi bi-plus"></i>
+                            </a>
+                        @endcan
                         <hr>
 
                         <div class="table-responsive">

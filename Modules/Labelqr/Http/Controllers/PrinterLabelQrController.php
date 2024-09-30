@@ -10,15 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
 use Modules\Product\Entities\Product;
-use Modules\Informat\Entities\Institute;
+use \Modules\Informat\Entities\Institute;
 use Modules\Labelqr\Entities\Labelqr;
 use Modules\Labelqr\Entities\LabelqrDetails;
 use Modules\Labelqr\Http\Requests\StoreReceptionRequest;
 use \PDF;
 
 class PrinterLabelQrController extends Controller
+
 {
     /*  CONFIGURAR EL TAMAÑO DE LA ETIQUETA.         producto 70x35 mm
       1 inch = 72 point

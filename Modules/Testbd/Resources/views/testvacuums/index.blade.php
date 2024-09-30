@@ -19,10 +19,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <a href="{{ route('testvacuums.create') }}" class="btn btn-primary">
-                            Añadir Test Vacio <i class="bi bi-plus"></i>
-                        </a>
-
+                        @can('create_testvacuums')
+                            <a href="{{ route('testvacuums.create') }}" class="btn btn-primary">
+                                Añadir Test Vacio <i class="bi bi-plus"></i>
+                            </a>
+                        @endcan
                         <hr>
 
                         <div class="table-responsive">

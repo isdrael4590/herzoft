@@ -22,10 +22,11 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Button trigger modal -->
-                        <a href="{{ route('area.create') }}" class="btn btn-primary">
-                            Añadir Áreas <i class="bi bi-plus"></i>
-                        </a>
-
+                        @can('create_areas')
+                            <a href="{{ route('area.create') }}" class="btn btn-primary">
+                                Añadir Áreas <i class="bi bi-plus"></i>
+                            </a>
+                        @endcan
                         <hr>
 
                         <div class="table-responsive">
@@ -38,7 +39,7 @@
     </div>
 
     <!-- Create Modal -->
- 
+
 @endsection
 
 @push('page_scripts')

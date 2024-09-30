@@ -19,12 +19,13 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <a href="{{ route('testbds.create') }}" class="btn btn-primary">
-                            Añadir Test BD & Dick <i class="bi bi-plus"></i>
-                        </a>
+                        @can('create_testbds')
+                            <a href="{{ route('testbds.create') }}" class="btn btn-primary">
+                                Añadir Test BD & Dick <i class="bi bi-plus"></i>
+                            </a>
 
-                        <hr>
-
+                            <hr>
+                        @endcan
                         <div class="table-responsive">
                             {!! $dataTable->table() !!}
                         </div>

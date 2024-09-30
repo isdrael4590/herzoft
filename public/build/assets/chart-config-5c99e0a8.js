@@ -1,14 +1,14 @@
 $(document).ready(function () {
 
 
-    let e = document.getElementById("testBowiesChart"); $.get("/testbowies/chart-data", function (a) { new Chart(e, { type: "line", data: { labels: a.months, datasets: [{ label: "TBD Negativo", data: a.TBDNeg, fill: !1, borderColor: "#2563EB", backgroundColor: ['#2563EB'], tension: 0 }, { label: "TBD Positivo", data: a.TBDPosi, fill: !1, borderColor: "#EA580C", backgroundColor: ['#EA580C'], tension: 0 }, { label: "Test Vacio OK", data: a.testvacNeg, fill: !1, borderColor: "#35eb1f", backgroundColor: ['#35eb1f'], tension: 0 }, { label: "Test Vacio Falla'", data: a.testvacPosi, fill: !1, borderColor: "#eb881f", backgroundColor: ['#eb881f'], tension: 0 }] } }) })
+    let e = document.getElementById("testBowiesChart"); $.get("/testbowies/chart-data", function (a) { new Chart(e, { type: "line", data: { labels: a.months, datasets: [{ label: "TBD -", data: a.TBDNeg, fill: !1, borderColor: "#2563EB", backgroundColor: ['#2563EB'], tension: 0 }, { label: "TBD +", data: a.TBDPosi, fill: !1, borderColor: "#EA580C", backgroundColor: ['#EA580C'], tension: 0 }, { label: "Test V OK", data: a.testvacNeg, fill: !1, borderColor: "#35eb1f", backgroundColor: ['#35eb1f'], tension: 0 }, { label: "Test V Falla'", data: a.testvacPosi, fill: !1, borderColor: "#eb881f", backgroundColor: ['#eb881f'], tension: 0 }] } }) })
 
 
-    let t = document.getElementById("currentMonthChart"); $.get("/current-month/chart-data", function (a) { new Chart(t, { type: "pie", data: { labels: ["TBD Negativo", "TBD Positivo",], datasets: [{ data: [a.testbdoks, a.testbdfails], backgroundColor: ["#16b32e", "#c53929"], hoverBackgroundColor: ["#16b32e", "#c53929", "#1f4ec3", '#eb881f'] }] } }) });
+    let t = document.getElementById("currentMonthChart"); $.get("/current-month/chart-data", function (a) { new Chart(t, { type: "pie", data: { labels: ["TBD -", "TBD +",], datasets: [{ data: [a.testbdoks, a.testbdfails], backgroundColor: ["#16b32e", "#c53929"], hoverBackgroundColor: ["#16b32e", "#c53929", "#1f4ec3", '#eb881f'] }] } }) });
     let tt = document.getElementById("currentMonthChart2"); $.get("/current-month/chart-data", function (a) {
         new Chart(tt, {
             type: "pie", data: {
-                labels: ["Test Vacio OK", "Test Vacio Falla"], datasets: [{ data: [a.testvacuumoks, a.testvacuumfails], backgroundColor: ["#1f4ec3", '#eb881f'], hoverBackgroundColor: ["#16b32e", "#c53929", "#1f4ec3", '#eb881f'] }]
+                labels: ["Test V ok", "Test V Falla"], datasets: [{ data: [a.testvacuumoks, a.testvacuumfails], backgroundColor: ["#1f4ec3", '#eb881f'], hoverBackgroundColor: ["#16b32e", "#c53929", "#1f4ec3", '#eb881f'] }]
             }
         })
     });

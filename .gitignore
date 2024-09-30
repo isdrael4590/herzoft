@@ -31,4 +31,4 @@ credenciales/*
 # Composer log que no es necesario
 composer.lock
 # Archivos autogenerados
-storage/framework/views/*
+storage/framework/views/*.php

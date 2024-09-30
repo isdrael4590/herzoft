@@ -52,9 +52,11 @@
                                         </div>
                                         <div>
                                             <div class="text-muted text-uppercase font-weight-bold small">Módulo Recepción</div>
-                                            <div class="text-value text-primary"><a href="{{ route('receptions.index') }}">Todos
-                                                    los ingresos</a>
-                                            </div>
+                                            @can('access_receptions')
+                                                <div class="text-value text-primary"><a href="{{ route('receptions.index') }}">Todos
+                                                        los ingresos</a>
+                                                </div>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>
@@ -64,19 +66,22 @@
                             <div class="col-md-6 col-lg-3">
                                 <div class="card border-0">
                                     <div class="card-body p-0 d-flex align-items-center shadow-sm">
-                                    <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
+                                        <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
                                             <h1>PRE</h1>
                                         </div>
                                         <div>
                                             <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO PREPARACIÓN</div>
-                                            <div class="text-value text-primary"><a
-                                                    href="{{ route('preparationDetails.index') }}">Stock
-                                            </a>
-                                            </div>
-                                            <div class="text-value text-primary"><a
-                                                    href="{{ route('RecepReprocess.create') }}">Reprocesar </a>
-                                            </div>
-
+                                            @can('access_preparations')
+                                                <div class="text-value text-primary"><a
+                                                        href="{{ route('preparationDetails.index') }}">Stock
+                                                    </a>
+                                                </div>
+                                            @endcan
+                                            @can('create_reprocess')
+                                                <div class="text-value text-primary"><a
+                                                        href="{{ route('RecepReprocess.create') }}">Reprocesar </a>
+                                                </div>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>
@@ -93,15 +98,16 @@
                                             <div class="text-muted text-uppercase font-weight-bold small"> MÓDULO CARGA
                                             </div>
                                             @can('access_labelqrs')
-                                                <div class="text-value text-primary"><a href="{{ route('labelqrs.index') }}">Generar Ciclo</a>
+                                                <div class="text-value text-primary"><a href="{{ route('labelqrs.index') }}">Generar
+                                                        Ciclo</a>
                                                 </div>
                                             @endcan
 
                                             @can('create_discharges')
                                                 <div class="text-muted text-uppercase font-weight-bold small">MÓDULO DE DESCARGA
                                                 </div>
-                                                <div class="text-value text-primary"><a
-                                                        href="{{ route('discharges.index') }}">Liberar Ciclo</a>
+                                                <div class="text-value text-primary"><a href="{{ route('discharges.index') }}">Liberar
+                                                        Ciclo</a>
                                                 </div>
                                             @endcan
 
@@ -125,15 +131,18 @@
                                                     <div class="text-muted text-uppercase font-weight-bold small">MÓDULO
                                                         ALMACÉN.
                                                     </div>
-                                                    <div class="text-value text-primary"><a
-                                                            href="{{ route('preparationDetails.index') }}">Stock
-                                                            Esteril</a>
-                                                    </div>
+                                                    @can('access_stocks')
+                                                        <div class="text-value text-primary"><a
+                                                                href="{{ route('preparationDetails.index') }}">Stock
+                                                                Esteril</a>
+                                                        </div>
+                                                    @endcan
                                                     @can('access_expedition')
-                                                    <div class="text-muted text-uppercase font-weight-bold small">
-                                                        DESPACHO.
-                                                    </div>
-                                                        <div class="text-value text-primary"><a href="{{ route('expeditions.index') }}">Ver Despachos</a>
+                                                        <div class="text-muted text-uppercase font-weight-bold small">
+                                                            DESPACHO.
+                                                        </div>
+                                                        <div class="text-value text-primary"><a href="{{ route('expeditions.index') }}">Ver
+                                                                Despachos</a>
                                                         </div>
                                                     @endcan
 
@@ -151,140 +160,134 @@
         @endcan
         @can('show_test')
             <div class="row mb-4">
-                @can('show_test_bd')
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header">
-                                Resultado de Test de Bowie & Dick / Vacío
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Resultado de Test de Bowie & Dick / Vacío
+                        </div>
+                        <div class="card-body d-flex justify-content-center">
+                            <div class="card-body">
+                                <strong class="text-align: center">Mensual de Test de Bowie & Dick / Vacío</strong>
+                                <canvas id="testBowiesChart"></canvas>
                             </div>
-                            <div class="card-body d-flex justify-content-center">
-                                <div class="card-body">
-                                    <strong class="text-align: center">Mensual de Test de Bowie & Dick / Vacío</strong>
-                                    <canvas id="testBowiesChart"></canvas>
-                                </div>
 
 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Resultado de Test de Bowie & Dick / Vacío
+                        </div>
+                        <div class="card-body d-flex content-center">
+
+                            <div class=" display: flex; min-height: 50vhr">
+                                <strong># Test Bowie & Dick Total<strong>
+                                        <canvas id="currentMonthChart" width="200" height="220"></canvas>
+                            </div>
+                            <div class=" display: flex; min-height: 50vhr">
+                                <strong># Test Vacio Total<strong>
+                                        <canvas id="currentMonthChart2" width="200" height="200"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header" >
-                                Resultado de Test de Bowie & Dick / Vacío
-                            </div>
-                            <div class="card-body d-flex content-center">
-
-                                <div class=" display: flex; min-height: 50vhr">
-                                    <strong># Test Bowie & Dick Total<strong>
-                                            <canvas  id="currentMonthChart"  width="200" height="220"></canvas>
-                                </div>
-                                @can('show_test_vacuum')
-                                <div class=" display: flex; min-height: 50vhr">
-                                        <strong># Test Vacio Total<strong>
-                                                <canvas  id="currentMonthChart2" width="200" height="200"></canvas>
-                                    </div>
-                                @endcan
-                            </div>
-                        </div>
-                    </div>
-                @endcan
+                </div>
 
             </div>
         @endcan
 
         @can('show_production')
             <div class="row mb-4">
-                @can('show_production_steam')
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header">
-                                Producción Mensual Esterilización.
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Producción Mensual Esterilización.
+                        </div>
+                        <div class="card-body d-flex justify-content-center">
+                            <div class="card-body">
+                                <canvas id="ProductionsChart"></canvas>
                             </div>
-                            <div class="card-body d-flex justify-content-center">
-                                <div class="card-body">
-                                    <canvas id="ProductionsChart"></canvas>
-                                </div>
-                              
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Producción Total Esterilización.
+                        </div>
+                        <div class="card-body d-flex content-center">
+                            <div class=" display: flex; min-height: 50vhr">
+                                <strong># Produccion Vapor<strong>
+                                        <canvas id="currentMonthProductionChart" width="200" height="200"></canvas>
+                            </div>
+                            <div class=" display: flex; min-height: 50vhr">
+                                <strong># Produccion Peroxido<strong>
+                                        <canvas id="currentMonthProductionChart2" width="200" height="200"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header">
-                                Producción Total Esterilización.
-                            </div>
-                            <div class="card-body d-flex content-center">
-                                <div class=" display: flex; min-height: 50vhr">
-                                    <strong># Produccion Vapor<strong>
-                                            <canvas id="currentMonthProductionChart" width="200" height="200"></canvas>
-                                </div>
-                                <div class=" display: flex; min-height: 50vhr">
-                                    <strong># Produccion Peroxido<strong>
-                                            <canvas id="currentMonthProductionChart2" width="200" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endcan
+                </div>
             </div>
+        @endcan
+        @can('show_types_rumed')
             <div class="row mb-4">
-                @can('show_production_hpo')
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header">
-                                Instrumental Procesado.
-                            </div>
-                            <div class="card-body d-flex justify-content-center">
-                                <div class="card-body">
-                                    <canvas id="ProductionlabelsChart"></canvas>
-                                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Instrumental Procesado.
+                        </div>
+                        <div class="card-body d-flex justify-content-center">
+                            <div class="card-body">
+                                <canvas id="ProductionlabelsChart"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header">
-                                Rendimiento Paquetes.
-                            </div>
-                            <div class="card-body d-flex justify-content-center">
-                                <div class="card-body">
-                                    <canvas id="ResultProductionChart"></canvas>
-                                </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Rendimiento Paquetes.
+                        </div>
+                        <div class="card-body d-flex justify-content-center">
+                            <div class="card-body">
+                                <canvas id="ResultProductionChart"></canvas>
                             </div>
                         </div>
                     </div>
-                @endcan
+                </div>
+
             </div>
         @endcan
 
-        @can('show_biologic')
-            <div class="row mb-4">
-                @can('show_biologic_steam')
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header">
-                                Resultado de liberación del Biologicos.
-                            </div>
-                            <div class="card-body">
-                                <canvas id="BiologicChart"></canvas>
-                            </div>
+        <div class="row mb-4">
+            @can('show_result_biologic')
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Resultado de liberación del Biologicos.
+                        </div>
+                        <div class="card-body">
+                            <canvas id="BiologicChart"></canvas>
                         </div>
                     </div>
-                @endcan
-                @can('show_biologic_hpo')
-                    <div class="col-lg-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-header">
-                                Rendimiento Areas Central.
-                            </div>
-                            <div class="card-body">
-                                <canvas id="CentralChart"></canvas>
-                            </div>
+                </div>
+            @endcan
+            @can('show_production_areas')
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            Rendimiento Areas Central.
+                        </div>
+                        <div class="card-body">
+                            <canvas id="CentralChart"></canvas>
                         </div>
                     </div>
-                @endcan
-            </div>
-        @endcan
+                </div>
+            @endcan
+
+        </div>
 
 
     </div>

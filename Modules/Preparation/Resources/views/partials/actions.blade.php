@@ -1,16 +1,16 @@
 
-        @can('edit_preparationDetails')
+        @can('edit_preparations')
             <a href="{{ route('preparations.edit', $data->id) }}" class="dropdown-item">
                 <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar
             </a>
         @endcan
-        @can('showpreparationDetails')
+        @can('show_preparations')
             <a href="{{ route('preparations.show', $data->id) }}" class="dropdown-item">
                 <i class="bi bi-eye mr-2 text-info" style="line-height: 1;"></i> Detalles
             </a>
         @endcan
 
-        @can('deletepreparationDetails')
+        @can('delete_preparations')
             <button id="delete" class="dropdown-item" onclick="
                 event.preventDefault();
                 if (confirm('Are you sure? It will delete the data permanently!')) {
