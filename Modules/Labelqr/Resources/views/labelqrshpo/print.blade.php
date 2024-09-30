@@ -1,100 +1,123 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="es">
 
 <head>
     <title>QR ETIQUETAS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" >
     <meta charset="UTF-8">
 
     <!-- External CSS libraries -->
-    <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/bootstrap.min.css') }}">
+   <style>
 
-    <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+/** Print ticket **/
+@media print {
+    .cabecera-ticket {
+    }
+        }
+    
+
+/*css para etiquetas */
+   /*Informacion equipo tickets */
+   table, th, td {
+    border: 1px solid black;
+    border-style:  dotted;
+    border-collapse: collapse;
+    padding-top: 1px;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+}
+ 
+
+
+@page {
+		margin-left: 1cm;
+		margin-right: 0.3cm;
+        margin-top: 0.2cm;
+		margin-bottom: 0.2cm;
+
+	}
+    .verticalText {
+transform: rotate(90deg);
+}
+
+
+
+p{
+font-size: 7px;
+margin-top:0; 
+margin-bottom:0;
+
+}
+
+
+
+   </style>
+
 
     <!-- Custom Stylesheet -->
-    <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/style.css') }}">
 </head>
-
 <body>
-    <div class="printer-16 printer-content">
-        <div class="container">
-    
-            <div class="row">
-                @foreach ($labelqr->labelqrDetails as $item)
-                    <div class="cabecera-ticket ">
-                        <header>
-                            <div class="upper-ticket">
-                                <strong>{{ institutes()->institute_name }}</strong>
-                                <small> {{ institutes()->institute_area }}</small>
-                                <small> {{ institutes()->institute_city }} - {{ institutes()->institute_country }}</small>
-                            </div>
-                            <div class="upper-ticket2">
-                                <small>{{ $labelqr->machine_name }}</small>
-                                <small>{{ $labelqr->type_program }}</small>
-                                <strong>Lote: {{ $labelqr->lote_machine }}</strong>
-                            </div>
-                        </header>
-                        <section class="machine-info">
-                            <div class="machine-info2">
-                                <small>Venc. {!!Carbon\Carbon::parse(($item->updated_at)->format('d-m-Y'))->addMonth($item->product_expiration)!!}</small>
-                                <strong>Elab.: {{$item->updated_at }}</strong>
-                            </div>
-
-                        </section>
-
-                        <section class="infos">
-                            <div class="detalls_cycle">
-                                <div class="box">
-                                    <strong><em>{{$item->product_name }}</em></strong>
-                                    <strong><em>{{$item->product_code }}</em></strong>
-                                    <small>Operario: {{ $labelqr->operator }} </small>
-                                    
-                                </div>
-                            </div>
-                            <div class="detalls_cycle">
-                              
-                                <div class="qrcode">
-                                    <div class="box">
-                                    {!! QrCode::size(60)->style('square')->generate( "$labelqr->reference"." // Lote: "."$labelqr->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: "."$item->updated_at") !!}
-                                    <span>
-                                        <small>
-                                            Lote: {{ $labelqr->lote_machine }}  <br> Código: {{ $item->product_code }}
-                                        </small>
-                                     </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="strap">
-                            <div class="box">
-                                <div class="">
-                                    <small>El producto no se considera ESTERIL, si el empaque esta ABIERTO o
-                                        HUMEDO</small>
-
-                                </div>
-
-                            </div>
-
-                        </section>
-                    </div>
-                @endforeach
-
-
-
-                <div class="printer-btn-section clearfix d-print-none">
-                    <a href="javascript:window.print()" class="btn btn-lg btn-print">
-                        Imprimir
-                    </a>
-
-                </div>
-            </div>
+    @foreach ($labelqr->labelqrDetails as $item)
+        <div>
+            <table style="width:100%">
+                <head>
+                    <tr style="font-size: 14px;">
+                    <th colspan="2"> {{ institutes()->institute_name }}<br>
+                            <p style="font-size: 10px;"> {{ institutes()->institute_area }} - {{ institutes()->institute_city }} -{{ institutes()->institute_country }}</p>
+                    </th>
+                 
+                    </tr>
+                    <tr style="text-align: center;">
+                        
+                        <td><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(110)->generate($item->product_code.$dataqr)) }}">
+                            <p style="font-size: 10px;">
+                                <small>HERZOFT GROUP</small><br>
+                            </p>
+                        </td>
+                        <td>
+                        <p style="font-size: 15px;">
+                        <strong >Venc. {!! Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration)->format('d M, Y') !!}</strong><br>
+                        </p>
+                        <p style="font-size: 10px;">
+                            <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d M, Y') !!}</small><br>
+                        </p>
+                        <p style="font-size: 10px;">
+                        <strong>{{ $labelqr->machine_name }} Lote: {{ $labelqr->lote_machine }} </strong><br>
+                        </p>
+                        <p style="font-size: 10px;">
+                        <small>{{ $labelqr->type_program }}</small><br>
+                        </p>
+                        <p style="font-size: 10px;">
+                        <strong>{{ $labelqr->reference }}</strong><br>
+                        </p>
+                        <p style="font-size: 10px;">
+                        <strong>{{ $item->product_name }}</strong><br>
+                        </p>
+                        <p style="font-size: 15px;">
+                        <small>{{ $item->product_code }}</small><br>
+                        </p>
+                        <p style="font-size: 10px;">
+                        <small>Operario: {{ $labelqr->operator }} </small>
+                        </p>
+                        </td>
+                    </tr>
+                    <tr style="font-size: 10px;">
+                            <td  style="text-align: center;" colspan="2">
+                            <p style="font-size: 10px;">
+                                <small>El producto no ESTERIL, si el empaque esta ABIERTO o
+                                HUMEDO</small>
+                            </p>   
+                            
+                        </td>
+                       
+                    </tr>
+                   
+                </head>
+            </table>
         </div>
-    </div>
-
-
+    @endforeach
 </body>
 
 </html>
+  

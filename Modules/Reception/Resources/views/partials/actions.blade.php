@@ -3,9 +3,9 @@
         <i class="bi bi-three-dots-vertical"></i>
     </button>
     <div class="dropdown-menu"> --}}
-@can('print_receptions')
+@can('print_admin')
     <a href="{{ route('receptions.pdf', $data->id) }}" class="dropdown-item">
-        <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
+        <i target="_blank" class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
     </a>
     @can('print_receptionsticket')
         <a href="{{ route('receptiontickets.pdf', $data->id) }}" class="dropdown-item">
@@ -31,7 +31,7 @@
         <i class="bi bi-eye mr-2 text-info" style="line-height: 1;"></i> Detalles
     </a>
 @endcan
-@can('create_reception-preparations')
+@can('create_reception_preparations')
     @if ($data->status == 'Registrado')
         <a href="{{ route('reception-preparations.create', $data) }}" class="dropdown-item">
             <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a ZNE Preparación.

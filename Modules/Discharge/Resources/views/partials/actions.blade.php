@@ -30,7 +30,7 @@
         </a>
     @endif
 @endcan
-@can('print_discharges')
+@can('print_admin')
     @if (($data->status_cycle == 'Ciclo Aprobado') | ($data->status_cycle == 'Ciclo Falla'))
         <a href="{{ route('discharges.pdf', $data->id) }}" class="dropdown-item">
             <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir

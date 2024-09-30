@@ -5,8 +5,9 @@ namespace App\Livewire;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Modules\Discharge\Entities\DischargeDetails;
+use Modules\Product\Entities\Product;
 
-class SearchProducttoDES extends Component
+class SearchProducttoSUB extends Component
 {
 
     public $query;
@@ -20,11 +21,11 @@ class SearchProducttoDES extends Component
     }
 
     public function render() {
-        return view('livewire.search-producttoDES');
+        return view('livewire.search-producttoSUB');
     }
 
     public function updatedQuery() {
-        $this->search_results = DischargeDetails::where('product_name', 'like', '%' . $this->query . '%')
+        $this->search_results = Product::where('product_name', 'like', '%' . $this->query . '%')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
             ->take($this->how_many)->get();
     }
@@ -40,7 +41,7 @@ class SearchProducttoDES extends Component
         $this->search_results = Collection::empty();
     }
 
-    public function selectProduct($product) {
-        $this->dispatch('productSelected', $product);
+    public function selectProduct($subproduct) {
+        $this->dispatch('productSelected', $subproduct);
     }
 }

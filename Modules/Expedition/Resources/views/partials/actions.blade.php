@@ -1,4 +1,4 @@
-@can('print_expeditions')
+@can('print_admin')
     @if ($data->status_expedition == 'Despachado')
         <a href="{{ route('expeditions.pdf', $data->id) }}" class="dropdown-item">
             <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir

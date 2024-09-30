@@ -80,8 +80,7 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="area">Area <span
-                                                class="text-danger">*</span></label>
+                                        <label for="area">Area <span class="text-danger">*</span></label>
                                         <select class="form-control" id="area" name="area" required>
                                             @foreach (\Modules\Informat\Entities\Area::all() as $area)
                                                 <option value="{{ $area->area_name }}">
@@ -94,7 +93,8 @@
                                     <div class="form-group">
                                         <label for="product_type_process">Paquete procesado en:<span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" name="product_type_process" id="product_type_process" required>
+                                        <select class="form-control" name="product_type_process" id="product_type_process"
+                                            required>
                                             <option value="" disabled>Seleccion de Temp. Trabajo</option>
                                             <option selected value="Alta Temperatura">Alta Temperatura</option>
                                             <option value="Baja Temperatura">Baja Temperatura</option>
@@ -121,6 +121,21 @@
                                     </div>
                                 </div>
                             </div>
+                            @can('accces_subproduct')
+                                <div class="row">
+                                    <div class="col-12">
+                                        <livewire:search-producttoSUB />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div>
+                                        <h3>Detalles del Paquete</h3>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <livewire:product-carttoSUB :cartInstance="'product'" />
+                                </div>
+                            @endcan
 
                             <div class="form-group">
                                 <label for="product_note">Nota / Observaciones</label>
@@ -129,7 +144,7 @@
                         </div>
                     </div>
                 </div>
-
+                @can('add_image')
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
@@ -147,6 +162,7 @@
                         </div>
                     </div>
                 </div>
+                @endcan
             </div>
         </form>
     </div>
@@ -207,7 +223,12 @@
                 @endif
             }
         }
-    </script>
 
+
+
+        $(document).on('click', '.remove-table-row', function() {
+            $(this).parents('tr').remove()
+        });
+    </script>
     <script src="{{ asset('js/jquery-mask-money.js') }}"></script>
 @endpush

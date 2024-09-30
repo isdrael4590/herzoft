@@ -272,6 +272,16 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
+                                                            id="accces_subproduct" name="permissions[]"
+                                                            value="accces_subproduct"
+                                                            {{ old('accces_subproduct') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="accces_subproduct">Añadir subproductos</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
                                                             id="edit_products" name="permissions[]" value="edit_products"
                                                             {{ old('edit_products') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
@@ -296,6 +306,16 @@
                                                             {{ old('access_product_categories') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="access_product_categories">Especialidad</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="add_image" name="permissions[]"
+                                                            value="add_image"
+                                                            {{ old('add_image') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="add_image">Añadir Imagen</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -413,6 +433,17 @@
                                                             for="create_receptions">Crear</label>
                                                     </div>
                                                 </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="create_reception_preparations" name="permissions[]"
+                                                            value="create_reception_preparations"
+                                                            {{ old('create_reception_preparations') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="create_reception_preparations">Enviar zona Preparación</label>
+                                                    </div>
+                                                </div>
+                                                
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"

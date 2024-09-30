@@ -107,8 +107,7 @@
                                             <option
                                                 {{ $product->product_type_process == 'Baja Temperatura' ? 'selected' : '' }}
                                                 value="Baja Temperatura">Baja Temperatura</option>
-                                            <option
-                                                {{ $product->product_type_process == 'N/A' ? 'selected' : '' }}
+                                            <option {{ $product->product_type_process == 'N/A' ? 'selected' : '' }}
                                                 value="N/A">N/A</option>
                                         </select>
                                     </div>
@@ -134,27 +133,50 @@
                                 <label for="product_note">Note</label>
                                 <textarea name="product_note" id="product_note" rows="4 " class="form-control">{{ $product->product_note }}</textarea>
                             </div>
+
+
+                            @can('accces_subproduct')
+                                <div class="form-group">
+                                    <div>
+                                        <h3>Detalles del Paquete</h3>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <livewire:search-producttoSUB />
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <livewire:product-carttoSUB :cartInstance="'product'" :data="$product" />
+
+                                </div>
+                            @endcan
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="image">Imagen del paquete <i class="bi bi-question-circle-fill text-info"
-                                        data-toggle="tooltip" data-placement="top"
-                                        title="Max Files: 3, Max File Size: 1MB, Image Size: 400x400"></i></label>
-                                <div class="dropzone d-flex flex-wrap align-items-center justify-content-center"
-                                    id="document-dropzone">
-                                    <div class="dz-message" data-dz-message>
-                                        <i class="bi bi-cloud-arrow-up"></i>
+                @can('add_image')
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="image">Imagen del paquete <i class="bi bi-question-circle-fill text-info"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Max Files: 3, Max File Size: 1MB, Image Size: 400x400"></i></label>
+                                    <div class="dropzone d-flex flex-wrap align-items-center justify-content-center"
+                                        id="document-dropzone">
+                                        <div class="dz-message" data-dz-message>
+                                            <i class="bi bi-cloud-arrow-up"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endcan
             </div>
         </form>
     </div>
