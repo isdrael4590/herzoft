@@ -54,6 +54,8 @@ class PermissionsTableSeeder extends Seeder
             'delete_products',
             'access_product_categories',
             'create_importproducts',
+            'accces_subproduct',
+            'add_image',
             //Barcode Printing
             'print_barcodes',
 
@@ -167,6 +169,8 @@ class PermissionsTableSeeder extends Seeder
             'delete_discharges',
             'print_discharges',
             'access_release_cycle',
+            'access_discharge_Details',
+            'create_discharges_stock',
 
             // descarga detalles 
             'edit_dischargeDetails',

@@ -63,10 +63,10 @@ line-height:1;
                     <th colspan="2"> {{ institutes()->institute_name }}<br>
                             <p style="font-size: 8px;"> {{ institutes()->institute_area }} - {{ institutes()->institute_city }} -{{ institutes()->institute_country }}</p>
                     </th>
-                  
+                 
                     </tr>
                     <tr style="text-align: center;">
-                        <td><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(120)->generate($dataqr)) }}">
+                        <td><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(120)->generate($item->product_code.$dataqr)) }}">
                         </td>
                         <td>
                         <i style="font-size: 16px;">
@@ -104,11 +104,6 @@ line-height:1;
                             
                         </td>
                        
-                    </tr>
-                    <tr>
-                    <td rowspan="3"  >
-                            <p class="verticalText" > {{ Settings()->company_name }}-{{ Settings()->company_email }} </p>
-                  </td>
                     </tr>
                    
                 </head>

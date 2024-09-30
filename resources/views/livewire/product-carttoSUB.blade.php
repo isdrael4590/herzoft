@@ -20,14 +20,9 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th class="align-middle">Id</th>
-                        <th class="align-middle">Descripción</th>
-                       {{--<th class="align-middle">Paquete / Código</th>--}} 
-                        <th class="align-middle text-center">Tipo de Envoltura </th>
-                        <th class="align-middle text-center"> Embalaje </th>
-                        <th class="align-middle text-center"> Ind. 4 ó 5 </th>
-                        <th class="align-middle text-center"> Venc. </th>
-                        <th class="align-middle text-center"> Procesamiento. </th>
+                        <th class="align-middle">id</th>
+                        <th class="align-middle text-center">Descripción </th>
+                        <th class="align-middle text-center">Cantidad</th>
                         <th class="align-middle text-center">Acción</th>
                     </tr>
                 </thead>
@@ -35,39 +30,15 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
-                                <td class="align-middle text-center">
-                                    {{ $cart_item->id }}
-                                </td>
                                 <td class="align-middle">
-                                    {{ $cart_item->name }} <br>
-                                    <span class="badge badge-success">
-                                        {{ $cart_item->options->code }}
-                                    </span>
-
+                                    {{ $cart_item->id }} <br>
                                 </td>
-                               {{--<td class="align-middle text-center">
-                                    {{ $cart_item->options->product_id }}
-                                </td>--}} 
-                                <td class="align-middle text-center">
-
-                                    {{ $cart_item->options->product_package_wrap }} @include('livewire.includes.product-cart-modaltoQR')
-
+                                <td class="align-middle text-center text-center">
+                                    {{ $cart_item->name }} <br> @include('livewire.includes.product-cart-modaltoSUB')
                                 </td>
                                 <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_eval_package }}
+                                    {{ $cart_item->qty }}
                                 </td>
-
-                                <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_eval_indicator }}
-                                </td>
-
-                                <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_expiration }} <span> meses</span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_type_process }}
-                                </td>
-
                                 <td class="align-middle text-center">
                                     <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
                                         <i class="bi bi-x-circle font-2xl text-danger"></i>

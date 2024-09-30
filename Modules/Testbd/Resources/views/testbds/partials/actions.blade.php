@@ -1,4 +1,4 @@
-@can('print_testbds')
+@can('print_admin')
 <a href="{{ route('testbds.pdf', $data->id) }}" class="dropdown-item">
     <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
 </a>

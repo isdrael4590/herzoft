@@ -23,7 +23,7 @@ class SearchProduct extends Component
 
     public function render()
     {
-        return view('livewire.search-product');
+        return view('livewire.search-producttoSUB');
     }
 
     public function updatedQuery()
@@ -49,6 +49,7 @@ class SearchProduct extends Component
 
     public function selectProduct($product)
     {
+        
         $this->dispatch('productSelected', $product);
     }
 }

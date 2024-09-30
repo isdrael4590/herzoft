@@ -2,6 +2,7 @@
 
 namespace Modules\Product\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Product\Notifications\NotifyQuantityAlert;
@@ -34,5 +35,14 @@ class Product extends Model implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(50)
             ->height(50);
+    }
+
+    public function subproduct()
+    {
+        return $this->hasMany(SubProduct::class);
+    }
+    public function getDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d M, Y');
     }
 }

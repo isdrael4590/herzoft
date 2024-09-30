@@ -12,11 +12,20 @@
 
 @section('content')
     <div class="container-fluid mb-4">
-        
+
         <div class="row">
+
             <div class="col-lg-9">
+
                 <div class="card h-100">
+
                     <div class="card-body">
+                        @can('print_testbds')
+                            <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
+                                href="{{ route('testbds.pdf', $testbd->id) }}">
+                                <i class="bi bi-printer"></i> Imprimir
+                            </a>
+                        @endcan
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped mb-0">
                                 <tr>
@@ -33,14 +42,14 @@
                                 </tr>
                                 <tr>
                                     <th>Temperatura del Equipo</th>
-                                    <td>{{ $testbd->temp_machine}}</td>
+                                    <td>{{ $testbd->temp_machine }}</td>
                                 </tr>
-                                
+
                                 <tr>
                                     <th>Lote del insumo </th>
                                     <td>{{ $testbd->lote_bd }}</td>
                                 </tr>
-                                
+
                                 <tr>
                                     <th>RESULTADO DEL PROCESO</th>
                                     <td>{{ $testbd->validation_bd }}</td>
@@ -66,6 +75,3 @@
         </div>
     </div>
 @endsection
-
-
-
