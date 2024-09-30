@@ -52,7 +52,7 @@ class PrinterLabelQrController extends Controller
             $mensaje = $response->body();
         }
         catch(\Illuminate\Http\Client\ConnectionException $e){
-            $mensaje = 'Error al imprimir la etiqueta, por favor revise que la impresora esté conectada';
+            $mensaje = 'Error al imprimir la etiqueta, por favor revise que el programa esté activo y la impresora esté conectada';
         }
         catch(\Exception $e){
             $mensaje = 'Error, por favor requiera asistencia, detalles: ' . $e->getMessage();
