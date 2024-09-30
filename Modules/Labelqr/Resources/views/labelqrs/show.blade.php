@@ -38,6 +38,10 @@
                         @can('print_labelqrs')
                             <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
                                 href="{{ route('labelqrs_label.pdf', $labelqr->id) }}">
+                                <i class="bi bi-tag"></i> Ver Etiquetas
+                            </a>
+                            <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
+                                href="{{ route('labelqrs_label.print', $labelqr->id) }}">
                                 <i class="bi bi-printer"></i> Imprimir Etiquetas
                             </a>
                         @endcan
