@@ -1,4 +1,4 @@
-@can('print_expeditions')
+@can('print_admin')
     @if ($data->status_expedition == 'Despachado')
         <a href="{{ route('expeditions.pdf', $data->id) }}" class="dropdown-item">
             <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
@@ -11,6 +11,12 @@
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar
         </a>
     @endif
+
+@endcan
+@can('edit_admin')
+        <a href="{{ route('expeditions.edit', $data->id) }}" class="dropdown-item">
+            <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Admin
+        </a>
 
 @endcan
 @can('show_expeditions')

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ' Detalles Etiquetas Generadas' )
+@section('title', ' Detalles Etiquetas Generadas')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
@@ -18,15 +18,16 @@
                         <div>
                             Referencia: <strong>{{ $discharge->reference }}</strong>
                         </div>
-                        
-                        <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
-                            href="{{ route('discharges.pdf', $discharge->id) }}">
-                            <i class="bi bi-printer"></i> Imprimir
-                        </a>
-                        <a target="_blank" class="btn btn-sm btn-info mfe-1 d-print-none"
-                            href="{{ route('discharges.pdf', $discharge->id) }}">
-                            <i class="bi bi-save"></i> Guardar
-                        </a>
+                        @can('print_discharges')
+                            <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
+                                href="{{ route('discharges.pdf', $discharge->id) }}">
+                                <i class="bi bi-printer"></i> Imprimir
+                            </a>
+                            <a target="_blank" class="btn btn-sm btn-info mfe-1 d-print-none"
+                                href="{{ route('discharges.pdf', $discharge->id) }}">
+                                <i class="bi bi-save"></i> Guardar
+                            </a>
+                        @endcan
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
@@ -34,8 +35,8 @@
                                 <h5 class="mb-2 border-bottom pb-2">Institución:</h5>
                                 <div><strong>{{ institutes()->institute_code }}</strong></div>
                                 <div> <strong>Hospital:</strong> {{ institutes()->institute_name }}</div>
-                                <div><strong>Dirección:</strong>  {{ institutes()->institute_address }}</div>
-                                <div><strong>Área:</strong>  {{ institutes()->institute_area }}</div>
+                                <div><strong>Dirección:</strong> {{ institutes()->institute_address }}</div>
+                                <div><strong>Área:</strong> {{ institutes()->institute_area }}</div>
                                 <div><strong>Ciudad:</strong> {{ institutes()->institute_city }}</div>
                                 <div> <strong>País:</strong>{{ institutes()->institute_country }}</div>
                             </div>
@@ -54,14 +55,26 @@
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h5 class="mb-2 border-bottom pb-2">Registro INFO:</h5>
                                 <div>Número: <strong>{{ $discharge->reference }}</strong></div>
-                                <div><strong>Fecha Proceso: </strong>{{ \Carbon\Carbon::parse($discharge->created_up)->format('d M, Y') }}</div>
+                                <div><strong>Fecha Proceso:
+                                    </strong>{{ \Carbon\Carbon::parse($discharge->created_up)->format('d M, Y') }}</div>
                                 <div><strong>Estado del Ciclo: </strong> {{ $discharge->status_cycle }}</div>
                                 <div><strong>Lote del Biológico: </strong> {{ $discharge->lote_biologic }}</div>
                                 <div><strong>Validación Biológico: </strong> {{ $discharge->validation_biologic }}</div>
                             </div>
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
-                                {!! QrCode::size(150)->style('square')->generate( "Ref. Proces: "."$discharge->labelqr_id"." // Ref. Des: "."$discharge->reference"." // Equipo: "."$discharge->machine_name"." // Lote: "."$discharge->lote_machine"." // Fecha: "."$discharge->updated_at") !!}
+                                {!! QrCode::size(150)->style('square')->generate(
+                                        'Ref. Proces: ' .
+                                            "$discharge->labelqr_id" .
+                                            ' // Ref. Des: ' .
+                                            "$discharge->reference" .
+                                            ' // Equipo: ' .
+                                            "$discharge->machine_name" .
+                                            ' // Lote: ' .
+                                            "$discharge->lote_machine" .
+                                            ' // Fecha: ' .
+                                            "$discharge->updated_at",
+                                    ) !!}
                             </div>
                         </div>
 
@@ -85,31 +98,42 @@
                                                 {{ $item->product_name }} <br>
                                             </td>
                                             <td class="align-middle"> <span class="badge badge-success">
-                                                {{ $item->product_code }}
-                                            </span></td>
+                                                    {{ $item->product_code }}
+                                                </span></td>
                                             <td class="align-middle">
                                                 {{ $item->product_package_wrap }}
                                             </td>
                                             <td class="align-middle">
-                                                {{ $item->product_eval_package}}
+                                                {{ $item->product_eval_package }}
                                             </td>
                                             <td class="align-middle">
                                                 {{ $item->product_eval_indicator }}
                                             </td>
                                             <td class="align-middle">
                                                 {{ $item->product_expiration }} Meses <br>
-                                                {!!Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)!!}
+                                                {!! Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration) !!}
                                             </td>
                                             <td class="align-middle">
-                                                
+
                                                 <div>
-                                                    {!! QrCode::size(50)->style('square')->generate( "$discharge->reference"." // Lote: "."$discharge->lote_machine"." // Cod: "."$item->product_code "." // Elab: "."$item->updated_at "." // Venc: ".Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)) !!}
+                                                    {!! QrCode::size(50)->style('square')->generate(
+                                                            "$discharge->reference" .
+                                                                ' // Lote: ' .
+                                                                "$discharge->lote_machine" .
+                                                                ' // Cod: ' .
+                                                                "$item->product_code " .
+                                                                ' // Elab: ' .
+                                                                "$item->updated_at " .
+                                                                ' // Venc: ' .
+                                                                Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration),
+                                                        ) !!}
                                                 </div>
                                                 <span>
-                                                    Lote: {{ $discharge->lote_machine }}  <br> Código: {{ $item->product_code }}
-                                                 </span>
-                                       
-                                             
+                                                    Lote: {{ $discharge->lote_machine }} <br> Código:
+                                                    {{ $item->product_code }}
+                                                </span>
+
+
                                             </td>
                                         </tr>
                                     @endforeach

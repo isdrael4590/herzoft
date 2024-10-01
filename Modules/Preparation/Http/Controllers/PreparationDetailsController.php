@@ -19,7 +19,7 @@ class PreparationDetailsController extends Controller
 
     public function index(PreparationDetailsDataTable $dataTable)
     {
-        abort_if(Gate::denies('access_labelqrs'), 403);
+        abort_if(Gate::denies('access_preparations'), 403);
 
         return $dataTable->render('preparation::preparationDetails.index');
 
@@ -34,7 +34,7 @@ class PreparationDetailsController extends Controller
     public function edit($id)
     {
 
-        abort_if(Gate::denies('edit_preparationDetails'), 403);
+        abort_if(Gate::denies('edit_preparations'), 403);
 
         $preparationDetails = PreparationDetails::findOrFail($id);
         return view('preparation::preparationDetails.edit', compact('preparationDetails'));
@@ -43,7 +43,7 @@ class PreparationDetailsController extends Controller
 
     public function update(Request $request, $id)
     {
-        abort_if(Gate::denies('edit_preparationDetails'), 403);
+        abort_if(Gate::denies('edit_preparations'), 403);
         $request->validate([
             'product_name' => 'required',
             'product_code' => 'required',
@@ -70,7 +70,7 @@ class PreparationDetailsController extends Controller
 
     public function destroy($id)
     {
-        abort_if(Gate::denies('delete_preparationDetails'), 403);
+        abort_if(Gate::denies('delete_preparations'), 403);
         $preparationDetails = PreparationDetails::findOrFail($id);
         $preparationDetails->delete();
         toast('Producto preparation Eliminado!', 'warning');

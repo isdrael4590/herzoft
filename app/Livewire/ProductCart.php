@@ -85,6 +85,7 @@ class ProductCart extends Component
             ]
 
         ]);
+  
         $this->type_dirt[$product['id']] = 'CRITICO';
         $this->state_rumed[$product['id']] = 'BUENO';
     }

@@ -22,10 +22,12 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#MachineCreateModal">
-                            Añadir Equipo <i class="bi bi-plus"></i>
-                        </button>
-
+                        @can('create_machines')
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#MachineCreateModal">
+                                Añadir Equipo <i class="bi bi-plus"></i>
+                            </button>
+                        @endcan
                         <hr>
 
                         <div class="table-responsive">

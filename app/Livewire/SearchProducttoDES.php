@@ -15,7 +15,7 @@ class SearchProducttoDES extends Component
 
     public function mount() {
         $this->query = '';
-        $this->how_many = 5;
+        $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
 
@@ -36,7 +36,7 @@ class SearchProducttoDES extends Component
 
     public function resetQuery() {
         $this->query = '';
-        $this->how_many = 5;
+        $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
 

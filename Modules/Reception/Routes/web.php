@@ -22,6 +22,8 @@ Route::group(['middleware' => 'auth'], function () {
     //receptions
 
     Route::get('/receptions/pdf/{id}', [PrinterController::class, 'printerReceptiona4'])->name('receptions.pdf');
+    Route::get('/receptiontickets/pdf/{id}', [PrinterController::class, 'printerReceptionticket'])->name('receptiontickets.pdf');
+
 
     Route::resource('receptions', 'ReceptionController');
     Route::resource('RecepReprocess', 'ReceptionReprocessController');

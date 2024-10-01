@@ -33,7 +33,7 @@ class StockDetailsController extends Controller
     public function edit($id)
     {
 
-        abort_if(Gate::denies('edit_stockDetails'), 403);
+        abort_if(Gate::denies('edit_admin'), 403);
 
         $stockDetails = StockDetails::findOrFail($id);
         return view('stock::stockDetails.edit', compact('stockDetails'));
@@ -42,7 +42,7 @@ class StockDetailsController extends Controller
 
     public function update(Request $request, $id)
     {
-        abort_if(Gate::denies('edit_stockDetails'), 403);
+        abort_if(Gate::denies('edit_admin'), 403);
         $request->validate([
             'product_status_stock' => 'required',
             'product_name' => 'required',

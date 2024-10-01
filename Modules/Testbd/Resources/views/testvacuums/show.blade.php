@@ -12,11 +12,17 @@
 
 @section('content')
     <div class="container-fluid mb-4">
-        
+
         <div class="row">
             <div class="col-lg-9">
                 <div class="card h-100">
                     <div class="card-body">
+                        @can('print_testbds')
+                            <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
+                                href="{{ route('testvacuums.pdf', $testvacuum->id) }}">
+                                <i class="bi bi-printer"></i> Imprimir
+                            </a>
+                        @endcan
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped mb-0">
                                 <tr>
@@ -31,16 +37,8 @@
                                     <th>Lote del Equipo</th>
                                     <td>{{ $testvacuum->lote_machine }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Temperatura del Equipo</th>
-                                    <td>{{ $testvacuum->temp_machine}}</td>
-                                </tr>
-                                
-                                <tr>
-                                    <th>Lote del insumo </th>
-                                    <td>{{ $testvacuum->lote_vacuum }}</td>
-                                </tr>
-                                
+                            
+
                                 <tr>
                                     <th>RESULTADO DEL PROCESO</th>
                                     <td>{{ $testvacuum->validation_vacuum }}</td>
@@ -66,6 +64,3 @@
         </div>
     </div>
 @endsection
-
-
-

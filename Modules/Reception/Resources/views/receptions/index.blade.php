@@ -19,10 +19,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <a href="{{ route('receptions.create') }}" class="btn btn-primary">
-                            Registro Ingreso instrumental <i class="bi bi-plus"></i>
-                        </a>
-
+                        @can('create_receptions')
+                            <a href="{{ route('receptions.create') }}" class="btn btn-primary">
+                                Registro Ingreso instrumental <i class="bi bi-plus"></i>
+                            </a>
+                        @endcan
                         <hr>
 
                         <div class="table-responsive">

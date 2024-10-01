@@ -21,8 +21,8 @@
                 <thead class="thead-dark">
                     <tr>
                         <th class="align-middle">Id</th>
-                        <th class="align-middle">productid</th>
-                        <th class="align-middle">Paquete / Código</th>
+                        <th class="align-middle">Descripción</th>
+                       {{--<th class="align-middle">Paquete / Código</th>--}} 
                         <th class="align-middle text-center">Tipo de Envoltura </th>
                         <th class="align-middle text-center"> Embalaje </th>
                         <th class="align-middle text-center"> Ind. 4 ó 5 </th>
@@ -45,9 +45,9 @@
                                     </span>
 
                                 </td>
-                                <td class="align-middle text-center">
+                               {{--<td class="align-middle text-center">
                                     {{ $cart_item->options->product_id }}
-                                </td>
+                                </td>--}} 
                                 <td class="align-middle text-center">
 
                                     {{ $cart_item->options->product_package_wrap }} @include('livewire.includes.product-cart-modaltoQR')

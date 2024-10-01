@@ -1,12 +1,12 @@
 
 
-@can('edit_labelqrDetails')
+@can('edit_admin')
     <a href="{{ route('labelqrDetails.edit', $data->id) }}" class="dropdown-item">
         <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar
     </a>
 @endcan
 
-@can('delete_labelqrDetails')
+@can('delete_admin')
     <button id="delete" class="dropdown-item"
         onclick="
                 event.preventDefault();

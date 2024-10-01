@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Stock')
+@section('title', 'Stock - Pre')
 
 @section('third_party_stylesheets')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
@@ -19,7 +19,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        @can('access_preparationDetails')
+                        @can('create_preparations')
                             <a href="{{ route('preparations.index') }}" class="btn btn-primary">
                                 Cambios EXCLUSIVOS<i class="bi bi-plus"></i>
                             </a>
