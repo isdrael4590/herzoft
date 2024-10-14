@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="col-lg-4 col-sm-4">
                                     <div class="printer">
-                                        <h1># <span>{{ $testvacuum->testvacuum_reference }}</span></h1>
+                                        <h1><span>{{ $testvacuum->testvacuum_reference }}</span></h1>
                                         <h4> <span>{{ $testvacuum->machine_name }}</span></h4>
                                     </div>
                                 </div>

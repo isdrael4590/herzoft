@@ -110,7 +110,7 @@
         }
 
         .printer-16 .printer-top .logo img {
-            height: 80px;
+            height: 150px;
         }
 
         .printer-16 .printer-top {
@@ -536,35 +536,42 @@
                 <div class="col-lg-12">
                     <div class="printer-inner-9" id="printer_wrapper">
                         <div class="printer-top">
-                        <div class="printer-info">
-                            <div class="row">
-                                <div class="printer-number">
-                                    <h1 class="print-title-1">Registro Físico Test de Bowie & Dick.
-                                    </h1>
-                                    
+                            <div class="printer-info">
+                                <div class="row">
+                                    <div class="printer-number">
+                                        <h1 class="print-title-1">Registro Físico Test de Bowie & Dick.
+                                        </h1>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <div> <table class="default-table">
+                            <div>
+                                <table class="default-table">
                                     <thead>
                                         <tr>
-                                            <th><div class="logo">
-                                        <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
-                                            alt="Institute Image" class="img-fluid mb-2">
-                                    </div>
+                                            <th>
+                                                <div class="logo">
+                                                    <img src="{{ $dataUrl }}" alt="Institute Image" >
+                                                </div>
                                             </th>
-                                            <th><h2># {{ $testbd->testbd_reference }}</h2>
-                                           <h3> <span>     {{ \Carbon\Carbon::parse($testbd->updated_at)->format('d M, Y') }}</span></h3>
+                                            <th>
+                                                <h2> {{ $testbd->testbd_reference }}</h2>
+                                                <h3> <span>
+                                                        {{ \Carbon\Carbon::parse($testbd->updated_at)->format('d M, Y') }}</span>
+                                                </h3>
 
                                             </th>
-                                            <th>  <div>Versión: <strong> 01</strong></div>
-                                            <div>Vigente: <strong> Septiembre 2024</strong></div></h5>
+                                            <th>
+                                                <div>Versión: <strong> 01</strong></div>
+                                                <div>Vigente: <strong> Septiembre 2024</strong></div>
+                                                </h5>
                                             </th>
                                         </tr>
-                                    </thead></div>
-                     
+                                    </thead>
+                            </div>
+
                         </div>
-                  
+
                         <div class="product-summary">
                             <div>
                                 <table class="default-table">
@@ -576,7 +583,7 @@
                                             </th>
                                             <th><strong>Registro INFO:</strong></h5>
                                             </th>
-                                           
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -592,19 +599,25 @@
                                             </td>
                                             <td>
                                                 <div>
-                                                    <div>Lote del equipo: <strong> {{ $testbd->lote_machine }}</strong></div>
+                                                    <div>Lote del equipo: <strong> {{ $testbd->lote_machine }}</strong>
+                                                    </div>
                                                     <div>Equipo: <strong>{{ $testbd->machine_name }}</strong></div>
-                                                    <div>Temperatura del Equipo:<strong> {{ $testbd->temp_machine }}</strong></div>
-                                                    <div>Temperatura Ambiente:<strong> {{ $testbd->temp_ambiente }}</strong></div>
+                                                    <div>Temperatura del Equipo:<strong>
+                                                            {{ $testbd->temp_machine }}</strong></div>
+                                                    <div>Temperatura Ambiente:<strong>
+                                                            {{ $testbd->temp_ambiente }}</strong></div>
                                                     <div>Operario:<strong> {{ $testbd->operator }}</strong></div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>
-                                                     <div> Número: <strong>{{ $testbd->testbd_reference }}</strong></div>
-                                                    <div> Fecha: {{ \Carbon\Carbon::parse($testbd->updated_at)->format('d M, Y') }}
+                                                    <div> Número: <strong>{{ $testbd->testbd_reference }}</strong>
                                                     </div>
-                                                    <div> Hora: {{ \Carbon\Carbon::parse($testbd->updated_at)->isoFormat('H:mm:ss A') }}
+                                                    <div> Fecha:
+                                                        {{ \Carbon\Carbon::parse($testbd->updated_at)->format('d M, Y') }}
+                                                    </div>
+                                                    <div> Hora:
+                                                        {{ \Carbon\Carbon::parse($testbd->updated_at)->isoFormat('H:mm:ss A') }}
                                                     </div>
                                                     <div> Lote del Paquete B&D: <strong>{{ $testbd->lote_bd }}</strong>
                                                     </div>
@@ -620,11 +633,11 @@
                             </div>
                             <br>
                             <div class="product-summary">
-                                    
-                                    <div class="align-middle">
-                                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/assets/img/impresiones/espacio_impresionbd.png')))}}"
-                                            height="580" IMA>
-                                    </div>
+
+                                <div class="align-middle">
+                                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/assets/img/impresiones/espacio_impresionbd.png'))) }}"
+                                        height="580" IMA>
+                                </div>
                                 <br>
                                 <div>
                                     @if (@empty($testbd->note))
@@ -636,31 +649,40 @@
                                 <br>
                             </div>
                             <table class="default-table ">
-                        <tr>
-                            <th style= " font-size: 15px; text-align: justify;">
-                                
-                                Operario: <span> {{ $testbd->operator }}</span>
-                                <br><br><br><br><br><br>
-                            </th>
-                           
-                        </tr>
-                    </table>
+                                <tr>
+                                    <th style= " font-size: 15px; text-align: justify;">
+
+                                        Operario: <span> {{ $testbd->operator }}</span>
+                                        <br><br><br><br><br><br>
+                                    </th>
+
+                                </tr>
+                            </table>
                         </div>
                     </div>
-            
-           
-                  
+
+
+
                     <div class="printer-informeshon-footer">
                         <ul>
                             <li><strong>Nota:</strong> Asegurarse que la hoja indicadora este totalmente pintada.</li>
                         </ul>
                         <ul>
-                            <li><a href="#"> {{ Settings()->company_name }} - {{ Settings()->company_email }} -
-                                    {{ Settings()->company_phone }}</a></li>
+                            <li>
+
+                                <img src="{{ $dataUrlogo }}" alt="Institute Image" class="img-fluid mb-2"
+                                    width="80px">
+                                <br>
+                                {{ Settings()->company_name }} -
+                                {{ Settings()->company_email }} -
+                                {{ Settings()->company_phone }}
+
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 </body>
+
 </html>

@@ -8,7 +8,7 @@
     <title>Ingresar | {{ config('app.name') }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('images/LOGOHERZ.jpg') }}">
+    <link rel="icon" href="{{ settings()->getFirstMediaUrl('settings')}}">
     <!-- CoreUI CSS -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
@@ -19,8 +19,7 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col-12 d-flex justify-content-center">
-            {{--<img width="200" src="{{ asset('images/LOGOHERZ.JPG') }}" alt="Logo">--}}
-                <img width="300" src="{{ URL::to('images/LOGOHERZ.jpg') }}" alt="Logo">
+                <img width="300" src="{{ settings()->getFirstMediaUrl('settings')}}" alt="Logo">
 
         </div>
     </div>

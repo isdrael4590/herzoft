@@ -110,7 +110,7 @@
         }
 
         .printer-16 .printer-top .logo img {
-            height: 80px;
+            height: 150px;
         }
 
         .printer-16 .printer-top {
@@ -164,13 +164,13 @@
             position: relative;
             margin: 0 20px 10px;
             text-align: center;
-            font-size: 14px;
+            font-size: 10px;
             marker: none;
             line-height: 20px;
         }
 
         .printer-16 .printer-informeshon-footer li a {
-            color: #535353;
+            color: #000000;
         }
 
         .printer-16 .text-muted {
@@ -536,36 +536,44 @@
                 <div class="col-lg-12">
                     <div class="printer-inner-9" id="printer_wrapper">
                         <div class="printer-top">
-                        <div class="printer-info">
-                            <div class="row">
-                                <div class="printer-number">
-                                    <h1 class="print-title-1">Registro Físico ingreso de instrumental.
-                                    </h1>
-                                    
+                            <div class="printer-info">
+                                <div class="row">
+                                    <div class="printer-number">
+                                        <h1 class="print-title-1">Registro Físico ingreso de instrumental.
+                                        </h1>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <div> <table class="default-table">
+                            <div>
+                                <table class="default-table">
                                     <thead>
                                         <tr>
-                                            <th><div class="logo">
-                                        <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
-                                            alt="Institute Image" class="img-fluid mb-2">
-                                
-                                    </div>
+                                            <th>
+                                                <div class="logo">
+                                                    <img src="{{ $dataUrl }}" alt="Institute Image"
+                                                        class="img-fluid mb-2">
+
+                                                </div>
                                             </th>
-                                            <th><h2>{{ $reception->reference }}</h2>
-                                           <h3> <span>     {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}</span></h3>
+                                            <th>
+                                                <h2>{{ $reception->reference }}</h2>
+                                                <h3> <span>
+                                                        {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}</span>
+                                                </h3>
 
                                             </th>
-                                            <th>  <div>Versión: <strong> 01</strong></div>
-                                            <div>Vigente: <strong> Septiembre 2024</strong></div></h5>
+                                            <th>
+                                                <div>Versión: <strong> 01</strong></div>
+                                                <div>Vigente: <strong> Septiembre 2024</strong></div>
+                                                </h5>
                                             </th>
                                         </tr>
-                                    </thead></div>
-                     
+                                    </thead>
+                            </div>
+
                         </div>
-                  
+
                         <div class="product-summary">
                             <div>
                                 <table class="default-table">
@@ -577,7 +585,7 @@
                                             </th>
                                             <th><strong>Registro INFO:</strong></h5>
                                             </th>
-                                           
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -593,23 +601,26 @@
                                             </td>
                                             <td>
                                                 <div>
-                                                <div>Persona que entrega: <strong> {{ $reception->delivery_staff }}</strong></div>
-                                    <div>Área Procedente: <strong>{{ $reception->area }}</strong></div>
-                                    <div>Persona que recibe:<strong> {{ $reception->operator }}</strong></div>
+                                                    <div>Persona que entrega: <strong>
+                                                            {{ $reception->delivery_staff }}</strong></div>
+                                                    <div>Área Procedente: <strong>{{ $reception->area }}</strong></div>
+                                                    <div>Persona que recibe:<strong>
+                                                            {{ $reception->operator }}</strong></div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>
-                                                <div>Número: <strong>{{ $reception->reference }}</strong></div>
-                                    <div>Fecha: {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}
-                                    </div>
-                                    <div>
-                                        Status: <strong>{{ $reception->status }}</strong>
-                                    </div>
-                                                   
+                                                    <div>Número: <strong>{{ $reception->reference }}</strong></div>
+                                                    <div>Fecha:
+                                                        {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}
+                                                    </div>
+                                                    <div>
+                                                        Status: <strong>{{ $reception->status }}</strong>
+                                                    </div>
+
                                                 </div>
                                             </td>
-                                          
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -620,28 +631,28 @@
                                     <table class="default-table printer-table">
                                         <thead>
                                             <tr>
-                                            <th>Código </th>
-                                            <th>Descripción Rumed</th>
-                                            <th>Nivel infección</th>
-                                            <th>Estado</th>
+                                                <th>Código </th>
+                                                <th>Descripción Rumed</th>
+                                                <th>Nivel infección</th>
+                                                <th>Estado</th>
                                         </thead>
                                         <tbody>
-                                        @foreach ($reception->receptionDetails as $item)
-                                            <tr>
-                                                                                                                                                    <td style= "text-align:center">
-                                                    {{ $item->product_code }}
-                                                </td >
-                                                                                                                                                    <td style= "text-align:center">
-                                                    {{ $item->product_name }}
-                                                </td>
-                                                                                                                                                    <td style= "text-align:center">
-                                                    {{ $item->product_type_dirt }}
-                                                </td>
-                                                                                                                                                    <td style= "text-align:center">
-                                                    {{ $item->product_state_rumed }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                            @foreach ($reception->receptionDetails as $item)
+                                                <tr>
+                                                    <td style= "text-align:center">
+                                                        {{ $item->product_code }}
+                                                    </td>
+                                                    <td style= "text-align:center">
+                                                        {{ $item->product_name }}
+                                                    </td>
+                                                    <td style= "text-align:center">
+                                                        {{ $item->product_type_dirt }}
+                                                    </td>
+                                                    <td style= "text-align:center">
+                                                        {{ $item->product_state_rumed }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -659,31 +670,44 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <table class="default-table ">
                         <tr>
                             <th style= " font-size: 15px; text-align: justify;">
-                            RECIBE: <span> {{ $reception->operator }}</span>
+                                RECIBE: <span> {{ $reception->operator }}</span>
                                 <br><br><br><br><br><br>
                             </th>
                             <th style= " font-size: 15px; text-align: justify;">
-                            ENTREGA: <span> {{ $reception->delivery_staff }}</span><br><br><br>
-                            </th><br><br><br><br><br><br>
+                                ENTREGA: <span> {{ $reception->delivery_staff }}</span>
+                                <br><br><br><br><br><br>
+
+                            </th>
                             </th>
                         </tr>
                     </table>
-                  
+
                     <div class="printer-informeshon-footer">
                         <ul>
-                            <li><strong>Nota:</strong> Asegurarse los productos sean los correctos previo al registro.</li>
+                            <li><strong>Nota:</strong> Asegurarse los productos sean los correctos previo al registro.
+                            </li>
                         </ul>
                         <ul>
-                            <li><a href="#"> {{ Settings()->company_name }} - {{ Settings()->company_email }} -
-                                    {{ Settings()->company_phone }}</a></li>
+
+                            <li>
+
+                                <img src="{{ $dataUrlogo }}" alt="Institute Image" class="img-fluid mb-2"
+                                    width="80px">
+                                <br>
+                                {{ Settings()->company_name }} -
+                                {{ Settings()->company_email }} -
+                                {{ Settings()->company_phone }}
+
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
 </body>
+
 </html>

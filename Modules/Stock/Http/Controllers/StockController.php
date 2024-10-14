@@ -83,7 +83,7 @@ class StockController extends Controller
 
         toast('Despacho Generado!', 'success');
 
-        return redirect()->route('stocks.index');
+        return redirect()->route('stockDetails.index');
     }
 
 

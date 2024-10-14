@@ -40,7 +40,7 @@
                                     <span class="badge badge-info">
                                         {{ $cart_item->options->code }}
                                     </span>
-                                    @include('livewire.includes.product-cart-modal')
+                                   
                                 </td>
 
                                 <td class="align-middle text-center text-center">
@@ -61,7 +61,7 @@
                                             {{ $cart_item->options->product_type_dirt }}
                                         </span>
                                     @endif
-                             
+                                    @include('livewire.includes.product-cart-modal')
                                 </td>
 
                                 <td class="align-middle text-center">
