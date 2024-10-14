@@ -110,7 +110,7 @@
         }
 
         .printer-16 .printer-top .logo img {
-            height: 80px;
+            height: 150px;
         }
 
         .printer-16 .printer-top {
@@ -549,11 +549,11 @@
                                     <thead>
                                         <tr>
                                             <th><div class="logo">
-                                        <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
+                                        <img src="{{ $dataUrl }}"
                                             alt="Institute Image" class="img-fluid mb-2">
                                     </div></h4>
                                             </th>
-                                            <th>                                    <h1># <span>{{ $expedition->reference }}</span></h1>
+                                            <th>                                    <h1> <span>{{ $expedition->reference }}</span></h1>
                                             </h4>
                                             </th>
                                             <th>  <div>Versión: <strong> 01</strong></div>
@@ -678,8 +678,16 @@
                             <li><strong>Nota:</strong> Asegurarse que el producto entregado sea el correcto.</li>
                         </ul>
                         <ul>
-                            <li><a href="#"> {{ Settings()->company_name }} - {{ Settings()->company_email }} -
-                                    {{ Settings()->company_phone }}</a></li>
+                            <li>
+
+                                <img src="{{ $dataUrlogo }}" alt="Institute Image" class="img-fluid mb-2"
+                                    width="80px">
+                                <br>
+                                {{ Settings()->company_name }} -
+                                {{ Settings()->company_email }} -
+                                {{ Settings()->company_phone }}
+
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -11,6 +11,7 @@ use Modules\Informat\Entities\Machine;
 use Modules\Labelqr\Entities\Labelqr;
 use Modules\Labelqr\Entities\LabelqrDetails;
 use Modules\Reception\Entities\Reception;
+use Modules\Setting\Entities\Setting;
 use Modules\Testbd\Entities\Testbd;
 use Modules\Testbd\Entities\Testvacuum;
 

@@ -889,6 +889,16 @@
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
+                                                            id="print_labelqrs_direct" name="permissions[]"
+                                                            value="print_labelqrs_direct"
+                                                            {{ old('print_labelqrs_direct') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="print_labelqrs_direct">Imprimir Directo</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
                                                             id="create_labelqr_discharges" name="permissions[]"
                                                             value="create_labelqr_discharges"
                                                             {{ old('create_labelqr_discharges') ? 'checked' : '' }}>

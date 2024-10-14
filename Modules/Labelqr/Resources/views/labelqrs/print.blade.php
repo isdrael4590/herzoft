@@ -70,7 +70,7 @@ margin-bottom:0;
                     </tr>
                     <tr style="text-align: center;">
                         
-                        <td><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(110)->generate($item->product_code.$dataqr)) }}">
+                        <td><img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(110)->generate($dataqr.$item->product_code)) }}">
                             <p style="font-size: 10px;">
                                 <small>HERZOFT GROUP</small><br>
                             </p>

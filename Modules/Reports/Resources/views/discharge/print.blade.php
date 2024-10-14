@@ -50,7 +50,7 @@
                                 <div class="col-lg-4 col-sm-4">
                                     <div class="printer">
                                         <div>Versión: <strong> 01</strong></div>
-                                        <div>Vigente: <strong> Junio 2024</strong></div>
+                                        <div>Vigente: <strong> Septiembre 2024</strong></div>
                                     </div>
                                 </div>
 
@@ -164,9 +164,16 @@
                                 <li><strong>Nota:</strong> Asegurarse que el producto entregado sea el correcto.</li>
                             </ul>
                             <ul>
-                                <li><a href="#"> {{ Settings()->company_name }}</a></li>
-                                <li><a href="#">{{ Settings()->company_email }}</a></li>
-                                <li><a href="#">{{ Settings()->company_phone }}</a></li>
+                                <li>
+
+                                    <img src="{{ $dataUrlogo }}" alt="Institute Image" class="img-fluid mb-2"
+                                        width="80px">
+                                    <br>
+                                    {{ Settings()->company_name }} -
+                                    {{ Settings()->company_email }} -
+                                    {{ Settings()->company_phone }}
+    
+                                </li>
                             </ul>
                         </div>
                     </div>

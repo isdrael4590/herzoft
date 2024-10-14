@@ -156,6 +156,7 @@ class PermissionsTableSeeder extends Seeder
             'edit_labelqrs',
             'delete_labelqrs',
             'print_labelqrs',
+            'print_labelqrs_direct',
             'edit_labelqrDetails',
             'delete_labelqrDetails',
             'create_labelqr_discharges',

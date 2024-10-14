@@ -110,7 +110,7 @@
         }
 
         .printer-16 .printer-top .logo img {
-            height: 80px;
+            height: 150px;
         }
 
         .printer-16 .printer-top {
@@ -549,11 +549,11 @@
                                     <thead>
                                         <tr>
                                             <th><div class="logo">
-                                        <img src="{{ $institute->getFirstMediaUrl('institutes') }}"
+                                        <img src="{{$dataUrl }}"
                                             alt="Institute Image" class="img-fluid mb-2">
                                     </div>
                                             </th>
-                                            <th><h2># {{ $testvacuum->testvacuum_reference }}</h2>
+                                            <th><h2> {{ $testvacuum->testvacuum_reference }}</h2>
                                            <h3> <span>     {{ \Carbon\Carbon::parse($testvacuum->updated_at)->format('d M, Y') }}</span></h3>
 
                                             </th>
@@ -648,8 +648,16 @@
                             <li><strong>Nota:</strong> Asegurarse del funcionamieto totalmente del equipo.</li>
                         </ul>
                         <ul>
-                            <li><a href="#"> {{ Settings()->company_name }} - {{ Settings()->company_email }} -
-                                    {{ Settings()->company_phone }}</a></li>
+                            <li>
+
+                                <img src="{{ $dataUrlogo }}" alt="Institute Image" class="img-fluid mb-2"
+                                    width="80px">
+                                <br>
+                                {{ Settings()->company_name }} -
+                                {{ Settings()->company_email }} -
+                                {{ Settings()->company_phone }}
+
+                            </li>
                         </ul>
                     </div>
                 </div>

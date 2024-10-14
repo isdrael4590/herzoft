@@ -13,10 +13,10 @@
 @section('content')
     <div class="container-fluid">
         @if (session()->has('exito'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('exito') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('exito') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @elseif(session()->has('advertencia'))
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 {{ session('advertencia') }}
@@ -40,10 +40,12 @@
                                 href="{{ route('labelqrs_label.pdf', $labelqr->id) }}">
                                 <i class="bi bi-tag"></i> Ver Etiquetas
                             </a>
-                            <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
-                                href="{{ route('labelqrs_label.print', $labelqr->id) }}">
-                                <i class="bi bi-printer"></i> Imprimir Etiquetas
-                            </a>
+                            @can('print_labelqrs_direct')
+                                <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
+                                    href="{{ route('labelqrs_label.print', $labelqr->id) }}">
+                                    <i class="bi bi-printer"></i> Imprimir Etiquetas
+                                </a>
+                            @endcan
                         @endcan
                     </div>
                     <div class="card-body">
