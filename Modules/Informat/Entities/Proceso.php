@@ -8,7 +8,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
  
-class Institute extends Model implements HasMedia
+class Proceso extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
@@ -16,22 +16,18 @@ class Institute extends Model implements HasMedia
     protected $with = ['media'];
 
 
-    public function institute() {
-        return $this->hasMany(Institute::class, 'institute_id', 'id');
+    public function procesos() {
+        return $this->hasMany(Proceso::class, 'procesos_id', 'id');
     }
 
     public function registerMediaCollections(): void {
-        $this->addMediaCollection('institutes')
-            ->useFallbackUrl('/institutes/fallback_insitute_image.png');
+        $this->addMediaCollection('images')
+            ->useFallbackUrl('/images/fallback_proceso_image.png');
     }
 
     public function registerMediaConversions(Media $media = null): void {
         $this->addMediaConversion('thumb')
             ->width(50)
             ->height(50);
-    }
-    public function getDateAttribute($value)
-    {
-        return Carbon::parse($value)->format('d M, Y');
     }
 }

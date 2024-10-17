@@ -44,6 +44,7 @@ class LabelqrController extends Controller
                 'machine_name' => $request->machine_name,
                 'machine_type' => $request->machine_type,
                 'lote_machine' => $request->lote_machine,
+                'lote_agente' => $request->lote_agente,
                 'temp_machine' => $request->temp_machine,
                 'type_program' => $request->type_program,
                 'lote_biologic' => $request->lote_biologic,
@@ -139,7 +140,7 @@ class LabelqrController extends Controller
             $labelqr->update([
                 'machine_name' => $request->machine_name,
                 'machine_type' => $request->machine_type,
-                'lote_machine' => $request->lote_machine,
+                'lote_machine' => $request->lote_machine,                'lote_agente' => $request->lote_agente,
                 'temp_machine' => $request->temp_machine,
                 'type_program' => $request->type_program,
                 'lote_biologic' => $request->lote_biologic,

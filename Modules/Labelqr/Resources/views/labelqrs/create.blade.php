@@ -18,7 +18,7 @@
     <div class="container-fluid mb-4">
         <div>
             @can('create_labelqrshpo')
-                <a href="{{ route('labelqrshpo.create') }}" class="btn btn-primary">
+                <a href="{{ route('labelqrshpo.create') }}" class="btn btn-info">
                     Generación de Etiquetas HPO <i class="bi bi-plus"></i>
                 </a>
             @endcan
@@ -77,27 +77,25 @@
                                     <div class="form-group">
                                         <label for="temp_machine">Temperatura del Equipo <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" id="temp_machine" name="temp_machine">
-                                            <option selected value="134"> 134ºC </option>
-                                            <option value="121"> 121ºC </option>
-
-
-                                        </select>
+                                                <select class="form-control" id="temp_machine" name="temp_machine">
+                                                    <option selected value="134"> 134ºC </option>
+                                                    <option value="121"> 121ºC </option>
+                                                </select>
                                     </div>
                                 </div>
-
 
 
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="type_program">TIPO DE PROGRAMA</label>
-                                        <select class="form-control" id="type_program" name="type_program">
-                                            <option selected value="134C ESTANDAR"> 134C ESTANDAR </option>
-                                            <option value="121C ESTANDAR"> 121C ESTANDAR </option>
-                                            <option value="CONTENEDORES"> CONTENEDORES</option>
-                                            <option value=" RAPID"> RAPID </option>
-                                            <option value=" ESPORAS"> ESPORAS </option>
 
+                                        <select class="form-control" id="type_program" name="type_program" required>
+                                            @foreach (\Modules\Informat\Entities\Proceso::all() as $proceso)
+                                                @if ($proceso->proceso_type == 'ALTA TEMPERATURA')
+                                                    <option value="{{ $proceso->proceso_name }}">
+                                                        {{ $proceso->proceso_name }}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>

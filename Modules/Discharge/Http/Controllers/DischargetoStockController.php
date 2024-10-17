@@ -23,7 +23,7 @@ class DischargetoStockController extends Controller
 
     public function __invoke(Discharge $discharge)
     {
-        abort_if(Gate::denies('create_discharge_discharges'), 403);
+        abort_if(Gate::denies('create_discharges_stock'), 403);
 
         $discharge_details = $discharge->dischargeDetails;
 

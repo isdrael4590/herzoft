@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     //informat Category
     Route::resource('institute', 'InstituteController');
     Route::resource('area', 'AreaController');
+    Route::resource('proceso', 'ProcesoController');
     Route::resource('lote', 'LoteController');
     Route::resource('machine', 'MachineController')->except('create', 'show');
     Route::resource('units', 'UnitsController')->except('show');

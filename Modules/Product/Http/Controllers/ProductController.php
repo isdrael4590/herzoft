@@ -127,7 +127,6 @@ class ProductController extends Controller
             foreach ($product->subproduct as $sub_product) {
                 $sub_product->delete();
             }
-            dd($product);
             $product->update([
                 'product_name' => $request->product_name,
                 'product_code' => $request->product_code,

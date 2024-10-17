@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('machine_name');
             $table->string('machine_type');
             $table->string('lote_machine');
+            $table->string('lote_agente')->nullable();
             $table->string('temp_machine');
             $table->string('type_program');
             $table->string('lote_biologic');

@@ -39,16 +39,16 @@
                                     <div class="form-group">
                                         <label for="machine_type">Tipo de esterilización <span
                                                 class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="machine_type" required
-                                                value="{{ $discharge->machine_type }}" readonly>
+                                        <input type="text" class="form-control" name="machine_type" required
+                                            value="{{ $discharge->machine_type }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="machine_name">Nombre del Equipo <span
                                                 class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="machine_name" required
-                                                value="{{ $discharge->machine_name }}" readonly>
+                                        <input type="text" class="form-control" name="machine_name" required
+                                            value="{{ $discharge->machine_name }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -56,6 +56,18 @@
                                         <label for="lote_machine">Lote del Equipo <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="lote_machine" required
                                             value="{{ $discharge->lote_machine }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="lote_agente">Lote del Agente <span class="text-danger">*</span></label>
+                                        @if ($discharge->machine_type == 'Peroxido')
+                                            <input type="text" class="form-control" name="lote_agente" required
+                                                value="{{ $discharge->lote_agente }}" readonly>
+                                        @else
+                                            <input type="text" class="form-control" name="lote_agente" required
+                                                value="NA" readonly>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -70,7 +82,7 @@
                                     <div class="form-group">
                                         <label for="type_program">TIPO DE PROGRAMA</label>
                                         <input type="text" class="form-control" name="type_program" required
-                                        value="{{ $discharge->type_program }}" readonly>
+                                            value="{{ $discharge->type_program }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -90,7 +102,7 @@
                                                 {{ $discharge->validation_biologic == 'sin_validar' ? 'selected' : '' }}
                                                 value="sin_validar">
                                                 Sin Validar</option>
-                                          
+
                                         </select>
                                     </div>
                                 </div>
@@ -122,7 +134,7 @@
                                 </div>
                             </div>
 
-                           <livewire:product-carttoQR :cartInstance="'discharge'" :data="$discharge"/>
+                            <livewire:product-carttoQR :cartInstance="'discharge'" :data="$discharge" />
 
 
 

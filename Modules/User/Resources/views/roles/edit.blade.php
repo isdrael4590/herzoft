@@ -1517,6 +1517,66 @@
                                         </div>
                                     </div>
                                 </div>
+                                 <!--PROCESOS-->
+                                 <div class="col-lg-4 col-md-6 mb-3">
+                                    <div class="card h-100 border-0 shadow">
+                                        <div class="card-header">
+                                            TIPO DE PROCESOS
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="access_informat_proceso" name="permissions[]"
+                                                            value="access_informat_proceso"
+                                                            {{ $role->hasPermissionTo('access_informat_proceso') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="access_informat_proceso">Acceso</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="show_proceso" name="permissions[]" value="show_proceso"
+                                                            {{ $role->hasPermissionTo('show_proceso') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="show_proceso">Vista</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="create_proceso" name="permissions[]"
+                                                            value="create_proceso"
+                                                            {{ $role->hasPermissionTo('create_proceso') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="create_proceso">Crear</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="edit_proceso" name="permissions[]" value="edit_proceso"
+                                                            {{ $role->hasPermissionTo('edit_proceso') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="edit_proceso">Editar</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="delete_proceso" name="permissions[]"
+                                                            value="delete_proceso"
+                                                            {{ $role->hasPermissionTo('delete_proceso') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="delete_proceso">Borrar</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!--LOTES-->
                                 <div class="col-lg-4 col-md-6 mb-3">
                                     <div class="card h-100 border-0 shadow">
