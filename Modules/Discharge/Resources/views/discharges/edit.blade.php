@@ -31,7 +31,7 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="reference">Ref.Proceso <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="labelqr_id" required 
+                                        <input type="text" class="form-control" name="labelqr_id" required
                                             value="{{ $discharge->labelqr_id }}" readonly>
                                     </div>
                                 </div>
@@ -39,16 +39,24 @@
                                     <div class="form-group">
                                         <label for="machine_type">Tipo de Esterilización <span
                                                 class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="machine_type" required readonly
-                                                value="{{ $discharge->machine_type }}" >
+                                        <input type="text" class="form-control" name="machine_type" required readonly
+                                            value="{{ $discharge->machine_type }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="machine_name">Nombre del Equipo <span
                                                 class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="machine_name" required readonly
-                                                value="{{ $discharge->machine_name }}" >
+                                        <input type="text" class="form-control" name="machine_name" required readonly
+                                            value="{{ $discharge->machine_name }}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="lote_agente">Lote Agente Esterilizante <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="lote_agente" required readonly
+                                            value="{{ $discharge->lote_agente }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -70,7 +78,7 @@
                                     <div class="form-group">
                                         <label for="type_program">TIPO DE PROGRAMA</label>
                                         <input type="text" class="form-control" name="type_program" required
-                                        value="{{ $discharge->type_program }}" readonly>
+                                            value="{{ $discharge->type_program }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -93,11 +101,12 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="validation_biologic">Validación Ciclo Biológico</label>
-                                        <select class="form-control" name="validation_biologic" id="validation_biologic" >
-                                            <option {{ $discharge->validation_biologic == 'sin_validar' ? 'selected' : '' }}
-                                                value="Sin Validar" >
+                                        <select class="form-control" name="validation_biologic" id="validation_biologic">
+                                            <option
+                                                {{ $discharge->validation_biologic == 'sin_validar' ? 'selected' : '' }}
+                                                value="Sin Validar">
                                                 Sin Validar</option>
-                                           <option {{ $discharge->validation_biologic == 'Correcto' ? 'selected' : '' }}
+                                            <option {{ $discharge->validation_biologic == 'Correcto' ? 'selected' : '' }}
                                                 value="Correcto">
                                                 Correcto</option>
                                             <option {{ $discharge->validation_biologic == 'Falla' ? 'selected' : '' }}
@@ -110,14 +119,17 @@
                                     <div class="form-group">
                                         <label for="status_cycle">Estado del Proceso <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" name="status_cycle" id="status_cycle" required >
-                                            
-                                            <option {{ $discharge->status_cycle == 'Pendiente' ? 'selected' : '' }} value="Pendiente">Pendiente</option>
+                                        <select class="form-control" name="status_cycle" id="status_cycle" required>
+
+                                            <option {{ $discharge->status_cycle == 'Pendiente' ? 'selected' : '' }}
+                                                value="Pendiente">Pendiente</option>
                                             <option {{ $discharge->status_cycle == 'En Curso' ? 'selected' : '' }}
                                                 value="En Curso">En curso</option>
-                                            
-                                            <option {{ $discharge->status_cycle == 'Ciclo Aprobado' ? 'selected' : '' }} value="Ciclo Aprobado">Ciclo Aprobado</option>
-                                            <option {{ $discharge->status_cycle == 'Ciclo Falla' ? 'selected' : '' }} value="Ciclo Falla">Ciclo Falla</option> 
+
+                                            <option {{ $discharge->status_cycle == 'Ciclo Aprobado' ? 'selected' : '' }}
+                                                value="Ciclo Aprobado">Ciclo Aprobado</option>
+                                            <option {{ $discharge->status_cycle == 'Ciclo Falla' ? 'selected' : '' }}
+                                                value="Ciclo Falla">Ciclo Falla</option>
                                         </select>
                                     </div>
                                 </div>
@@ -129,7 +141,7 @@
                                             placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
                                     </div>
                                 </div>
-                              
+
 
                             </div>
 

@@ -17,7 +17,7 @@
 @section('content')
     <div class="container-fluid mb-4">
         <div>
-            <a href="{{ route('labelqrs.create') }}" class="btn btn-primary">
+            <a href="{{ route('labelqrs.create') }}" class="btn btn-warning">
                 Generación de Etiquetas STEAM<i class="bi bi-plus"></i>
             </a>
         </div>
@@ -78,17 +78,39 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" id="temp_machine" name="temp_machine">
                                             <option selected value="52"> 52ºC </option>
+                                        </select>
+                                    </div>
+                                </div>
 
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="lote_agente">Lote Agente Esterilizante <span
+                                                class="text-danger">*</span></label>
+
+                                        <select class="form-control" id="lote_agente" name="lote_agente" required readonly>
+                                            @foreach (\Modules\Informat\Entities\Informat::all() as $informat)
+                                                @if (
+                                                    ($informat->insumo_type == 'AGENTE ESTERILIZANTE') &
+                                                        ($informat->insumo_status == 'Activo') &
+                                                        ($informat->insumo_temp == 'BAJA TEMPERATURA'))
+                                                    <option value="{{ $informat->insumo_lot }}">
+                                                        {{ $informat->insumo_lot }}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="type_program">TIPO DE PROGRAMA</label>
-                                        <select class="form-control" id="type_program" name="type_program">
-                                            <option selected value="RAPID"> RAPID </option>
-                                            <option value="ESTANDAR"> ESTANDAR </option>
-                                            <option value="AVANZADO"> AVANZADO</option>
+
+                                        <select class="form-control" id="type_program" name="type_program" required>
+                                            @foreach (\Modules\Informat\Entities\Proceso::all() as $proceso)
+                                                @if ($proceso->proceso_type == 'BAJA TEMPERATURA')
+                                                    <option value="{{ $proceso->proceso_name }}">
+                                                        {{ $proceso->proceso_name }}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>

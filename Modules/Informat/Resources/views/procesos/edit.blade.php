@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Editar Area')
+@section('title', 'Editar Proceso')
 
 @section('third_party_stylesheets')
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
@@ -10,7 +10,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('area.index') }}">Área</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('proceso.index') }}">Proceso</a></li>
         <li class="breadcrumb-item active">Editar</li>
     </ol>
 @endsection
@@ -22,14 +22,14 @@
                 @include('utils.alerts')
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('area.update', $area->id) }}" method="POST">
+                        <form action="{{ route('proceso.update', $proceso->id) }}" method="POST">
                             @csrf
                             @method('patch')
                             <div class="row">
                                 <div class="col-lg-12">
                                     @include('utils.alerts')
                                     <div class="form-group">
-                                        <button class="btn btn-primary">Actualizar Área <i class="bi bi-check"></i></button>
+                                        <button class="btn btn-primary">Actualizar Proceso <i class="bi bi-check"></i></button>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -38,40 +38,53 @@
                                             <div class="form-row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label class="font-weight-bold" for="area_code">Área
+                                                        <label class="font-weight-bold" for="proceso_code">Proceso
                                                             Código <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text" name="area_code" required
-                                                            value="{{ $area->area_code }}
+                                                        <input class="form-control" type="text" name="proceso_code" required
+                                                            value="{{ $proceso->proceso_code }}
                                                     ">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label class="font-weight-bold" for="area_name">Nombre del área.
+                                                        <label class="font-weight-bold" for="proceso_name">Nombre del Proceso.
                                                             <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text" name="area_name" required
-                                                            value="{{ $area->area_name }}">
+                                                        <input class="form-control" type="text" name="proceso_name" required
+                                                            value="{{ $proceso->proceso_name }}">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label class="font-weight-bold" for="area_responsable">Jefe de Area
-                                                            <span class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text" name="area_responsable"
-                                                            value="{{ $area->area_responsable }}" required>
+                                                    <label for="proceso_type">Tipo de proceso<span class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                      
+                                                        <select class="form-control" name="proceso_type" id="proceso_type" required>
+                                                            <option value=""  disabled>Selección la temperatura de uso
+                                                            </option>
+                                                            <option {{ $proceso->proceso_type == 'ALTA TEMPERATURA' ? 'selected' : '' }} value="ALTA TEMPERATURA">ALTA TEMPERATURA</option>
+                                                            <option {{ $proceso->proceso_type == 'BAJA TEMPERATURA' ? 'selected' : '' }} value="BAJA TEMPERATURA">BAJA TEMPERATURA</option>
+                                                        </select>
+
                                                     </div>
                                                 </div>
+                
                                                 <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label class="font-weight-bold" for="area_piso">Piso del área<span
-                                                                class="text-danger">*</span></label>
-                                                        <input class="form-control" type="text" name="area_piso"
-                                                            value="{{ $area->area_piso }}" required>
+                                                    <label for="proceso_temp">Temperatura de proceso<span class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <select class="form-control" name="proceso_temp" id="proceso_temp" required>
+                                                            <option value="" selected disabled>Selección la temperatura de Proceso
+                                                            </option>
+                                                            <option {{ $proceso->proceso_temp == '134' ? 'selected' : '' }} value="134">134°C</option>
+                                                            <option {{ $proceso->proceso_temp == '121' ? 'selected' : '' }} value="121">121°C</option>
+                                                            <option {{ $proceso->proceso_temp == '52' ? 'selected' : '' }} value="52">52°C</option>
+                                                    
+                                                        </select>
                                                     </div>
                                                 </div>
+                
                                             </div>
+                                            
                                       
 
                                         </div>

@@ -46,6 +46,7 @@
                                 <div><strong>Ref. Proceso:</strong> {{ $labelqr->reference }}</div>
                                 <div><strong>Equipo:</strong> {{ $discharge->machine_name }}</div>
                                 <div><strong>Lote del Equipo:</strong> {{ $discharge->lote_machine }}</div>
+                                <div><strong>Lote Agente Esterilizante:</strong> {{ $discharge->lote_agente }}</div>
                                 <div><strong>Temperatura del equipo:</strong> {{ $discharge->temp_machine }}</div>
                                 <div><strong>Tipo de Programa:</strong> {{ $discharge->type_program }}</div>
                                 <div><strong>Temperatura del Ambiente: </strong> {{ $discharge->temp_ambiente }}</div>

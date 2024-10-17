@@ -102,6 +102,13 @@ class PermissionsTableSeeder extends Seeder
             'edit_lotes',
             'delete_lotes',
 
+            // process
+            'access_informat_proceso',
+            'create_proceso',
+            'show_proceso',
+            'edit_proceso',
+            'delete_proceso',
+
             //Reception
             'access_dirty_area',
             'access_reception_area',

@@ -59,7 +59,7 @@ class AreaController extends Controller
     public function update(Request $request, $id) {
 
         $request->validate([
-            'area_code' => 'required|unique:areas,area_code,' . $id,
+            'area_code' => 'required',
             'area_name' => 'required',
             'area_responsable' => 'nullable',
             'area_piso' => 'nullable',
