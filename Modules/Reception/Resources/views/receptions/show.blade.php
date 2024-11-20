@@ -65,10 +65,14 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="align-middle">Códigop del Instrumental</th>
-                                        <th class="align-middle">Descripción</th>
+                                        <th class="align-middle">Código Instrumental</th>
+                                        <th class="align-middle">Descrip.</th>
+                                        <th class="align-middle">Cantidad</th>
                                         <th class="align-middle">Nivel de infección</th>
                                         <th class="align-middle">Estado</th>
+                                        <th class="align-middle">Paciente</th>
+                                        <th class="align-middle">Casa Comercial</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -84,12 +88,23 @@
                                                 </span></td>
 
                                             <td class="align-middle">
+                                                {{ $item->product_quantity }}
+                                            </td>
+                                            <td class="align-middle">
                                                 {{ $item->product_type_dirt }}
                                             </td>
 
                                             <td class="align-middle">
                                                 {{ $item->product_state_rumed }}
                                             </td>
+                                            @if (@empty($item->product_patient))
+                                            @else
+                                                <td class="align-middle"> {{ $item->product_patient }}</td>
+                                            @endif
+                                            @if (@empty($item->product_outside_company))
+                                            @else
+                                                <td class="align-middle"> {{ $item->product_outside_company }}</td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

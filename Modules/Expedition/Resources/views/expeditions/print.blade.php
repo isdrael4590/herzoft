@@ -536,34 +536,42 @@
                 <div class="col-lg-12">
                     <div class="printer-inner-9" id="printer_wrapper">
                         <div class="printer-top">
-                        <div class="printer-info">
-                            <div class="row">
-                                <div class="printer-number">
-                                    <h1 class="print-title-1">Registro Físico del proceso de Despacho de Instrumental.
-                                    </h1>
-                                    
+                            <div class="printer-info">
+                                <div class="row">
+                                    <div class="printer-number">
+                                        <h1 class="print-title-1">Registro Físico del proceso de Despacho de
+                                            Instrumental.
+                                        </h1>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <div> <table class="default-table">
+                            <div>
+                                <table class="default-table">
                                     <thead>
                                         <tr>
-                                            <th><div class="logo">
-                                        <img src="{{ $dataUrl }}"
-                                            alt="Institute Image" class="img-fluid mb-2">
-                                    </div></h4>
+                                            <th>
+                                                <div class="logo">
+                                                    <img src="{{ $dataUrl }}" alt="Institute Image"
+                                                        class="img-fluid mb-2">
+                                                </div>
+                                                </h4>
                                             </th>
-                                            <th>                                    <h1> <span>{{ $expedition->reference }}</span></h1>
-                                            </h4>
+                                            <th>
+                                                <h1> <span>{{ $expedition->reference }}</span></h1>
+                                                </h4>
                                             </th>
-                                            <th>  <div>Versión: <strong> 01</strong></div>
-                                            <div>Vigente: <strong> Septiembre 2024</strong></div></h5>
+                                            <th>
+                                                <div>Versión: <strong> 01</strong></div>
+                                                <div>Vigente: <strong> Septiembre 2024</strong></div>
+                                                </h5>
                                             </th>
                                         </tr>
-                                    </thead></div>
-                     
+                                    </thead>
+                            </div>
+
                         </div>
-                  
+
                         <div class="product-summary">
                             <div>
                                 <table class="default-table">
@@ -622,26 +630,39 @@
                                             <tr>
                                                 <th>Código </th>
                                                 <th>Descripción</th>
+                                                <th>Cantidad</th>
                                                 <th>Envoltura</th>
                                                 <th>Expiración</th>
+                                                <th>Paciente</th>
+                                                <th>Casa Comer.</th>
+
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($expedition->expeditionDetails as $item)
                                                 <tr>
-                                                                                                                                                        <td style= "text-align:center">
+                                                    <td style= "text-align:center">
                                                         {{ $item->product_code }} <br>
                                                     </td>
-                                                                                                                                                        <td style= "text-align:center">
+                                                    <td style= "text-align:center">
                                                         {{ $item->product_name }}
                                                     </td>
-                                                                                                                                                        <td style= "text-align:center">
+                                                    <td style= "text-align:center">
+                                                        {{ $item->product_quantity }}
+                                                    </td>
+                                                    <td style= "text-align:center">
                                                         {{ $item->product_package_wrap }}
                                                     </td>
-                                                                                                                                                        <td style= "text-align:center">
+                                                    <td style= "text-align:center">
                                                         {{ $item->product_expiration }}
                                                     </td>
-
+                                                    <td style= "text-align:center">
+                                                        {{ $item->product_patient}}
+                                                    </td>
+                                                    <td style= "text-align:center">
+                                                        {{ $item->product_outside_company}}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -664,7 +685,7 @@
                     <table class="default-table ">
                         <tr>
                             <th style= " font-size: 15px; text-align: justify;">
-                                
+
                                 Emisor: <span> {{ $expedition->operator }}</span>
                                 <br><br><br><br><br><br>
                             </th>
@@ -694,4 +715,5 @@
             </div>
         </div>
 </body>
+
 </html>

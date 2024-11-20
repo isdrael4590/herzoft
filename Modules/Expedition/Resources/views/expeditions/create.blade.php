@@ -43,8 +43,9 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" name="status_expedition" id="status_expedition"
                                             required>
-                                            <option selected value="Despachado">Despachar</option>
-                                            <option value="Pendiente">Pendiente</option>
+                                            <option selected value="Pendiente">Pendiente</option>
+                                            <option  value="Despachado">Despachar</option>
+                                            
                                         </select>
                                     </div>
                                 </div>
@@ -81,7 +82,7 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" readonly>
                                     </div>
                                 </div>
                             </div>

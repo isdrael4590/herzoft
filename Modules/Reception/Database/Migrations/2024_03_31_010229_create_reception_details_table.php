@@ -19,6 +19,13 @@ class CreateReceptionDetailsTable extends Migration
             $table->unsignedBigInteger('reception_id');
             $table->string('product_name');
             $table->string('product_code');
+            $table->integer('product_quantity');
+            $table->integer('price');
+            $table->integer('unit_price');
+            $table->integer('sub_total');
+            $table->string('product_patient')->nullable();
+            $table->string('product_outside_company')->nullable();
+            $table->string('product_area')->nullable();
             $table->string('product_type_dirt');
             $table->string('product_state_rumed')->nullable();
             $table->string('product_type_process')->nullable();

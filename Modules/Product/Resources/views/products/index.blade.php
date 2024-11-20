@@ -22,11 +22,7 @@
                         <a href="{{ route('products.create') }}" class="btn btn-primary">
                             Add Paquetes <i class="bi bi-plus"></i>
                         </a>
-                        {{--<form action="{{ route('product_import') }}"  method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/comma-separated-values, text/csv, application/csv" required  class="form-control" name="product_records" id="file">
-                            <button type="submit">Importar Producto</button>
-                        </form>--}}
+                       
                         <hr>
 
                         <div class="table-responsive">

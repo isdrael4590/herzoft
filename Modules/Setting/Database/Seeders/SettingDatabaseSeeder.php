@@ -16,11 +16,11 @@ class SettingDatabaseSeeder extends Seeder
     public function run()
     {
         Setting::create([
-            'company_name' => 'Herz Gruop',
-            'company_email' => 'herzgroup@gmail.com',
+            'company_name' => 'Herz Group',
+            'company_email' => 'herzoftgroup@gmail.com',
             'company_phone' => '0962076488',
             'notification_email' => 'herzgroup@gmail.com',
-            'footer_text' => 'Herz Gruop 2024 || Developed by <strong><a target="_blank" href=#">Israel Jácome</a></strong>',
+            'footer_text' => 'Herz Group 2024 || Developed by <strong><a target="_blank" href=#">Israel Jácome</a></strong>',
             'company_address' => 'Ecuador, Santiago de Pillaro'
         ]);
     }

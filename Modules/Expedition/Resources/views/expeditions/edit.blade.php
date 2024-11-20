@@ -6,7 +6,7 @@
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ route('expeditions.index') }}">Generador Despacho</a></li>
-        <li class="breadcrumb-item active">Añadir</li>
+        <li class="breadcrumb-item active">Editar Despacho</li>
     </ol>
 @endsection
 
@@ -23,14 +23,14 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="expedition-form" action="{{ route('expeditions.update',$expedition) }}" method="POST">
+                        <form id="expedition-form" action="{{ route('expeditions.update', $expedition) }}" method="POST">
                             @csrf
                             @method('patch')
                             <div class="form-row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="reference">Referencia <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reference" required 
+                                        <input type="text" class="form-control" name="reference" required
                                             value="{{ $expedition->reference }}" readonly>
                                     </div>
                                 </div>
@@ -49,13 +49,12 @@
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="temp_ambiente">Temperatura del Ambiente <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_ambiente" required
-                                        value="{{ $expedition->temp_ambiente }}" >
+                                            value="{{ $expedition->temp_ambiente }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -64,7 +63,9 @@
                                                 class="text-danger">*</span></label>
                                         <select class="form-control" id="area_expedition" name="area_expedition" required>
                                             @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                                <option {{ $expedition->area_expedition == $area->area_name ? 'selected' : '' }} value="{{$area->area_name }}">
+                                                <option
+                                                    {{ $expedition->area_expedition == $area->area_name ? 'selected' : '' }}
+                                                    value="{{ $area->area_name }}">
                                                     {{ $area->area_name }}</option>
                                             @endforeach
                                         </select>
@@ -75,37 +76,38 @@
                                         <label for="staff_expedition">Persona quién Recibe <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="staff_expedition" required
-                                        value="{{ $expedition->staff_expedition }}" >
+                                            value="{{ $expedition->staff_expedition }}">
                                     </div>
                                 </div>
-
-
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>
-                    </div>
 
-                    <livewire:product-carttoEXP :cartInstance="'expedition'" />
 
-                    <div class="form-row">
+                            <livewire:product-carttoEXP :cartInstance="'expedition'" :data="$expedition" />
 
-                    </div>
-                    <div class="form-group">
-                        <label for="note_expedition">Nota (Si se necesita)</label>
-                        <textarea name="note_expedition" id="note_expedition" rows="5" class="form-control"></textarea>
-                    </div>
 
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary">
-                            Actualizar despacho <i class="bi bi-check"></i>
-                        </button>
+                            <div class="form-row">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="note_expedition">Nota (Si se necesita)</label>
+                                <textarea name="note_expedition" id="note_expedition" rows="5" class="form-control"></textarea>
+                            </div>
+
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    Actualizar despacho <i class="bi bi-check"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>

@@ -23,10 +23,10 @@ class SearchProducttoQR extends Component
     }
 
     public function updatedQuery() {
-        $this->search_results = PreparationDetails::where('product_name', 'like', '%' . $this->query . '%')
-            ->where('product_state_preparation','=','Disponible')
+        $this->search_results = PreparationDetails::where('product_area', 'like', '%' . $this->query . '%')
+            ->where('product_quantity','>=',1)
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
-            ->where('product_state_preparation','=','Disponible')
+            ->where('product_quantity','>=',1)
             ->take($this->how_many)->get();
     }
 

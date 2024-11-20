@@ -64,11 +64,12 @@
                     <div class="form-group">
                         <label>Tiempo de Vencimiento <span class="text-danger">*</span></label>
                         <select wire:model.live="expiration.{{ $cart_item->id }}" class="form-control" required>
-                            <option selected value="6"> 6 Meses</option>
-                            <option value="9"> 9 Meses </option>
-                            <option value="12"> 12 Meses </option>
-                            <option value="14"> 14 Meses </option>
-                            <option value="N/A"> N/A </option>
+                            <option selected value="14"> 14 Días</option>
+                            <option value="180"> 6 Meses </option>
+                            <option value="270"> 9 Meses </option>
+                            <option value="365"> 12 Meses </option>
+                            <option value="545"> 18 Meses </option>
+
                         </select>
                     </div>
                 </div>

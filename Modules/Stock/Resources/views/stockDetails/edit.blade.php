@@ -70,7 +70,20 @@
                                     </div>
                                 </div>
 
-
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="product_quantity">Cantidad Disponible<span
+                                                class="text-danger">*</span></label>
+                                        <input  class="form-control" name="product_quantity" type="number" class="form-control" value="{{ $stockDetails->product_quantity }}" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="product_quantity_expedition">Cantidad Despachada<span
+                                                class="text-danger">*</span></label>
+                                        <input  class="form-control" name="product_quantity_expedition" type="number" class="form-control" value="{{ $stockDetails->product_quantity_expedition }}" min="0">
+                                    </div>
+                                </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="product_expiration">Fecha de expiración<span

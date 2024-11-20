@@ -29,7 +29,7 @@ use Modules\Reception\Http\Requests\StoreReceptionRequest;
 
 class PreparationController extends Controller
 {
-    public function index( PreparationDataTable $dataTable)
+    public function index(PreparationDataTable $dataTable)
     {
         abort_if(Gate::denies('access_preparations'), 403);
 
@@ -45,7 +45,7 @@ class PreparationController extends Controller
 
         Cart::instance('preparation')->destroy();
 
-        return view('preparation::preparations.create',compact('reception'));
+        return view('preparation::preparations.create', compact('reception'));
     }
 
 
@@ -56,6 +56,7 @@ class PreparationController extends Controller
                 'reception_id' => $request->reception_id,
                 'operator' => $request->operator,
                 'note' => $request->note,
+                'total_amount' => $request->total_amount,  // se añade
             ]);
 
             $reception = Reception::findOrFail($request->reception_id);
@@ -67,12 +68,21 @@ class PreparationController extends Controller
                     'preparation_id' => $preparation->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
+                    'product_quantity' => $cart_item->qty,
+                    'price' => $cart_item->price, // se añade
+                    'unit_price' => $cart_item->options->unit_price, // se añade
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
                     'product_state_preparation' => $cart_item->options->product_state_preparation,
                     'product_coming_zone' => $cart_item->options->product_coming_zone,
-                ]);
+                    'product_patient' => $cart_item->options->product_patient,
+                    'product_outside_company' => $cart_item->options->product_outside_company,
+                    'product_area' => $cart_item->options->product_area,
 
+
+
+
+                ]);
             }
 
             Cart::instance('preparation')->destroy();
@@ -107,14 +117,19 @@ class PreparationController extends Controller
             $cart->add([
                 'id'      => $preparation_detail->product_id,
                 'name'    => $preparation_detail->product_name,
-                'qty'     => 1,
-                'price'     => 1,
+                'qty'     => $preparation_detail->product_quantity,
+                'price'     =>  $preparation_detail->price,
                 'weight'     => 1,
                 'options' => [
                     'code'     => $preparation_detail->product_code,
                     'product_type_process'   => $preparation_detail->product_type_process,
                     'product_state_preparation'   => $preparation_detail->product_state_preparation,
                     'product_coming_zone' => $preparation_detail->product_coming_zone,
+                    'product_patient' => $preparation_detail->product_patient,
+                    'product_outside_company' =>  $preparation_detail->product_outside_company,
+                    'product_area' =>  $preparation_detail->product_area,
+                    'unit_price'  => $preparation_detail->unit_price, // se añade
+
 
                 ]
             ]);
@@ -134,6 +149,7 @@ class PreparationController extends Controller
                 'reference' => $request->reference,
                 'operator' => $request->operator,
                 'note' => $request->note,
+                'total_amount' => $request->total_amount // se añade
 
             ]);
 
@@ -142,11 +158,16 @@ class PreparationController extends Controller
                     'preparation_id' => $preparation->id,
                     'product_id' => $cart_item->id,
                     'product_name' => $cart_item->name,
+                    'product_quantity' => $cart_item->qty,
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
                     'product_state_preparation' => $cart_item->options->product_state_preparation,
                     'product_coming_zone' => $cart_item->options->product_coming_zone,
-
+                    'product_patient' => $cart_item->options->product_patient,
+                    'price' => $cart_item->price, // se añade
+                    'unit_price' => $cart_item->options->unit_price, // se añade
+                    'product_outside_company' => $cart_item->options->product_outside_company,
+                    'product_area' => $cart_item->options->product_area,
 
                 ]);
             }

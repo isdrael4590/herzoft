@@ -99,12 +99,14 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="align-middle">Código del Instrumental</th>
                                         <th class="align-middle">Descripción</th>
+                                        <th class="align-middle">Código del Instrumental</th>
+                                        <th class="align-middle">Cantidad</th>
                                         <th class="align-middle">Tipo de Envoltura</th>
                                         <th class="align-middle">Validación Embalaje</th>
                                         <th class="align-middle">Validación Ind. Químico</th>
                                         <th class="align-middle">Fecha de vencimiento</th>
+                                        <th class="align-middle">Paciente / Casa Com.</th>
                                         <th class="align-middle">QR Paquete</th>
 
                                     </tr>
@@ -117,7 +119,11 @@
                                             </td>
                                             <td class="align-middle"> <span class="badge badge-success">
                                                     {{ $item->product_code }}
-                                                </span></td>
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $item->product_quantity }}
+                                            </td>
                                             <td class="align-middle">
                                                 {{ $item->product_package_wrap }}
                                             </td>
@@ -128,7 +134,25 @@
                                                 {{ $item->product_eval_indicator }}
                                             </td>
                                             <td class="align-middle">
-                                                {{ $item->product_expiration }} Meses
+                                                @if ($item->product_expiration >= 15)
+                                                    @if ($item->product_expiration == 180)
+                                                        6 Meses <br>
+                                                    @elseif ($item->product_expiration == 270)
+                                                    9 Meses <br>
+                                                    @elseif ($item->product_expiration == 365)
+                                                    12 Meses <br>
+                                                    @elseif ($item->product_expiration == 545)
+                                                    18 Meses <br>
+                                                    @endif
+                                                @else
+                                                    {{ $item->product_expiration }} Días <br>
+                                                @endif
+                                                {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') !!}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $item->product_patient }} // [
+                                                {{ $item->product_outside_company }}]
+
                                             </td>
                                             <td class="align-middle">
                                                 <div>

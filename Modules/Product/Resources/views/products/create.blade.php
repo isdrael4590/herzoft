@@ -102,7 +102,23 @@
                                         </select>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_quantity">Cantidad <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" name="product_quantity" required
+                                            value="{{ old('product_quantity') }}" min="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_patient">Paciente (Solo casa comercial):<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="product_patient"
+                                            value="{{ old('product_patient') }}">
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-md-6">
@@ -145,23 +161,23 @@
                     </div>
                 </div>
                 @can('add_image')
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="image">Imagen del Paquete <i class="bi bi-question-circle-fill text-info"
-                                        data-toggle="tooltip" data-placement="top"
-                                        title="Max Files: 3, Max File Size: 1MB, Image Size: 400x400"></i></label>
-                                <div class="dropzone d-flex flex-wrap align-items-center justify-content-center"
-                                    id="document-dropzone">
-                                    <div class="dz-message" data-dz-message>
-                                        <i class="bi bi-cloud-arrow-up"></i>
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="image">Imagen del Paquete <i class="bi bi-question-circle-fill text-info"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="Max Files: 3, Max File Size: 1MB, Image Size: 400x400"></i></label>
+                                    <div class="dropzone d-flex flex-wrap align-items-center justify-content-center"
+                                        id="document-dropzone">
+                                        <div class="dz-message" data-dz-message>
+                                            <i class="bi bi-cloud-arrow-up"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 @endcan
             </div>
         </form>

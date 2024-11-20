@@ -111,7 +111,7 @@
                                     <div class="form-group">
                                         <label for="status_cycle">Estado del Proceso <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" name="status_cycle" id="status_cycle" required>
+                                        <select class="form-control" name="status_cycle" id="status_cycle" required readonly>
                                             <option {{ $discharge->status_cycle == 'Cargar' ? 'selected' : '' }}
                                                 value="En Curso">En Curso</option>
                                         </select>
@@ -129,7 +129,7 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" readonly>
                                     </div>
                                 </div>
                             </div>

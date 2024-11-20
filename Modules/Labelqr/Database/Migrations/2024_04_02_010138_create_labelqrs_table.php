@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('temp_machine');
             $table->string('type_program');
             $table->string('lote_biologic');
+            $table->integer('total_amount');
             $table->text('lote_agente')->nullable();
             $table->string('validation_biologic')->nullable();
             $table->string('temp_ambiente');

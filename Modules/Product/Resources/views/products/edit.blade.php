@@ -112,6 +112,26 @@
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_quantity">Cantidad <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" name="product_quantity" required
+                                            value="{{ $product->product_quantity }}" min="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_patient">Paciente (Solo casa comercial):<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="product_patient"
+                                            value="{{ $product->product_patient }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="product_unit">Unidad <i class="bi bi-question-circle-fill text-info"

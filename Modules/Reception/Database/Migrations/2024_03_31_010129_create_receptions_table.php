@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('reference');
             $table->unsignedBigInteger('area_id')->nullable();
-           
             $table->string('operator');
             $table->string('delivery_staff')->nullable();
             $table->string('area');
+            $table->integer('total_amount');
             $table->string('status');
             $table->text('note')->nullable();
             $table->foreign('area_id')->references('id')->on('areas')->nullOnDelete();

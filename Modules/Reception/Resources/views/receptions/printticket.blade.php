@@ -156,8 +156,16 @@
                                 <tr>
                                     <th>Código </th>
                                     <th>Descripción Rumed</th>
+                                    <th>Cantidad</th>
                                     <th>Nivel infección</th>
                                     <th>Estado</th>
+                                    <th>
+                                        @if (@empty($reception->product_patient))
+                                        @else
+                                            Paciente
+                                        @endif
+                                    </th>
+
                             </thead>
                             <tbody>
                                 @foreach ($reception->receptionDetails as $item)
@@ -169,11 +177,21 @@
                                             {{ $item->product_name }}
                                         </td>
                                         <td style= "text-align:center">
+                                            {{ $item->product_quantity }}
+                                        </td>
+                                        <td style= "text-align:center">
                                             {{ $item->product_type_dirt }}
                                         </td>
                                         <td style= "text-align:center">
                                             {{ $item->product_state_rumed }}
                                         </td>
+
+                                        @if (@empty($reception->product_patient))
+                                            <td></td>
+                                        @else
+                                            <td>{{ $reception->product_patient }}
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

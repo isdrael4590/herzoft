@@ -91,7 +91,12 @@ class LabelqrDetailsDataTable extends DataTable
             Column::make('product_ref_qr')
                 ->title('Estado del Instrumental')
                 ->className('text-center align-middle'),
-
+            Column::make('product_quantity')
+                ->title('Cantidad Procesado')
+                ->className('text-center align-middle'),
+            Column::make('product_quantity_fail')
+                ->title('Cantidad Fallos')
+                ->className('text-center align-middle'),
             Column::computed('action2')
                 ->exportable(false)
                 ->printable(false)

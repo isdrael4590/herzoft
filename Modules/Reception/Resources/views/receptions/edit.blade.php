@@ -14,7 +14,7 @@
     <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-12">
-                <livewire:search-product/>
+                <livewire:search-product />
             </div>
         </div>
 
@@ -30,43 +30,53 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="reference">Referencia <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reference" required value="{{ $reception->reference }}" readonly>
+                                        <input type="text" class="form-control" name="reference" required
+                                            value="{{ $reception->reference }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Área Procedente</label>
-                                        <input class="form-control" type="text" id="area" name="area"
-                                        value="{{ $reception->area }}" required>
+                                        <select class="form-control" id="area" name="area" required>
+                                            @foreach (\Modules\Informat\Entities\Area::all() as $area)
+                                                <option
+                                                    {{ $reception->area == $area->area_name ? 'selected' : '' }}value="{{ $area->area_name }}">
+                                                    {{ $area->area_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Persona que entrega</label>
                                         <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
-                                        value="{{ $reception->delivery_staff }}" required>
+                                            value="{{ $reception->delivery_staff }}" required>
                                     </div>
                                 </div>
+
                                 <div class="col-lg-3">
                                     <div class="from-group">
                                         <div class="form-group">
                                             <label>Operador</label>
                                             <input class="form-control" type="text" id="operator" name="operator"
-                                                placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                                placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                                readonly>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <livewire:product-cart :cartInstance="'reception'" :data="$reception"/>
+                            <livewire:product-cart :cartInstance="'reception'" :data="$reception" />
 
                             <div class="form-row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <label for="status">Estado de Ingreso <span class="text-danger">*</span></label>
                                         <select class="form-control" name="status" id="status" required>
-                                            <option {{ $reception->status == 'Pendiente' ? 'selected' : '' }} value="Pendiente">Pendiente</option>
-                                            <option {{ $reception->status == 'Registrado' ? 'selected' : '' }} value="Registrado">Registrado</option>
+                                            <option {{ $reception->status == 'Pendiente' ? 'selected' : '' }}
+                                                value="Pendiente">Pendiente</option>
+                                            <option {{ $reception->status == 'Registrado' ? 'selected' : '' }}
+                                                value="Registrado">Registrado</option>
                                         </select>
                                     </div>
                                 </div>
@@ -91,5 +101,4 @@
 @endsection
 
 @push('page_scripts')
-
 @endpush

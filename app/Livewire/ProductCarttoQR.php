@@ -11,9 +11,7 @@ class ProductCarttoQR extends Component
 {
 
     public $listeners = ['productSelected'];
-
     public $cart_instance;
-
     public $data;
     public $package_wrap;
     public $ref_qr;
@@ -21,8 +19,12 @@ class ProductCarttoQR extends Component
     public $eval_indicator;
     public $expiration;
     public $type_process;
-
-
+    public $unit_price;
+    public $quantity;
+    public $check_quantity;
+    public $item_patient;
+    public $item_outside_company;
+    public $item_area;
 
 
     private $preparation_detail;
@@ -35,12 +37,18 @@ class ProductCarttoQR extends Component
             $cart_items = Cart::instance($this->cart_instance)->content();
 
             foreach ($cart_items as $cart_item) {
+                $this->check_quantity[$cart_item->id] = [$cart_item->options->stock];
+                $this->quantity[$cart_item->id] = $cart_item->qty;
+                $this->unit_price[$cart_item->id] = $cart_item->price; // se añade
+                $this->item_patient[$cart_item->id] = $cart_item->options->product_patient;
                 $this->package_wrap[$cart_item->id] = $cart_item->options->product_package_wrap;
                 $this->ref_qr[$cart_item->id] = $cart_item->options->product_ref_qr;
                 $this->eval_package[$cart_item->id] = $cart_item->options->product_eval_package;
                 $this->eval_indicator[$cart_item->id] = $cart_item->options->product_eval_indicator;
                 $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
+                $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company; // se añade
+                $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
             }
         } else {
 
@@ -50,6 +58,12 @@ class ProductCarttoQR extends Component
             $this->eval_indicator = [];
             $this->expiration = [];
             $this->type_process = [];
+            $this->check_quantity = [];
+            $this->quantity = [];
+            $this->item_patient = [];
+            $this->unit_price = []; // se añade
+            $this->item_outside_company = []; // se añade
+            $this->item_area = []; // se añade
         }
     }
 
@@ -77,27 +91,39 @@ class ProductCarttoQR extends Component
         }
 
         $this->preparation_detail = $preparation_detail;
-
+        
         $cart->add([
             'id'      => $preparation_detail['id'],
             'name'    => $preparation_detail['product_name'],
             'qty'     => 1,
-            'price'     => 1,
+            'price'     => $this->calculate($preparation_detail)['price'],
             'weight'     => 1,
 
             'options' => [
-                'product_id' => $preparation_detail['product_id'],
-                'code'    => $preparation_detail['product_code'],
-                'product_type_process'    => $preparation_detail['product_type_process'],
-                'product_package_wrap' =>  'Contenedor', //ESTE ES EL DATO A MODIFICAR
-                'product_ref_qr' =>  'Cargado', //ESTE ES EL DATO A MODIFICAR
-                'product_eval_package' => 'OK', //ESTE ES EL DATO A MODIFICAR
-                'product_eval_indicator' =>  '4', //ESTE ES EL DATO A MODIFICAR
-                'product_expiration' =>  '14' //ESTE ES EL DATO A MODIFICAR
+                'sub_total'             => $this->calculate($preparation_detail)['sub_total'], // se añade
+                'unit_price'            => $this->calculate($preparation_detail)['unit_price'], // se añade
+                'product_id'            => $preparation_detail['product_id'],
+                'code'                  => $preparation_detail['product_code'],
+                'stock'                 => $preparation_detail['product_quantity'],
+                'product_patient'       => $preparation_detail['product_patient'],
+                'product_outside_company'  => $preparation_detail['product_outside_company'],
+                'product_area'  => $preparation_detail['product_area'],
+                'product_package_wrap'  =>  'Contenedor',
+                'product_ref_qr'        =>  'Cargado',
+                'product_eval_package'   > 'OK',
+                'product_eval_indicator' =>  '4',
+                'product_expiration' =>  '14'
             ]
-
-
         ]);
+        $this->item_patient[$preparation_detail['id']] = $preparation_detail['product_patient'];
+        //$this->quantity[$preparation_detail['id']] = $preparation_detail['product_quantity'];
+
+        $this->check_quantity[$preparation_detail['id']] = $preparation_detail['product_quantity'];
+        $this->quantity[$preparation_detail['id']] = 1;
+
+        $this->item_area[$preparation_detail['id']] = $preparation_detail['product_area'];
+        $this->item_outside_company[$preparation_detail['id']] =$preparation_detail['product_outside_company'];
+
         $this->package_wrap[$preparation_detail['id']] = 'Contenedor';
         $this->ref_qr[$preparation_detail['id']] = 'Cargado';
         $this->eval_package[$preparation_detail['id']] = 'OK';
@@ -109,6 +135,66 @@ class ProductCarttoQR extends Component
     {
         Cart::instance($this->cart_instance)->remove($row_id);
     }
+
+    public function updateQuantity($row_id, $product_id)
+    {
+        if ($this->cart_instance == 'labelqrs') {
+            // dd(  $this->quantity[$product_id['id']]);
+            if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
+                session()->flash('message', 'The requested quantity is not available in stock.');
+                return;
+            }
+        }
+
+        Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);
+
+        $cart_item = Cart::instance($this->cart_instance)->get($row_id);
+
+        Cart::instance($this->cart_instance)->update($row_id, [
+            'options' => [
+                'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+                'product_id'      => $cart_item->options->product_id,
+                'code'                   => $cart_item->options->code,
+                'unit_price'            => $cart_item->options->unit_price, // se añade
+                'stock'                 => $cart_item->options->stock,
+                'product_patient'    => $cart_item->options->product_patient,
+                'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
+                'product_package_wrap'      => $cart_item->options->product_package_wrap,
+                'product_ref_qr'    => $cart_item->options->product_ref_qr,
+                'product_eval_package'      => $cart_item->options->product_eval_package,
+                'product_eval_indicator'    => $cart_item->options->product_eval_indicator,
+                'product_expiration'    => $cart_item->options->product_expiration,
+                'product_type_process'    => $cart_item->options->product_type_process,
+                'product_outside_company'    => $cart_item->options->product_outside_company,
+                'product_area'    => $cart_item->options->product_area,
+
+            ]
+        ]);
+    }
+
+    public function calculate($product, $new_price = null)
+    {
+        if ($new_price) {
+            $product_price = $new_price;
+        } else {
+            $this->unit_price[$product['id']] = $product['price'];
+            $product_price = $this->unit_price[$product['id']];
+            $this->quantity[$product['id']] = $product['product_quantity'];
+            $product_quantity =  $this->quantity[$product['id']];
+        }
+
+        $price = 0;
+        $unit_price = 0;
+        $sub_total = 0;
+
+        $price = $product_price;
+        $unit_price = $product_price;
+        $sub_total = $product_quantity;
+
+        return ['price' => $price, 'unit_price' => $unit_price, 'sub_total' => $sub_total];
+    }
+
+
 
     public function InputWrap_package($preparation_detail_id, $row_id)
     { // se añade
@@ -123,6 +209,7 @@ class ProductCarttoQR extends Component
             'options' => [
                 'code'                   => $cart_item->options->code,
                 'product_id'      => $cart_item->options->product_id,
+                'stock'                 => $cart_item->options->stock,
                 'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
                 'product_package_wrap'      => $cart_item->options->product_package_wrap,
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
@@ -130,6 +217,10 @@ class ProductCarttoQR extends Component
                 'product_eval_indicator'    => $cart_item->options->product_eval_indicator,
                 'product_expiration'    => $cart_item->options->product_expiration,
                 'product_type_process'    => $cart_item->options->product_type_process,
+                'product_patient'    => $cart_item->options->product_patient,
+                'product_outside_company'    => $cart_item->options->product_outside_company,
+                'product_area'    => $cart_item->options->product_area,
+
             ]
         ]);
     }
@@ -149,13 +240,18 @@ class ProductCarttoQR extends Component
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code'                  => $cart_item->options->code,
             'product_id'            => $cart_item->options->product_id,
+            'stock'                 => $cart_item->options->stock,
             'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
             'product_type_process'  => $cart_item->options->product_type_process,
             'product_package_wrap'  => $this->package_wrap[$preparation_detail_id],
             'product_ref_qr'        => $this->ref_qr[$preparation_detail_id],
             'product_eval_package'  => $this->eval_package[$preparation_detail_id],
-            'product_eval_indicator'=> $this->eval_indicator[$preparation_detail_id],
+            'product_eval_indicator' => $this->eval_indicator[$preparation_detail_id],
             'product_expiration'   => $this->expiration[$preparation_detail_id],
+            'product_patient'   => $this->item_patient[$preparation_detail_id],
+            'product_area'   => $this->item_area[$preparation_detail_id],
+            'product_outside_company'   => $this->item_outside_company[$preparation_detail_id],
+
         ]]);
     }
 }

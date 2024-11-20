@@ -20,14 +20,15 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th class="align-middle">Id</th>
-                        <th class="align-middle">Descripción</th>
-                       {{--<th class="align-middle">Paquete / Código</th>--}} 
+                        {{--<th class="align-middle">Id</th>--}}
+                        <th class="align-middle">Descripción / Código</th>
+                        <th class="align-middle">Stock Preparación.</th>
+                        <th class="align-middle">Cantidad</th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
                         <th class="align-middle text-center"> Embalaje </th>
                         <th class="align-middle text-center"> Ind. 4 ó 5 </th>
                         <th class="align-middle text-center"> Venc. </th>
-                        <th class="align-middle text-center"> Procesamiento. </th>
+                        <th class="align-middle text-center"> Otra Info. </th>
                         <th class="align-middle text-center">Acción</th>
                     </tr>
                 </thead>
@@ -35,9 +36,9 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
-                                <td class="align-middle text-center">
+                               {{-- <td class="align-middle text-center">
                                     {{ $cart_item->id }}
-                                </td>
+                                </td>--}}
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-success">
@@ -45,9 +46,12 @@
                                     </span>
 
                                 </td>
-                               {{--<td class="align-middle text-center">
-                                    {{ $cart_item->options->product_id }}
-                                </td>--}} 
+                                <td class="align-middle text-center text-center">
+                                    <span class="badge badge-info">{{ $cart_item->options->stock }}</span>
+                                </td>
+                                <td class="align-middle text-center">
+                                    @include('livewire.includes.product-carttoQR-quantity')
+                                </td>
                                 <td class="align-middle text-center">
 
                                     {{ $cart_item->options->product_package_wrap }} @include('livewire.includes.product-cart-modaltoQR')
@@ -62,10 +66,24 @@
                                 </td>
 
                                 <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_expiration }} <span> meses</span>
+                                    @if ($cart_item->options->product_expiration >= 15)
+                                        @if ($cart_item->options->product_expiration == 180)
+                                            6 Meses <br>
+                                        @elseif ($cart_item->options->product_expiration == 270)
+                                            9 Meses <br>
+                                        @elseif ($cart_item->options->product_expiration == 365)
+                                            12 Meses <br>
+                                        @elseif ($cart_item->options->product_expiration == 545)
+                                            18 Meses <br>
+                                        @endif
+                                    @else
+                                        {{ $cart_item->options->product_expiration }} Días <br>
+                                    @endif
+
                                 </td>
                                 <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_type_process }}
+                                    {{ $cart_item->options->product_patient }} // 
+                                    {{ $cart_item->options->product_outside_company }}
                                 </td>
 
                                 <td class="align-middle text-center">
@@ -88,5 +106,27 @@
             </table>
         </div>
     </div>
+
+    <div class="row justify-content-md-end">
+        <div class="col-md-4">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                   
+                    <tr>
+                        <th>Total Paquetes del proceso</th>
+                        @php
+                            $total_package = Cart::instance($cart_instance)->subtotal()
+                        @endphp
+                        <th>
+                             {{ ($total_package) }}
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="total_amount" value="{{ $total_package }}">
+
 
 </div>

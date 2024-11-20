@@ -28,39 +28,47 @@ class ReceptionPreparationController extends Controller
         Cart::instance('preparation')->destroy();
 
         $cart = Cart::instance('preparation');
-        $area=$reception->area ;
-     
+        $area = $reception->area;
+
         if ($area == 'Zona Esteril') {
             foreach ($reception_details as $reception_detail) {
                 $cart->add([
                     'id'      => $reception_detail->product_id,
                     'name'    => $reception_detail->product_name,
-                    'qty'     => 1,
-                    'price'   => 1,
+                    'qty'     => $reception_detail->product_quantity,
+                    'price'   => $reception_detail->price,
                     'weight'  => 1,
                     'options' => [
                         'code'     => $reception_detail->product_code,
+                        'product_patient'     => $reception_detail->product_patient,
+                        'product_outside_company'     => $reception_detail->product_outside_company,
+                        'product_area'     => $reception_detail->product_area,
                         'product_type_process'     => $reception_detail->product_type_process,
                         'product_state_preparation'   => 'Disponible',
                         'product_coming_zone'   => 'Zona Esteril',
-
+                        'unit_price'  => $reception_detail->unit_price,
+                        //'sub_total'   => $reception_detail->sub_total,
                     ]
                 ]);
             }
-        }else{
+        } else {
             foreach ($reception_details as $reception_detail) {
                 $cart->add([
                     'id'      => $reception_detail->product_id,
                     'name'    => $reception_detail->product_name,
-                    'qty'     => 1,
-                    'price'   => 1,
+                    'qty'     => $reception_detail->product_quantity,
+                    'price'   => $reception_detail->price,
                     'weight'  => 1,
                     'options' => [
                         'code'     => $reception_detail->product_code,
+                        'product_patient'     => $reception_detail->product_patient,
+                        'product_outside_company'     => $reception_detail->product_outside_company,
+                        'product_area'     => $reception_detail->product_area,
                         'product_type_process'     => $reception_detail->product_type_process,
                         'product_state_preparation'   => 'Disponible',
                         'product_coming_zone'   => 'Recepcion',
-
+                        'unit_price'  => $reception_detail->unit_price,
+                        //'sub_total'   => $reception_detail->sub_total,
                     ]
                 ]);
             }

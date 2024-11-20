@@ -53,7 +53,7 @@ class StockDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[1, 'dsc']],
+                'order' => [[5, 'dsc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -91,14 +91,19 @@ class StockDetailsDataTable extends DataTable
                 ->title('Tipo de embalaje')
                 ->className('text-center align-middle'),
 
-            Column::make('product_status_stock')
-                ->title('Estado Disponibilidad')
+            Column::make('product_quantity')
+                ->title('Cantidad Disponible')
                 ->className('text-center align-middle'),
 
-            /* Column::make('status_stock')
-                ->title('Estado del Stock')
+            Column::make('product_quantity_expedition')
+                ->title('Cantidad Despachado')
                 ->className('text-center align-middle'),
-*/
+
+            Column::make('product_area')
+                ->title('Area')
+                ->className('text-center align-middle'),
+
+
             Column::make('dates')
                 ->title('Fecha de vencimiento')
                 ->className('text-center align-middle'),

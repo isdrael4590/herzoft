@@ -24,6 +24,7 @@ class UpdateDischargeRequest extends FormRequest
             'temp_machine' => 'required|string|max:255',
             'type_program' => 'required|string|max:255',
             'lote_biologic' => 'required|string|max:255',
+            'total_amount' => 'required|numeric',
             'validation_biologic' => 'required|string|max:255',
             'temp_ambiente' => 'required|string|max:255',
             'status_cycle' => 'required|string|max:255',

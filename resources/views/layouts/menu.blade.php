@@ -194,16 +194,16 @@
                 @can('access_expeditions')
                     @can('create_expeditions')
                         <li class="c-sidebar-nav-item">
-                            <a class="c-sidebar-nav-link {{ request()->routeIs('expeditions.index') ? 'c-active' : '' }}"
+                            <a class="c-sidebar-nav-link {{ request()->routeIs('expeditions.create') ? 'c-active' : '' }}"
                                 href="{{ route('expeditions.create') }}">
-                                <i class="c-sidebar-nav-icon bi bi-send" style="line-height: 1;"></i> Despachar
+                                <i class="c-sidebar-nav-icon bi bi-cart-check" style="line-height: 1;"></i> Despachar
                             </a>
                         </li>
                     @endcan
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{ request()->routeIs('expeditions.index') ? 'c-active' : '' }}"
                             href="{{ route('expeditions.index') }}">
-                            <i class="c-sidebar-nav-icon bi bi-send" style="line-height: 1;"></i> Todos los despachos
+                            <i class="c-sidebar-nav-icon bi bi-cart4" style="line-height: 1;"></i> Todos los despachos
                         </a>
                     </li>
                 @endcan
@@ -318,7 +318,7 @@
     <li
         class="c-sidebar-nav-item c-sidebar-nav-dropdown {{ request()->routeIs('informats.*') || request()->routeIs('institute.*') || request()->routeIs('area.*') || request()->routeIs('units.*') || request()->routeIs('machine.*') ? 'c-show' : '' }}">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
-            <i class="c-sidebar-nav-icon bi bi-wrench" style="line-height: 1;"></i> Configuración Servicio.
+            <i class="c-sidebar-nav-icon bi bi-pip" style="line-height: 1;"></i> Configuración Servicio.
         </a>
 
         <ul class="c-sidebar-nav-dropdown-items">
@@ -342,7 +342,7 @@
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{ request()->routeIs('proceso.*') ? 'c-active' : '' }}"
                     href="{{ route('proceso.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Tipo Procesos
+                    <i class="c-sidebar-nav-icon bi bi-minecart" style="line-height: 1;"></i> Tipo Procesos
                 </a>
             </li>
         @endcan
@@ -358,7 +358,7 @@
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('area.*') ? 'c-active' : '' }}"
                         href="{{ route('area.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Áreas
+                        <i class="c-sidebar-nav-icon bi bi-textarea" style="line-height: 1;"></i> Áreas
                     </a>
                 </li>
             @endcan
@@ -367,7 +367,7 @@
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('units.*') ? 'c-active' : '' }}"
                         href="{{ route('units.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-speaker" style="line-height: 1;"></i> Presentación Insumo
+                        <i class="c-sidebar-nav-icon bi bi-layers" style="line-height: 1;"></i> Presentación Insumo
                     </a>
                 </li>
             @endcan

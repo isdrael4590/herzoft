@@ -20,29 +20,30 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th class="align-middle">id</th>
-
-                        <th class="align-middle">Código</th>
+                        <th class="align-middle">Descripción/Código</th>
+                        <th class="align-middle">Cantidad</th>
                         <th class="align-middle text-center">Zona proveniente </th>
                         <th class="align-middle text-center">Disponibilidad</th>
-                       
+                        <th class="align-middle text-center">Paciente</th>
+                        <th class="align-middle text-center">Casa Comercial</th>
+
+
+
                     </tr>
                 </thead>
                 <tbody>
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
-                                <td class="align-middle">
-                                    {{ $cart_item->id }} <br>
-                                    
-                                    
-                                </td>
-                                <td class="align-middle">
+                              
+                                <td class="align-middle text-center">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-info">
                                         {{ $cart_item->options->code }}
                                     </span>
-                                    
+                                </td>
+                                <td class="align-middle text-center">
+                                    {{ $cart_item->qty }} <br>
                                 </td>
                                 <td class="align-middle text-center">
                                     @if ($cart_item->options->product_coming_zone == 'Zona Esteril')
@@ -69,8 +70,12 @@
                                     @endif
 
                                 </td>
-
-                            
+                                <td class="align-middle text-center">
+                                    {{ $cart_item->options->product_patient }} <br>
+                                </td>
+                                <td class="align-middle text-center">
+                                    {{ $cart_item->options->product_outside_company }} <br>
+                                </td>
                             </tr>
                         @endforeach
                     @else
@@ -86,5 +91,25 @@
             </table>
         </div>
     </div>
+    <div class="row justify-content-md-end">
+        <div class="col-md-4">
+            <div class="table-responsive">
+                <table class="table table-striped">
+
+                    <tr>
+                        <th>Total Paquetes Ingresados</th>
+                        @php
+                            $total_package = Cart::instance($cart_instance)->subtotal();
+                        @endphp
+                        <th>
+                            {{ $total_package }}
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="total_amount" value="{{ $total_package }}">
 
 </div>

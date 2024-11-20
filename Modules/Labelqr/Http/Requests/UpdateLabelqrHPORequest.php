@@ -26,7 +26,8 @@ class UpdateLabelqrHPORequest extends FormRequest
             'validation_biologic' => 'required|string|max:255',
             'temp_ambiente' => 'required|string|max:255',
             'status_cycle' => 'required|string|max:255',
-            'note_labelqr' => 'nullable|string|max:255'
+            'note_labelqr' => 'nullable|string|max:255',
+            'total_amount' => 'required|numeric',
         ];
     }
 

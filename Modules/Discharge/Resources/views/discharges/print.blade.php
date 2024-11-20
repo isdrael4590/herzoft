@@ -536,34 +536,41 @@
                 <div class="col-lg-12">
                     <div class="printer-inner-9" id="printer_wrapper">
                         <div class="printer-top">
-                        <div class="printer-info">
-                            <div class="row">
-                                <div class="printer-number">
-                                    <h1 class="print-title-1">Registro Físico del proceso de esterilización.
-                                    </h1>
-                                    
+                            <div class="printer-info">
+                                <div class="row">
+                                    <div class="printer-number">
+                                        <h1 class="print-title-1">Registro Físico del proceso de esterilización.
+                                        </h1>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <div> <table class="default-table">
+                            <div>
+                                <table class="default-table">
                                     <thead>
                                         <tr>
-                                            <th><div class="logo">
-                                        <img src="{{ $dataUrl }}"
-                                            alt="Institute Image" class="img-fluid mb-2">
-                                    </div></h4>
+                                            <th>
+                                                <div class="logo">
+                                                    <img src="{{ $dataUrl }}" alt="Institute Image"
+                                                        class="img-fluid mb-2">
+                                                </div>
+                                                </h4>
                                             </th>
-                                            <th>                                    <h1><span>{{ $discharge->reference }}</span></h1>
-                                            </h4>
+                                            <th>
+                                                <h1><span>{{ $discharge->reference }}</span></h1>
+                                                </h4>
                                             </th>
-                                            <th>  <div>Versión: <strong> 01</strong></div>
-                                            <div>Vigente: <strong> Septiembre 2024</strong></div></h5>
+                                            <th>
+                                                <div>Versión: <strong> 01</strong></div>
+                                                <div>Vigente: <strong> Septiembre 2024</strong></div>
+                                                </h5>
                                             </th>
                                         </tr>
-                                    </thead></div>
-                     
+                                    </thead>
+                            </div>
+
                         </div>
-                  
+
                         <div class="product-summary">
                             <div>
                                 <table class="default-table">
@@ -575,7 +582,8 @@
                                             </th>
                                             <th><strong>Registro INFO:</strong></h5>
                                             </th>
-                                            <th><h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
+                                            <th>
+                                                <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
                                             </th>
                                         </tr>
                                     </thead>
@@ -594,11 +602,21 @@
                                                 <div>
                                                     <div><strong>Proceso N°:</strong> {{ $labelqr->reference }}</div>
                                                     <div><strong>Equipo:</strong> {{ $discharge->machine_name }}</div>
-                                                    <div><strong>Lote del Equipo:</strong> {{ $discharge->lote_machine }}</div>
-                                                    <div><strong>Lote Agente Esterilizante:</strong> {{ $discharge->lote_agente }}</div>
-                                                    <div><strong>Temperatura del equipo:</strong> {{ $discharge->temp_machine }}</div>
-                                                    <div><strong>Tipo de Programa:</strong> {{ $discharge->type_program }}</div>
-                                                    <div><strong>Temperatura del Ambiente: </strong> {{ $discharge->temp_ambiente }}
+                                                    <div><strong>Lote del Equipo:</strong>
+                                                        {{ $discharge->lote_machine }}</div>
+                                                    <div>
+                                                        @if ($discharge->lote_agente == 'NA')
+                                                        @else
+                                                            <strong>Lote Agente Esterilizante:</strong>
+                                                            {{ $discharge->lote_agente }}
+                                                        @endif
+                                                    </div>
+                                                    <div><strong>Temperatura del equipo:</strong>
+                                                        {{ $discharge->temp_machine }}</div>
+                                                    <div><strong>Tipo de Programa:</strong>
+                                                        {{ $discharge->type_program }}</div>
+                                                    <div><strong>Temperatura del Ambiente: </strong>
+                                                        {{ $discharge->temp_ambiente }}
                                                     </div>
                                                     <div><strong>Operario:</strong> {{ $discharge->operator }}</div>
                                                 </div>
@@ -609,18 +627,22 @@
                                                     <div><strong>Fecha Proceso:
                                                         </strong>{{ \Carbon\Carbon::parse($discharge->created_up)->format('d M, Y') }}
                                                     </div>
-                                                    <div><strong>Estado del Ciclo: </strong> {{ $discharge->status_cycle }}</div>
-                                                    <div><strong>Lote del Biológico: </strong> {{ $discharge->lote_biologic }}</div>
-                                                    <div><strong>Validación Biológico: </strong> {{ $discharge->validation_biologic }}
+                                                    <div><strong>Estado del Ciclo: </strong>
+                                                        {{ $discharge->status_cycle }}</div>
+                                                    <div><strong>Lote del Biológico: </strong>
+                                                        {{ $discharge->lote_biologic }}</div>
+                                                    <div><strong>Validación Biológico: </strong>
+                                                        {{ $discharge->validation_biologic }}
                                                     </div>
-                                                    <div><strong>Inicio proceso: </strong> {{ $discharge->created_at}}
+                                                    <div><strong>Inicio proceso: </strong> {{ $discharge->created_at }}
                                                     </div>
                                                     <div><strong>Fin de Proceso: </strong> {{ $discharge->updated_at }}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td style= "text-align:center">
-                                            <img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(150)->generate($data)) }} ">
+                                                <img
+                                                    src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(150)->generate($data)) }} ">
                                             </td>
                                         </tr>
                                     </tbody>
@@ -634,10 +656,12 @@
                                             <tr>
                                                 <th>Código </th>
                                                 <th>Descripción</th>
+                                                <th>Cant. Proc.</th>
                                                 <th>Envoltura</th>
-                                                <th>Validación</th>
-                                                <th>Tipo Químico</th>
-                                                <th>F. Expiración</th>
+                                                <th>Cant. Validada</th>
+                                                <th>Ind. Quím.</th>
+                                                <th>Paciente</th>
+                                                <th>F. Expir.</th>
                                                 <th>Reporte de Equipo</th>
 
                                             </tr>
@@ -652,6 +676,9 @@
                                                         {{ $item->product_name }}
                                                     </td>
                                                     <td style= "text-align:center">
+                                                        {{ $item->product_quantity }}
+                                                    </td>
+                                                    <td style= "text-align:center">
                                                         {{ $item->product_package_wrap }}
                                                     </td>
                                                     <td style= "text-align:center">
@@ -661,7 +688,12 @@
                                                         {{ $item->product_eval_indicator }}
                                                     </td>
                                                     <td style= "text-align:center">
-                                                        {!!Carbon\Carbon::parse(($item->updated_at))->addMonth($item->product_expiration)->format('d M, Y')!!}
+                                                        {{ $item->product_patient }}   / [
+                                                            {{ $item->product_outside_company }}
+                                                        ]
+                                                    </td>
+                                                    <td style= "text-align:center">
+                                                        {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') !!}
                                                     </td>
 
                                                 </tr>
@@ -686,19 +718,19 @@
                     <table class="default-table ">
                         <tr>
                             <th style= " font-size: 15px; text-align: justify;">
-                                
-                            Resultado Etiqueta Biologico:
+
+                                Resultado Etiqueta Biologico:
                                 <br><br><br><br><br><br>
                             </th>
                             <th style= " font-size: 15px; text-align: justify;">
-                            Impresión Inc. Biológico<br><br><br><br><br><br>
+                                Impresión Inc. Biológico<br><br><br><br><br><br>
                             </th>
                         </tr>
                     </table>
                     <table class="default-table ">
                         <tr>
                             <th style= " font-size: 15px; text-align: justify;">
-                                
+
                                 Operario: <span> {{ $discharge->operator }}</span>
                                 <br><br><br><br><br><br>
                             </th>
@@ -707,7 +739,7 @@
                             </th>
                         </tr>
                     </table>
-                  
+
                     <div class="printer-informeshon-footer">
                         <ul>
                             <li><strong>Nota:</strong> Asegurarse de la esterilidad del instrumental</li>
@@ -729,4 +761,5 @@
             </div>
         </div>
 </body>
+
 </html>
