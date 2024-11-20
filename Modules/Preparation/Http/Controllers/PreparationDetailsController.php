@@ -47,18 +47,28 @@ class PreparationDetailsController extends Controller
         $request->validate([
             'product_name' => 'required',
             'product_code' => 'required',
+            'product_quantity' => 'required',
             'product_state_preparation' => 'required',
             'product_coming_zone' => 'required',
             'product_type_process' => 'required',
+            'product_patient' => 'nullable',
+            'product_area' => 'nullable',
+            'product_outside_company' => 'nullable',
 
         ]);
 
         preparationDetails::findOrFail($id)->update([
             'product_name' => $request->product_name,
             'product_code' => $request->product_code,
+            'product_quantity' => $request->product_quantity,
             'product_state_preparation' => $request->product_state_preparation,
             'product_coming_zone' => $request->product_coming_zone,
             'product_type_process' => $request->product_type_process,
+            'product_patient' => $request->product_patient,
+            'product_area' => $request->product_area,
+            'product_outside_company' => $request->product_outside_company,
+
+        
 
         ]);
         toast('Producto preparation actualizado!', 'info');

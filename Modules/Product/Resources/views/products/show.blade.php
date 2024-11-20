@@ -56,6 +56,14 @@
                                     <td>{{ $product->product_type_process }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Cantidad</th>
+                                    <td>{{ $product->product_quantity }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Paciente (Solo casa comercial)</th>
+                                    <td>{{ $product->product_patient ?? 'N/A'}}</td>
+                                </tr>
+                                <tr>
                                     <th>Note</th>
                                     <td>{{ $product->product_note ?? 'N/A' }}</td>
                                 </tr>

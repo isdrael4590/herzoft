@@ -23,18 +23,10 @@ class StockDetailsController extends Controller
         return $dataTable->render('stock::stockDetails.index');
     }
 
-
-
-
-
-
-
-
     public function edit($id)
     {
 
         abort_if(Gate::denies('edit_admin'), 403);
-
         $stockDetails = StockDetails::findOrFail($id);
         return view('stock::stockDetails.edit', compact('stockDetails'));
     }
@@ -47,6 +39,8 @@ class StockDetailsController extends Controller
             'product_status_stock' => 'required',
             'product_name' => 'required',
             'product_code' => 'required',
+            'product_quantity' => 'required',
+            'product_quantity_expedition' => 'required',
             'product_date_sterilized' => 'required',
             'product_expiration' => 'required',
 
@@ -56,6 +50,8 @@ class StockDetailsController extends Controller
             'product_status_stock' => $request->product_status_stock,
             'product_name' => $request->product_name,
             'product_code' => $request->product_code,
+            'product_quantity' => $request->product_quantity,
+            'product_quantity_expedition' => $request->product_quantity_expedition,
             'product_date_sterilized' => $request->product_date_sterilized,
             'product_expiration' => $request->product_expiration,
 

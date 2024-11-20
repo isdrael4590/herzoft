@@ -48,6 +48,14 @@
                             <option value="MALO">MALO</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>Paciente (Solo Casa Comercial) <span class="text-danger">*</span></label>
+                        <input wire:model="item_patient.{{ $cart_item->id }}" type="text" class="form-control" value="{{ $item_patient[$cart_item->id] }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Casa Comercial (Si Aplica) <span class="text-danger">*</span></label>
+                        <input wire:model="item_outside_company.{{ $cart_item->id }}" type="text" class="form-control" value="{{ $item_outside_company[$cart_item->id] }}">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

@@ -20,10 +20,13 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th class="align-middle">id</th>
-                        <th class="align-middle">Código</th>
+                        
+                        <th class="align-middle">Descripción/Código</th>
+                        <th class="align-middle">Cantidad</th>
                         <th class="align-middle text-center">Nivel de Infección </th>
                         <th class="align-middle text-center">Estado del instrumental</th>
+                        <th class="align-middle">Paciente</th>
+                        <th class="align-middle">Casa Comercial</th>
                         <th class="align-middle text-center">Acción</th>
                     </tr>
                 </thead>
@@ -31,16 +34,15 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
-                                <td class="align-middle">
-                                    {{ $cart_item->id }} <br>
-
-                                </td>
+                                <
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-info">
                                         {{ $cart_item->options->code }}
                                     </span>
-                                   
+                                </td>
+                                <td class="align-middle text-center">
+                                    @include('livewire.includes.product-cart-quantity')
                                 </td>
 
                                 <td class="align-middle text-center text-center">
@@ -68,7 +70,20 @@
                                     <span class="badge badge-secondary">
                                         {{ $cart_item->options->product_state_rumed }}
                                     </span>
-                        
+
+                                </td>
+
+                                <td class="align-middle text-center">
+                                    <span class="badge badge-secondary">
+                                        {{ $cart_item->options->product_patient }}
+                                    </span>
+
+                                </td>
+                                <td class="align-middle text-center">
+                                    <span class="badge badge-secondary">
+                                        {{ $cart_item->options->product_outside_company }}
+                                    </span>
+
                                 </td>
 
                                 <td class="align-middle text-center">
@@ -91,5 +106,25 @@
             </table>
         </div>
     </div>
+    <div class="row justify-content-md-end">
+        <div class="col-md-4">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                   
+                    <tr>
+                        <th>Total Paquetes Recibidos</th>
+                        @php
+                            $total_package = Cart::instance($cart_instance)->subtotal()
+                        @endphp
+                        <th>
+                             {{ ($total_package) }}
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="total_amount" value="{{ $total_package }}">
 
 </div>

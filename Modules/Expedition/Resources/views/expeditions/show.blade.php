@@ -66,8 +66,12 @@
                                     <tr>
                                         <th>Código </th>
                                         <th>Descripción</th>
+                                        <th>Cantidad</th>
                                         <th>Envoltura</th>
                                         <th>Expiración</th>
+                                        <th>Paciente</th>
+                                        <th>Casa Comercial</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,10 +84,20 @@
                                                     {{ $item->product_name }}
                                                 </span></td>
                                             <td class="align-middle">
-                                                {{ $item->product_package_wrap }}
+                                                {{ $item->product_quantity }}
                                             </td>
                                             <td class="align-middle">
+                                                {{ $item->product_package_wrap }}
+                                            </td>
+
+                                            <td class="align-middle">
                                                 {{ $item->product_expiration }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $item->product_patient }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $item->product_outside_company }}
                                             </td>
 
                                         </tr>

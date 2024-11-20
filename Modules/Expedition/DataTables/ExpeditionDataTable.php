@@ -108,6 +108,6 @@ class ExpeditionDataTable extends DataTable
 
     protected function filename(): string
     {
-        return 'Expedition_' . date('YmdHis');
+        return 'expedition_' . date('YmdHis');
     }
 }

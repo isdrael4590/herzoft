@@ -21,8 +21,12 @@ class UpdateProductRequest extends FormRequest
             'product_barcode_symbology' => ['required', 'string', 'max:255'],
             'product_unit' => ['required', 'string', 'max:255'],
             'area' => ['required', 'string', 'min:1'],
+            'product_price' => ['required', 'numeric', 'max:2147483647'],
             'product_note' => ['nullable', 'string', 'max:1000'],
-            'category_id' => ['required', 'integer']
+            'category_id' => ['required', 'integer'],
+            'product_type_process'=> ['required', 'string', 'max:255'],
+            'product_quantity' => ['required', 'integer', 'min:1'],
+            'product_patient' => ['nullable', 'string', 'max:255'],
         ];
     }
 

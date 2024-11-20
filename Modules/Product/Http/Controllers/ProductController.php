@@ -51,9 +51,13 @@ class ProductController extends Controller
                 'product_code' => $request->product_code,
                 'product_barcode_symbology' => $request->product_barcode_symbology,
                 'product_unit' => $request->product_unit,
+                'product_price' => $request->product_price,
                 'area' => $request->area,
                 'product_note' => $request->product_note,
                 'category_id' => $request->category_id,
+                'product_type_process' => $request->product_type_process,
+                'product_quantity' => $request->product_quantity,
+                'product_patient' => $request->product_patient,
             ]);
 
             if ($request->has('document')) {
@@ -62,13 +66,13 @@ class ProductController extends Controller
                 }
             }
             foreach (Cart::instance('product')->content() as $cart_item) {
-                if (($cart_item->qty)>=3 ){
-                    $subcode = $request->product_code."." . $cart_item->id.".".$cart_item->qty;
-                }else{
-                    $subcode = $request->product_code."." . $cart_item->id;
+                if (($cart_item->qty) >= 3) {
+                    $subcode = $request->product_code . "." . $cart_item->id . "." . $cart_item->qty;
+                } else {
+                    $subcode = $request->product_code . "." . $cart_item->id;
                 }
-        
-                
+
+
                 SubProduct::create([
                     'product_id' => $product->id,
                     'subproduct_name' => $cart_item->name,
@@ -135,6 +139,9 @@ class ProductController extends Controller
                 'area' => $request->area,
                 'product_note' => $request->product_note,
                 'category_id' => $request->category_id,
+                'product_type_process' => $request->product_type_process,
+                'product_quantity' => $request->product_quantity,
+                'product_patient' => $request->product_patient,
             ]);
 
             if ($request->has('document')) {
@@ -153,11 +160,11 @@ class ProductController extends Controller
                 }
             }
             foreach (Cart::instance('product')->content() as $cart_item) {
-                
-                if (($cart_item->qty)>=3 ){
-                    $subcode = $request->product_code."." . $cart_item->id.".".$cart_item->qty;
-                }else{
-                    $subcode = $request->product_code."." . $cart_item->id;
+
+                if (($cart_item->qty) >= 3) {
+                    $subcode = $request->product_code . "." . $cart_item->id . "." . $cart_item->qty;
+                } else {
+                    $subcode = $request->product_code . "." . $cart_item->id;
                 }
                 SubProduct::create([
                     'product_id' => $product->id,

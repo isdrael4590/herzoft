@@ -14,6 +14,7 @@ use Modules\Product\Entities\Product;
 
 use Modules\Labelqr\Entities\Labelqr;
 use Modules\Labelqr\Http\Requests\StoreLabelqrRequest;
+use Modules\Preparation\Entities\PreparationDetails;
 
 class LabelqrDischargeController extends Controller
 
@@ -33,18 +34,24 @@ class LabelqrDischargeController extends Controller
             $cart->add([
                 'id'      => $labelqr_detail->id,
                 'name'    => $labelqr_detail->product_name,
-                'qty'     => 1,
-                'price'   => 1,
+                'qty'     => $labelqr_detail->product_quantity,
+                'price'   => $labelqr_detail->price,
                 'weight'  => 1,
                 'options' => [
                     'code'     => $labelqr_detail->product_code,
+                    'stock'       => PreparationDetails::findOrFail($labelqr_detail->preparation_detail_id)->product_quantity,
                     'product_id'   => $labelqr_detail->product_id,
+                    'sub_total'   => $labelqr_detail->sub_total,
                     'product_type_process'   => $labelqr_detail->product_type_process,
+                    'product_patient'   => $labelqr_detail->product_patient,
                     'product_package_wrap'   => $labelqr_detail->product_package_wrap,
                     'product_ref_qr'   => $labelqr_detail->product_ref_qr,
                     'product_eval_package' => $labelqr_detail->product_eval_package,
                     'product_eval_indicator'=> $labelqr_detail->product_eval_indicator,
-                    'product_expiration'=> $labelqr_detail->product_expiration
+                    'product_expiration'=> $labelqr_detail->product_expiration,
+                    'unit_price'  => $labelqr_detail->unit_price,
+                    'product_outside_company'=> $labelqr_detail->product_outside_company,
+                    'product_area'  => $labelqr_detail->product_area
                 ]
             ]);
         }

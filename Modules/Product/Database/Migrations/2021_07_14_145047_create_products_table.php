@@ -20,7 +20,10 @@ class CreateProductsTable extends Migration
             $table->string('product_code')->unique()->nullable();
             $table->string('product_barcode_symbology')->nullable();
             $table->string('product_type_process')->nullable();
-            $table->string('area');
+            $table->integer('product_quantity')->nullable();
+            $table->string('product_patient')->nullable();
+            $table->string('area')->nullable();
+            $table->integer('product_price');
             $table->string('product_unit')->nullable();
             $table->text('product_note')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->restrictOnDelete();

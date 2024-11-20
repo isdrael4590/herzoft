@@ -9,6 +9,8 @@
 @endsection
 
 @section('content')
+
+
     <?php
     $hour = date('G');
     $minute = date('i');
@@ -27,8 +29,8 @@
         $greet = 'Bienvenido,';
     }
     ?>
-    <div class="container-fluid">
 
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
                 <h4 class="page-title">{{ $greet }} <strong>{{ Auth::user()->name }}!</strong></h4>

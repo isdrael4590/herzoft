@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('staff_expedition');
             $table->string('temp_ambiente');
             $table->string('status_expedition');
+            $table->integer('total_amount');
             $table->text('note')->nullable();
             $table->string('operator');
             $table->timestamps();

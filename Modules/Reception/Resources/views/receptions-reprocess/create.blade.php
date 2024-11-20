@@ -60,7 +60,7 @@
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
                                             placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
-                                            required>
+                                            required readonly>
                                     </div>
                                 </div>
                             </div>

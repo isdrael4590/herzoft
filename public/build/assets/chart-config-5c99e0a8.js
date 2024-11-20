@@ -21,7 +21,13 @@ $(document).ready(function () {
 
     let s = document.getElementById("ProductionlabelsChart"); $.get("/productionlabels/chart-data", function (a) { new Chart(s, { type: "line", data: { labels: a.months, datasets: [{ label: "Instrumental Vapor", data: a.label_steams, fill: !1, borderColor: "#eb881f", backgroundColor: ['#eb881f'], tension: 0 }, { label: "Instrumental Peroxido", data: a.label_hpos, fill: !1, borderColor: "#19aac4", backgroundColor: ['#19aac4'], tension: 0 }] } }) })
 
-    let ss = document.getElementById("ResultProductionChart"); $.get("/resultproductions/chart-data", function (a) { new Chart(ss, { type: "line", data: { labels: a.months, datasets: [{ label: "Instrumental Esteril", data: a.esteril, fill: !1, borderColor: "#eb881f", backgroundColor: ['#eb881f'], tension: 0 }, { label: "Instrumental No Esteril", data: a.no_esteril, fill: !1, borderColor: "#19aac4", backgroundColor: ['#19aac4'], tension: 0 }] } }) })
+
+
+    let ss = document.getElementById("ResultProductionChart"); $.get("/resultproductions/chart-data", function (a) { new Chart(ss, { type: "line", data: { labels: a.months, datasets: [{ label: "Instrumental Procesado", data: a.procesados, fill: !1, borderColor: "#eb881f", backgroundColor: ['#eb881f'], tension: 0 }, { label: "Instrumental Esteril", data: a.esteril, fill: !1, borderColor: "#19aac4", backgroundColor: ['#19aac4'], tension: 0 }]
+    } }) })
+   
+
+
 
     let u = document.getElementById("BiologicChart"); $.get("/biologics/chart-data", function (a) { new Chart(u, { type: "line", data: { labels: a.months, datasets: [{ label: "Steam Biologico OK", data: a.Ciclos_BioSteam_OK, fill: !1, borderColor: "#2563EB", backgroundColor: ['#2563EB'], tension: 0 }, { label: "Steam Biologico FALLA", data: a.Ciclos_BioSteam_FAIL, fill: !1, borderColor: "#EA580C", backgroundColor: ['#EA580C'], tension: 0 }, { label: "HPO Biologico OK", data: a.Ciclos_BioHPO_OK, fill: !1, backgroundColor: ['#35eb1f'], borderColor: "#35eb1f", tension: 0 }, { label: "HPO Biologico FALLA", data: a.Ciclos_BioHPO_fail, fill: !1, backgroundColor: ['#eb881f'], borderColor: "#eb881f", tension: 0 }] } }) })
 

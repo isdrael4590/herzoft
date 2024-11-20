@@ -18,10 +18,13 @@
                     <tr>
                         <th class="align-middle">Código Instrumental</th>
                         <th class="align-middle">Descripción del Instrumental</th>
+                        <th class="align-middle text-center">Cantidad </th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
                         <th class="align-middle text-center">Estado de Stock</th>
                         <th class="align-middle text-center">Fecha Esterilización</th>
                         <th class="align-middle text-center">Expiración</th>
+                        <th class="align-middle text-center">Otra Info.</th>
+
                         <th>Acción</th>
                     </tr>
                 </thead>
@@ -34,6 +37,9 @@
                                 </td>
                                 <td class="align-middle">
                                     {{ $cart_item->name }}
+                                </td>
+                                <td class="align-middle">
+                                    {{ $cart_item->qty }}
                                 </td>
                                 <td class="align-middle text-center text-center">
                                     <span>
@@ -49,13 +55,13 @@
                                    
                                 </td>
                                 <td class="align-middle text-center text-center">
-                                   {{-- {!!\Carbon\Carbon::parse($cart_item->options->product_date_sterilized)->addMonth($cart_item->options->product_expiration)!!}--}}
+                                  
                                    {!!\Carbon\Carbon::parse($cart_item->options->product_expiration)->format('d M, Y')!!}
                                 </td>
-                                <td class="align-middle text-center">
-                                    <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
-                                        <i class="bi bi-x-circle font-2xl text-danger"></i>
-                                    </a>
+                                <td class="align-middle text-center text-center">
+                                    <span>
+                                        {{ $cart_item->options->product_patient }} / [{{ $cart_item->options->product_outside_company}}]
+                                    </span>
                                 </td>
                             </tr>
                         @endforeach

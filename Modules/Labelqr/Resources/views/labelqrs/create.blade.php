@@ -4,7 +4,7 @@
 @endphp
 @extends('layouts.app')
 
-@section('title', 'Registrar Ingreso')
+@section('title', 'Registrar Proceso')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
@@ -158,7 +158,7 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" readonly>
                                     </div>
                                 </div>
                             </div>

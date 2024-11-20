@@ -14,6 +14,7 @@
 
 <body class="c-app">
     @include('layouts.sidebar')
+ 
 
     <div class="c-wrapper">
         <header class="c-header c-header-light c-header-fixed">
@@ -28,10 +29,12 @@
                 @yield('content')
             </main>
         </div>
-
+        @livewire('cookie-component')
         @include('layouts.footer')
     </div>
 
     @include('includes.main-js')
+  
+
 </body>
 </html>

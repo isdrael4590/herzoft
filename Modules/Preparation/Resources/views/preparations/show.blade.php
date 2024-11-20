@@ -29,8 +29,11 @@
                                 <tr>
                                     <th class="align-middle">Código del Instrumental</th>
                                     <th class="align-middle">Descripción</th>
+                                    <th class="align-middle">Cantidad</th>
                                     <th class="align-middle">Area Proviene</th>
                                     <th class="align-middle">Estado</th>
+                                    <th class="align-middle">Paciente</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,10 +46,16 @@
                                                 {{ $item->product_code }}
                                             </span></td>
                                         <td class="align-middle">
+                                            {{ $item->product_quantity }}
+                                        </td>
+                                        <td class="align-middle">
                                             {{ $item->product_coming_zone }}
                                         </td>
                                         <td class="align-middle">
                                             {{ $item->product_state_preparation }}
+                                        </td>
+                                        <td class="align-middle">
+                                            {{ $item->product_patient }}
                                         </td>
                                     </tr>
                                 @endforeach

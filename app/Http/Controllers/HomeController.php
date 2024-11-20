@@ -307,7 +307,7 @@ class HomeController extends Controller
         $HPO_FAIL = Discharge::where($search_HPOFAIL)
             ->whereYear('updated_at', date('Y'))
             ->count();
-       
+
 
         return response()->json([
             'Steam1ok'     => $Steam1ok,
@@ -384,6 +384,8 @@ class HomeController extends Controller
     }
 
 
+
+
     public function ResultProductionChart()
     {
         abort_if(!request()->ajax(), 404);
@@ -393,62 +395,52 @@ class HomeController extends Controller
             $date = Carbon::now()->addMonths($i)->format('m-Y');
             $dates->put($date, 0);
         }
-
+        dd($dates);
         $date_range = Carbon::today()->subYear()->format('Y-m-d');
-        $search_esteril = ['product_ref_qr' => 'Esteril'];
-        $esteril = DischargeDetails::where('updated_at', '>=', $date_range)
-            ->where($search_esteril)
+
+        $Procesados = Labelqr::where('updated_at', '>=', $date_range)
             ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
-                DB::raw("count('*') as count")
+                DB::raw("SUM(total_amount) as amount")
             ])
             ->groupBy('month')->orderBy('month')
-            ->get()->pluck('count', 'month');
+            ->get()->pluck('amount', 'month');
 
-        $search_no_esteril = ['product_ref_qr' => 'No Esteril'];
-        $search_no_esteril2 = ['product_ref_qr' => 'Reprocesar'];
-        $no_esteril = DischargeDetails::where('updated_at', '>=', $date_range)
-            ->where($search_no_esteril)
-            ->Orwhere($search_no_esteril2)
+        dd($Procesados);
+
+        $esteril = Discharge::where('updated_at', '>=', $date_range)
             ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
-                DB::raw("count('*') as count")
+                DB::raw("SUM(total_amount) as amount")
             ])
             ->groupBy('month')->orderBy('month')
-            ->get()->pluck('count', 'month');
+            ->get()->pluck('amount', 'month');
 
 
+        $all_procesados = array_merge_numeric_values($Procesados);
+        $all_esteril = array_merge_numeric_values($esteril);
 
-        $label_steril = array_merge_numeric_values($esteril);
-        $label_nosteril = array_merge_numeric_values($no_esteril);
+        $dates_procesados = $dates->merge($all_procesados);
+        $dates_esteriles = $dates->merge($all_esteril);
 
-
-        $dates_esteril = $dates->merge($label_steril);
-        $dates_noesteil = $dates->merge($label_nosteril);
-
-        $esteril = [];
-        $no_esteril = [];
-
+        $esteril_all = [];
+        $procesado_all = [];
         $months = [];
 
-        foreach ($dates_esteril as $key => $value) {
-            $esteril[] = $value;
+        foreach ($dates_procesados as $key => $value) {
+            $procesado_all[] = $value;
             $months[] = $key;
         }
-
-        foreach ($dates_noesteil as $key => $value) {
-            $no_esteril[] = $value;
+        foreach ($dates_esteriles as $key => $value) {
+            $esteril_all[] = $value;
         }
-
-
-
         return response()->json([
-            'esteril' => $esteril,
-            'no_esteril' => $no_esteril,
-
+            'esteril' => $esteril_all,
+            'procesados' => $procesado_all,
             'months' => $months,
         ]);
     }
+
 
     public function BiologicChart()
     {

@@ -99,7 +99,7 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ $testvacuum->operator }}" required>
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ $testvacuum->operator }}" readonly required>
                                     </div>
                                 </div>
                             </div>

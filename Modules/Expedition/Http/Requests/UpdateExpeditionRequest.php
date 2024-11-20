@@ -21,7 +21,8 @@ class UpdateExpeditionRequest extends FormRequest
             'staff_expedition' => 'required|string|max:255',
             'temp_ambiente' => 'required|string|max:255',
             'status_expedition' => 'required|string|max:255',
-            'note' => 'nullable|string|max:255'
+            'note' => 'nullable|string|max:255',
+            'total_amount' => 'required|numeric',
         ];
     }
 

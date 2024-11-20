@@ -138,7 +138,7 @@
                                     <div class="form-group">
                                         <label>Operador Descarga</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}">
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }} "readonly>
                                     </div>
                                 </div>
 

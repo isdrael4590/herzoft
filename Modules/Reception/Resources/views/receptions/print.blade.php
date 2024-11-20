@@ -602,7 +602,8 @@
                                             <td>
                                                 <div>
                                                     <div>Persona que entrega: <strong>
-                                                            {{ $reception->delivery_staff }}</strong></div>
+                                                            {{ $reception->delivery_staff }}</strong>
+                                                    </div>
                                                     <div>Área Procedente: <strong>{{ $reception->area }}</strong></div>
                                                     <div>Persona que recibe:<strong>
                                                             {{ $reception->operator }}</strong></div>
@@ -633,8 +634,12 @@
                                             <tr>
                                                 <th>Código </th>
                                                 <th>Descripción Rumed</th>
+                                                <th>Cantidad</th>
                                                 <th>Nivel infección</th>
                                                 <th>Estado</th>
+                                                <th>Paciente</th>
+                                                <th>Casa Comer.</th>
+
                                         </thead>
                                         <tbody>
                                             @foreach ($reception->receptionDetails as $item)
@@ -646,11 +651,22 @@
                                                         {{ $item->product_name }}
                                                     </td>
                                                     <td style= "text-align:center">
+                                                        {{ $item->product_quantity }}
+                                                    </td>
+                                                    <td style= "text-align:center">
                                                         {{ $item->product_type_dirt }}
                                                     </td>
                                                     <td style= "text-align:center">
                                                         {{ $item->product_state_rumed }}
                                                     </td>
+                                                    @if (@empty($item->product_patient))
+                                                    @else
+                                                        <td> {{ $item->product_patient }}</td>
+                                                    @endif
+                                                    @if (@empty($item->product_outside_company))
+                                                    @else
+                                                        <td> {{ $item->product_outside_company }}</td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>

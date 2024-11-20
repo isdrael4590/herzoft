@@ -36,7 +36,7 @@
                                     <div class="form-group">
                                         <label for="reference">Referencia <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="reference" required readonly
-                                        value="{{ $reception_code }}">
+                                            value="{{ $reception_code }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -57,12 +57,13 @@
                                             placeholder= "Ingrese el nombre de la persona que entrega" required>
                                     </div>
                                 </div>
+                             
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
                                             placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
-                                            required>
+                                            required readonly>
                                     </div>
                                 </div>
                             </div>

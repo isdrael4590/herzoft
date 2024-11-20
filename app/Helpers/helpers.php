@@ -55,6 +55,17 @@ if (!function_exists('labelqrs')) {
     }
 }
 
+if (!function_exists('expeditions')) {
+    function expeditions()
+    {
+        $expeditions = cache()->remember('expeditions', 24 * 60, function () {
+            return \Modules\Expedition\Entities\Expedition::firstOrFail();
+        });
+
+        return $expeditions;
+    }
+}
+
 if (!function_exists('format_currency')) {
     function format_currency($value, $format = true)
     {

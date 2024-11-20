@@ -48,7 +48,7 @@ class PreparationDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[6, 'desc']],
+                'order' => [[4, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -72,20 +72,24 @@ class PreparationDetailsDataTable extends DataTable
             Column::make('dates')
                 ->title('Fecha Ingreso')
                 ->className('text-center align-middle'),
-            Column::make('dates2')
-                ->title('Fecha Ult. Proceso')
-                ->className('text-center align-middle'),
+
             Column::make('product_name')
                 ->title('Nombre del producto')
                 ->className('text-center align-middle'),
             Column::make('product_code')
                 ->title('Código del producto')
                 ->className('text-center align-middle'),
+            Column::make('product_quantity')
+                ->title('Cantidad')
+                ->className('text-center align-middle'),
             Column::make('product_state_preparation')
                 ->title('Estado del Preparation')
                 ->className('text-center align-middle')
                 ->orders('product_state_preparation', 'asc'),
             Column::make('product_coming_zone')
+                ->title('Proveniente')
+                ->className('text-center align-middle'),
+            Column::make('product_area')
                 ->title('Proveniente')
                 ->className('text-center align-middle'),
             Column::computed('action2')

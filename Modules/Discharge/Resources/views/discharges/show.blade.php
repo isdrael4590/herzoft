@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ' Detalles Etiquetas Generadas')
+@section('title', ' Detalles Ciclo Procesado')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
@@ -85,10 +85,13 @@
                                     <tr>
                                         <th class="align-middle">Código del Instrumental</th>
                                         <th class="align-middle">Descripción</th>
+                                        <th> Cantidad Procesada</th>
+                                        <th class="align-middle">Cantidad Validad</th>
                                         <th class="align-middle">Tipo de Envoltura</th>
                                         <th class="align-middle">Validación Embalaje</th>
                                         <th class="align-middle">Tipo Ind. Químico</th>
                                         <th class="align-middle">Vencimiento</th>
+                                        <th class="align-middle">Otra Info.</th>
                                         <th class="align-middle">QR Paquete</th>
                                     </tr>
                                 </thead>
@@ -102,6 +105,12 @@
                                                     {{ $item->product_code }}
                                                 </span></td>
                                             <td class="align-middle">
+                                                {{ $item->product_quantity }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $item->product_quantity }}
+                                            </td>
+                                            <td class="align-middle">
                                                 {{ $item->product_package_wrap }}
                                             </td>
                                             <td class="align-middle">
@@ -111,8 +120,25 @@
                                                 {{ $item->product_eval_indicator }}
                                             </td>
                                             <td class="align-middle">
-                                                {{ $item->product_expiration }} Meses <br>
-                                                {!! Carbon\Carbon::parse($item->updated_at)->addMonth($item->product_expiration) !!}
+                                                @if ($item->product_expiration >= 15)
+                                                    @if ($item->product_expiration == 180)
+                                                        6 Meses <br>
+                                                    @elseif ($item->product_expiration == 270)
+                                                    9 Meses <br>
+                                                    @elseif ($item->product_expiration == 365)
+                                                    12 Meses <br>
+                                                    @elseif ($item->product_expiration == 545)
+                                                    18 Meses <br>
+                                                    @endif
+                                                @else
+                                                    {{ $item->product_expiration }} Días <br>
+                                                @endif
+                                                {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') !!}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $item->product_patient }} / [
+                                                    {{ $item->product_outside_company }} 
+                                                ]
                                             </td>
                                             <td class="align-middle">
 
@@ -136,6 +162,7 @@
 
 
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>

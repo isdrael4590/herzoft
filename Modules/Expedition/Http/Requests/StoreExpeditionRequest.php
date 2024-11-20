@@ -17,12 +17,12 @@ class StoreExpeditionRequest extends FormRequest
         return [
             'reference' => 'required|string|max:255',
             'operator' => 'required|string|max:255',
-            
             'area_expedition' => 'required|string|max:255',
             'staff_expedition' => 'required|string|max:255',
             'temp_ambiente' => 'required|string|max:255',
             'status_expedition' => 'required|string|max:255',
-            'note' => 'nullable|string|max:255'
+            'note' => 'nullable|string|max:255',
+            'total_amount' => 'required|numeric',
             ];
     }
 

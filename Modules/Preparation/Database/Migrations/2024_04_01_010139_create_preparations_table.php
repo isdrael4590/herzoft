@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('reference');
             $table->string('operator');
             $table->text('note')->nullable();
+            $table->integer('total_amount');
             $table->foreign('reception_id')->references('id')->on('receptions')->cascadeOnDelete();
             $table->timestamps();
         });
