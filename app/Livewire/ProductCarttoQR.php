@@ -107,10 +107,11 @@ class ProductCarttoQR extends Component
                 'stock'                 => $preparation_detail['product_quantity'],
                 'product_patient'       => $preparation_detail['product_patient'],
                 'product_outside_company'  => $preparation_detail['product_outside_company'],
-                'product_area'  => $preparation_detail['product_area'],
+                'product_area'           => $preparation_detail['product_area'],
+                'product_type_process'           => $preparation_detail['product_type_process'],
                 'product_package_wrap'  =>  'Contenedor',
                 'product_ref_qr'        =>  'Cargado',
-                'product_eval_package'   > 'OK',
+                'product_eval_package'   => "OK",
                 'product_eval_indicator' =>  '4',
                 'product_expiration' =>  '14'
             ]
@@ -207,10 +208,12 @@ class ProductCarttoQR extends Component
 
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
+                'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
                 'code'                   => $cart_item->options->code,
                 'product_id'      => $cart_item->options->product_id,
                 'stock'                 => $cart_item->options->stock,
                 'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
+                'unit_price'            => $cart_item->options->unit_price, // se añade
                 'product_package_wrap'      => $cart_item->options->product_package_wrap,
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
                 'product_eval_package'      => $cart_item->options->product_eval_package,
@@ -238,6 +241,7 @@ class ProductCarttoQR extends Component
     public function updateCartOptions($row_id, $preparation_detail_id, $cart_item)
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
+            'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
             'code'                  => $cart_item->options->code,
             'product_id'            => $cart_item->options->product_id,
             'stock'                 => $cart_item->options->stock,
@@ -245,6 +249,7 @@ class ProductCarttoQR extends Component
             'product_type_process'  => $cart_item->options->product_type_process,
             'product_package_wrap'  => $this->package_wrap[$preparation_detail_id],
             'product_ref_qr'        => $this->ref_qr[$preparation_detail_id],
+            'unit_price'        => $this->unit_price[$preparation_detail_id],
             'product_eval_package'  => $this->eval_package[$preparation_detail_id],
             'product_eval_indicator' => $this->eval_indicator[$preparation_detail_id],
             'product_expiration'   => $this->expiration[$preparation_detail_id],

@@ -37,7 +37,7 @@
                             <option value="NO CRITICO"> NO CRITICO</option>
                             <option value="SEMICRITICO"> SEMI-CRITICO</option>
                             <option selected value="CRITICO"> CRÍTICO</option>
-                            <option selected value="REPROCESADO"> REPROCESADO</option>
+                           {{--<option selected value="REPROCESADO"> REPROCESADO</option>--}}
                         </select>
                     </div>
                     <div class="form-group">

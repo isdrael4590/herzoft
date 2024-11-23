@@ -2,6 +2,7 @@
 
 namespace Modules\Labelqr\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Labelqr\Database\factories\LabelqrFactory;
@@ -28,6 +29,24 @@ class Labelqr extends Model
     public function labelqr() {
         return $this->hasMany(Labelqr::class, 'labelqr_id', 'id');
     }
+
+
+    public function setAmountAttribute($value) {
+        $this->attributes['total_amount'] = $value;
+    }
+
+    public function getAmountAttribute($value) {
+        return $value ;
+    }
+
+    public function getDateAttribute($value) {
+        return Carbon::parse($value)->format('d M, Y');
+    }
+
+    public function scopeByLabelqr($query) {
+        return $query->where('labelqr_id', request()->route('labelqr_id'));
+    }
+
 
 
 }

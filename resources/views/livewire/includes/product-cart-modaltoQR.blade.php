@@ -49,8 +49,9 @@
                     <div class="form-group">
                         <label>Validación del Embalaje <span class="text-danger">*</span></label>
                         <select wire:model.live="eval_package.{{ $cart_item->id }}" class="form-control" required>
-                            <option selected value="OK"> OK</option>
-                            <option value="N/A"> N/A </option>
+                            <option  disabled>-- Seleccionar la envoltura--</option>
+                            <option  selected value="N/A"> N/A </option>
+                            <option  value="OK"> OK</option>
                         </select>
                     </div>
                     <div class="form-group">

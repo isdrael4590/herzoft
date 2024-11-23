@@ -161,7 +161,7 @@
                                         <label for="temp_ambiente">Temperatura del Ambiente <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_ambiente" required
-                                            value="{{ old('temp_ambiente') }}">
+                                            value="{{ old('temp_ambiente') }}" min="1">
                                     </div>
                                 </div>
 

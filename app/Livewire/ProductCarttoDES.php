@@ -245,7 +245,8 @@ class ProductCarttoDES extends Component
                 'product_patient'    => $cart_item->options->product_patient,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
-
+                'unit_price'            => $cart_item->options->unit_price, // se añade
+                'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
 
             ]
         ]);
@@ -263,19 +264,22 @@ class ProductCarttoDES extends Component
     public function updateCartOptions($row_id, $labelqr_detail_id, $cart_item)
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
-            'code' => $cart_item->options->code,
-            'product_id'            => $cart_item->options->product_id,
-            'stock'                 => $cart_item->options->stock,
-            'labelqr_detail_id'      => $cart_item->options->labelqr_detail_id,
-            'product_type_process' => $cart_item->options->product_type_process,
-            'product_package_wrap'     => $this->package_wrap[$labelqr_detail_id],
-            'product_ref_qr'   => $this->ref_qr[$labelqr_detail_id],
-            'product_eval_package'     => $this->eval_package[$labelqr_detail_id],
-            'product_eval_indicator'   => $this->eval_indicator[$labelqr_detail_id],
-            'product_expiration'   => $this->expiration[$labelqr_detail_id],
-            'product_patient'   => $this->item_patient[$labelqr_detail_id],
-            'product_area'   => $this->item_area[$labelqr_detail_id],
+            'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+            'code'                      => $cart_item->options->code,
+            'product_id'                => $cart_item->options->product_id,
+            'stock'                     => $cart_item->options->stock,
+            'labelqr_detail_id'         => $cart_item->options->labelqr_detail_id,
+            'product_type_process'      => $cart_item->options->product_type_process,
+            'product_package_wrap'      => $this->package_wrap[$labelqr_detail_id],
+            'product_ref_qr'            => $this->ref_qr[$labelqr_detail_id],
+            'product_eval_package'      => $this->eval_package[$labelqr_detail_id],
+            'product_eval_indicator'    => $this->eval_indicator[$labelqr_detail_id],
+            'product_expiration'        => $this->expiration[$labelqr_detail_id],
+            'product_patient'           => $this->item_patient[$labelqr_detail_id],
+            'product_area'              => $this->item_area[$labelqr_detail_id],
             'product_outside_company'   => $this->item_outside_company[$labelqr_detail_id],
+            'unit_price'                => $this->unit_price[$labelqr_detail_id],
+
         ]]);
     }
 }

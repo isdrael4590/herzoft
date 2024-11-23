@@ -82,15 +82,11 @@ class PreparationDetailsDataTable extends DataTable
             Column::make('product_quantity')
                 ->title('Cantidad')
                 ->className('text-center align-middle'),
-            Column::make('product_state_preparation')
-                ->title('Estado del Preparation')
-                ->className('text-center align-middle')
-                ->orders('product_state_preparation', 'asc'),
             Column::make('product_coming_zone')
                 ->title('Proveniente')
                 ->className('text-center align-middle'),
             Column::make('product_area')
-                ->title('Proveniente')
+                ->title('Area')
                 ->className('text-center align-middle'),
             Column::computed('action2')
                 ->exportable(false)

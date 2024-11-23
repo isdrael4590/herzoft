@@ -71,11 +71,11 @@
                                             <option
                                                 {{ $preparationDetails->product_state_preparation == 'Procesado' ? 'selected' : '' }}
                                                 value="Procesado">Procesado</option>
-                                            <option
+                                            {{--   <option
                                                 {{ $preparationDetails->product_state_preparation == 'Reprocesar' ? 'selected' : '' }}
                                                 value="Reprocesar">Reprocesar</option>
 
-
+                                                --}}
                                         </select>
                                     </div>
                                 </div>

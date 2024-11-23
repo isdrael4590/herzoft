@@ -227,17 +227,28 @@ class DischargeController extends Controller
                 'total_amount' => $request->total_amount // se añade
 
             ]);
+
+
+
             if ($request->validation_biologic == 'Falla' || $request->status_cycle == 'Ciclo Falla') {
                 $labelqr = Labelqr::findOrFail($request->labelqr_id);
                 $labelqr->update([
                     'status_cycle' => "Ciclo Falla",
 
                 ]);
+                $lote = Lote::where("lote_code", $request->lote_machine)->get()->first();
+                $lote->update([
+                    'status_lote' => 'Ciclo Falla',
+                ]);
             } elseif ($request->validation_biologic == 'Correcto' && $request->status_cycle == 'Ciclo Aprobado') {
                 $labelqr = Labelqr::findOrFail($request->labelqr_id);
                 $labelqr->update([
                     'status_cycle' => "Ciclo Aprobado",
 
+                ]);
+                $lote = Lote::where("lote_code", $request->lote_machine)->get()->first();
+                $lote->update([
+                    'status_lote' => 'Ciclo Aprobado',
                 ]);
             }
 
@@ -279,8 +290,6 @@ class DischargeController extends Controller
                 $A1 = $labelqr_detail->product_quantity; // cantidad de productos de klabelqr detalles
                 $B1 = $labelqr_detail->product_quantity_fail; // Cantidad de productos labelqre con fallas
                 $A2 = $cart_item->qty; // cantidad actual y validado en descarga
-
-
 
 
                 if ($request->validation_biologic == 'Falla' || $request->status_cycle == 'Ciclo Falla') {

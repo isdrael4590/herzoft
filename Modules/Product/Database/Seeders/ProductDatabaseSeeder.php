@@ -30,6 +30,7 @@ class ProductDatabaseSeeder extends Seeder
             'area'  => 'Odontologia',
             'product_unit'  => 'Un',
             'product_quantity'  => '1',
+            'product_price'  => '1',
             'product_type_process' => 'Alta Temperatura',
             'product_barcode_symbology' => 'C128'
         ]

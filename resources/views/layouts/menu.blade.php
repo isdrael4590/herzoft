@@ -97,6 +97,7 @@
             </a>
 
             <ul class="c-sidebar-nav-dropdown-items">
+                {{--
                 @can('access_reprocess')
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{ request()->routeIs('RecepReprocess.index') ? 'c-active' : '' }}"
@@ -105,6 +106,7 @@
                         </a>
                     </li>
                 @endcan
+                --}}
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('preparations.index') ? 'c-active' : '' }}"
                         href="{{ route('preparationDetails.index') }}">
@@ -126,7 +128,7 @@
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{ request()->routeIs('labelqrs.create') ? 'c-active' : '' }}"
                             href="{{ route('labelqrs.create') }}">
-                            <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro Ingreso / Etiqueta
+                            <i class="c-sidebar-nav-icon bi bi-tags" style="line-height: 1;"></i> Registro / Etiqueta
 
                         </a>
                     </li>

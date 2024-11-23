@@ -277,7 +277,7 @@ class HomeController extends Controller
     }
 
 
-    // TOTAL DE PRODUCION 
+    // TOTAL DE PRODUCION  montash
 
     public function currentMonthProductionChart()
     {
@@ -318,7 +318,7 @@ class HomeController extends Controller
             'HPO_FAIL'  => $HPO_FAIL,
         ]);
     }
-
+    // Instrumental Procesado.  nueva versioon
     public function ProductionlabelsChart()
     {
         abort_if(!request()->ajax(), 404);
@@ -382,9 +382,72 @@ class HomeController extends Controller
             'months' => $months,
         ]);
     }
+    // Instrumental Procesado.  old versioon
+    public function ProductionlabelsChart2()
+    {
+        abort_if(!request()->ajax(), 404);
+
+        $dates = collect();
+        foreach (range(-6, 0) as $i) {
+            $date = Carbon::now()->addMonths($i)->format('m-Y');
+            $dates->put($date, 0);
+        }
+
+        $date_range = Carbon::today()->subYear()->format('Y-m-d');
+        $search_Labelsteam = ['product_type_process' => 'Alta Temperatura'];
+        $SteamLabel = LabelqrDetails::where('updated_at', '>=', $date_range)
+            ->where($search_Labelsteam)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("count('*') as count")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('count', 'month');
+
+        $search_LabelHPO = ['product_type_process' => 'Baja Temperatura'];
+        $HPOLabel = LabelqrDetails::where('updated_at', '>=', $date_range)
+            ->where($search_LabelHPO)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("count('*') as count")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('count', 'month');
 
 
 
+        $label_steam = array_merge_numeric_values($SteamLabel);
+        $label_hpo = array_merge_numeric_values($HPOLabel);
+
+
+        $dates_steam = $dates->merge($label_steam);
+        $dates_hpo = $dates->merge($label_hpo);
+
+        $label_steams = [];
+        $label_hpos = [];
+
+        $months = [];
+
+        foreach ($dates_steam as $key => $value) {
+            $label_steams[] = $value;
+            $months[] = $key;
+        }
+
+        foreach ($dates_hpo as $key => $value) {
+            $label_hpos[] = $value;
+        }
+
+
+
+        return response()->json([
+            'label_steams' => $label_steams,
+            'label_hpos' => $label_hpos,
+
+            'months' => $months,
+        ]);
+    }
+
+    // Rendimiento Paquetes.  old versioon
 
     public function ResultProductionChart()
     {
@@ -401,42 +464,44 @@ class HomeController extends Controller
         $Procesados = Labelqr::where('updated_at', '>=', $date_range)
             ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
-                DB::raw("SUM(total_amount) as amount")
+                DB::raw("SUM(total_amount) as total_amount")
             ])
             ->groupBy('month')->orderBy('month')
-            ->get()->pluck('amount', 'month');
+            ->get()->pluck('total_amount', 'month');
 
-        dd($Procesados);
-
+        
         $esteril = Discharge::where('updated_at', '>=', $date_range)
+        ->Where
             ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
-                DB::raw("SUM(total_amount) as amount")
+                DB::raw("SUM(total_amount) as total_amount")
             ])
             ->groupBy('month')->orderBy('month')
-            ->get()->pluck('amount', 'month');
+            ->get()->pluck('total_amount', 'month');
 
 
         $all_procesados = array_merge_numeric_values($Procesados);
         $all_esteril = array_merge_numeric_values($esteril);
-
         $dates_procesados = $dates->merge($all_procesados);
-        $dates_esteriles = $dates->merge($all_esteril);
+        $dates_esteril = $dates->merge($all_esteril);
 
-        $esteril_all = [];
         $procesado_all = [];
+        $esteril_all = [];
+
         $months = [];
 
         foreach ($dates_procesados as $key => $value) {
             $procesado_all[] = $value;
             $months[] = $key;
         }
-        foreach ($dates_esteriles as $key => $value) {
+    
+        foreach ($dates_esteril as $key => $value) {
             $esteril_all[] = $value;
         }
+    
         return response()->json([
-            'esteril' => $esteril_all,
             'procesados' => $procesado_all,
+            'esteril' => $esteril_all,
             'months' => $months,
         ]);
     }

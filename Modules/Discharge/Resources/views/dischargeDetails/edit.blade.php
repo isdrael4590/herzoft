@@ -20,8 +20,8 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="dischargeDetails-form"
-                            action="{{ route('dischargeDetails.update', $dischargeDetails) }}" method="POST">
+                        <form id="dischargeDetails-form" action="{{ route('dischargeDetails.update', $dischargeDetails) }}"
+                            method="POST">
                             @csrf
                             @method('patch')
                             <div class="form-row">
@@ -48,19 +48,17 @@
                                         <label for="product_ref_qr">Estado de Esterilidad<span
                                                 class="text-danger">*</span></label>
 
-                                        <select class="form-control" id="product_ref_qr"
-                                            name="product_ref_qr">
-                                            <option
-                                                {{ $dischargeDetails->product_ref_qr == 'Esteril' ? 'selected' : '' }}
+                                        <select class="form-control" id="product_ref_qr" name="product_ref_qr">
+                                            <option {{ $dischargeDetails->product_ref_qr == 'Esteril' ? 'selected' : '' }}
                                                 value="Esteril">
                                                 Esteril</option>
                                             <option
                                                 {{ $dischargeDetails->product_ref_qr == 'No Esteril' ? 'selected' : '' }}
                                                 value="No Esteril">No Esteril</option>
-                                            <option
+                                            {{-- <option
                                                 {{ $dischargeDetails->product_ref_qr == 'Reprocesar' ? 'selected' : '' }}
                                                 value="Reprocesar">Reprocesar</option>
-
+                                                                                        --}}
                                         </select>
                                     </div>
                                 </div>
@@ -68,18 +66,15 @@
                                     <div class="form-group">
                                         <label for="product_eval_package">Area Proveniente<span
                                                 class="text-danger">*</span></label>
-                                                <select class="form-control" id="product_eval_package"
-                                                name="product_eval_package">
-                                                <option
-                                                    {{ $dischargeDetails->product_eval_package == 'OK' ? 'selected' : '' }}
-                                                    value="OK">
-                                                    OK</option>
-                                                <option
-                                                    {{ $dischargeDetails->product_eval_package == 'NO' ? 'selected' : '' }}
-                                                    value="NO">NO</option>
-                                                
-    
-                                            </select>
+                                        <select class="form-control" id="product_eval_package" name="product_eval_package">
+                                            <option {{ $dischargeDetails->product_eval_package == 'OK' ? 'selected' : '' }}
+                                                value="OK">
+                                                OK</option>
+                                            <option {{ $dischargeDetails->product_eval_package == 'NO' ? 'selected' : '' }}
+                                                value="NO">NO</option>
+
+
+                                        </select>
                                     </div>
                                 </div>
 

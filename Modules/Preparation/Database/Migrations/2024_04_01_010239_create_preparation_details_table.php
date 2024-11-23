@@ -21,6 +21,7 @@ class CreatePreparationDetailsTable extends Migration
             $table->string('product_code');
             $table->integer('product_quantity');
             $table->integer('price');
+            $table->integer('unit_price');
             $table->string('unit')->nullable();
             $table->string('product_patient')->nullable();
             $table->string('product_outside_company')->nullable();

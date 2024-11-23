@@ -134,6 +134,13 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label for="product_price">Precio<span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" name="product_price" required
+                                            value="{{ $product->product_price }}" min="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label for="product_unit">Unidad <i class="bi bi-question-circle-fill text-info"
                                                 data-toggle="tooltip" data-placement="top"
                                                 title="This short text will be placed after Product Quantity."></i> <span

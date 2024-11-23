@@ -23,8 +23,7 @@ $(document).ready(function () {
 
 
 
-    let ss = document.getElementById("ResultProductionChart"); $.get("/resultproductions/chart-data", function (a) { new Chart(ss, { type: "line", data: { labels: a.months, datasets: [{ label: "Instrumental Procesado", data: a.procesados, fill: !1, borderColor: "#eb881f", backgroundColor: ['#eb881f'], tension: 0 }, { label: "Instrumental Esteril", data: a.esteril, fill: !1, borderColor: "#19aac4", backgroundColor: ['#19aac4'], tension: 0 }]
-    } }) })
+    let ss = document.getElementById("ResultProductionChart"); $.get("/resultproductions/chart-data", function (a) { new Chart(ss, { type: "line", data: { labels: a.months, datasets: [{ label: "Instrumental Procesado", data: a.procesados, fill: !1, borderColor: "#eb881f", backgroundColor: ['#eb881f'], tension: 0 }, { label: "Instrumental Esteril", data: a.esteril, fill: !1, borderColor: "#19aac4", backgroundColor: ['#19aac4'], tension: 0 }]    } }) })
    
 
 
