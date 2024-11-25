@@ -58,7 +58,7 @@
 
     ```bash
     docker compose -f docker-compose.prod.yml exec app php artisan key:generate
-    docker compose -f docker-compose.prod.yml exec app php artisan migrate:fresh --seed
+    docker compose -f docker-compose.prod.yml exec app php artisan migrate --seed
     docker compose -f docker-compose.prod.yml exec app php artisan storage:link
     docker compose -f docker-compose.prod.yml exec app php artisan optimize
     ```
