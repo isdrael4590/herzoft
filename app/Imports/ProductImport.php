@@ -3,17 +3,24 @@
 namespace App\Imports;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Modules\Product\Entities\Category;
 use Modules\Product\Entities\Product;
 
 class ProductImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {
+
+
+
         foreach ($rows as $row) {
+
+            $Category_id = Category::where("category_name", $row['area'])->get()->first();
             Product::create([
-                'category_id' => $row['category_id'],
+                'category_id' => $Category_id->id,
                 'product_name' => $row['product_name'],
                 'product_code' => $row['product_code'],
                 'product_barcode_symbology' => $row['product_barcode_symbology'],
@@ -25,7 +32,6 @@ class ProductImport implements ToCollection, WithHeadingRow
                 'product_note' => $row['product_note'],
                 'product_quantity' => $row['product_quantity'],
                 'product_patient' => $row['product_patient'],
-
             ]);
         }
     }

@@ -58,7 +58,9 @@
                             <input id="password" type="password"
                                    class="form-control @error('password') is-invalid @enderror"
                                    placeholder="Password" name="password">
+                                   
                             @error('password')
+
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

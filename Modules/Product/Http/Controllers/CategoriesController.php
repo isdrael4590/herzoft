@@ -2,10 +2,12 @@
 
 namespace Modules\Product\Http\Controllers;
 
+use App\Imports\CategoryImport;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Product\Entities\Category;
 use Modules\Product\DataTables\ProductCategoriesDataTable;
 
@@ -80,5 +82,27 @@ class CategoriesController extends Controller
         toast('Product Category Deleted!', 'warning');
 
         return redirect()->route('product-categories.index');
+    }
+
+    public function ImportCategory(Request $request) {
+        abort_if(Gate::denies('access_product_categories'), 403);
+
+        
+            // Validate the uploaded file
+            $request->validate([
+                'file' => 'required|file|mimes:xlsx,xls,csv'
+            ]);
+    
+            // Get the uploaded file
+            $file = $request->file('file');
+    
+            // Import the data using the DataImport class
+            Excel::import(new CategoryImport, $file);
+    
+            return redirect()->back()->with('success', 'Data imported successfully!');
+
+
+
+        //return view('product-categories.index');
     }
 }

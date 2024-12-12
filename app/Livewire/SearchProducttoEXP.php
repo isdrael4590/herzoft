@@ -28,6 +28,8 @@ class SearchProducttoEXP extends Component
             ->where('product_quantity','>=',1)
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
             ->where('product_quantity','>=',1)
+            ->orWhere('product_name', 'like', '%' . $this->query . '%')
+            ->where('product_quantity','>=',1)
             ->take($this->how_many)->get();
     }
 

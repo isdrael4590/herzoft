@@ -59,3 +59,14 @@ table {
         width: 100% !important;
     }
 }
+
+.js-cookie-consent{
+    position: absolute;
+    top: 0%;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    z-index: 9999;
+    background-color: #3B82F6;
+    border-color: #fff;
+}

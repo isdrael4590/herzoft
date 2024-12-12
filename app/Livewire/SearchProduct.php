@@ -30,6 +30,7 @@ class SearchProduct extends Component
     {
         $this->search_results = Product::where('area', 'like', '%' . $this->query . '%')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
+            ->orWhere('product_name', 'like', '%' . $this->query . '%')
             ->take($this->how_many)->get();
     
     }
