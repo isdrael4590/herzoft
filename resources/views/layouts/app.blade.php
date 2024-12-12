@@ -29,7 +29,6 @@
                 @yield('content')
             </main>
         </div>
-        @livewire('cookie-component')
         @include('layouts.footer')
     </div>
 

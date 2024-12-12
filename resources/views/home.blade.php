@@ -79,11 +79,7 @@
                                                     </a>
                                                 </div>
                                             @endcan
-                                            @can('create_reprocess')
-                                                <div class="text-value text-primary"><a
-                                                        href="{{ route('RecepReprocess.create') }}">Reprocesar </a>
-                                                </div>
-                                            @endcan
+                                          
                                         </div>
                                     </div>
                                 </div>

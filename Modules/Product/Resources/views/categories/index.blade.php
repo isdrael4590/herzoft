@@ -25,7 +25,10 @@
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryCreateModal">
                             Añadir Especialidad <i class="bi bi-plus"></i>
                         </button>
-
+                 
+                        <a href="{{ route('import-categories.create') }}" class="btn btn-warning">
+                           Importar Especialidad<i class="bi bi-save"></i>
+                        </a>
                         <hr>
 
                         <div class="table-responsive">

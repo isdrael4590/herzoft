@@ -17,8 +17,8 @@ class CreateareasTable extends Migration
             $table->id();
             $table->string('area_code');
             $table->string('area_name');
-            $table->string('area_responsable');
-            $table->string('area_piso');
+            $table->string('area_responsable')->nullable();
+            $table->string('area_piso')->nullable();
        
 
             $table->timestamps();

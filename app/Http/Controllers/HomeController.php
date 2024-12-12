@@ -24,7 +24,9 @@ class HomeController extends Controller
 
         return view('home');
     }
-    // TEST DE BOWIE Y VACIO
+
+    //Resultado de Mensual Test de Bowie & Dick / Vacío linechart
+
 
     public function testBowiesChart()
     {
@@ -113,7 +115,10 @@ class HomeController extends Controller
             'months' => $months,
         ]);
     }
-    // ACUMULADO DE DE TEST
+
+
+
+    // Resultado de Test de Bowie & Dick / Vacío PIECHART
     public function currentMonthChart()
     {
         abort_if(!request()->ajax(), 404);
@@ -140,10 +145,149 @@ class HomeController extends Controller
     }
 
 
-    // ACUMULADO DE PRODUCCION 
+    // Producción Mensual Esterilización.
 
 
     public function ProductionsChart()
+    {
+        abort_if(!request()->ajax(), 404);
+
+        $dates = collect();
+        foreach (range(-6, 0) as $i) {
+            $date = Carbon::now()->addMonths($i)->format('m-Y');
+            $dates->put($date, 0);
+        }
+
+
+        $date_range = Carbon::today()->subYear()->format('Y-m-d');
+
+        $search_steamok1 = ['machine_name' =>  'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
+        $Steam1ok = Discharge::where('updated_at', '>=', $date_range)
+            ->where($search_steamok1)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("SUM(total_amount) as total_amount")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('total_amount', 'month');
+
+
+        $search_steamFail1 = ['machine_name' =>  'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
+        $Steam1fail = Discharge::where('updated_at', '>=', $date_range)
+            ->where($search_steamFail1)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("SUM(total_amount) as total_amount")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('total_amount', 'month');
+
+        $search_steamok2 = ['machine_name' => 'CISA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
+        $Steam2ok = Discharge::where('updated_at', '>=', $date_range)
+            ->where($search_steamok2)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("SUM(total_amount) as total_amount")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('total_amount', 'month');
+
+
+        $search_steamFail2 = ['machine_name' => 'CISA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
+        $Steam2fail = Discharge::where('updated_at', '>=', $date_range)
+            ->where($search_steamFail2)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("SUM(total_amount) as total_amount")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('total_amount', 'month');
+
+        $search_HPOOK = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Peroxido', 'status_cycle' => 'Ciclo Aprobado'];
+        $HPO_OK = Discharge::where('updated_at', '>=', $date_range)
+            ->where($search_HPOOK)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("SUM(total_amount) as total_amount")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('total_amount', 'month');
+
+
+        $search_HPOFAIL = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Peroxido', 'status_cycle' => 'Ciclo Falla'];
+        $HPO_FAIL = Discharge::where('updated_at', '>=', $date_range)
+            ->where($search_HPOFAIL)
+            ->select([
+                DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
+                DB::raw("SUM(total_amount) as total_amount")
+            ])
+            ->groupBy('month')->orderBy('month')
+            ->get()->pluck('total_amount', 'month');
+
+
+
+
+        $ciclo_ok1 = array_merge_numeric_values($Steam1ok);
+        $ciclo_ok2 = array_merge_numeric_values($Steam2ok);
+        $ciclo_HPO_OK = array_merge_numeric_values($HPO_OK);
+        $ciclo_HPO_FAIL = array_merge_numeric_values($HPO_FAIL);
+
+        $ciclo_fail1 = array_merge_numeric_values($Steam1fail);
+        $ciclo_fail2 = array_merge_numeric_values($Steam2fail);
+
+        $dates_ok1 = $dates->merge($ciclo_ok1);
+        $dates_ok2 = $dates->merge($ciclo_ok2);
+        $dates_HPO_OK = $dates->merge($ciclo_HPO_OK);
+
+        $dates_fail1 = $dates->merge($ciclo_fail1);
+        $dates_fail2 = $dates->merge($ciclo_fail2);
+        $dates_HPO_FAIL = $dates->merge($ciclo_HPO_FAIL);
+
+
+        $Ciclos_ok1 = [];
+        $Ciclos_Fails1 = [];
+        $Ciclos_ok2 = [];
+        $Ciclos_Fails2 = [];
+        $Ciclos_HPO_ok = [];
+        $Ciclos_HPO_fail = [];
+        $months = [];
+
+        foreach ($dates_ok1 as $key => $value) {
+            $Ciclos_ok1[] = $value;
+            $months[] = $key;
+        }
+
+        foreach ($dates_ok2 as $key => $value) {
+            $Ciclos_ok2[] = $value;
+        }
+
+        foreach ($dates_fail1 as $key => $value) {
+            $Ciclos_Fails1[] = $value;
+        }
+        foreach ($dates_fail2 as $key => $value) {
+            $Ciclos_Fails2[] = $value;
+        }
+        foreach ($dates_HPO_OK as $key => $value) {
+            $Ciclos_HPO_ok[] = $value;
+        }
+        foreach ($dates_HPO_FAIL as $key => $value) {
+            $Ciclos_HPO_fail[] = $value;
+        }
+
+        return response()->json([
+            'Ciclos_ok1' => $Ciclos_ok1,
+            'Ciclos_Fails1' => $Ciclos_Fails1,
+            'Ciclos_ok2' => $Ciclos_ok2,
+            'Ciclos_Fails2' => $Ciclos_Fails2,
+            'Ciclos_HPO_ok' => $Ciclos_HPO_ok,
+            'Ciclos_HPO_fail' => $Ciclos_HPO_fail,
+            'months' => $months,
+        ]);
+    }
+
+
+    // OLD / Producción Mensual Esterilización.
+    public function ProductionsChartOLD()
     {
         abort_if(!request()->ajax(), 404);
 
@@ -275,9 +419,7 @@ class HomeController extends Controller
             'months' => $months,
         ]);
     }
-
-
-    // TOTAL DE PRODUCION  montash
+    // Producción Total Esterilización.
 
     public function currentMonthProductionChart()
     {
@@ -318,7 +460,8 @@ class HomeController extends Controller
             'HPO_FAIL'  => $HPO_FAIL,
         ]);
     }
-    // Instrumental Procesado.  nueva versioon
+    // Instrumental Procesado.
+
     public function ProductionlabelsChart()
     {
         abort_if(!request()->ajax(), 404);
@@ -333,7 +476,7 @@ class HomeController extends Controller
         $search_Labelsteam = ['product_type_process' => 'Alta Temperatura'];
         $SteamLabel = LabelqrDetails::where('updated_at', '>=', $date_range)
             ->where($search_Labelsteam)
-            ->select([
+       ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
                 DB::raw("count('*') as count")
             ])
@@ -343,7 +486,7 @@ class HomeController extends Controller
         $search_LabelHPO = ['product_type_process' => 'Baja Temperatura'];
         $HPOLabel = LabelqrDetails::where('updated_at', '>=', $date_range)
             ->where($search_LabelHPO)
-            ->select([
+       ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
                 DB::raw("count('*') as count")
             ])
@@ -383,7 +526,8 @@ class HomeController extends Controller
         ]);
     }
     // Instrumental Procesado.  old versioon
-    public function ProductionlabelsChart2()
+
+    public function ProductionlabelsChartOLD()
     {
         abort_if(!request()->ajax(), 404);
 
@@ -446,7 +590,6 @@ class HomeController extends Controller
             'months' => $months,
         ]);
     }
-
     // Rendimiento Paquetes.  old versioon
 
     public function ResultProductionChart()
@@ -457,11 +600,11 @@ class HomeController extends Controller
         foreach (range(-6, 0) as $i) {
             $date = Carbon::now()->addMonths($i)->format('m-Y');
             $dates->put($date, 0);
+
         }
-        dd($dates);
         $date_range = Carbon::today()->subYear()->format('Y-m-d');
 
-        $Procesados = Labelqr::where('updated_at', '>=', $date_range)
+       $Procesados = Labelqr::where('updated_at', '>=', $date_range)
             ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
                 DB::raw("SUM(total_amount) as total_amount")
@@ -469,9 +612,8 @@ class HomeController extends Controller
             ->groupBy('month')->orderBy('month')
             ->get()->pluck('total_amount', 'month');
 
-        
+
         $esteril = Discharge::where('updated_at', '>=', $date_range)
-        ->Where
             ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
                 DB::raw("SUM(total_amount) as total_amount")
@@ -494,19 +636,20 @@ class HomeController extends Controller
             $procesado_all[] = $value;
             $months[] = $key;
         }
-    
+
         foreach ($dates_esteril as $key => $value) {
             $esteril_all[] = $value;
         }
-    
+
         return response()->json([
-            'procesados' => $procesado_all,
-            'esteril' => $esteril_all,
+            'procesado_all' => $procesado_all,
+            'esteril_all' => $esteril_all,
             'months' => $months,
         ]);
     }
 
 
+    // Resultado de liberación del Biologicos.
     public function BiologicChart()
     {
         abort_if(!request()->ajax(), 404);
@@ -606,6 +749,7 @@ class HomeController extends Controller
         ]);
     }
 
+    // Rendimiento Areas Central.
     public function CentralChart()
     {
         abort_if(!request()->ajax(), 404);
