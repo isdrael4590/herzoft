@@ -460,38 +460,39 @@ class HomeController extends Controller
             'HPO_FAIL'  => $HPO_FAIL,
         ]);
     }
+
+
     // Instrumental Procesado.
 
     public function ProductionlabelsChart()
     {
         abort_if(!request()->ajax(), 404);
-
         $dates = collect();
         foreach (range(-6, 0) as $i) {
             $date = Carbon::now()->addMonths($i)->format('m-Y');
             $dates->put($date, 0);
         }
-
         $date_range = Carbon::today()->subYear()->format('Y-m-d');
         $search_Labelsteam = ['product_type_process' => 'Alta Temperatura'];
+
         $SteamLabel = LabelqrDetails::where('updated_at', '>=', $date_range)
             ->where($search_Labelsteam)
-       ->select([
+            ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
-                DB::raw("count('*') as count")
+                DB::raw("SUM(product_quantity) as product_quantity")
             ])
             ->groupBy('month')->orderBy('month')
-            ->get()->pluck('count', 'month');
+            ->get()->pluck('product_quantity', 'month');
 
         $search_LabelHPO = ['product_type_process' => 'Baja Temperatura'];
         $HPOLabel = LabelqrDetails::where('updated_at', '>=', $date_range)
             ->where($search_LabelHPO)
-       ->select([
+            ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
-                DB::raw("count('*') as count")
+                DB::raw("SUM(product_quantity) as product_quantity")
             ])
             ->groupBy('month')->orderBy('month')
-            ->get()->pluck('count', 'month');
+            ->get()->pluck('product_quantity', 'month');
 
 
 
@@ -525,6 +526,8 @@ class HomeController extends Controller
             'months' => $months,
         ]);
     }
+
+
     // Instrumental Procesado.  old versioon
 
     public function ProductionlabelsChartOLD()
@@ -590,7 +593,9 @@ class HomeController extends Controller
             'months' => $months,
         ]);
     }
-    // Rendimiento Paquetes.  old versioon
+
+
+    // Rendimiento Paquetes
 
     public function ResultProductionChart()
     {
@@ -600,11 +605,10 @@ class HomeController extends Controller
         foreach (range(-6, 0) as $i) {
             $date = Carbon::now()->addMonths($i)->format('m-Y');
             $dates->put($date, 0);
-
         }
         $date_range = Carbon::today()->subYear()->format('Y-m-d');
 
-       $Procesados = Labelqr::where('updated_at', '>=', $date_range)
+        $Procesados = Labelqr::where('updated_at', '>=', $date_range)
             ->select([
                 DB::raw("DATE_FORMAT(updated_at, '%m-%Y') as month"),
                 DB::raw("SUM(total_amount) as total_amount")

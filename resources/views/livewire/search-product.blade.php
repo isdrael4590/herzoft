@@ -2,14 +2,22 @@
     <div class="card mb-0 border-0 shadow-sm">
         <div class="card-body">
             <div class="form-group mb-0">
-                <div class="input-group">
+
+                <div class="input-group" x-data="{
+                    resetQuery(event) {
+                        document.getElementById('SearchInput').focus();
+                        event.preventDefault();
+                    }
+                }">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <i class="bi bi-search text-primary"></i>
                         </div>
                     </div>
-                    <input wire:keydown.escape="resetQuery" wire:model.live.debounce.500ms="query" type="text"
-                        class="form-control" placeholder="Escribir Nombre o Código del producto RUMED....">
+                    <input @keydown.space.window="resetQuery" wire:model.live.debounce.500ms="query" type="text"
+                        class="form-control" placeholder="Escribir Nombre o Código del producto RUMED...."
+                        id="SearchInput" wire:model.debounce.500ms="barcode" id="barcode-input" >
+
                 </div>
             </div>
         </div>
@@ -33,10 +41,10 @@
                 <div class="card-body shadow">
                     <ul class="list-group list-group-flush">
                         @foreach ($search_results as $result)
-                            <li class="list-group-item list-group-item-action">
-                                <a wire:click="resetQuery" wire:click.prevent="selectProduct({{ $result }})"
-                                    href="#">
-                                    {{ $result->product_name }} | {{ $result->product_code }}
+                            <li class="list-group-item list-group-item-action" wire:click="resetQuery"
+                                wire:click.prevent="selectProduct({{ $result }})">
+                                <a href="#">
+                                    {{ $result->product_name }} -> {{ $result->product_code }}
                                 </a>
                             </li>
                         @endforeach
@@ -61,3 +69,27 @@
         @endif
     @endif
 </div>
+<script>
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowUp') {
+            @this.call('moveUp');
+        } else if (event.key === 'ArrowDown') {
+            @this.call('moveDown');
+        }
+    });
+
+
+    document.addEventListener('livewire:load', () => {
+        const barcodeInput = document.getElementById('barcode-input');
+        barcodeInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                barcodeInput.value = ''; // Clear the input after processing
+            }
+        });
+    });
+
+    window.addEventListener('barcode-processed', (event) => {
+        alert(`Barcode scanned: ${event.detail.barcode}`);
+    });
+</script>

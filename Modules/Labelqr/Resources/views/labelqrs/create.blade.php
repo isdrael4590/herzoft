@@ -77,10 +77,10 @@
                                     <div class="form-group">
                                         <label for="temp_machine">Temperatura del Equipo <span
                                                 class="text-danger">*</span></label>
-                                                <select class="form-control" id="temp_machine" name="temp_machine">
-                                                    <option selected value="134"> 134ºC </option>
-                                                    <option value="121"> 121ºC </option>
-                                                </select>
+                                        <select class="form-control" id="temp_machine" name="temp_machine">
+                                            <option selected value="134"> 134ºC </option>
+                                            <option value="121"> 121ºC </option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -158,7 +158,8 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" readonly>
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>

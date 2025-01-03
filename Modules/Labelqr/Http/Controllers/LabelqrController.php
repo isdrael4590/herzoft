@@ -96,12 +96,12 @@ class LabelqrController extends Controller
         return redirect()->route('labelqrs.index');
     }
 
-    public function show(Labelqr $labelqr)
+    public function show(Labelqr $labelqr, Product $product)
     {
         abort_if(Gate::denies('show_labelqrs'), 403);
 
 
-        return view('labelqr::labelqrs.show', compact('labelqr'));
+        return view('labelqr::labelqrs.show', compact('labelqr','product'));
     }
 
     public function edit(Labelqr $labelqr)

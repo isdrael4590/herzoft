@@ -28,7 +28,8 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <livewire:barcode.product-table/>
+                <livewire:barcode.product-table  />
+
             </div>
         </div>
     </div>

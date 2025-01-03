@@ -64,9 +64,9 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="row justify-content-center">
+                <div class="row content-center">
                     @foreach($barcodes as $barcode)
-                        <div class="col-lg-3 col-md-4 col-sm-6" style="border: 1px solid #ffffff;border-style: dashed;background-color: #48FCFE;">
+                        <div class="col-lg-3 col-md-4 col-sm-6" style="border: 1px solid #111111;border-style: dashed;background-color: #ffffff;">
                             <p class="mt-3 mb-1" style="font-size: 15px;color: #000;">
                                 {{ $product->product_name }}
                             </p>
