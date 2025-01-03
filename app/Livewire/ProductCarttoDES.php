@@ -25,7 +25,7 @@ class ProductCarttoDES extends Component
     public $quantity;
     public $check_quantity;
     public $item_patient;
-    
+
     public $item_outside_company;
     public $item_area;
     public $unit_price;
@@ -49,6 +49,7 @@ class ProductCarttoDES extends Component
 
 
             foreach ($cart_items as $cart_item) {
+                $this->check_quantity[$cart_item->id] = [$cart_item->options->stock];
                 $this->quantity[$cart_item->id] = $cart_item->qty;
                 $this->unit_price[$cart_item->id] = $cart_item->price; // se añade
                 $this->item_patient[$cart_item->id] = $cart_item->options->product_patient;
@@ -78,7 +79,6 @@ class ProductCarttoDES extends Component
             $this->item_area = []; // se añade
             $this->global_steril = 0;
             $this->global_no_steril = 0;
-
         }
     }
 
@@ -135,9 +135,11 @@ class ProductCarttoDES extends Component
 
         ]);
         $this->item_patient[$labelqr_detail['id']] = $labelqr_detail['product_patient'];
-        $this->quantity[$labelqr_detail['id']] = $labelqr_detail['product_quantity'];
+        //$this->quantity[$labelqr_detail['id']] = $labelqr_detail['product_quantity'];
+        $this->check_quantity[$labelqr_detail['id']] = $labelqr_detail['product_quantity'];
+
         $this->item_area[$labelqr_detail['id']] = $labelqr_detail['product_area'];
-        $this->item_outside_company[$labelqr_detail['id']] =$labelqr_detail['product_outside_company'];
+        $this->item_outside_company[$labelqr_detail['id']] = $labelqr_detail['product_outside_company'];
         $this->package_wrap[$labelqr_detail['id']] = 'Contenedor';
         $this->ref_qr[$labelqr_detail['id']] = 'PRUEBA';
         $this->eval_package[$labelqr_detail['id']] = 'OK';
@@ -152,20 +154,35 @@ class ProductCarttoDES extends Component
 
     public function UpdatedGlobalSteril()
     {
-        Cart::instance($this->cart_instance)->count((integer)$this->global_steril);
+        Cart::instance($this->cart_instance)->count((int)$this->global_steril);
     }
-    
+
     public function UpdatedGlobalNOSteril()
     {
-        Cart::instance($this->cart_instance)->count((integer)$this->global_no_steril);
+        Cart::instance($this->cart_instance)->count((int)$this->global_no_steril);
     }
 
     public function updateQuantity($row_id, $product_id)
     {
-        if ($this->cart_instance == 'Dischargess') {
-            if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
-                session()->flash('message', 'The requested quantity is not available in stock.');
+        if ($this->cart_instance == 'discharge') {
+            // dd(implode('',$this->check_quantity[$product_id]),$this->quantity[$product_id]);
+            if (implode('', $this->check_quantity[$product_id]) < $this->quantity[$product_id]) {
+                session()->flash('message', 'La Validación de la cantidad ES INCORRECTA, Solo Existe:  ' . implode('', $this->check_quantity[$product_id]) . '  Paquetes Procesados');
                 return;
+            }
+
+
+            $array = $this->check_quantity[$product_id];
+            if (is_array($array)) {
+                if (implode('', $this->check_quantity[$product_id]) < $this->quantity[$product_id]) {
+                    session()->flash('message', 'La Validación de la cantidad ES INCORRECTA, Solo Existe:  ' . implode('', $this->check_quantity[$product_id]) . '  Paquetes Procesados');
+                    return;
+                }
+            } else {
+                if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
+                    session()->flash('message', 'La Validación de la cantidad ES INCORRECTA, Solo Existe:  ' . $this->check_quantity[$product_id] . '  Paquetes Procesados');
+                    return;
+                }
             }
         }
 
@@ -246,7 +263,7 @@ class ProductCarttoDES extends Component
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
                 'unit_price'            => $cart_item->options->unit_price, // se añade
-                'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+                'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
 
             ]
         ]);
@@ -264,7 +281,7 @@ class ProductCarttoDES extends Component
     public function updateCartOptions($row_id, $labelqr_detail_id, $cart_item)
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
-            'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+            'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
             'code'                      => $cart_item->options->code,
             'product_id'                => $cart_item->options->product_id,
             'stock'                     => $cart_item->options->stock,

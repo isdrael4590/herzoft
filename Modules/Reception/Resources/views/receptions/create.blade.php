@@ -57,7 +57,7 @@
                                             placeholder= "Ingrese el nombre de la persona que entrega" required>
                                     </div>
                                 </div>
-                             
+
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador</label>

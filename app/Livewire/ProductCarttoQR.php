@@ -91,7 +91,7 @@ class ProductCarttoQR extends Component
         }
 
         $this->preparation_detail = $preparation_detail;
-        
+
         $cart->add([
             'id'      => $preparation_detail['id'],
             'name'    => $preparation_detail['product_name'],
@@ -123,7 +123,7 @@ class ProductCarttoQR extends Component
         $this->quantity[$preparation_detail['id']] = 1;
 
         $this->item_area[$preparation_detail['id']] = $preparation_detail['product_area'];
-        $this->item_outside_company[$preparation_detail['id']] =$preparation_detail['product_outside_company'];
+        $this->item_outside_company[$preparation_detail['id']] = $preparation_detail['product_outside_company'];
 
         $this->package_wrap[$preparation_detail['id']] = 'Contenedor';
         $this->ref_qr[$preparation_detail['id']] = 'Cargado';
@@ -139,11 +139,20 @@ class ProductCarttoQR extends Component
 
     public function updateQuantity($row_id, $product_id)
     {
-        if ($this->cart_instance == 'labelqrs') {
-            // dd(  $this->quantity[$product_id['id']]);
-            if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
-                session()->flash('message', 'The requested quantity is not available in stock.');
-                return;
+        if ($this->cart_instance == 'labelqr') {
+            //| dd("prunea",$this->quantity[$product_id]);
+
+            $array = $this->check_quantity[$product_id];
+            if (is_array($array)) {
+                if (implode('', $this->check_quantity[$product_id]) < $this->quantity[$product_id]) {
+                    session()->flash('message', 'La cantidad Requerida NO ESTA DISPONIBLE en el STOCK. Solo hay ' . implode('', $this->check_quantity[$product_id]) . ' en STOCK PREPARACIÓN');
+                    return;
+                }
+            } else {
+                if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
+                    session()->flash('message', 'La cantidad Requerida NO ESTA DISPONIBLE en el STOCK. Solo hay ' . $this->check_quantity[$product_id] . ' en STOCK PREPARACIÓN');
+                    return;
+                }
             }
         }
 
@@ -153,7 +162,7 @@ class ProductCarttoQR extends Component
 
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
-                'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+                'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
                 'product_id'      => $cart_item->options->product_id,
                 'code'                   => $cart_item->options->code,
                 'unit_price'            => $cart_item->options->unit_price, // se añade
@@ -208,7 +217,7 @@ class ProductCarttoQR extends Component
 
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
-                'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+                'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
                 'code'                   => $cart_item->options->code,
                 'product_id'      => $cart_item->options->product_id,
                 'stock'                 => $cart_item->options->stock,
@@ -241,7 +250,7 @@ class ProductCarttoQR extends Component
     public function updateCartOptions($row_id, $preparation_detail_id, $cart_item)
     {
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
-            'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+            'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
             'code'                  => $cart_item->options->code,
             'product_id'            => $cart_item->options->product_id,
             'stock'                 => $cart_item->options->stock,

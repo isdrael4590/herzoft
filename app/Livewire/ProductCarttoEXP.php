@@ -130,10 +130,18 @@ class ProductCarttoEXP extends Component
     public function updateQuantity($row_id, $product_id)
     {
 
-        if ($this->cart_instance == 'expeditionss') {
-            if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
-                session()->flash('message', 'The requested quantity is not available in stock.');
-                return;
+        if ($this->cart_instance == 'expedition') {
+            $array = $this->check_quantity[$product_id];
+            if (is_array($array)) {
+                if (implode('', $this->check_quantity[$product_id]) < $this->quantity[$product_id]) {
+                    session()->flash('message', 'La cantidad Requerida NO ESTA DISPONIBLE en el STOCK. Solo hay ' . implode('', $this->check_quantity[$product_id]) . ' en STOCK ALMACEN');
+                    return;
+                }
+            } else {
+                if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
+                    session()->flash('message', 'La cantidad Requerida NO ESTA DISPONIBLE en el STOCK. Solo hay ' . $this->check_quantity[$product_id] . ' en STOCK ALMACEN');
+                    return;
+                }
             }
         }
         Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);

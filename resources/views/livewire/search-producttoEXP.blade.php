@@ -2,14 +2,22 @@
     <div class="card mb-0 border-0 shadow-sm">
         <div class="card-body">
             <div class="form-group mb-0">
-                <div class="input-group">
+
+                <div class="input-group" x-data="{
+                    resetQuery(event) {
+                        document.getElementById('SearchInput').focus();
+                        event.preventDefault();
+                    }
+                }">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <i class="bi bi-search text-primary"></i>
                         </div>
                     </div>
-                    <input wire:keydown.escape="resetQuery" wire:model.live.debounce.500ms="query" type="text"
-                        class="form-control" placeholder="Escribir Nombre o Código del producto RUMED procesdo....">
+                    <input @keydown.space.window="resetQuery" wire:model.live.debounce.500ms="query" type="text"
+                        class="form-control" placeholder="Escribir Nombre o Código del producto RUMED...."
+                        id="SearchInput">
+
                 </div>
             </div>
         </div>
@@ -33,12 +41,13 @@
                 <div class="card-body shadow">
                     <ul class="list-group list-group-flush">
                         @foreach ($search_results as $result)
-                                <li class="list-group-item list-group-item-action">
-                                    <a wire:click="resetQuery" wire:click.prevent="selectProduct({{ $result }})"
-                                        href="#">
-                                        {{ $result->product_name }} -> {{ $result->product_code }} ==> [ {!!\Carbon\Carbon::parse($result->product_expiration)->format('d M, Y')!!} ] ==>>  [ {{ $result->product_quantity }} Un]
-                                    </a>
-                                </li>
+                            <li class="list-group-item list-group-item-action" wire:click="resetQuery"
+                                wire:click.prevent="selectProduct({{ $result }})">
+                                <a href="#">
+                                    {{ $result->product_name }} -> {{ $result->product_code }} ==> [
+                                    {!! \Carbon\Carbon::parse($result->product_expiration)->format('d M, Y') !!} ] ==>> [ {{ $result->product_quantity }} Un]
+                                </a>
+                            </li>
                         @endforeach
                         @if ($search_results->count() >= $how_many)
                             <li class="list-group-item list-group-item-action text-center">

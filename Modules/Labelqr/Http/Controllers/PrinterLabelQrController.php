@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Milon\Barcode\Facades\DNS1DFacade;
 use Modules\Product\Entities\Product;
 use \Modules\Informat\Entities\Institute;
 use Modules\Labelqr\Entities\Labelqr;
@@ -25,13 +26,13 @@ class PrinterLabelQrController extends Controller
       1 inch = 2.54 cm
       70 mm ==  70/25.4*72 = 198.4251968
       35 mm ==  35/25.4*72 = 99.2125984248
-     s*/ 
-     private $customPaper = array(0,0,99.2125984248,198.4251968);
-    
+     s*/
+    private $customPaper = array(0, 0, 99.2125984248, 198.4251968);
 
-   public function printerLabelqr(Int $id)
+
+    public function printerLabelqr(Int $id)
     {
-       $pdf = $this->generar_imagen($id);
+        $pdf = $this->generar_imagen($id);
         // Guardar el archivo en el Disco
         $rutaArchivo = storage_path('app/public') . '/output.pdf';
         $pdf->save($rutaArchivo);
@@ -43,44 +44,50 @@ class PrinterLabelQrController extends Controller
         // Envia el request hacia el servidor y procesa la respuesta
         $fileData = file_get_contents($rutaArchivo);
 
-   
+
         $mensaje = "";
         $estado = 'error';
-        try{
+        try {
             $response = \Http::attach('file', $fileData, 'output.pdf')->post($clientServerUrl);
-            $estado = ($response->status() == 200) ? 'exito': 'advertencia';
+            $estado = ($response->status() == 200) ? 'exito' : 'advertencia';
             $mensaje = $response->body();
-        }
-        catch(\Illuminate\Http\Client\ConnectionException $e){
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
             $mensaje = 'Error al imprimir la etiqueta, por favor revise que el programa esté activo y la impresora esté conectada';
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $mensaje = 'Error, por favor requiera asistencia, detalles: ' . $e->getMessage();
         }
         return redirect()->back()->with($estado, $mensaje);
     }
 
-    public function checkLabelqr(Int $id) {
+    public function checkLabelqr(Int $id)
+    {
         $pdf = $this->generar_imagen($id);
         return $pdf->stream('Labelqr.pdf');
     }
 
-    private function generar_imagen(Int $id){
+
+    public $barcodes;
+
+    private function generar_imagen(Int $id)
+    {
         $labelqr = Labelqr::where('id', $id)->first();
         $labelqrDetails = LabelqrDetails::with('product')
             ->where('id', $id)
             ->orderBy('id', 'DESC')
             ->get();
         $institute = Institute::all()->first();
+        $barcode = Product::all()->first();
        
-        $dataqr=$labelqr->reference."/".$labelqr->lote_machine."/";
-         
-        $pdf = PDF::loadView('labelqr::labelqrs.print', [
+        
+        $dataqr = $labelqr->reference . "/" . $labelqr->lote_machine . "/";
+
+        $pdf = PDF::loadView('labelqr::labelqrs.print2', [
             'labelqr' => $labelqr,
             'labelqrDetails' => $labelqrDetails,
             'institute' => $institute,
             'dataqr'  =>  $dataqr,
-          ])->setOptions(['dpi'=>150,'defaultFont' => 'sans-serif'])->setpaper($this->customPaper, 'landscape');
-          return $pdf;
+            'barcode' => $barcode,
+        ])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif'])->setpaper($this->customPaper, 'landscape');
+        return $pdf;
     }
 }
