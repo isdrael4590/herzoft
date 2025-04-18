@@ -78,6 +78,7 @@ class PreparationController extends Controller
                     'product_patient' => $cart_item->options->product_patient,
                     'product_outside_company' => $cart_item->options->product_outside_company,
                     'product_area' => $cart_item->options->product_area,
+                    'product_info' => $cart_item->options->product_info,
 
 
 
@@ -129,6 +130,7 @@ class PreparationController extends Controller
                     'product_outside_company' =>  $preparation_detail->product_outside_company,
                     'product_area' =>  $preparation_detail->product_area,
                     'unit_price'  => $preparation_detail->unit_price, // se añade
+                    'product_info' => $preparation_detail->product_info,
 
 
                 ]
@@ -168,6 +170,7 @@ class PreparationController extends Controller
                     'unit_price' => $cart_item->options->unit_price, // se añade
                     'product_outside_company' => $cart_item->options->product_outside_company,
                     'product_area' => $cart_item->options->product_area,
+                    'product_info' => $cart_item->options->product_info,
 
                 ]);
             }

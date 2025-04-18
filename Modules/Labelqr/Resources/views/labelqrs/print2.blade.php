@@ -74,29 +74,29 @@
                         <tr style="text-align: center; vertical-align: middle;">
 
 
-                            <td tyle="text-align: center; vertical-align: middle;" colspan="2"> 
+                            <td tyle="text-align: center; vertical-align: middle;" colspan="2">
                                 <p style="font-size: 12px;">
                                     <strong>Venc. {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') !!}</strong><br>
                                 </p>
                                 <p style="font-size: 9px;">
                                     <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d M, Y') !!}</small><br>
                                 </p>
-                                <p style="font-size: 10px;">
-                                    <strong>{{ $labelqr->machine_name }} - Lote: {{ $labelqr->lote_machine }}
-                                    </strong><br>
+                                <p>
+                                    <strong  style="font-size: 10px;">{{ $labelqr->machine_name }} -> Lote: {{ $labelqr->lote_machine }}
+                                    </strong> - <strong style="font-size: 9px;">{{ $labelqr->reference }}</strong>
+                                     / <small>{{ $labelqr->type_program }}</small><br>
                                 </p>
-                                <p style="font-size: 9px;">
-                                    <strong>{{ $labelqr->reference }} -</strong>
-                                    <small>{{ $labelqr->type_program }}</small><br>
-                                </p>
+                             
 
-                                <p style="font-size: 9px;">
-                                    <strong>{{ $item->product_name }} - </strong>
-                                    <small style="font-size: 9px;">{{ $item->product_code }} <br>
+                                <p>
+                                    <strong style="font-size: 9px;">{{ $item->product_name }} - </strong>
+                                    <small style="font-size: 9px;">{{ $item->product_code }} - </small> <small
+                                        style="font-size: 7px;">{{ $item->product_info }} <br>
                                     </small>
                                 </p>
+                             
                                 <p style="font-size: 10px;">
-                                    <small> {{ $item->product_patient }}<br>
+                                    <small>  {{ $item->product_outside_company }} / {{ $item->product_patient }}<br>
                                     </small>
                                 </p>
                                 <p style="font-size: 9px;">
@@ -109,7 +109,7 @@
                         <tr>
                             <td colspan="2" style="text-align: center; vertical-align: middle;">
                                 <img src="data:image/png;base64,{!! base64_encode(
-                                    \Milon\Barcode\Facades\DNS1DFacade::getBarCodeSVG($item->product_code, $barcode->product_barcode_symbology, 2, 50),
+                                    \Milon\Barcode\Facades\DNS1DFacade::getBarCodeSVG($item->product_code, $barcode->product_barcode_symbology, 2, 45),
                                 ) !!}" alt="Código de Barras">
                             </td>
                         </tr>

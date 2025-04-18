@@ -66,6 +66,7 @@ class ReceptionController extends Controller
                     'unit_price' => $cart_item->options->unit_price, // se añade
                     'sub_total' => $cart_item->options->sub_total, // se añade
                     'product_patient' => $cart_item->options->product_patient,
+                    'product_info' => $cart_item->options->product_info,
                     'product_outside_company' => $cart_item->options->product_outside_company,
                     'product_area' => $cart_item->options->product_area,
                     'product_type_dirt' => $cart_item->options->product_type_dirt,
@@ -110,6 +111,7 @@ class ReceptionController extends Controller
                 'options' => [
                     'code'     => $reception_detail->product_code,
                     'product_patient'   => $reception_detail->product_patient,
+                    'product_info'   => $reception_detail->product_info,
                     'product_outside_company'   => $reception_detail->product_outside_company,
                     'product_area'   => $reception_detail->product_area,
                     'product_type_dirt'   => $reception_detail->product_type_dirt,
@@ -151,6 +153,7 @@ class ReceptionController extends Controller
                     'product_code' => $cart_item->options->code,
                     'product_quantity' => $cart_item->qty,
                     'product_patient' => $cart_item->options->product_patient,
+                    'product_info' => $cart_item->options->product_info,
                     'product_outside_company' => $cart_item->options->product_outside_company,
                     'product_area' => $cart_item->options->product_area,
                     'product_type_process' => $cart_item->options->product_type_process,

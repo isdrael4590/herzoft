@@ -21,6 +21,7 @@ class StoreProductRequest extends FormRequest
             'product_unit' => ['required', 'string', 'max:255'],
             'area' => ['required', 'string', 'min:1'],
             'product_note' => ['nullable', 'string', 'max:1000'],
+            'product_info' => ['nullable', 'string', 'max:30'],
             'product_price' => ['required', 'numeric', 'max:2147483647'],
             'category_id' => ['required', 'integer'],
             'product_type_process'=> ['required', 'string', 'max:255'],

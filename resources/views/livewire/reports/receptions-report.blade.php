@@ -81,7 +81,7 @@
                                 <th>Área</th>
                                 <th>Estado</th>
                                 <th>Persona Entrega</th>
-                                <th>Persona que recibe</th>
+                                <th>Persona que Recibe</th>
 
                             </tr>
                         </thead>

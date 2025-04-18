@@ -92,7 +92,7 @@
                                         <label for="temp_ambiente">Temperatura del Ambiente <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_ambiente" required
-                                            value="{{ $testvacuum->temp_ambiente }}">
+                                            value="{{ $testvacuum->temp_ambiente }}" step="0.1">
                                     </div>
                                 </div>
                                 <div class="col-md-6">

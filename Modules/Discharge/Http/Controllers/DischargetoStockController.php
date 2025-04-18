@@ -44,6 +44,7 @@ class DischargetoStockController extends Controller
                     'sub_total'   => $discharge_detail->sub_total,
                     'product_id'   => $discharge_detail->product_id,
                     'product_patient'   => $discharge_detail->product_patient,
+                    'product_info'   => $discharge_detail->product_info,
                     'product_type_process'   => $discharge_detail->product_type_process,
                     'product_package_wrap'   => $discharge_detail->product_package_wrap,
                     'product_ref_qr'   => $discharge_detail->product_ref_qr,

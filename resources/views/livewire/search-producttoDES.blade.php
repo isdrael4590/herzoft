@@ -14,7 +14,7 @@
                             <i class="bi bi-search text-primary"></i>
                         </div>
                     </div>
-                    <input @keydown.space.window="resetQuery" wire:model.live.debounce.500ms="query" type="text"
+                    <input @keydown.f1.window="resetQuery" wire:model.live.debounce.500ms="query" type="text"
                         class="form-control" placeholder="Escribir Nombre o Código del producto RUMED...."
                         id="SearchInput">
 

@@ -96,6 +96,7 @@ class DischargeController extends Controller
                     'sub_total' => $cart_item->options->sub_total, // se añade
                     'product_code' => $cart_item->options->code,
                     'product_patient' => $cart_item->options->product_patient,
+                    'product_info' => $cart_item->options->product_info,
                     'product_area' => $cart_item->options->product_area,
                     'product_outside_company' => $cart_item->options->product_outside_company,
                     'product_type_process' => $cart_item->options->product_type_process,
@@ -178,6 +179,7 @@ class DischargeController extends Controller
                     'labelqr_detail_id'   => $discharge_detail->labelqr_detail_id,
                     'product_type_process'   => $discharge_detail->product_type_process,
                     'product_patient'   => $discharge_detail->product_patient,
+                    'product_info'   => $discharge_detail->product_info,
                     'product_package_wrap'   => $discharge_detail->product_package_wrap,
                     'product_ref_qr'   => $discharge_detail->product_ref_qr,
                     'product_eval_package' => $discharge_detail->product_eval_package,
@@ -271,6 +273,7 @@ class DischargeController extends Controller
                     'product_code' => $cart_item->options->code,
                     'product_type_process' => $cart_item->options->product_type_process,
                     'product_patient' => $cart_item->options->product_patient,
+                    'product_info' => $cart_item->options->product_info,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
                     'product_ref_qr' =>   $result_qr_ref,
                     'product_eval_package' => $cart_item->options->product_eval_package,

@@ -41,6 +41,7 @@ class ReceptionPreparationController extends Controller
                     'options' => [
                         'code'     => $reception_detail->product_code,
                         'product_patient'     => $reception_detail->product_patient,
+                        'product_info'     => $reception_detail->product_info,
                         'product_outside_company'     => $reception_detail->product_outside_company,
                         'product_area'     => $reception_detail->product_area,
                         'product_type_process'     => $reception_detail->product_type_process,
@@ -62,6 +63,7 @@ class ReceptionPreparationController extends Controller
                     'options' => [
                         'code'     => $reception_detail->product_code,
                         'product_patient'     => $reception_detail->product_patient,
+                        'product_info'     => $reception_detail->product_info,
                         'product_outside_company'     => $reception_detail->product_outside_company,
                         'product_area'     => $reception_detail->product_area,
                         'product_type_process'     => $reception_detail->product_type_process,

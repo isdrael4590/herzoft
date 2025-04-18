@@ -22,6 +22,8 @@ class CreateProductsTable extends Migration
             $table->string('product_type_process')->nullable();
             $table->integer('product_quantity')->nullable();
             $table->string('product_patient')->nullable();
+            $table->string('product_info')->nullable();
+
             $table->string('area')->nullable();
             $table->integer('product_price');
             $table->string('product_unit')->nullable();

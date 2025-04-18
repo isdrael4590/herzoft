@@ -25,6 +25,7 @@ class ProductCarttoQR extends Component
     public $item_patient;
     public $item_outside_company;
     public $item_area;
+    public $item_product_info;
 
 
     private $preparation_detail;
@@ -49,6 +50,7 @@ class ProductCarttoQR extends Component
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
                 $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company; // se añade
                 $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
+                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
             }
         } else {
 
@@ -64,6 +66,7 @@ class ProductCarttoQR extends Component
             $this->unit_price = []; // se añade
             $this->item_outside_company = []; // se añade
             $this->item_area = []; // se añade
+            $this->item_product_info = [];
         }
     }
 
@@ -107,6 +110,8 @@ class ProductCarttoQR extends Component
                 'stock'                 => $preparation_detail['product_quantity'],
                 'product_patient'       => $preparation_detail['product_patient'],
                 'product_outside_company'  => $preparation_detail['product_outside_company'],
+                'product_info'    => $preparation_detail['product_info'],
+
                 'product_area'           => $preparation_detail['product_area'],
                 'product_type_process'           => $preparation_detail['product_type_process'],
                 'product_package_wrap'  =>  'Contenedor',
@@ -117,6 +122,8 @@ class ProductCarttoQR extends Component
             ]
         ]);
         $this->item_patient[$preparation_detail['id']] = $preparation_detail['product_patient'];
+        $this->item_product_info[$preparation_detail['id']] = $preparation_detail['product_info'];
+
         //$this->quantity[$preparation_detail['id']] = $preparation_detail['product_quantity'];
 
         $this->check_quantity[$preparation_detail['id']] = $preparation_detail['product_quantity'];
@@ -177,6 +184,7 @@ class ProductCarttoQR extends Component
                 'product_type_process'    => $cart_item->options->product_type_process,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
+                'product_info'    => $cart_item->options->product_info,
 
             ]
         ]);
@@ -232,6 +240,7 @@ class ProductCarttoQR extends Component
                 'product_patient'    => $cart_item->options->product_patient,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
+                'product_info'    => $cart_item->options->product_info,
 
             ]
         ]);
@@ -265,6 +274,7 @@ class ProductCarttoQR extends Component
             'product_patient'   => $this->item_patient[$preparation_detail_id],
             'product_area'   => $this->item_area[$preparation_detail_id],
             'product_outside_company'   => $this->item_outside_company[$preparation_detail_id],
+            'product_info'   => $this->item_product_info[$preparation_detail_id],
 
         ]]);
     }

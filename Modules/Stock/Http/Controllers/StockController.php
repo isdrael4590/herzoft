@@ -81,6 +81,7 @@ public function create()
                     'unit_price' => $cart_item->options->unit_price, // se añade
                     'sub_total' => $cart_item->options->sub_total, // se añade
                     'product_patient' => $cart_item->options->product_patient,
+                    'product_info' => $cart_item->options->product_info,
                     'product_type_process' => 
                     $cart_item->options->product_type_process,
                     'product_package_wrap' => $cart_item->options->product_package_wrap,
@@ -143,6 +144,7 @@ public function create()
                     'unit_price'  => $stock_detail->unit_price, // se añade
                     'product_outside_company'   => $stock_detail->product_outside_company,
                     'product_area'   => $stock_detail->product_area,
+                    'product_info'   => $stock_detail->product_info,
 
                 ]
             ]);
@@ -194,6 +196,7 @@ public function create()
                     'sub_total' => $cart_item->options->sub_total, // se añade
                     'product_outside_company' => $cart_item->options->product_outside_company,
                     'product_area' => $cart_item->options->product_area,
+                    'product_info' => $cart_item->options->product_info,
                 ]);
             }
 

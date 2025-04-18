@@ -28,6 +28,7 @@ class CreateDischargeDetailsTable extends Migration
             $table->string('product_outside_company')->nullable();
             $table->string('product_area')->nullable();
             $table->string('product_patient')->nullable();
+            $table->string('product_info')->nullable();
             $table->string('product_ref_qr')->nullable();
             $table->string('product_eval_package')->nullable();
             $table->string('product_eval_indicator')->nullable();

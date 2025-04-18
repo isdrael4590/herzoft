@@ -22,6 +22,8 @@ class ProductCarttoPRE extends Component
     public $check_quantity;
     public $item_patient;
     public $unit_price;
+    public $item_product_info;
+
 
 
 
@@ -42,12 +44,15 @@ class ProductCarttoPRE extends Component
                 $this->state_preparation[$cart_item->id] = $cart_item->options->product_state_preparation;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
                 $this->coming_zone[$cart_item->id] = $cart_item->options->product_coming_zone;
+                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
+
             }
         } else {
             
             $this->state_preparation = [];
             $this->type_process = [];
             $this->coming_zone = [];
+            $this->item_product_info = [];
             $this->check_quantity = [];
             $this->quantity = [];
             $this->item_patient = [];
@@ -98,6 +103,7 @@ class ProductCarttoPRE extends Component
                 'product_state_preparation'   => 'Disponible',
                 'product_coming_zone'   => 'Recepcion',
                 'product_patient'    => $product['product_patient'],
+                'product_info'    => $product['product_info'],
 
             ]
 
@@ -106,6 +112,8 @@ class ProductCarttoPRE extends Component
         $this->state_preparation[$product['id']] = 'Disponible';
         $this->item_patient[$product['id']] = $product['product_patient'];
         $this->quantity[$product['id']] = $product['product_quantity'];
+        $this->item_product_info[$product['id']] = $product['product_info'];
+
 
 
     }
@@ -153,6 +161,8 @@ class ProductCarttoPRE extends Component
                 'product_type_process'    => $cart_item->options->product_type_process,
                 'product_coming_zone'    => $cart_item->options->product_coming_zone,
                 'product_patient'    => $cart_item->options->product_patient,
+                'product_info'    => $cart_item->options->product_info,
+
             ]
         ]);
     }
@@ -174,6 +184,7 @@ class ProductCarttoPRE extends Component
             'product_coming_zone'=> $cart_item->options->product_coming_zone,
             'product_state_preparation'     => $this->state_preparation[$product_id],
             'product_patient'   => $this->item_patient[$product_id],
+            'product_info'   => $this->item_product_info[$product_id],
 
            
 

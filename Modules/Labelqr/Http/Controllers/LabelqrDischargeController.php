@@ -44,6 +44,7 @@ class LabelqrDischargeController extends Controller
                     'sub_total'   => $labelqr_detail->sub_total,
                     'product_type_process'   => $labelqr_detail->product_type_process,
                     'product_patient'   => $labelqr_detail->product_patient,
+                    'product_info'   => $labelqr_detail->product_info,
                     'product_package_wrap'   => $labelqr_detail->product_package_wrap,
                     'product_ref_qr'   => $labelqr_detail->product_ref_qr,
                     'product_eval_package' => $labelqr_detail->product_eval_package,
