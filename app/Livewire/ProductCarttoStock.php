@@ -22,6 +22,7 @@ class ProductCarttoStock extends Component
     public $date_sterilized;
     public $expiration;
     public $type_process;
+    public $item_product_info;
 
 
 
@@ -41,6 +42,7 @@ class ProductCarttoStock extends Component
                 $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
                 $this->date_sterilized[$cart_item->id] = $cart_item->options->product_date_sterilized;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
+                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
       
     
             }
@@ -52,6 +54,7 @@ class ProductCarttoStock extends Component
             $this->date_sterilized = [];
             $this->expiration = [];
             $this->type_process = [];
+            $this->item_product_info = [];
 
         }
     }
@@ -91,12 +94,14 @@ class ProductCarttoStock extends Component
                 'product_expiration' =>  $product['product_expiration'], //ESTE ES EL DATO A MODIFICAR
                 'product_status_stock' =>  'Disponible', //ESTE ES EL DATO A MODIFICAR
                 'product_date_sterilized' =>  $product['updated_at'],
+                'product_info' =>  $product['product_info'], //ESTE ES EL DATO A MODIFICAR
                 
             ]
 
 
         ]);
         $this->package_wrap[$product['id']] = 'Contenedor';
+        $this->item_product_info[$product['id']] = $product['product_info'];
         $this->ref_qr[$product['id']] = 'PRUEBA';
         $this->status_stock[$product['id']] = 'Disponible';
         $this->date_sterilized[$product['id']] = '';
@@ -127,6 +132,8 @@ class ProductCarttoStock extends Component
                 'product_expiration'    => $cart_item->options->product_expiration,
                 'product_date_sterilized'    => $cart_item->options->product_date_sterilized,
                 'product_type_process'    => $cart_item->options->product_type_process,
+                'product_info'    => $cart_item->options->product_info,
+
             ]
         ]);
     }
@@ -145,6 +152,8 @@ class ProductCarttoStock extends Component
             'product_status_stock'     => $this->status_stock[$product_id],
             'product_expiration'   => $this->expiration[$product_id],
             'product_date_sterilized'   => $this->date_sterilized[$product_id],
+            'product_info'   => $this->item_product_info[$product_id],
+
         ]]);
     }
 }

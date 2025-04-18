@@ -21,6 +21,7 @@ class ProductCart extends Component
     public $quantity;
     public $check_quantity;
     public $item_patient;
+    public $item_product_info;
     public $item_outside_company;
     public $item_area;
 
@@ -44,6 +45,8 @@ class ProductCart extends Component
                 $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company; // se añade
                 $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
                 $this->item_patient[$cart_item->id] = $cart_item->options->product_patient;
+                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
+                
                 $this->type_dirt[$cart_item->id] = $cart_item->options->product_type_dirt;
                 $this->state_rumed[$cart_item->id] = $cart_item->options->product_state_rumed;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
@@ -58,6 +61,7 @@ class ProductCart extends Component
             $this->check_quantity = [];
             $this->quantity = [];
             $this->item_patient = [];
+            $this->item_product_info = [];
             $this->unit_price = []; // se añade
             $this->item_outside_company = []; // se añade
             $this->item_area = []; // se añade
@@ -106,6 +110,7 @@ class ProductCart extends Component
                 'code'    => $product['product_code'],
                 'product_type_process'    => $product['product_type_process'],
                 'product_patient'    => $product['product_patient'],
+                'product_info'    => $product['product_info'],
                 'product_area'    => $product['area'],
                 'product_type_dirt' => 'CRITICO', //ESTE ES EL DATO A MODIFICAR
                 'product_state_rumed' => 'BUENO' //ESTE ES EL DATO A MODIFICAR
@@ -113,6 +118,7 @@ class ProductCart extends Component
 
         ]);
         $this->item_patient[$product['id']] = $product['product_patient'];
+        $this->item_product_info[$product['id']] = $product['product_info'];
         $this->item_area[$product['id']] = $product['area'];
         $this->item_outside_company[$product['id']] = '';
         $this->check_quantity[$product['id']] = $product['product_quantity'];
@@ -139,6 +145,7 @@ class ProductCart extends Component
                 'product_state_rumed'    => $cart_item->options->product_state_rumed,
                 'product_type_process'    => $cart_item->options->product_type_process,
                 'product_patient'    => $cart_item->options->product_patient,
+                'product_info'    => $cart_item->options->product_info,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
 
@@ -196,6 +203,7 @@ class ProductCart extends Component
                 'product_state_rumed'    => $cart_item->options->product_state_rumed,
                 'product_type_process'    => $cart_item->options->product_type_process,
                 'product_patient'    => $cart_item->options->product_patient,
+                'product_info'    => $cart_item->options->product_info,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
                 'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
@@ -225,6 +233,7 @@ class ProductCart extends Component
             'product_type_dirt'     => $this->type_dirt[$product_id],
             'product_state_rumed'   => $this->state_rumed[$product_id],
             'product_patient'   => $this->item_patient[$product_id],
+            'product_info'   => $this->item_product_info[$product_id],
             'product_state_rumed'   => $this->state_rumed[$product_id],
             'product_area'   => $this->item_area[$product_id],
             'product_outside_company'   => $this->item_outside_company[$product_id],

@@ -22,7 +22,7 @@ class ProductCarttoEXP extends Component
     public $quantity;
     public $check_quantity;
     public $item_patient;
-
+    public $item_product_info;
     public $item_outside_company;
     public $item_area;
 
@@ -49,6 +49,7 @@ class ProductCarttoEXP extends Component
 
                 $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
+                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
             }
         } else {
 
@@ -62,6 +63,7 @@ class ProductCarttoEXP extends Component
             $this->unit_price = []; // se añade
             $this->item_outside_company = []; // se añade
             $this->item_area = []; // se añade
+            $this->item_product_info = [];
         }
     }
 
@@ -110,9 +112,12 @@ class ProductCarttoEXP extends Component
                 'product_expiration'    => $stock_detail['product_expiration'],
                 'product_outside_company'    => $stock_detail['product_outside_company'],
                 'product_area'    => $stock_detail['product_area'],
+                'product_info'         => $stock_detail['product_info'],
             ]
         ]);
         $this->item_patient[$stock_detail['id']] = $stock_detail['product_patient'];
+        $this->item_product_info[$stock_detail['id']] = $stock_detail['product_info'];
+
         // $this->quantity[$stock_detail['id']] = $stock_detail['product_quantity'];
         $this->item_area[$stock_detail['id']] = $stock_detail['product_area'];
         $this->item_outside_company[$stock_detail['id']] = $stock_detail['product_outside_company'];
@@ -163,6 +168,7 @@ class ProductCarttoEXP extends Component
                 'product_type_process'    => $cart_item->options->product_type_process,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
+                'product_info'    => $cart_item->options->product_info,
 
             ]
         ]);

@@ -64,6 +64,10 @@
                                     <td>{{ $product->product_patient ?? 'N/A'}}</td>
                                 </tr>
                                 <tr>
+                                    <th>Info Paqeute</th>
+                                    <td>{{ $product->product_info ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
                                     <th>Note</th>
                                     <td>{{ $product->product_note ?? 'N/A' }}</td>
                                 </tr>

@@ -159,10 +159,14 @@
                                     <livewire:product-carttoSUB :cartInstance="'product'" />
                                 </div>
                             @endcan
+                            <div class="form-group">
+                                <label for="product_info"> Información corta del paquete</label>
+                                <input type="text" name="product_info" id="product_info" rows="4 " class="form-control" maxlength="20" ></input>
+                            </div>
 
                             <div class="form-group">
                                 <label for="product_note">Nota / Observaciones</label>
-                                <textarea name="product_note" id="product_note" rows="4 " class="form-control"></textarea>
+                                <textarea   name="product_note" id="product_note" rows="4 " class="form-control"></textarea >
                             </div>
                         </div>
                     </div>

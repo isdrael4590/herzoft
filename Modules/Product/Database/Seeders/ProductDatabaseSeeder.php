@@ -32,8 +32,10 @@ class ProductDatabaseSeeder extends Seeder
             'product_quantity'  => '1',
             'product_price'  => '1',
             'product_type_process' => 'Alta Temperatura',
-            'product_barcode_symbology' => 'C128'
-        ]
+            'product_barcode_symbology' => 'C128',
+            'product_info' => '10pz,10t'
+
+            ]
         );
       
    

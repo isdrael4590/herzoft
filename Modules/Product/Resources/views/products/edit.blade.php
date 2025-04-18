@@ -156,6 +156,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_info"> Información corta del Paquete:<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="product_info" maxlength="20"
+                                            value="{{ $product->product_info }}">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="product_note">Note</label>
                                 <textarea name="product_note" id="product_note" rows="4 " class="form-control">{{ $product->product_note }}</textarea>

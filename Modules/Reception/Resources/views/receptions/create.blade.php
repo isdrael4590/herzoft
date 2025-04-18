@@ -84,9 +84,11 @@
                                 <textarea name="note" id="note" rows="5" class="form-control"></textarea>
                             </div>
 
-                            <div class="mt-3">
-                                <button type="submit" class="btn btn-primary">
+                            <div>
+                                <button type="submit" class="btn btn-primary"
+                                   >
                                     Registrar Ingreso <i class="bi bi-check"></i>
+                                    
                                 </button>
                             </div>
                         </form>
@@ -99,4 +101,5 @@
 @endsection
 
 @push('page_scripts')
+  
 @endpush

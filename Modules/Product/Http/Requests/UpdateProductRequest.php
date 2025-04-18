@@ -23,6 +23,7 @@ class UpdateProductRequest extends FormRequest
             'area' => ['required', 'string', 'min:1'],
             'product_price' => ['required', 'numeric', 'max:2147483647'],
             'product_note' => ['nullable', 'string', 'max:1000'],
+            'product_info' => ['nullable', 'string', 'max:30'],
             'category_id' => ['required', 'integer'],
             'product_type_process'=> ['required', 'string', 'max:255'],
             'product_quantity' => ['required', 'integer', 'min:1'],
