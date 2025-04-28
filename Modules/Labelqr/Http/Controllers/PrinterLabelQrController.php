@@ -81,7 +81,7 @@ class PrinterLabelQrController extends Controller
         
         $dataqr = $labelqr->reference . "/" . $labelqr->lote_machine . "/";
 
-        $pdf = PDF::loadView('labelqr::labelqrs.print2', [
+        $pdf = PDF::loadView('labelqr::labelqrs.print3', [
             'labelqr' => $labelqr,
             'labelqrDetails' => $labelqrDetails,
             'institute' => $institute,
