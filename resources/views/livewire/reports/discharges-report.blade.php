@@ -1,29 +1,26 @@
 <div>
+    @if (session()->has('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
     <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <form wire:submit="generateReport">
-                        <div class="form-row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Fecha Inicio <span class="text-danger">*</span></label>
-                                    <input wire:model="start_date" type="date" class="form-control" name="start_date">
-                                    @error('start_date')
-                                        <span class="text-danger mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Fecha Fin <span class="text-danger">*</span></label>
-                                    <input wire:model="end_date" type="date" class="form-control" name="end_date">
-                                    @error('end_date')
-                                        <span class="text-danger mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <label for="startDate">Fecha Inicio</label>
+                            <input type="date" wire:model="startDate" id="startDate" class="form-control">
+                        </div>
+                        <div class="col-md-5">
+                            <label for="endDate">Fecha FIn</label>
+                            <input type="date" wire:model="endDate" id="endDate" class="form-control">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button class="btn btn-primary" wire:click="loadData">Buscar</button>
+                        </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Equipo</label>
                                     <select wire:model="machine_name" class="form-control" name="machine_name">
@@ -35,9 +32,8 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-lg-4">
+
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Validación Biologico</label>
                                     <select wire:model="validation_biologic" class="form-control"
@@ -49,7 +45,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Validación Proceso</label>
                                     <select wire:model="status_cycle" class="form-control" name="status_cycle">
@@ -59,18 +55,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group mb-0">
-                            <button type="submit" class="btn btn-primary">
-                                <span wire:target="generateReport" wire:loading class="spinner-border spinner-border-sm"
-                                    role="status" aria-hidden="true"></span>
-                                <i wire:target="generateReport" wire:loading.remove class="bi bi-shuffle"></i>
-                                Filtrar Reporte
-                            </button>
-
-
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,6 +75,9 @@
                         </div>
                         <thead>
                             <tr>
+                                <th>
+                                    <input type="checkbox" wire:model="selectAll">
+                                </th>
                                 <th>Fecha</th>
                                 <th>Referencia</th>
                                 <th>Equipo</th>
@@ -100,49 +88,56 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($discharges as $discharge)
+                            @forelse($data as $discharge)
                                 <tr>
-                                    <td>{{ \Carbon\Carbon::parse($discharge->updated_at)->format('d M, Y') }}</td>
-                                    <td>{{ $discharge->reference }}</td>
-                                    <td>{{ $discharge->machine_name }}</td>
-                                    <td>{{ $discharge->lote_machine }}</td>
                                     <td>
-                                        @if ($discharge->status_cycle == 'Ciclo Falla')
+                                        <input type="checkbox" wire:model="selectedItems"
+                                            value="{{ $discharge['id'] }}">
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($discharge['updated_at'])->format('d M, Y') }}</td>
+                                    <td>{{ $discharge['reference'] }}</td>
+                                    <td>{{ $discharge['machine_name'] }}</td>
+                                    <td>{{ $discharge['lote_machine'] }}</td>
+
+                                    <td>
+                                        @if ($discharge['status_cycle'] == 'Ciclo Falla')
                                             <span class="badge badge-info">
-                                                {{ $discharge->status_cycle }}
+                                                {{ $discharge['status_cycle'] }}
                                             </span>
-                                        @elseif ($discharge->status_cycle == 'Ciclo Aprobado')
+                                        @elseif ($discharge['status_cycle'] == 'Ciclo Aprobado')
                                             <span class="badge badge-primary">
-                                                {{ $discharge->status_cycle }}
+                                                {{ $discharge['status_cycle'] }}
                                             </span>
                                         @endif
                                     </td>
                                     <td>
-                                        @if ($discharge->validation_biologic == 'Falla')
+                                        @if ($discharge['validation_biologic'] == 'Falla')
                                             <span class="badge badge-info">
-                                                {{ $discharge->validation_biologic }}
+                                                {{ $discharge['validation_biologic'] }}
                                             </span>
-                                        @elseif ($discharge->validation_biologic == 'Correcto')
+                                        @elseif ($discharge['validation_biologic'] == 'Correcto')
                                             <span class="badge badge-primary">
-                                                {{ $discharge->validation_biologic }}
+                                                {{ $discharge['validation_biologic'] }}
                                             </span>
                                         @endif
-                                    </td>
+
 
                                 </tr>
                             @empty
                                 <tr>
                                     <td colspan="8">
-                                        <span class="text-danger">Datos no Disponibles Descarga</span>
+                                        <span class="text-danger">Datos no Disponible de Despacho</span>
                                     </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
-                    <div @class(['mt-3' => $discharges->hasPages()])>
-                        {{ $discharges->links() }}
+                    <div class="mt-3">
+                        <button class="btn btn-success" wire:click="print">Print Selected
+                            ({{ count($this->selectedItems) }})</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

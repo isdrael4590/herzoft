@@ -34,6 +34,6 @@ class StoreInformatRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows('create_Informats');
+        return Gate::allows('create_informats');
     }
 }

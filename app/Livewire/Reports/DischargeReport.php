@@ -3,9 +3,9 @@
 namespace App\Livewire\Reports;
 
 use Livewire\Component;
+use Carbon\Carbon;
 use Livewire\WithPagination;
 use Modules\Discharge\Entities\Discharge;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class DischargeReport extends Component
 {
@@ -15,53 +15,81 @@ class DischargeReport extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $machines;
-    public $start_date;
-    public $end_date;
+    public $startDate;
+    public $endDate;
     public $machine_name;
     public $validation_biologic;
     public $status_cycle;
 
-    protected $rules = [
-        'start_date' => 'required|date|before:end_date',
-        'end_date'   => 'required|date|after:start_date',
-    ];
+    public $data = [];
+    public $selectedItems = [];
+    public $selectAll = false;
+
+
 
     public function mount()
     {
         $this->machines = '';
-        $this->start_date = today()->subDays(30)->format('Y-m-d');
-        $this->end_date = today()->format('Y-m-d');
+        $this->startDate = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $this->endDate = Carbon::now()->format('Y-m-d');
         $this->machine_name = '';
         $this->status_cycle = '';
         $this->validation_biologic = '';
+        $this->loadData();
+    }
+
+    public function loadData()
+    {
+        $this->data = Discharge::whereBetween('updated_at', [
+            $this->startDate . ' 00:00:00',
+            $this->endDate . ' 23:59:59',
+        ])
+        ->when($this->machine_name, function ($query) {
+                return $query->where('machine_name', $this->machine_name);
+            })
+        ->when($this->status_cycle, function ($query) {
+                return $query->where('status_cycle', $this->status_cycle);
+            })
+        ->when($this->validation_biologic, function ($query) {
+                return $query->where('validation_biologic', $this->validation_biologic);
+            })
+            ->orderBy('updated_at', 'desc')->get()->toArray();
+
+            $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();;
+            $this->selectAll = true;
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+        } else {
+            $this->selectedItems = [];
+        }
+    }
+
+
+
+    public function print()
+    {
+        if (empty($this->selectedItems)) {
+            session()->flash('message', 'Please select at least one item to print.');
+            return;
+        }
+
+        return redirect()->route('print.data', [
+            'items' => implode(',', $this->selectedItems),
+        ]);
     }
 
     public function render()
     {
-        $discharges = Discharge::whereDate('updated_at', '>=', $this->start_date)
-            ->whereDate('updated_at', '<=', $this->end_date)
-            ->when($this->machine_name, function ($query) {
-                return $query->where('machine_name', $this->machine_name);
-            })
-            ->when($this->status_cycle, function ($query) {
-                return $query->where('status_cycle', $this->status_cycle);
-            })
-            ->when($this->validation_biologic, function ($query) {
-                return $query->where('validation_biologic', $this->validation_biologic);
-            })
 
-            ->orderBy('updated_at', 'desc')->paginate(10);
 
         return view('livewire.reports.discharges-report', [
-            'discharges' => $discharges
+            'data' => $this->data,
+            'selectedItems' => $this->selectedItems,
+            'selectAll' => $this->selectAll,
         ]);
     }
-
-    public function generateReport()
-    {
-        $this->validate();
-        $this->render();
-    }
-
-
 }

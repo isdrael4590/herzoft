@@ -1,63 +1,50 @@
 <div>
+    @if (session()->has('message'))
+        <div class="alert alert-info">
+            {{ session('message') }}
+        </div>
+    @endif
     <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <form wire:submit="generateReport">
-                        <div class="form-row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Fecha Inicio <span class="text-danger">*</span></label>
-                                    <input wire:model="start_date" type="date" class="form-control" name="start_date">
-                                    @error('start_date')
-                                        <span class="text-danger mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Fecha Fin <span class="text-danger">*</span></label>
-                                    <input wire:model="end_date" type="date" class="form-control" name="end_date">
-                                    @error('end_date')
-                                        <span class="text-danger mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Área</label>
-                                    <select wire:model="area_expedition" class="form-control" name="area_expedition">
-                                        <option value="">Seleccione el Área</option>
-                                        @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                            <option value="{{ $area->area_name }}">{{ $area->area_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                   
-                                </div>
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <label for="startDate">Fecha Inicio</label>
+                            <input type="date" wire:model="startDate" id="startDate" class="form-control">
+                        </div>
+                        <div class="col-md-5">
+                            <label for="endDate">Fecha FIn</label>
+                            <input type="date" wire:model="endDate" id="endDate" class="form-control">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button class="btn btn-primary" wire:click="loadData">Buscar</button>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Área</label>
+                                <select wire:model="area_expedition" class="form-control" name="area_expedition">
+                                    <option value="">Seleccione el Área</option>
+                                    @foreach (\Modules\Informat\Entities\Area::all() as $area)
+                                        <option value="{{ $area->area_name }}">{{ $area->area_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Estado</label>
-                                    <select wire:model="status_expedition" class="form-control" name="status_expedition">
-                                        <option value="">Selecione el estado</option>
-                                        <option value="Pendiente">Pendiente</option>
-                                        <option value="Despachado">Despachado</option>
-                                    </select>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select wire:model="status_expedition" class="form-control" name="status_expedition">
+                                    <option value="">Selecione el estado</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Despachado">Despachado</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group mb-0">
-                            <button type="submit" class="btn btn-primary">
-                                <span wire:target="generateReport" wire:loading class="spinner-border spinner-border-sm"
-                                    role="status" aria-hidden="true"></span>
-                                <i wire:target="generateReport" wire:loading.remove class="bi bi-shuffle"></i>
-                                Filtrar Reporte
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,6 +64,9 @@
                         </div>
                         <thead>
                             <tr>
+                                <th>
+                                    <input type="checkbox" wire:model="selectAll">
+                                </th>
                                 <th>Fecha</th>
                                 <th>Referencia</th>
                                 <th>Área</th>
@@ -87,25 +77,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($expeditions as $expedition)
+                            @forelse($data as $expedition)
                                 <tr>
-                                    <td>{{ \Carbon\Carbon::parse($expedition->updated_at)->format('d M, Y') }}</td>
-                                    <td>{{ $expedition->reference }}</td>
-                                    <td>{{ $expedition->area_expedition }}</td>
                                     <td>
-                                        @if ($expedition->status_expedition == 'Pendiente')
+                                        <input type="checkbox" wire:model="selectedItems"
+                                            value="{{ $expedition['id'] }}">
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($expedition['updated_at'])->format('d M, Y') }}</td>
+                                    <td>{{ $expedition['reference'] }}</td>
+                                    <td>{{ $expedition['area_expedition'] }}</td>
+                                    <td>
+                                        @if ($expedition['status_expedition'] == 'Pendiente')
                                             <span class="badge badge-info">
-                                                {{ $expedition->status_expedition }}
+                                                {{ $expedition['status_expedition'] }}
                                             </span>
-                                        @elseif ($expedition->status_expedition == 'Despachado')
+                                        @elseif ($expedition['status_expedition'] == 'Despachado')
                                             <span class="badge badge-primary">
-                                                {{ $expedition->status_expedition }}
+                                                {{ $expedition['status_expedition'] }}
                                             </span>
                                         @endif
                                     </td>
-                                    <td>{{ $expedition->operator }}</td>
-                                    <td>{{ $expedition->staff_expedition }}</td>
-                           
+                                    <td>{{ $expedition['operator'] }}</td>
+                                    <td>{{ $expedition['staff_expedition'] }}</td>
+
                                 </tr>
                             @empty
                                 <tr>
@@ -116,10 +110,12 @@
                             @endforelse
                         </tbody>
                     </table>
-                    <div @class(['mt-3' => $expeditions->hasPages()])>
-                        {{ $expeditions->links() }}
+                    <div class="mt-3">
+                        <button class="btn btn-success" wire:click="print">Print Selected
+                            ({{ count($this->selectedItems) }})</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
