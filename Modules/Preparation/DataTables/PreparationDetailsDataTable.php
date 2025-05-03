@@ -2,6 +2,7 @@
 
 namespace Modules\Preparation\DataTables;
 
+use Illuminate\Validation\Rules\Can;
 use Modules\Preparation\Entities\PreparationDetails;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -48,7 +49,7 @@ class PreparationDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[4, 'desc']],
+                'order' => [[3, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -65,10 +66,7 @@ class PreparationDetailsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-
-            Column::make('id')
-                ->title('Item')
-                ->className('text-center align-middle'),
+       
             Column::make('dates')
                 ->title('Fecha Ingreso')
                 ->className('text-center align-middle'),
@@ -87,6 +85,9 @@ class PreparationDetailsDataTable extends DataTable
                 ->className('text-center align-middle'),
             Column::make('product_area')
                 ->title('Area')
+                ->className('text-center align-middle'),
+                Column::make('product_type_process')
+                ->title('Tipo de proceso')
                 ->className('text-center align-middle'),
             Column::computed('action2')
                 ->exportable(false)

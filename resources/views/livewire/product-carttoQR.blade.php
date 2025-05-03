@@ -20,7 +20,7 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        {{--<th class="align-middle">Id</th>--}}
+                        {{-- <th class="align-middle">Id</th> --}}
                         <th class="align-middle">Descripción / Código</th>
                         <th class="align-middle">Stock Preparación.</th>
                         <th class="align-middle">Cantidad</th>
@@ -36,9 +36,9 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
-                               {{-- <td class="align-middle text-center">
+                                {{-- <td class="align-middle text-center">
                                     {{ $cart_item->id }}
-                                </td>--}}
+                                </td> --}}
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-success">
@@ -54,7 +54,9 @@
                                 </td>
                                 <td class="align-middle text-center">
 
-                                    {{ $cart_item->options->product_package_wrap }} @include('livewire.includes.product-cart-modaltoQR')
+                                    {{ $cart_item->options->product_package_wrap }}
+                                        @include('livewire.includes.product-cart-modaltoQR')
+                                  
 
                                 </td>
                                 <td class="align-middle text-center">
@@ -82,7 +84,7 @@
 
                                 </td>
                                 <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_patient }} // 
+                                    {{ $cart_item->options->product_patient }} //
                                     {{ $cart_item->options->product_outside_company }}
                                 </td>
 
@@ -111,14 +113,14 @@
         <div class="col-md-4">
             <div class="table-responsive">
                 <table class="table table-striped">
-                   
+
                     <tr>
                         <th>Total Paquetes del proceso</th>
                         @php
-                            $total_package = Cart::instance($cart_instance)->subtotal()
+                            $total_package = Cart::instance($cart_instance)->subtotal();
                         @endphp
                         <th>
-                             {{ ($total_package) }}
+                            {{ $total_package }}
                         </th>
                     </tr>
                 </table>

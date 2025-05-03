@@ -42,16 +42,16 @@
                             <option value="Papel Mixto"> Papel Mixto </option>
                             <option value="Papel Tyvek"> Papel Tyvek </option>
                             <option value="Tela No Tejida"> Tela No Tejida </option>
-                            <option value="Lamina SMS"> Lámina SMS</option>
+                            <option value="Tela Tejida (SMS)"> Tela Tejida (SMS)</option>
                             <option value="Otro"> Otro</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Validación del Embalaje <span class="text-danger">*</span></label>
                         <select wire:model.live="eval_package.{{ $cart_item->id }}" class="form-control" required>
-                            <option  disabled>-- Seleccionar la envoltura--</option>
-                            <option  selected value="N/A"> N/A </option>
-                            <option  value="OK"> OK</option>
+                            <option disabled>-- Seleccionar la envoltura--</option>
+                            <option value="N/A"> N/A </option>
+                            <option selected value="OK"> OK</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -64,13 +64,24 @@
                     </div>
                     <div class="form-group">
                         <label>Tiempo de Vencimiento <span class="text-danger">*</span></label>
-                        <select wire:model.live="expiration.{{ $cart_item->id }}" class="form-control" required>
-                            <option selected value="14"> 14 Días</option>
-                            <option value="180"> 6 Meses </option>
-                            <option value="270"> 9 Meses </option>
-                            <option value="365"> 12 Meses </option>
-                            <option value="545"> 18 Meses </option>
+                            <select wire:model.live="expiration.{{ $cart_item->id }}"  wire:model="expiration_data" class="form-control" required>
+                                <option value="14" {{ $expiration_data == 14 ? 'selected' : '' }}>14 Días</option>
+                                <option value="180" {{ $expiration_data == 180 ? 'selected' : '' }}>6 Meses</option>
+                                <option value="270" {{ $expiration_data == 270 ? 'selected' : '' }}>9 Meses</option>
+                                <option value="365" {{ $expiration_data == 365 ? 'selected' : '' }}>12 Meses</option>
+                                <option value="545" {{ $expiration_data == 545 ? 'selected' : '' }}>18 Meses</option>
+                               
+                            </select>
+                       
+                    </div>
 
+                    <div class="form-group">
+                        <label>Operador de empaque</label>
+                        <select wire:model.live="operator_package.{{ $cart_item->id }}"class="form-control" required>
+                            @foreach (App\Models\User::all() as $user)
+                                <option value="{{ $user->name }}">
+                                    {{ $user->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>

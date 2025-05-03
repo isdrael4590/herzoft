@@ -6,7 +6,7 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Liberar Descarga</title>
+    <title>Recepción</title>
 
     <style>
         /** printer 16 start **/
@@ -164,13 +164,13 @@
             position: relative;
             margin: 0 20px 10px;
             text-align: center;
-            font-size: 14px;
+            font-size: 10px;
             marker: none;
             line-height: 20px;
         }
 
         .printer-16 .printer-informeshon-footer li a {
-            color: #535353;
+            color: #000000;
         }
 
         .printer-16 .text-muted {
@@ -526,25 +526,6 @@
             font-weight: 500;
 
         }
-
-        @page {
-            margin-top: 2mm;
-            margin-bottom: 5mm;
-            /* Make room for footer */
-        }
-
-
-        /* Only show the second-page header on pages after first */
-        .second-page-header {
-            display: none;
-        }
-
-        @page :not(:first) {
-            /* Additional space on pages after first */
-            margin-top: 100mm;
-        }
-
-
     </style>
 </head>
 
@@ -558,7 +539,7 @@
                             <div class="printer-info">
                                 <div class="row">
                                     <div class="printer-number">
-                                        <h1 class="print-title-1">Registro Físico del proceso de esterilización.
+                                        <h1 class="print-title-1">Registro Físico ingreso de instrumental.
                                         </h1>
 
                                     </div>
@@ -572,12 +553,15 @@
                                                 <div class="logo">
                                                     <img src="{{ $dataUrl }}" alt="Institute Image"
                                                         class="img-fluid mb-2">
+
                                                 </div>
-                                                </h4>
                                             </th>
                                             <th>
-                                                <h1><span>{{ $discharge->reference }}</span></h1>
-                                                </h4>
+                                                <h2>{{ $reception->reference }}</h2>
+                                                <h3> <span>
+                                                        {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}</span>
+                                                </h3>
+
                                             </th>
                                             <th>
                                                 <div>Versión: <strong> 01</strong></div>
@@ -597,13 +581,11 @@
                                         <tr>
                                             <th><strong>Institución:</strong></h4>
                                             </th>
-                                            <th><strong>Información de Proceso:</strong></h4>
+                                            <th><strong>Información de Recepción:</strong></h4>
                                             </th>
                                             <th><strong>Registro INFO:</strong></h5>
                                             </th>
-                                            <th>
-                                                <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>
-                                            </th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -619,60 +601,27 @@
                                             </td>
                                             <td>
                                                 <div>
-                                                    <div><strong>Proceso N°:</strong> {{ $labelqr->reference }}</div>
-                                                    <div><strong>Equipo:</strong> {{ $discharge->machine_name }}</div>
-                                                    <div><strong>Lote del Equipo:</strong>
-                                                        {{ $discharge->lote_machine }}</div>
-                                                    <div>
-                                                        @if ($discharge->lote_agente == 'NA')
-                                                        @else
-                                                            <strong>Lote Agente Esterilizante:</strong>
-                                                            {{ $discharge->lote_agente }}
-                                                        @endif
+                                                    <div>Persona que entrega: <strong>
+                                                            {{ $reception->delivery_staff }}</strong>
                                                     </div>
-                                                    <div><strong>Temperatura del equipo:</strong>
-                                                        {{ $discharge->temp_machine }}</div>
-                                                    <div><strong>Tipo de Programa:</strong>
-                                                        {{ $discharge->type_program }}</div>
-                                                    <div><strong>Temperatura del Ambiente: </strong>
-                                                        {{ $discharge->temp_ambiente }}
-                                                    </div>
-                                                    @if ($discharge->operator == $discharge->operator_discharge)
-                                                        <div><strong>Operario Carga/ Descarga:</strong> <br>
-                                                            {{ $discharge->operator_discharge }}
-                                                        </div>
-                                                    @else
-                                                        <div><strong>Operario Carga:</strong>
-                                                            {{ $discharge->operator }}</div>
-                                                        <div><strong>Operario DesCarga:</strong>
-                                                            {{ $discharge->operator_discharge }}</div>
-                                                    @endif
+                                                    <div>Área Procedente: <strong>{{ $reception->area }}</strong></div>
+                                                    <div>Persona que recibe:<strong>
+                                                            {{ $reception->operator }}</strong></div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>
-                                                    <div>Número: <strong>{{ $discharge->reference }}</strong></div>
-                                                    <div><strong>Fecha Proceso:
-                                                        </strong>{{ \Carbon\Carbon::parse($discharge->created_up)->format('d M, Y') }}
+                                                    <div>Número: <strong>{{ $reception->reference }}</strong></div>
+                                                    <div>Fecha:
+                                                        {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}
                                                     </div>
-                                                    <div><strong>Estado del Ciclo: </strong>
-                                                        {{ $discharge->status_cycle }}</div>
-                                                    <div><strong>Validación Biológico: </strong>
-                                                        {{ $discharge->validation_biologic }}
+                                                    <div>
+                                                        Status: <strong>{{ $reception->status }}</strong>
                                                     </div>
-                                                    <div><strong>Lote del Biológico: </strong>
-                                                        {{ $discharge->lote_biologic }}</div>
 
-                                                    <div><strong>Inicio proceso: </strong> {{ $discharge->created_at }}
-                                                    </div>
-                                                    <div><strong>Fin de Proceso: </strong> {{ $discharge->updated_at }}
-                                                    </div>
                                                 </div>
                                             </td>
-                                            <td style= "text-align:center">
-                                                <img
-                                                    src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(150)->generate($data)) }} ">
-                                            </td>
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -684,22 +633,19 @@
                                         <thead>
                                             <tr>
                                                 <th>Código </th>
-                                                <th>Descripción</th>
-                                                <th>Cant. Proc.</th>
-                                                <th>Envoltura</th>
-                                                <th>Cant. Validada</th>
-                                                <th>Ind. Quím.</th>
+                                                <th>Descripción Rumed</th>
+                                                <th>Cantidad</th>
+                                                <th>Nivel infección</th>
+                                                <th>Estado</th>
                                                 <th>Paciente</th>
-                                                <th>F. Expir.</th>
-                                                <th>Reporte de Equipo</th>
+                                                <th>Casa Comer.</th>
 
-                                            </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($discharge->dischargeDetails as $item)
+                                            @foreach ($reception->receptionDetails as $item)
                                                 <tr>
                                                     <td style= "text-align:center">
-                                                        {{ $item->product_code }} <br>
+                                                        {{ $item->product_code }}
                                                     </td>
                                                     <td style= "text-align:center">
                                                         {{ $item->product_name }}
@@ -708,23 +654,19 @@
                                                         {{ $item->product_quantity }}
                                                     </td>
                                                     <td style= "text-align:center">
-                                                        {{ $item->product_package_wrap }}
+                                                        {{ $item->product_type_dirt }}
                                                     </td>
                                                     <td style= "text-align:center">
-                                                        {{ $item->product_eval_package }}
+                                                        {{ $item->product_state_rumed }}
                                                     </td>
-                                                    <td style= "text-align:center">
-                                                        {{ $item->product_eval_indicator }}
-                                                    </td>
-                                                    <td style= "text-align:center">
-                                                        {{ $item->product_patient }} / [
-                                                        {{ $item->product_outside_company }}
-                                                        ]
-                                                    </td>
-                                                    <td style= "text-align:center">
-                                                        {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') !!}
-                                                    </td>
-
+                                                    @if (@empty($item->product_patient))
+                                                    @else
+                                                        <td> {{ $item->product_patient }}</td>
+                                                    @endif
+                                                    @if (@empty($item->product_outside_company))
+                                                    @else
+                                                        <td> {{ $item->product_outside_company }}</td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -732,10 +674,10 @@
                                 </div>
                                 <br>
                                 <div>
-                                    @if (@empty($discharge->note))
+                                    @if (@empty($reception->note))
                                         Notas: N/A
                                     @else
-                                        Notas: {{ $discharge->note }}
+                                        Notas: {{ $reception->note }}
                                     @endif
                                 </div>
                                 <br>
@@ -744,36 +686,29 @@
                             </div>
                         </div>
                     </div>
+
                     <table class="default-table ">
                         <tr>
                             <th style= " font-size: 15px; text-align: justify;">
-
-                                Resultado Etiqueta Biologico:
+                                RECIBE: <span> {{ $reception->operator }}</span>
                                 <br><br><br><br><br><br>
                             </th>
                             <th style= " font-size: 15px; text-align: justify;">
-                                Impresión Inc. Biológico<br><br><br><br><br><br>
-                            </th>
-                        </tr>
-                    </table>
-                    <table class="default-table ">
-                        <tr>
-                            <th style= " font-size: 15px; text-align: justify;">
-
-                                Operario: <span> {{ $discharge->operator }}</span>
+                                ENTREGA: <span> {{ $reception->delivery_staff }}</span>
                                 <br><br><br><br><br><br>
+
                             </th>
-                            <th style= " font-size: 15px; text-align: justify;">
-                                Supervisor: <span> </span><br><br><br><br><br><br>
                             </th>
                         </tr>
                     </table>
 
                     <div class="printer-informeshon-footer">
                         <ul>
-                            <li><strong>Nota:</strong> Asegurarse de la esterilidad del instrumental</li>
+                            <li><strong>Nota:</strong> Asegurarse los productos sean los correctos previo al registro.
+                            </li>
                         </ul>
                         <ul>
+
                             <li>
 
                                 <img src="{{ $dataUrlogo }}" alt="Institute Image" class="img-fluid mb-2"

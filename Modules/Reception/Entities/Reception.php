@@ -18,7 +18,7 @@ class Reception extends Model
         return $this->hasMany(ReceptionDetails::class);
     }
 
-    /*public static function boot() {
+    public static function boot() {
         parent::boot();
 
         static::creating(function ($model) {
@@ -26,7 +26,7 @@ class Reception extends Model
             $model->reference = make_reference_id('ING', $number);
         });
     }
-*/
+
     public function getDateAttribute($value)
     {
         return Carbon::parse($value)->format('d M, Y');

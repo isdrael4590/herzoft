@@ -3,6 +3,7 @@
 namespace App\Livewire\Reports;
 
 use Livewire\Component;
+use Carbon\Carbon;
 use Livewire\WithPagination;
 use Modules\Reception\Entities\Reception;
 
@@ -13,44 +14,75 @@ class ReceptionReport extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $areas;
-    public $start_date;
-    public $end_date;
-    public $area_id;
-    public $status_reception;
+    public $startDate;
+    public $endDate;
+    public $area;
+    public $status;
 
-    protected $rules = [
-        'start_date' => 'required|date|before:end_date',
-        'end_date'   => 'required|date|after:start_date',
-    ];
+    public $data = [];
+    public $selectedItems = [];
+    public $selectAll = false;
 
-    public function mount($areas) {
-        $this->areas = $areas;
-        $this->start_date = today()->subDays(30)->format('Y-m-d');
-        $this->end_date = today()->format('Y-m-d');
-        $this->area_id = '';
-        $this->status_reception = '';
+
+    public function mount()
+    {
+        $this->startDate = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $this->endDate = Carbon::now()->format('Y-m-d');
+        $this->area = '';
+        $this->status = '';
+        $this->loadData();
+    }       
+
+
+    public function loadData()
+    {
+    
+        $this->data = Reception::whereBetween('updated_at', [
+            $this->startDate . ' 00:00:00',
+            $this->endDate . ' 23:59:59',
+        ])
+        ->when($this->area, function ($query) {
+                return $query->where('area', $this->area);
+            })
+        ->when($this->status, function ($query) {
+                return $query->where('status', $this->status);
+            })
+        ->orderBy('updated_at', 'desc')->get()->toArray();
+        $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+        $this->selectAll = true;
+       
+        
     }
 
-    public function render() {
-        $receptions = Reception::whereDate('updated_at', '>=', $this->start_date)
-            ->whereDate('updated_at', '<=', $this->end_date)
-            ->when($this->area_id, function ($query) {
-                return $query->where('area_id', $this->area_id);
-            })
-            ->when($this->status_reception, function ($query) {
-                return $query->where('status', $this->status_reception);
-            })
-            
-            ->orderBy('updated_at', 'desc')->paginate(20);
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+        } else {
+            $this->selectedItems = [];
+        }
+    }
 
-        return view('livewire.reports.receptions-report', [
-            'receptions' => $receptions
+    public function print()
+    {
+        if (empty($this->selectedItems)) {
+            session()->flash('message', 'Please select at least one item to print.');
+            return;
+        }
+
+        return redirect()->route('printreception.data', [
+            'items' => implode(',', $this->selectedItems),
         ]);
     }
 
-    public function generateReport() {
-        $this->validate();
-        $this->render();
+    public function render()
+    {
+      
+
+        return view('livewire.reports.receptions-report', [
+            'data' => $this->data,
+            'selectedItems' => $this->selectedItems,
+            'selectAll' => $this->selectAll,
+        ]);
     }
 }

@@ -67,6 +67,7 @@ class DischargeController extends Controller
                 'ruta_process' => "Sin Ruta",
                 'note' => $request->note,
                 'operator' => $request->operator,
+                'operator_discharge' => $request->operator_discharge, // se añade
                 'total_amount' => $request->total_amount,  // se añade
 
             ]);
@@ -226,6 +227,7 @@ class DischargeController extends Controller
                 'ruta_process' => $ruta_process,
                 'note' => $request->note,
                 'operator' => $request->operator,
+                'operator_discharge' => $request->operator_discharge, // se añade
                 'total_amount' => $request->total_amount // se añade
 
             ]);

@@ -46,7 +46,8 @@ class PrinterController extends Controller
         $base64Logo = base64_encode($Imagelogo);
         $dataUrlogo = 'data:image/jpeg;base64,' . $base64Logo;
        
-        $PdfOptions = ['dpi' => 150, 'defaultFont' => 'sans-serif', 'isPhpEnabled' => true];
+        $PdfOptions = ['dpi' => 150, 'defaultFont' => 'sans-serif', 'isPhpEnabled' => true, 'isHtml5ParserEnabled' => true,
+        'isRemoteEnabled' => true];
 
         $pdf = PDF::loadView('reception::receptions.print', [
             'reception' => $reception,
@@ -56,6 +57,12 @@ class PrinterController extends Controller
             'dataUrlogo' => $dataUrlogo,
         ])->setOptions($PdfOptions)->setWarnings(false);
 
+
+        $pdf->output();
+        $domPdf = $pdf->getDomPDF();
+        $canvas = $domPdf->get_canvas();
+        
+        $canvas->page_text(330, 560, "Página: {PAGE_NUM} / {PAGE_COUNT}", null, 7);
         return $pdf->stream('receptions.pdf');
     }
 

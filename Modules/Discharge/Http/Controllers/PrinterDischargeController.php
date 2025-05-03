@@ -56,7 +56,11 @@ class PrinterDischargeController extends Controller
             'dataUrl' => $dataUrl,
             'dataUrlogo' => $dataUrlogo,
         ])->setOptions(['dpi'=>150,'defaultFont' => 'sans-serif']);
+        $pdf->output();
+        $domPdf = $pdf->getDomPDF();
+        $canvas = $domPdf->get_canvas();
         
+        $canvas->page_text(500, 800, "Página: {PAGE_NUM} / {PAGE_COUNT}", null, 9);
         return $pdf->stream('discharges.pdf');
     }
 

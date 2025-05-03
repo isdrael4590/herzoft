@@ -133,14 +133,21 @@
                                         </select>
                                     </div>
                                 </div>
-
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Operador Carga</label>
+                                        <input type="text" class="form-control" name="operator" required
+                                            value="{{ $discharge->operator }}" readonly>
+                                    </div>
+                                </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Operador Descarga</label>
-                                        <input class="form-control" type="text" id="operator" name="operator"
+                                        <input class="form-control" type="text" id="operator_discharge" name="operator_discharge"
                                             placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }} "readonly>
                                     </div>
                                 </div>
+                               
 
 
                             </div>

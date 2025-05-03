@@ -96,6 +96,15 @@
                                         <input type="text" class="form-control" name="product_type_process" required
                                             readonly value="{{ $preparationDetails->product_type_process }}">
                                     </div>
+                                   
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="product_info">Informacion corta paquete<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="product_info"
+                                            value="{{ $preparationDetails->product_info }}" maxlength="20">
+                                    </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">

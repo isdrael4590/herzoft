@@ -50,7 +50,17 @@
                                 <div><strong>Temperatura del equipo:</strong> {{ $discharge->temp_machine }}</div>
                                 <div><strong>Tipo de Programa:</strong> {{ $discharge->type_program }}</div>
                                 <div><strong>Temperatura del Ambiente: </strong> {{ $discharge->temp_ambiente }}</div>
-                                <div><strong>Operario:</strong> {{ $discharge->operator }}</div>
+                                @if ($discharge->operator == $discharge->operator_discharge)
+                                                        <div><strong>Operario Carga/ Descarga:</strong> 
+                                                            {{ $discharge->operator_discharge }}
+                                                        </div>
+                                                    @else
+                                                        <div><strong>Operario Carga:</strong>
+                                                            {{ $discharge->operator }}</div>
+                                                        <div><strong>Operario DesCarga:</strong>
+                                                            {{ $discharge->operator_discharge }}</div>
+                                                    @endif
+               
                             </div>
 
                             <div class="col-sm-3 mb-3 mb-md-0">
@@ -58,9 +68,10 @@
                                 <div>Número: <strong>{{ $discharge->reference }}</strong></div>
                                 <div><strong>Fecha Proceso:
                                     </strong>{{ \Carbon\Carbon::parse($discharge->created_up)->format('d M, Y') }}</div>
-                                <div><strong>Estado del Ciclo: </strong> {{ $discharge->status_cycle }}</div>
                                 <div><strong>Lote del Biológico: </strong> {{ $discharge->lote_biologic }}</div>
                                 <div><strong>Validación Biológico: </strong> {{ $discharge->validation_biologic }}</div>
+                                <div><strong>Estado del Ciclo: </strong> {{ $discharge->status_cycle }}</div>
+
                             </div>
                             <div class="col-sm-3 mb-3 mb-md-0">
                                 <h4 class="mb-2 border-bottom pb-2">QR de Proceso:</h4>

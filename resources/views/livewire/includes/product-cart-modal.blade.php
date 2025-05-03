@@ -49,6 +49,10 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label>Info. corta Paquete <span class="text-danger">*</span></label>
+                        <input wire:model="item_product_info.{{ $cart_item->id }}" type="text" class="form-control" value="{{ $item_product_info[$cart_item->id] }}" maxlength="20">
+                    </div>
+                    <div class="form-group">
                         <label>Paciente (Solo Casa Comercial) <span class="text-danger">*</span></label>
                         <input wire:model="item_patient.{{ $cart_item->id }}" type="text" class="form-control" value="{{ $item_patient[$cart_item->id] }}">
                     </div>

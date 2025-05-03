@@ -27,14 +27,14 @@ class LabelqrHPOController extends Controller
     public function create()
     {
         abort_if(Gate::denies('create_labelqrs'), 403);
-        Cart::instance('labelqrhpo')->destroy();
+        Cart::instance('labelqr')->destroy();
         return view('labelqr::labelqrshpo.create');
     }
 
     public function store(StoreLabelqrHPORequest $request)
     {
         DB::transaction(function () use ($request) {
-            $labelqrhpo = Labelqr::create([
+            $labelqr = Labelqr::create([
                 'machine_name' => $request->machine_name,
                 'machine_type' => $request->machine_type,
                 'lote_machine' => $request->lote_machine,
@@ -50,10 +50,10 @@ class LabelqrHPOController extends Controller
                 'total_amount' => $request->total_amount,  // se añade
             ]);
 
-            foreach (Cart::instance('labelqrhpo')->content() as $cart_item) {
+            foreach (Cart::instance('labelqr')->content() as $cart_item) {
                 $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 LabelqrDetails::create([
-                    'labelqr_id' => $labelqrhpo->id,
+                    'labelqr_id' => $labelqr->id,
                     'preparation_detail_id' => $preparation_detail->id,
                     'product_id' => $cart_item->options->product_id,
                     'product_name' => $cart_item->name,
@@ -62,6 +62,8 @@ class LabelqrHPOController extends Controller
                     'price' => $cart_item->price,
                     'unit_price' => $cart_item->options->unit_price,
                     'sub_total' => $cart_item->options->sub_total,
+                    'product_info' => $cart_item->options->product_info,
+                    'product_operator_package' => $cart_item->options->product_operator_package,
                     'product_patient' => $cart_item->options->product_patient,
                     'product_outside_company' => $cart_item->options->product_outside_company,
                     'product_area' => $cart_item->options->product_area,
@@ -80,7 +82,7 @@ class LabelqrHPOController extends Controller
                 }
             }
 
-            Cart::instance('labelqrhpo')->destroy();
+            Cart::instance('labelqr')->destroy();
         });
 
         toast('labelqr registrada!', 'success');
@@ -88,7 +90,7 @@ class LabelqrHPOController extends Controller
         return redirect()->route('labelqrs.index');
     }
 
-    public function show(Labelqr $labelqrhpo)
+    public function show(Labelqr $labelqr)
     {
         abort_if(Gate::denies('show_labelqrs'), 403);
 
@@ -101,9 +103,9 @@ class LabelqrHPOController extends Controller
 
         $labelqr_details = $labelqr->labelqrDetails;
 
-        Cart::instance('labelqrhpo')->destroy();
+        Cart::instance('labelqr')->destroy();
 
-        $cart = Cart::instance('labelqrhpo');
+        $cart = Cart::instance('labelqr');
 
         foreach ($labelqr_details as $labelqr_detail) {
             $cart->add([
@@ -120,6 +122,8 @@ class LabelqrHPOController extends Controller
                     'product_package_wrap' => $labelqr_detail->product_package_wrap,
                     'product_ref_qr' => $labelqr_detail->product_ref_qr,
                     'product_patient'   => $labelqr_detail->product_patient,
+                    'product_info' => $labelqr_detail->options->product_info,
+                    'product_operator_package' => $labelqr_detail->options->product_operator_package,
                     'product_outside_company' => $labelqr_detail->product_outside_company,
                     'product_area'   => $labelqr_detail->product_area,
                     'product_eval_package' => $labelqr_detail->product_eval_package,
@@ -177,6 +181,8 @@ class LabelqrHPOController extends Controller
                         'price' => $cart_item->price, // se añade
                         'unit_price' => $cart_item->options->unit_price, // se añade
                         'sub_total' => $cart_item->options->sub_total, // se añade
+                        'product_info' => $cart_item->options->product_info,
+                        'product_operator_package' => $cart_item->options->product_operator_package,
 
                     ]);
                 } else {
@@ -198,6 +204,8 @@ class LabelqrHPOController extends Controller
                         'price' => $cart_item->price, // se añade
                         'unit_price' => $cart_item->options->unit_price, // se añade
                         'sub_total' => $cart_item->options->sub_total, // se añade
+                        'product_info' => $cart_item->options->product_info,
+                        'product_operator_package' => $cart_item->options->product_operator_package,
 
                     ]);
                 }
@@ -219,7 +227,7 @@ class LabelqrHPOController extends Controller
                 }
             }
 
-            Cart::instance('labelqrhpo')->destroy();
+            Cart::instance('labelqr')->destroy();
         });
 
         toast('Ingreso actualizado!', 'info');
@@ -227,11 +235,11 @@ class LabelqrHPOController extends Controller
         return redirect()->route('labelqrs.index');
     }
 
-    public function destroy(Labelqr $labelqrhpo)
+    public function destroy(Labelqr $labelqr)
     {
         abort_if(Gate::denies('delete_labelqrs'), 403);
 
-        $labelqrhpo->delete();
+        $labelqr->delete();
 
         toast('Proceso Eliminado', 'warning');
 

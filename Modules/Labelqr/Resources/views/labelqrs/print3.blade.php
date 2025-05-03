@@ -33,7 +33,7 @@
         @page {
             margin-left: 1cm;
             margin-right: 0.3cm;
-            margin-top: 0.35cm;
+            margin-top: 0.3cm;
             margin-bottom: 0.2cm;
 
         }
@@ -60,16 +60,16 @@
                 <table style="width:100%">
 
                     <head>
-                        <tr style="font-size: 13px;">
+                        <tr style="font-size: 14px;">
                             <th colspan="2"> {{ institutes()->institute_name }}<br>
-                                <p style="font-size: 10px;"> {{ institutes()->institute_area }} -
+                                <p style="font-size: 11px;"> {{ institutes()->institute_area }} -
                                     {{ institutes()->institute_city }} -{{ institutes()->institute_country }}</p>
                             </th>
                         </tr>
                         <tr style="text-align: center; vertical-align: top;">
                             <td tyle="text-align: center; vertical-align: top;" >
-                                <p style="font-size: 12px;">
-                                    <strong>Venc. {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d-m-Y') !!}</strong>
+                                <p style="font-size: 14px;">
+                                    <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d-m-Y') !!}</small><br>
                                 </p>
                                 <p>
                                     <strong style="font-size: 10px;">{{ $labelqr->machine_name }} -> Lote:
@@ -79,13 +79,13 @@
 
 
                                 <p>
-                                    <strong style="font-size: 9px;">{{ $item->product_name }} </strong>
+                                    <strong style="font-size: 10px;">{{ $item->product_name }} </strong>
                                     <small
-                                        style="font-size: 7px;">{{ $item->product_info }} <br>
+                                        style="font-size: 9px;">{{ $item->product_info }} <br>
                                     </small>
                                 </p>
 
-                                <p style="font-size: 10px;">
+                                <p style="font-size: 12px;">
                                     <small> {{ $item->product_outside_company }} / {{ $item->product_patient }}
                                     </small>
                                     
@@ -93,19 +93,23 @@
                               
                             </td>
                             <td tyle="text-align: center; vertical-align: top;">
-                                <p style="font-size: 12px;">
+                                <p style="font-size: 13px;">
+                                    <strong>Venc. {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d-m-Y') !!}</strong>
 
-                                    <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d-m-Y') !!}</small><br>
+                                   
                                 </p>
 
-                                <p style="font-size: 9px;">
-                                    <strong style="font-size: 9px;">{{ $labelqr->reference }}</strong>
+                                <p style="font-size: 13px;">
+                                    <strong style="font-size: 13px;">{{ $labelqr->reference }}</strong>
                                     / {{ $labelqr->type_program }}</p>
 
                                 
 
-                                <p style="font-size: 10px;">
-                                    <small>Operario: {{ $labelqr->operator }} </small>
+                                <p style="font-size: 12px;">
+                                    <small>Operador: {{ $labelqr->operator }} </small>
+                                </p>
+                                <p style="font-size: 12px;">
+                                    <small>Oper Emp: {{ $item->product_operator_package }} </small>
                                 </p>
 
                             </td>
@@ -118,15 +122,7 @@
                                 ) !!}" alt="Código de Barras">
                             </td>
                         </tr>
-                        <tr style="font-size: 9px;">
-
-                            <td style="text-align: center;" colspan="2">
-                                <p style="font-size: 9px;">
-                                    Producto NO ESTERIL, si el empaque esta ABIERTO o
-                                        HUMEDO
-                                </p>
-                            </td>
-                        </tr>
+                        
                     </head>
                 </table>
             </div>

@@ -19,7 +19,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        @can('create_preparations')
+                        @can('access_admin')
                             <a href="{{ route('preparations.index') }}" class="btn btn-primary">
                                 Cambios EXCLUSIVOS<i class="bi bi-plus"></i>
                             </a>

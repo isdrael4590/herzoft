@@ -17,6 +17,7 @@ class StoreDischargeRequest extends FormRequest
         return [
             'reference' => 'required|string|max:255',
             'operator' => 'required|string|max:255',
+            'operator_discharge' => 'nullable|string|max:255',
             'machine_name' => 'required|string|max:255',
             'machine_type' => 'required|string|max:255',
             'lote_machine' => 'required|string|max:255',

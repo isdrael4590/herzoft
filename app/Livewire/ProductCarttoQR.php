@@ -26,6 +26,9 @@ class ProductCarttoQR extends Component
     public $item_outside_company;
     public $item_area;
     public $item_product_info;
+    public $operator_package;
+    public $expiration_data = 270; // Default value
+
 
 
     private $preparation_detail;
@@ -51,6 +54,7 @@ class ProductCarttoQR extends Component
                 $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company; // se añade
                 $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
                 $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
+                $this->operator_package[$cart_item->id] = $cart_item->options->product_operator_package;
             }
         } else {
 
@@ -67,6 +71,7 @@ class ProductCarttoQR extends Component
             $this->item_outside_company = []; // se añade
             $this->item_area = []; // se añade
             $this->item_product_info = [];
+            $this->operator_package = [];
         }
     }
 
@@ -94,6 +99,12 @@ class ProductCarttoQR extends Component
         }
 
         $this->preparation_detail = $preparation_detail;
+        if ($preparation_detail['product_type_process'] == 'Alta Temperatura') {
+            $this->expiration_data = 14;
+        } else {
+            $this->expiration_data = 270;
+        }
+
 
         $cart->add([
             'id'      => $preparation_detail['id'],
@@ -111,20 +122,19 @@ class ProductCarttoQR extends Component
                 'product_patient'       => $preparation_detail['product_patient'],
                 'product_outside_company'  => $preparation_detail['product_outside_company'],
                 'product_info'    => $preparation_detail['product_info'],
-
                 'product_area'           => $preparation_detail['product_area'],
                 'product_type_process'           => $preparation_detail['product_type_process'],
                 'product_package_wrap'  =>  'Contenedor',
                 'product_ref_qr'        =>  'Cargado',
                 'product_eval_package'   => "OK",
                 'product_eval_indicator' =>  '4',
-                'product_expiration' =>  '14'
+                'product_operator_package'    => 'N/A',
+
+                'product_expiration' =>  $this->expiration_data,
             ]
         ]);
         $this->item_patient[$preparation_detail['id']] = $preparation_detail['product_patient'];
         $this->item_product_info[$preparation_detail['id']] = $preparation_detail['product_info'];
-
-        //$this->quantity[$preparation_detail['id']] = $preparation_detail['product_quantity'];
 
         $this->check_quantity[$preparation_detail['id']] = $preparation_detail['product_quantity'];
         $this->quantity[$preparation_detail['id']] = 1;
@@ -134,9 +144,11 @@ class ProductCarttoQR extends Component
 
         $this->package_wrap[$preparation_detail['id']] = 'Contenedor';
         $this->ref_qr[$preparation_detail['id']] = 'Cargado';
+
         $this->eval_package[$preparation_detail['id']] = 'OK';
         $this->eval_indicator[$preparation_detail['id']] = '4';
         $this->expiration[$preparation_detail['id']] = '14';
+        $this->operator_package[$preparation_detail['id']] = 'N/A';
     }
 
     public function removeItem($row_id)
@@ -185,6 +197,7 @@ class ProductCarttoQR extends Component
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
                 'product_info'    => $cart_item->options->product_info,
+                'product_operator_package'    => $cart_item->options->product_operator_package,
 
             ]
         ]);
@@ -241,6 +254,7 @@ class ProductCarttoQR extends Component
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
                 'product_info'    => $cart_item->options->product_info,
+                'product_operator_package'    => $cart_item->options->product_operator_package,
 
             ]
         ]);
@@ -275,6 +289,7 @@ class ProductCarttoQR extends Component
             'product_area'   => $this->item_area[$preparation_detail_id],
             'product_outside_company'   => $this->item_outside_company[$preparation_detail_id],
             'product_info'   => $this->item_product_info[$preparation_detail_id],
+            'product_operator_package'   => $this->operator_package[$preparation_detail_id],
 
         ]]);
     }

@@ -35,6 +35,6 @@ class UpdateInformatRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows('edit_Informats');
+        return Gate::allows('edit_informats');
     }
 }

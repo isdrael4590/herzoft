@@ -13,44 +13,77 @@ class TestbdReport extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $machines;
-    public $start_date;
-    public $end_date;
-    public $machine_id;
+    public $startDate;
+    public $endDate;
+    public $machine_name;
     public $testbd_validation;
 
-    protected $rules = [
-        'start_date' => 'required|date|before:end_date',
-        'end_date'   => 'required|date|after:start_date',
-    ];
+    
+    public $data = [];
+    public $selectedItems = [];
+    public $selectAll = false;
 
-    public function mount($machines) {
-        $this->machines = $machines;
-        $this->start_date = today()->subDays(30)->format('Y-m-d');
-        $this->end_date = today()->format('Y-m-d');
-        $this->machine_id = '';
+    public function mount() {
+
+        $this->startDate = today()->startOfMonth()->format('Y-m-d');
+        $this->endDate = today()->format('Y-m-d');
+        $this->machine_name = '';
         $this->testbd_validation = '';
+        $this->loadData();
+
     }
 
-    public function render() {
-        $testbds = Testbd::whereDate('updated_at', '>=', $this->start_date)
-            ->whereDate('updated_at', '<=', $this->end_date)
-            ->when($this->machine_id, function ($query) {
-                return $query->where('machine_id', $this->machine_id);
-            })
-            ->when($this->testbd_validation, function ($query) {
-                return $query->where('validation_bd', $this->testbd_validation);
-            })
-            
-            ->orderBy('updated_at', 'desc')->paginate(20);
 
-        return view('livewire.reports.testbds-report', [
-            'testbds' => $testbds
+
+    public function loadData()
+    {
+        $this->data = Testbd::whereBetween('updated_at', [
+            $this->startDate . ' 00:00:00',
+            $this->endDate . ' 23:59:59',
+        ])
+        ->when($this->machine_name, function ($query) {
+            return $query->where('machine_name', $this->machine_name);
+        })
+        ->when($this->testbd_validation, function ($query) {
+            return $query->where('validation_bd', $this->testbd_validation);
+        })
+        ->orderBy('updated_at', 'desc')->get()->toArray();
+        $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+        $this->selectAll = true;
+       
+        
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+        } else {
+            $this->selectedItems = [];
+        }
+    }
+    public function printtbd()
+    {
+        if (empty($this->selectedItems)) {
+            session()->flash('message', 'Please select at least one item to print.');
+            return;
+        }
+
+        return redirect()->route('printtbd.data', [
+            'items' => implode(',', $this->selectedItems),
         ]);
     }
 
-    public function generateReport() {
-        $this->validate();
-        $this->render();
+    public function render()
+    {
+      
+
+        return view('livewire.reports.testbds-report', [
+            'data' => $this->data,
+            'selectedItems' => $this->selectedItems,
+            'selectAll' => $this->selectAll,
+        ]);
     }
+
+
 }

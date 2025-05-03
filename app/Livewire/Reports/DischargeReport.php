@@ -44,19 +44,19 @@ class DischargeReport extends Component
             $this->startDate . ' 00:00:00',
             $this->endDate . ' 23:59:59',
         ])
-        ->when($this->machine_name, function ($query) {
+            ->when($this->machine_name, function ($query) {
                 return $query->where('machine_name', $this->machine_name);
             })
-        ->when($this->status_cycle, function ($query) {
+            ->when($this->status_cycle, function ($query) {
                 return $query->where('status_cycle', $this->status_cycle);
             })
-        ->when($this->validation_biologic, function ($query) {
+            ->when($this->validation_biologic, function ($query) {
                 return $query->where('validation_biologic', $this->validation_biologic);
             })
             ->orderBy('updated_at', 'desc')->get()->toArray();
 
-            $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();;
-            $this->selectAll = true;
+        $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();;
+        $this->selectAll = true;
     }
 
     public function updatedSelectAll($value)
@@ -77,7 +77,7 @@ class DischargeReport extends Component
             return;
         }
 
-        return redirect()->route('print.data', [
+        return redirect()->route('printdisch.data', [
             'items' => implode(',', $this->selectedItems),
         ]);
     }

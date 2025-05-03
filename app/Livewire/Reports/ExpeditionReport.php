@@ -67,7 +67,7 @@ class ExpeditionReport extends Component
             return;
         }
 
-        return redirect()->route('print.data', [
+        return redirect()->route('printexp.data', [
             'items' => implode(',', $this->selectedItems),
         ]);
     }

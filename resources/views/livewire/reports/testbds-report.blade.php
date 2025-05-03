@@ -3,59 +3,44 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <form wire:submit="generateReport">
-                        <div class="form-row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Fecha Inicio <span class="text-danger">*</span></label>
-                                    <input wire:model="start_date" type="date" class="form-control" name="start_date">
-                                    @error('start_date')
-                                        <span class="text-danger mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Fecha Fin <span class="text-danger">*</span></label>
-                                    <input wire:model="end_date" type="date" class="form-control" name="end_date">
-                                    @error('end_date')
-                                        <span class="text-danger mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Equipo</label>
-                                    <select wire:model="machine_id" class="form-control" name="machine_id">
-                                        <option value="">Seleccione el Equipo</option>
-                                        @foreach ($machines as $machine)
-                                            <option value="{{ $machine->id }}">{{ $machine->machine_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <label for="startDate">Fecha Inicio</label>
+                            <input type="date" wire:model="startDate" id="startDate" class="form-control">
+                        </div>
+                        <div class="col-md-5">
+                            <label for="endDate">Fecha Fin</label>
+                            <input type="date" wire:model="endDate" id="endDate" class="form-control">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button class="btn btn-primary" wire:click="loadData">Buscar</button>
+                        </div>
+                        <div class="col-lg-6">
+
+                            <div class="form-group">
+                                <label>Validación Test Bowie & Dick</label>
+                                <select wire:model="validation_bd" class="form-control" name="validation_bd">
+                                    <option value="">Selecione la Validación</option>
+                                    <option value="Correcto">Correcto</option>
+                                    <option value="Falla">Falla</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Validación Test Bowie & Dick</label>
-                                    <select wire:model="testbd_validation" class="form-control" name="testbd_validation">
-                                        <option value="">Selecione la Validación</option>
-                                        <option value="Correcto">Correcto</option>
-                                        <option value="Falla">Falla</option>
-                                    </select>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Equipo</label>
+                                <select wire:model="machine_name" class="form-control" name="machine_name">
+                                    <option value="">Seleccione el Equipo</option>
+                                    @foreach (\Modules\Informat\Entities\Machine::all() as $machine)
+                                        <option value="{{ $machine->machine_name }}">{{ $machine->machine_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group mb-0">
-                            <button type="submit" class="btn btn-primary">
-                                <span wire:target="generateReport" wire:loading class="spinner-border spinner-border-sm"
-                                    role="status" aria-hidden="true"></span>
-                                <i wire:target="generateReport" wire:loading.remove class="bi bi-shuffle"></i>
-                                Filtrar Reporte
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -85,36 +70,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($testbds as $testbd)
+                            @forelse($data as $testbd)
                                 <tr>
-                                    <td>{{ \Carbon\Carbon::parse($testbd->updated_at)->format('d M, Y') }}</td>
-                                    <td>{{ $testbd->testbd_reference }}</td>
-                                    <td>{{ $testbd->machine_name }}</td>
-                                    <td>
-                                        @if ($testbd->validation_bd == 'Falla')
-                                            <span class="badge badge-info">
-                                                {{ $testbd->validation_bd }}
-                                            </span>
-                                        @elseif ($testbd->validation_bd == 'Correcto')
-                                            <span class="badge badge-primary">
-                                                {{ $testbd->validation_bd }}
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $testbd->lote_machine }}</td>
-                                    <td>{{ $testbd->lote_bd }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($testbd['updated_at'])->format('d M, Y') }}</td>
+                                    <td>{{ $testbd['testbd_reference'] }}</td>
+                                    <td>{{ $testbd['machine_name'] }}</td>
+                                    <td>{{ $testbd['lote_machine'] }}</td>
+
+                                    <td>{{ $testbd['validation_bd'] }}</td>
+                                    <td>{{ $testbd['lote_bd'] }}</td>
                                 </tr>
                             @empty
                                 <tr>
                                     <td colspan="8">
-                                        <span class="text-danger">Datos no  Disponible de Test Bowie & Dick</span>
+                                        <span class="text-danger">Datos no Disponible de Test Bowie & Dick</span>
                                     </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
-                    <div @class(['mt-3' => $testbds->hasPages()])>
-                        {{ $testbds->links() }}
+                    <div class="mt-3">
+                        <button class="btn btn-success" wire:click="printtbd">Print Selected
+                            ({{ count($this->selectedItems) }})</button>
                     </div>
                 </div>
             </div>

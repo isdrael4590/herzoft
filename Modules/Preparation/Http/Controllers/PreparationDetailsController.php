@@ -52,6 +52,7 @@ class PreparationDetailsController extends Controller
             'product_coming_zone' => 'required',
             'product_type_process' => 'required',
             'product_patient' => 'nullable',
+            'product_info' => 'nullable',
             'product_area' => 'nullable',
             'product_outside_company' => 'nullable',
 
@@ -67,6 +68,8 @@ class PreparationDetailsController extends Controller
             'product_patient' => $request->product_patient,
             'product_area' => $request->product_area,
             'product_outside_company' => $request->product_outside_company,
+            'product_info' => $request->product_info,
+
 
         
 

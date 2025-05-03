@@ -45,13 +45,14 @@ class LabelqrDischargeController extends Controller
                     'product_type_process'   => $labelqr_detail->product_type_process,
                     'product_patient'   => $labelqr_detail->product_patient,
                     'product_info'   => $labelqr_detail->product_info,
+                    'product_operator_package'   => $labelqr_detail->product_operator_package,
                     'product_package_wrap'   => $labelqr_detail->product_package_wrap,
                     'product_ref_qr'   => $labelqr_detail->product_ref_qr,
                     'product_eval_package' => $labelqr_detail->product_eval_package,
-                    'product_eval_indicator'=> $labelqr_detail->product_eval_indicator,
-                    'product_expiration'=> $labelqr_detail->product_expiration,
+                    'product_eval_indicator' => $labelqr_detail->product_eval_indicator,
+                    'product_expiration' => $labelqr_detail->product_expiration,
                     'unit_price'  => $labelqr_detail->unit_price,
-                    'product_outside_company'=> $labelqr_detail->product_outside_company,
+                    'product_outside_company' => $labelqr_detail->product_outside_company,
                     'product_area'  => $labelqr_detail->product_area
                 ]
             ]);
