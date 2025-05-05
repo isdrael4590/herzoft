@@ -22,6 +22,7 @@ class CreateLabelqrDetailsTable extends Migration
             $table->string('product_code');
             $table->integer('product_quantity');
             $table->integer('product_quantity_fail')->nullable();
+            $table->string('product_operator_package')->nullable();
             $table->integer('price');
             $table->integer('unit_price');
             $table->integer('sub_total');

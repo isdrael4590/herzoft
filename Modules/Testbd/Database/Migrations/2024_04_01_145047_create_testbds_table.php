@@ -22,7 +22,7 @@ class CreatetestbdsTable extends Migration
             $table->string('temp_machine');
             $table->string('lote_bd');
             $table->string('validation_bd')->nullable();
-            $table->integer('temp_ambiente');
+            $table->string('temp_ambiente');
             $table->string('operator')->nullable();;
             $table->string('observation')->nullable();;
             $table->foreign('machine_id')->references('id')->on('machines')->nullOnDelete();

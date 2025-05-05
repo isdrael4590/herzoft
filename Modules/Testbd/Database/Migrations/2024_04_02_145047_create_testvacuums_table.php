@@ -20,7 +20,7 @@ class CreatetestvacuumsTable extends Migration
             $table->string('machine_name');
             $table->string('lote_machine');
             $table->string('tipo_equipo');
-            $table->integer('temp_ambiente');
+            $table->string('temp_ambiente');
             $table->string('validation_vacuum')->nullable();
             $table->string('operator')->nullable();;
             $table->string('observation')->nullable();;

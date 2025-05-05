@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('ruta_process')->nullable();
             $table->text('note')->nullable();
             $table->string('operator');
+            $table->string('operator_discharge')->nullable();
             $table->foreign('labelqr_id')->references('id')->on('labelqrs')->cascadeOnDelete();
             $table->timestamps();
         });
