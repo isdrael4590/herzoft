@@ -99,20 +99,20 @@ class PrinterLabelQrController extends Controller
 
     private function generar_imagensimple(Int $id)
     {
-        $labelqr = Labelqr::where('id', $id)->first();
-        $labelqrDetails = LabelqrDetails::with('product')
+        $labelqr_simple = Labelqr::where('id', $id)->first();
+        $labelqrDetails_simple = LabelqrDetails::with('product')
             ->where('id', $id)
             ->orderBy('id', 'DESC')
             ->get();
         $institute = Institute::all()->first();
 
-        $dataqr = $labelqr->reference . "/" . $labelqr->lote_machine . "/";
+        $dataqr = $labelqr_simple->reference . "/" . $labelqr_simple->lote_machine . "/";
 
         $pdf_simple = PDF::loadView('labelqr::labelqrs.printsimple', [
-            'labelqr' => $labelqr,
-            'labelqrDetails' => $labelqrDetails,
+            'labelqr' => $labelqr_simple,
+            'labelqrDetails' => $labelqrDetails_simple,
             'institute' => $institute,
-            'dataqr'  =>  $dataqr,
+            
         ])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif'])->setpaper($this->customPaper, 'landscape');
         return $pdf_simple;
     }

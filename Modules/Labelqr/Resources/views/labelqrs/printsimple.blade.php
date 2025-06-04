@@ -38,17 +38,17 @@
 
         }
 
-    
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         p {
             font-size: 14px;
@@ -62,8 +62,10 @@ body {
     <!-- Custom Stylesheet -->
 </head>
 
-<body>
-    @foreach ($labelqr->labelqrDetails as $item)
+@foreach ($labelqr->labelqrDetails as $item)
+
+    <body>
+
         @for ($i = 1; $i <= $item->product_quantity; $i++)
             <div style="align-content: center">
                 <table style="width:100%">
@@ -76,7 +78,7 @@ body {
                             </th>
                         </tr>
                         <tr style="text-align: center; vertical-align: top;">
-                            <td tyle="text-align: center; vertical-align: top;" >
+                            <td tyle="text-align: center; vertical-align: top;">
                                 <p style="font-size: 17px;">
                                     <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d-m-Y') !!}</small><br>
                                 </p>
@@ -89,30 +91,30 @@ body {
 
                                 <p>
                                     <strong style="font-size: 14px;">{{ $item->product_name }} </strong>
-                                    <small
-                                        style="font-size: 12px;">{{ $item->product_info }} <br>
+                                    <small style="font-size: 12px;">{{ $item->product_info }} <br>
                                     </small>
                                 </p>
 
                                 <p style="font-size: 13px;">
                                     <small> {{ $item->product_outside_company }} / {{ $item->product_patient }}
                                     </small>
-                                    
+
                                 </p>
-                              
+
                             </td>
                             <td tyle="text-align: center; vertical-align: top;">
                                 <p style="font-size: 17px;">
                                     <strong>Venc. {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d-m-Y') !!}</strong>
 
-                                   
+
                                 </p>
 
                                 <p style="font-size: 14px;">
                                     <strong style="font-size: 14px;">{{ $labelqr->reference }}</strong>
-                                    / {{ $labelqr->type_program }}</p>
+                                    / {{ $labelqr->type_program }}
+                                </p>
 
-                                
+
 
                                 <p style="font-size: 14px;">
                                     <small>Operador: {{ $labelqr->operator }} </small>
@@ -124,13 +126,13 @@ body {
                             </td>
                         </tr>
 
-                        
-                        
+
+
                     </head>
                 </table>
             </div>
         @endfor
-    @endforeach
-</body>
+    </body>
+@endforeach
 
 </html>
