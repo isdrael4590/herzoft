@@ -38,7 +38,11 @@
                         @can('print_labelqrs')
                             <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
                                 href="{{ route('labelqrs_label.pdf', $labelqr->id) }}">
-                                <i class="bi bi-tag"></i> Ver Etiquetas
+                                <i class="bi bi-tag"></i> Ver Etiquetas Con Barcode
+                            </a>
+                            <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"
+                                href="{{ route('labelqrs_label.simple', $labelqr->id) }}">
+                                <i class="bi bi-tag"></i> Ver Etiquetas Simple
                             </a>
                             @can('print_labelqrs_direct')
                                 <a target="_blank" class="btn btn-sm btn-secondary mfs-auto mfe-1 d-print-none"

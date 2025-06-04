@@ -77,8 +77,8 @@ class PrinterLabelQrController extends Controller
             ->get();
         $institute = Institute::all()->first();
         $barcode = Product::all()->first();
-       
-        
+
+
         $dataqr = $labelqr->reference . "/" . $labelqr->lote_machine . "/";
 
         $pdf = PDF::loadView('labelqr::labelqrs.print3', [
@@ -89,5 +89,31 @@ class PrinterLabelQrController extends Controller
             'barcode' => $barcode,
         ])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif'])->setpaper($this->customPaper, 'landscape');
         return $pdf;
+    }
+
+    public function simpleLabelqr(Int $id)
+    {
+        $pdf_simple = $this->generar_imagensimple($id);
+        return $pdf_simple->stream('Labelqr.simple');
+    }
+
+    private function generar_imagensimple(Int $id)
+    {
+        $labelqr = Labelqr::where('id', $id)->first();
+        $labelqrDetails = LabelqrDetails::with('product')
+            ->where('id', $id)
+            ->orderBy('id', 'DESC')
+            ->get();
+        $institute = Institute::all()->first();
+
+        $dataqr = $labelqr->reference . "/" . $labelqr->lote_machine . "/";
+
+        $pdf_simple = PDF::loadView('labelqr::labelqrs.printsimple', [
+            'labelqr' => $labelqr,
+            'labelqrDetails' => $labelqrDetails,
+            'institute' => $institute,
+            'dataqr'  =>  $dataqr,
+        ])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif'])->setpaper($this->customPaper, 'landscape');
+        return $pdf_simple;
     }
 }

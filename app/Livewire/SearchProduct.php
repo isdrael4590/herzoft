@@ -64,7 +64,6 @@ class SearchProduct extends Component
 
     public function loadMore()
     {
-        $this->updatedBarcode();
 
         $this->how_many += 10;
         $this->updatedQuery();
