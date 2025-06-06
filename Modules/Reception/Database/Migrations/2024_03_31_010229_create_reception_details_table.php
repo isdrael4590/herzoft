@@ -44,6 +44,9 @@ class CreateReceptionDetailsTable extends Migration
      */
     public function down()
     {
+
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('reception_details');
+        Schema::enableForeignKeyConstraints();
     }
 }

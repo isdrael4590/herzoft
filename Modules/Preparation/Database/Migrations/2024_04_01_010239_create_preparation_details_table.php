@@ -43,6 +43,9 @@ class CreatePreparationDetailsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::dropIfExists('preparation_details');
+        Schema::enableForeignKeyConstraints();
     }
 }

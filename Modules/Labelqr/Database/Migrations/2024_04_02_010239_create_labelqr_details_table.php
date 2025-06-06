@@ -51,6 +51,9 @@ class CreateLabelqrDetailsTable extends Migration
      */
     public function down()
     {
+
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('labelqr_details');
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('status');
             $table->text('note')->nullable();
             $table->foreign('area_id')->references('id')->on('areas')->nullOnDelete();
-       
+
             $table->timestamps();
         });
     }
@@ -32,6 +32,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('receptions');
+        Schema::enableForeignKeyConstraints();
     }
 };

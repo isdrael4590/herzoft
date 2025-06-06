@@ -33,7 +33,7 @@ class CreateStockDetailsTable extends Migration
             $table->timestamp('product_expiration')->nullable();
             $table->string('product_type_process')->nullable();
             $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
-       
+
             $table->timestamps();
         });
     }
@@ -43,6 +43,8 @@ class CreateStockDetailsTable extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('stock_details');
+        Schema::enableForeignKeyConstraints();
     }
 };

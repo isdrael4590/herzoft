@@ -47,6 +47,8 @@ class CreateDischargeDetailsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('discharge_details');
+    Schema::enableForeignKeyConstraints();
     }
 }
