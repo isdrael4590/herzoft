@@ -36,6 +36,20 @@ class ReceptionDataTable extends DataTable
     public function query(Reception $model)
     {
         return $model->newQuery();
+
+          $user = auth()->user();
+        
+        // Filtrar por roles específicos
+        if ($user->hasRole('admin') || $user->hasRole('supervisor') || $user->hasRole('tecnico')) {
+            // Admin y supervisor pueden ver todos los estados
+            return $query;
+        } elseif ($user->hasRole('operador') || $user->hasRole('usuario')) {
+            // Operador y recepcionista solo ven "Pendiente" y "Registrado"
+            return $query->whereIn('status', ['Pendiente', 'Registrado']);
+        } else {
+            // Otros roles solo ven "Pendiente"
+            return $query->where('status', 'Pendiente');
+        }
     }
 
     public function html()

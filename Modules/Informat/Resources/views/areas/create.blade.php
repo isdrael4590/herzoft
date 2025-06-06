@@ -1,15 +1,18 @@
 @php
     $Area_max_id = \Modules\Informat\Entities\Area::max('id') + 1;
-    $area_code = "Area_" . str_pad($Area_max_id, 2, '0', STR_PAD_LEFT)
+    $area_code = 'Area_' . str_pad($Area_max_id, 2, '0', STR_PAD_LEFT);
+@endphp
+@php
+    $category_max_id = \Modules\Product\Entities\Category::max('id') + 1;
+    $category_code = 'CA_' . str_pad($category_max_id, 2, '0', STR_PAD_LEFT);
 @endphp
 @extends('layouts.app')
 
 @section('title', 'Crear Area')
 
 @section('third_party_stylesheets')
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet"/>
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-          rel="stylesheet">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
 @endsection
 
 @section('breadcrumb')
@@ -37,32 +40,47 @@
                             <div class="form-row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="font-weight-bold" for="area_code">Area Código <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" name="area_code" required value="{{ $area_code }}">
+                                        <label class="font-weight-bold" for="area_code">Area Código <span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" name="area_code" required readonly
+                                            value="{{ $area_code }}">
+                                    </div>
+                                   
+                                </div>
+                                <div class="col-lg-6">
+                                    
+                                    <div class="form-group">
+                                        <label for="category_code">Código Categoria<span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" name="category_code" required readonly
+                                            value="{{ $category_code }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="font-weight-bold" for="area_name">Nombre del Área <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" name="area_name" required >
+                                        <label class="font-weight-bold" for="area_name">Nombre del Área <span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" name="area_name" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="font-weight-bold" for="area_responsable">Jefe de Area <span class="text-danger">*</span></label>
+                                        <label class="font-weight-bold" for="area_responsable">Jefe de Area <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="area_responsable" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="font-weight-bold" for="area_piso">Piso del área<span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" name="area_piso" required >
+                                        <label class="font-weight-bold" for="area_piso">Piso del área<span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" name="area_piso" required>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -71,8 +89,3 @@
         </form>
     </div>
 @endsection
-
-
-
-
-

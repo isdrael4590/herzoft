@@ -12,13 +12,10 @@
 @endsection
 @section('content')
     <div class="container-fluid mb-4">
-        <div class="row">
-            <div class="col-12">
-                <livewire:search-producttoQR />
-            </div>
-        </div>
+
 
         <div class="row mt-4">
+
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -27,6 +24,12 @@
                             @csrf
                             @method('patch')
                             @if ($labelqr->machine_type == 'Autoclave')
+                                <div class="row">
+                                    <div class="col-12">
+                                        <livewire:search-producttoQR />
+                                    </div>
+                                </div>
+                                <BR></BR>
                                 <div class="form-row">
                                     <div class="col-lg-3">
                                         <div class="form-group">
@@ -155,14 +158,21 @@
                                         <div class="form-group">
                                             <label>Operador</label>
                                             <input class="form-control" type="text" id="operator" name="operator"
-                                                placeholder= "{{ Auth::user()->name }}"
-                                                value="{{ Auth::user()->name }}" readonly>
+                                                placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                                readonly>
                                         </div>
                                     </div>
 
 
                                 </div>
+                                <livewire:product-carttoQR :cartInstance="'labelqr'" :data="$labelqr" />
                             @elseif ($labelqr->machine_type == 'Peroxido')
+                                <div class="row">
+                                    <div class="col-12">
+                                        <livewire:search-producttoQRHPO />
+                                    </div>
+                                </div>
+                                <BR></BR>
                                 <div class="form-row">
                                     <div class="col-lg-3">
                                         <div class="form-group">
@@ -210,7 +220,7 @@
                                             <select class="form-control" id="temp_machine" name="temp_machine">
                                                 <option {{ $labelqr->temp_machine == '52' ? 'selected' : '' }}
                                                     value="52">52</option>
-                                               
+
                                             </select>
                                         </div>
                                     </div>
@@ -296,13 +306,14 @@
                                         <div class="form-group">
                                             <label>Operador</label>
                                             <input class="form-control" type="text" id="operator" name="operator"
-                                                placeholder= "{{ Auth::user()->name }}"
-                                                value="{{ Auth::user()->name }}" readonly>
+                                                placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                                readonly>
                                         </div>
                                     </div>
                                 </div>
+                                 <livewire:product-carttoQRHPO :cartInstance="'labelqr'" :data="$labelqr" />
                             @endif
-                            <livewire:product-carttoQR :cartInstance="'labelqr'" :data="$labelqr" />
+
                             <div class="form-group">
                                 <label for="note_labelqr">Nota (Si se necesita)</label>
                                 <textarea name="note_labelqr" id="note_labelqr" rows="5" class="form-control">{{ $labelqr->note_labelqr }}</textarea>

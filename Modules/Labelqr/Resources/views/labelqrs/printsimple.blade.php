@@ -108,7 +108,14 @@
 
 
                                 </p>
+                                <p>
+                                    @foreach(\Modules\Product\Entities\Product::where('product_code', $item->product_code) ->get() as $product_code)
+                                        <strong>{{$product_code->area}}</strong>
 
+                                    @endforeach
+                                   
+                                        
+                                </p>
                                 <p style="font-size: 14px;">
                                     <strong style="font-size: 14px;">{{ $labelqr->reference }}</strong>
                                     / {{ $labelqr->type_program }}

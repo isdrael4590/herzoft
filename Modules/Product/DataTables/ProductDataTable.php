@@ -80,11 +80,13 @@ class ProductDataTable extends DataTable
             Column::make('category.category_name')
                 ->title('Area/Especialidad')
                 ->className('text-center align-middle'),
+                
+            Column::computed('product_type_process')
+                ->title('Tipo Proceso')
+                ->className('text-center align-middle'),
+
             Column::computed('product_info')
                 ->title('Info Paquete')
-                ->className('text-center align-middle'),
-            Column::computed('product_note')
-                ->title('Detalles')
                 ->className('text-center align-middle'),
 
             Column::computed('action')

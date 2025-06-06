@@ -38,7 +38,7 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="product_code">Código <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="product_code" required
+                                        <input type="text" class="form-control" name="product_code" required readonly
                                             value="{{ $product->product_code }}">
                                     </div>
                                 </div>
@@ -55,12 +55,7 @@
                                                     value="{{ $category->id }}">{{ $category->category_name }}</option>
                                             @endforeach
                                         </select>
-                                        <div class="input-group-append d-flex">
-                                            <button data-toggle="modal" data-target="#categoryCreateModal"
-                                                class="btn btn-outline-primary" type="button">
-                                                Añadir
-                                            </button>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-6">

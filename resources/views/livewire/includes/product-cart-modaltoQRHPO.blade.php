@@ -38,11 +38,8 @@
                         <label>Tipo de envoltura <span class="text-danger">*</span></label>
                         <select wire:model.live="package_wrap.{{ $cart_item->id }}" class="form-control" required>
                             <option disabled>-- Seleccionar la envoltura--</option>
-                            <option selected value="Contenedor"> Contenedor Rígido</option>
-                            <option value="Papel Mixto"> Papel Mixto </option>
-                            <option value="Tela No Tejida"> Tela No Tejida </option>
+                            <option value="Papel Tyvek"> Papel Tyvek </option>
                             <option value="Tela Tejida"> Tela Tejida (SMS)</option>
-                            <option value="Otro"> Otro</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -54,10 +51,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Elegir Ind. Químico tipo 4 ó 5 <span class="text-danger">*</span></label>
+                        <label>Elegir Ind. Químico tipo 4 <span class="text-danger">*</span></label>
                         <select wire:model.live="eval_indicator.{{ $cart_item->id }}" class="form-control" required>
                             <option selected value="4"> 4</option>
-                            <option value="5"> 5 </option>
                             <option value="N/A"> N/A </option>
                         </select>
                     </div>
@@ -66,7 +62,7 @@
                             <select wire:model.live="expiration.{{ $cart_item->id }}"  wire:model="expiration_data" class="form-control" required>
                                 <option value="14" {{ $expiration_data == 14 ? 'selected' : '' }}>14 Días</option>
                                 <option value="180" {{ $expiration_data == 180 ? 'selected' : '' }}>6 Meses</option>
-                                <option value="270" {{ $expiration_data == 270 ? 'selected' : '' }}>9 Meses</option>
+                                <option selected value="270" {{ $expiration_data == 270 ? 'selected' : '' }}>9 Meses</option>
                                 <option value="365" {{ $expiration_data == 365 ? 'selected' : '' }}>12 Meses</option>
                                 <option value="545" {{ $expiration_data == 545 ? 'selected' : '' }}>18 Meses</option>
                                

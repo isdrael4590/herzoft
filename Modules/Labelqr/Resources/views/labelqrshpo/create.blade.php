@@ -23,7 +23,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <livewire:search-producttoQR />
+                <livewire:search-producttoQRHPO />
             </div>
         </div>
 
@@ -174,7 +174,7 @@
                             </div>
 
 
-                            <livewire:product-carttoQR :cartInstance="'labelqr'" />
+                            <livewire:product-carttoQRHPO :cartInstance="'labelqr'" />
 
                             <div class="form-row">
 

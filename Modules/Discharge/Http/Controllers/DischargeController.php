@@ -238,16 +238,20 @@ class DischargeController extends Controller
                 $labelqr = Labelqr::findOrFail($request->labelqr_id);
                 $labelqr->update([
                     'status_cycle' => "Ciclo Falla",
+                    'validation_biologic' => $request->validation_biologic,
 
                 ]);
                 $lote = Lote::where("lote_code", $request->lote_machine)->get()->first();
                 $lote->update([
                     'status_lote' => 'Ciclo Falla',
+
                 ]);
             } elseif ($request->validation_biologic == 'Correcto' && $request->status_cycle == 'Ciclo Aprobado') {
                 $labelqr = Labelqr::findOrFail($request->labelqr_id);
                 $labelqr->update([
                     'status_cycle' => "Ciclo Aprobado",
+                    'validation_biologic' => $request->validation_biologic,
+
 
                 ]);
                 $lote = Lote::where("lote_code", $request->lote_machine)->get()->first();

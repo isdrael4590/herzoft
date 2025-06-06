@@ -53,12 +53,7 @@
                                                 <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                             @endforeach
                                         </select>
-                                        <div class="input-group-append d-flex">
-                                            <button data-toggle="modal" data-target="#categoryCreateModal"
-                                                class="btn btn-outline-primary" type="button">
-                                                Añadir
-                                            </button>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-6">

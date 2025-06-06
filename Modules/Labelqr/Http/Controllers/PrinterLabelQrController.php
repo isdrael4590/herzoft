@@ -105,14 +105,13 @@ class PrinterLabelQrController extends Controller
             ->orderBy('id', 'DESC')
             ->get();
         $institute = Institute::all()->first();
-
-        $dataqr = $labelqr_simple->reference . "/" . $labelqr_simple->lote_machine . "/";
-
+        // Otra forma (si necesitas buscar directamente en Products):
+        
         $pdf_simple = PDF::loadView('labelqr::labelqrs.printsimple', [
             'labelqr' => $labelqr_simple,
             'labelqrDetails' => $labelqrDetails_simple,
             'institute' => $institute,
-            
+
         ])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif'])->setpaper($this->customPaper, 'landscape');
         return $pdf_simple;
     }

@@ -5,27 +5,26 @@ namespace App\Livewire;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Modules\Preparation\Entities\PreparationDetails;
-class SearchProducttoQR extends Component
+class SearchProducttoQRHPO extends Component
 {
 
     public $query;
     public $search_results;
     public $how_many;
-            public $allowed_product_types = ['Alta Temperatura']; // Tipos permitidos
-
+        public $allowed_product_types = ['Baja Temperatura']; // Tipos permitidos
 
     public function mount() {
         $this->query = '';
-        $this->how_many = 20;
+        $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
 
     public function render() {
-        return view('livewire.search-producttoQR');
+        return view('livewire.search-producttoQRHPO');
     }
 
     public function updatedQuery() {
-           $this->search_results = PreparationDetails::where(function($query) {
+     $this->search_results = PreparationDetails::where(function($query) {
                 $query->where('product_area', 'like', '%' . $this->query . '%')
                       ->orWhere('product_code', 'like', '%' . $this->query . '%')
                       ->orWhere('product_name', 'like', '%' . $this->query . '%');
@@ -43,7 +42,7 @@ class SearchProducttoQR extends Component
 
     public function resetQuery() {
         $this->query = '';
-        $this->how_many = 20;
+        $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
 

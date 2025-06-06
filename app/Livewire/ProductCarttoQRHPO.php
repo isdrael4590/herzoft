@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 use Modules\Product\Entities\Product;
 
-class ProductCarttoQR extends Component
+class ProductCarttoQRHPO extends Component
 {
 
     public $listeners = ['productSelected'];
@@ -49,7 +49,7 @@ class ProductCarttoQR extends Component
                 $this->ref_qr[$cart_item->id] = $cart_item->options->product_ref_qr;
                 $this->eval_package[$cart_item->id] = $cart_item->options->product_eval_package;
                 $this->eval_indicator[$cart_item->id] = $cart_item->options->product_eval_indicator;
-                $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
+                // $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
                 $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company; // se añade
                 $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
@@ -62,7 +62,7 @@ class ProductCarttoQR extends Component
             $this->ref_qr = [];
             $this->eval_package = [];
             $this->eval_indicator = [];
-            $this->expiration = [];
+            // $this->expiration = [];
             $this->type_process = [];
             $this->check_quantity = [];
             $this->quantity = [];
@@ -79,7 +79,7 @@ class ProductCarttoQR extends Component
     {
         $cart_items = Cart::instance($this->cart_instance)->content();
 
-        return view('livewire.product-carttoQR', [
+        return view('livewire.product-carttoQRHPO', [
             'cart_items' => $cart_items
         ]);
     }
@@ -99,11 +99,11 @@ class ProductCarttoQR extends Component
         }
 
         $this->preparation_detail = $preparation_detail;
-        if ($preparation_detail['product_type_process'] == 'Alta Temperatura') {
-            $this->expiration_data = 14;
-        } else {
-            $this->expiration_data = 270;
-        }
+        // if ($preparation_detail['product_type_process'] == 'Alta Temperatura') {
+        //     $this->expiration_data = 14;
+        // } else {
+        //     $this->expiration_data = 270;
+        // }
 
 
         $cart->add([
@@ -124,13 +124,12 @@ class ProductCarttoQR extends Component
                 'product_info'    => $preparation_detail['product_info'],
                 'product_area'           => $preparation_detail['product_area'],
                 'product_type_process'           => $preparation_detail['product_type_process'],
-                'product_package_wrap'  =>  'Contenedor',
+                'product_package_wrap'  =>  'Papel Tyvek',
                 'product_ref_qr'        =>  'Cargado',
                 'product_eval_package'   => "OK",
                 'product_eval_indicator' =>  '4',
                 'product_operator_package'    => 'N/A',
-
-                'product_expiration' =>  $this->expiration_data,
+                'product_expiration' =>  '270',
             ]
         ]);
         $this->item_patient[$preparation_detail['id']] = $preparation_detail['product_patient'];
@@ -142,12 +141,12 @@ class ProductCarttoQR extends Component
         $this->item_area[$preparation_detail['id']] = $preparation_detail['product_area'];
         $this->item_outside_company[$preparation_detail['id']] = $preparation_detail['product_outside_company'];
 
-        $this->package_wrap[$preparation_detail['id']] = 'Contenedor';
+        $this->package_wrap[$preparation_detail['id']] = 'Papel Tyvek';
         $this->ref_qr[$preparation_detail['id']] = 'Cargado';
 
         $this->eval_package[$preparation_detail['id']] = 'OK';
         $this->eval_indicator[$preparation_detail['id']] = '4';
-        $this->expiration[$preparation_detail['id']] = '14';
+        // $this->expiration[$preparation_detail['id']] = '270';
         $this->operator_package[$preparation_detail['id']] = 'N/A';
     }
 
@@ -229,12 +228,12 @@ class ProductCarttoQR extends Component
 
     public function InputWrap_package($preparation_detail_id, $row_id)
     { // se añade
-        $this->updateDataInput($row_id, $preparation_detail_id); // se añade
-    } // se añade
-
-    public function updateDataInput($row_id, $preparation_detail_id)
-    { // se añade
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
+        if ($cart_item->options->product_package_wrap == "Papel Tyvek") {
+            $this->expiration = '270';
+        } elseif ($cart_item->options->product_package_wrap == "Tela Tejida") {
+            $this->expiration = '180';
+        }
 
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
@@ -248,7 +247,7 @@ class ProductCarttoQR extends Component
                 'product_ref_qr'    => $cart_item->options->product_ref_qr,
                 'product_eval_package'      => $cart_item->options->product_eval_package,
                 'product_eval_indicator'    => $cart_item->options->product_eval_indicator,
-                'product_expiration'    => $cart_item->options->product_expiration,
+                'product_expiration'    => $this->expiration,
                 'product_type_process'    => $cart_item->options->product_type_process,
                 'product_patient'    => $cart_item->options->product_patient,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
@@ -258,7 +257,9 @@ class ProductCarttoQR extends Component
 
             ]
         ]);
-    }
+    } // se añade
+
+
 
     public function setProductoptions($row_id, $preparation_detail_id)
     {
@@ -273,17 +274,13 @@ class ProductCarttoQR extends Component
     public function updateCartOptions($row_id, $preparation_detail_id, $cart_item)
     {
 
-        if ($this->package_wrap[$preparation_detail_id] == "Contenedor") {
-            $this->expiration = '365';
-        } elseif ($this->package_wrap[$preparation_detail_id] == "Papel Mixto") {
-            $this->expiration = '180';
+        if ($this->package_wrap[$preparation_detail_id] == "Papel Tyvek") {
+            $this->expiration = '270';
         } elseif ($this->package_wrap[$preparation_detail_id] == "Tela Tejida") {
-            $this->expiration = '14';
-        } elseif ($this->package_wrap[$preparation_detail_id] == "Tela No Tejida") {
-            $this->expiration = '180';
+            $this->expiration = '270';
         }
-
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
+
             'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
             'code'                  => $cart_item->options->code,
             'product_id'            => $cart_item->options->product_id,
