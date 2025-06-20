@@ -52,7 +52,7 @@
                             <div class="col-sm-4 mb-3 mb-md-0">
                                 <h5 class="mb-2 border-bottom pb-2">Registro INFO:</h5>
                                 <div>Número: <strong>{{ $reception->reference }}</strong></div>
-                                <div>Hora: {{ $reception->updated_at->format('d M, Y H:i') }}</div>
+                                <div>Fecha: {{ $reception->updated_at->format('d M, Y H:i') }}</div>
                                 <div>
                                     Status: <strong>{{ $reception->status }}</strong>
                                 </div>

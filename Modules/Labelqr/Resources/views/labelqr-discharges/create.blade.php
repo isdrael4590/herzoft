@@ -153,8 +153,9 @@
                             <input type="hidden" name="labelqr_id" value="{{ $labelqr_id }}">
 
                             <div class="mt-3">
-                                <button type="submit" class="btn btn-primary">
-                                    Envío de Cíclo<i class="bi bi-check"></i>
+                     
+                                  <button type="submit" id="submitBtn" class="btn btn-primary">
+                                    Envío de Cíclo Esterilizador<i class="bi bi-check"></i>
                                 </button>
                             </div>
                         </form>
