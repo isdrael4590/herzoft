@@ -50,14 +50,14 @@
                             <option selected value="OK"> OK</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                   {{--   <div class="form-group">
                         <label>Elegir Ind. Químico tipo 4 <span class="text-danger">*</span></label>
                         <select wire:model.live="eval_indicator.{{ $cart_item->id }}" class="form-control" required>
                             <option selected value="4"> 4</option>
                             <option value="N/A"> N/A </option>
                         </select>
                     </div>
-                    {{-- <div class="form-group">
+                   <div class="form-group">
                         <label>Tiempo de Vencimiento <span class="text-danger">*</span></label>
                             <select wire:model.live="expiration.{{ $cart_item->id }}"  wire:model="expiration_data" class="form-control" required>
                                 <option value="14" {{ $expiration_data == 14 ? 'selected' : '' }}>14 Días</option>
@@ -68,7 +68,7 @@
                                
                             </select>
                        
-                    </div> --}}
+                    </div>
 
                     <div class="form-group">
                         <label>Operador de empaque</label>
@@ -78,7 +78,7 @@
                                     {{ $user->name }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

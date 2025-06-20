@@ -52,7 +52,7 @@
                             <div class="col-sm-4 mb-3 mb-md-0">
                                 <h5 class="mb-2 border-bottom pb-2">Registro INFO:</h5>
                                 <div>Número: <strong>{{ $reception->reference }}</strong></div>
-                                <div>Fecha: {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}</div>
+                                <div>Hora: {{ $reception->updated_at->format('d M, Y H:i') }}</div>
                                 <div>
                                     Status: <strong>{{ $reception->status }}</strong>
                                 </div>
@@ -69,6 +69,7 @@
                                         <th class="align-middle">Descrip.</th>
                                         <th class="align-middle">Cantidad</th>
                                         <th class="align-middle">Nivel de infección</th>
+                                        <th class="align-middle">Temp. Proceso</th>
                                         <th class="align-middle">Estado</th>
                                         <th class="align-middle">Paciente</th>
                                         <th class="align-middle">Casa Comercial</th>
@@ -92,6 +93,9 @@
                                             </td>
                                             <td class="align-middle">
                                                 {{ $item->product_type_dirt }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {{ $item->product_type_process }}
                                             </td>
 
                                             <td class="align-middle">

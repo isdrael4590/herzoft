@@ -1,3 +1,7 @@
+@php
+    $discharge_max_id = \Modules\Discharge\Entities\Discharge::max('id') + 1;
+    $discharge_code = 'DES-' . str_pad($discharge_max_id, 5, '0', STR_PAD_LEFT);
+@endphp
 @extends('layouts.app')
 
 @section('title', ' Envio Etiquetas Generadas')
@@ -18,10 +22,11 @@
                 <div class="card">
                     <div class="card-body">
                         @include('utils.alerts')
-                        <form id="discharge-form" action="{{ route('discharges.store') }}" method="POST">
+                        <form onsubmit="handleFormSubmit(event)" id="discharge-form"
+                            action="{{ route('discharges.store') }}" method="POST">
                             @csrf
                             <div class="mt-3">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" id="submitBtn" class="btn btn-primary">
                                     Envío de Cíclo Esterilizador<i class="bi bi-check"></i>
                                 </button>
                             </div>
@@ -32,7 +37,7 @@
                                         <label for="reference">Referencia Descarga <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="reference" required readonly
-                                            value="DES">
+                                            value="{{ $discharge_code }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -111,7 +116,8 @@
                                     <div class="form-group">
                                         <label for="status_cycle">Estado del Proceso <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" name="status_cycle" id="status_cycle" required readonly>
+                                        <select class="form-control" name="status_cycle" id="status_cycle" required
+                                            readonly>
                                             <option {{ $discharge->status_cycle == 'Cargar' ? 'selected' : '' }}
                                                 value="En Curso">En Curso</option>
                                         </select>
@@ -129,7 +135,8 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" readonly>
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>
@@ -157,3 +164,25 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function handleFormSubmit(event) {
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const spinner = submitBtn.querySelector('.spinner-border');
+
+            // Disable button
+            submitBtn.disabled = true;
+            btnText.textContent = 'Enviando...';
+            spinner.classList.remove('d-none');
+
+            // Re-enable after 5 seconds (or when response is received)
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                btnText.textContent = 'Enviar Ciclo Esterilizador';
+                spinner.classList.add('d-none');
+            }, 5000);
+        }
+    </script>
+@endpush

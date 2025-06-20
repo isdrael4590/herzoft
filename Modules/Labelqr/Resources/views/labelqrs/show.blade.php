@@ -108,7 +108,7 @@
                                         <th class="align-middle">Cantidad</th>
                                         <th class="align-middle">Tipo de Envoltura</th>
                                         <th class="align-middle">Validación Embalaje</th>
-                                        <th class="align-middle">Validación Ind. Químico</th>
+                                        <th class="align-middle"> Ind. Químico</th>
                                         <th class="align-middle">Fecha de vencimiento</th>
                                         <th class="align-middle">Paciente / Casa Com.</th>
                                         <th class="align-middle">QR Paquete</th>

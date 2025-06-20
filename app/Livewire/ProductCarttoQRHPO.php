@@ -276,8 +276,10 @@ class ProductCarttoQRHPO extends Component
 
         if ($this->package_wrap[$preparation_detail_id] == "Papel Tyvek") {
             $this->expiration = '270';
+            $this->eval_indicator = '4';
         } elseif ($this->package_wrap[$preparation_detail_id] == "Tela Tejida") {
             $this->expiration = '270';
+            $this->eval_indicator = '4';
         }
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
 
@@ -291,7 +293,7 @@ class ProductCarttoQRHPO extends Component
             'product_ref_qr'        => $this->ref_qr[$preparation_detail_id],
             'unit_price'        => $this->unit_price[$preparation_detail_id],
             'product_eval_package'  => $this->eval_package[$preparation_detail_id],
-            'product_eval_indicator' => $this->eval_indicator[$preparation_detail_id],
+            'product_eval_indicator' => $this->eval_indicator,
             'product_expiration'   =>  $this->expiration,
             'product_patient'   => $this->item_patient[$preparation_detail_id],
             'product_area'   => $this->item_area[$preparation_detail_id],

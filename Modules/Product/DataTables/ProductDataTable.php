@@ -9,6 +9,8 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
+use function PHPUnit\Framework\returnSelf;
+
 class ProductDataTable extends DataTable
 {
 
@@ -63,40 +65,63 @@ class ProductDataTable extends DataTable
 
     protected function getColumns()
     {
-        return [
-            Column::computed('product_image')
-                ->title('Imagen')
-                ->className('text-center align-middle'),
+        $user = auth()->user();
+        $columns = [];
 
-
-            Column::make('product_code')
-                ->title('Código')
-                ->className('text-center align-middle'),
-
-            Column::make('product_name')
-                ->title('Nombre')
-                ->className('text-center align-middle'),
-
-            Column::make('category.category_name')
-                ->title('Area/Especialidad')
-                ->className('text-center align-middle'),
-                
-            Column::computed('product_type_process')
-                ->title('Tipo Proceso')
-                ->className('text-center align-middle'),
-
-            Column::computed('product_info')
-                ->title('Info Paquete')
-                ->className('text-center align-middle'),
-
-            Column::computed('action')
+        if ($user->can('edit_products')) {
+            $columns[] = Column::computed('product_image')
                 ->exportable(false)
                 ->printable(false)
-                ->className('text-center align-middle'),
+                ->className('text-center align-middle');
 
-            Column::make('created_at')
-                ->visible(false)
-        ];
+            $columns[] = Column::make('product_code')
+                ->title('Código')
+                ->className('text-center align-middle');
+
+            $columns[] = Column::make('product_name')
+                ->title('Nombre')
+                ->className('text-center align-middle');
+
+            $columns[] = Column::make('category.category_name')
+                ->title('Area/Especialidad')
+                ->className('text-center align-middle');
+
+            $columns[] = Column::computed('product_type_process')
+                ->title('Tipo Proceso')
+                ->className('text-center align-middle');
+
+            $columns[] = Column::computed('product_info')
+                ->title('Info Paquete')
+                ->className('text-center align-middle');
+            $columns[] = Column::make('action')
+                ->title('Acciones')
+                ->className('text-center align-middle');
+        }
+        if ($user->can('access_admin')) {
+            $columns[] = Column::make('product_barcode_symbology')
+                ->title('Simbolología barcode')
+                ->className('text-center align-middle');
+
+            $columns[] = Column::computed('product_patient')
+                ->title('Paciente')
+                ->className('text-center align-middle');
+
+            $columns[] = Column::computed('area')
+                ->title('Area')
+                ->className('text-center align-middle');
+            $columns[] = Column::computed('product_price')
+                ->title('Precio')
+                ->className('text-center align-middle');
+            $columns[] = Column::computed('product_quantity')
+                ->title('Cantidad')
+                ->className('text-center align-middle');
+            $columns[] = Column::computed('product_note')
+                ->title('Nota')
+                ->className('text-center align-middle');
+        }
+
+
+        return $columns;
     }
 
     /**

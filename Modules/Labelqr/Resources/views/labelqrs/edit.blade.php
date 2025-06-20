@@ -24,11 +24,7 @@
                             @csrf
                             @method('patch')
                             @if ($labelqr->machine_type == 'Autoclave')
-                                <div class="row">
-                                    <div class="col-12">
-                                        <livewire:search-producttoQR />
-                                    </div>
-                                </div>
+
                                 <BR></BR>
                                 <div class="form-row">
                                     <div class="col-lg-3">
@@ -165,13 +161,17 @@
 
 
                                 </div>
-                                <livewire:product-carttoQR :cartInstance="'labelqr'" :data="$labelqr" />
-                            @elseif ($labelqr->machine_type == 'Peroxido')
+                                <br>
+                                <br>
                                 <div class="row">
                                     <div class="col-12">
-                                        <livewire:search-producttoQRHPO />
+                                        <livewire:search-producttoQR />
                                     </div>
                                 </div>
+                                <br>
+                                <br>
+                                <livewire:product-carttoQR :cartInstance="'labelqr'" :data="$labelqr" />
+                            @elseif ($labelqr->machine_type == 'Peroxido')
                                 <BR></BR>
                                 <div class="form-row">
                                     <div class="col-lg-3">
@@ -311,7 +311,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                 <livewire:product-carttoQRHPO :cartInstance="'labelqr'" :data="$labelqr" />
+                                <br>
+                                <br>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <livewire:search-producttoQRHPO />
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <livewire:product-carttoQRHPO :cartInstance="'labelqr'" :data="$labelqr" />
                             @endif
 
                             <div class="form-group">
