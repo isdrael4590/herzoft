@@ -188,7 +188,7 @@
                             <div>
                                 <div>Número: <strong>{{ $reception->reference }}</strong></div>
                                 <div>Fecha:
-                                    {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}
+                                    {{ $reception->updated_at->format('d M, Y H:i') }}
                                 </div>
                                 <div>
                                     Status: <strong>{{ $reception->status }}</strong>
@@ -209,7 +209,8 @@
                         <th style="width: 10%;">Código </th>
                         <th style="width: 30%;">Descripción Rumed</th>
                         <th style="width: 10%;">Cant</th>
-                        <th style="width: 15;">Nivel infección</th>
+                        <th style="width: 15%;">Nivel infección</th>
+                        <th style="width: 20%;">Temp. Proceso</th>
                         <th style="width: 10%;">Estado</th>
                         <th style="width: 15%;">Paciente</th>
                         <th style="width: 10%;">Casa Comer.</th>
@@ -229,6 +230,9 @@
                             </td>
                             <td style= "text-align:center">
                                 {{ $item->product_type_dirt }}
+                            </td>
+                             <td style= "text-align:center">
+                                {{ $item->product_type_process }}
                             </td>
                             <td style= "text-align:center">
                                 {{ $item->product_state_rumed }}

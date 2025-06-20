@@ -14,7 +14,7 @@
         @foreach($barcodes as $barcode)
             <div class="col-xs-3" style="border: 1px solid #dddddd;border-style: dashed;">
                 <p style="font-size: 15px;color: #000;margin-top: 15px;margin-bottom: 5px;">
-                    {{ $name }}
+                    {{ $code }}
                 </p>
                 <div>
                     {!! $barcode !!}

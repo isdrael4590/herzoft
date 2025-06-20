@@ -21,11 +21,6 @@
                 Generación de Etiquetas STEAM<i class="bi bi-plus"></i>
             </a>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <livewire:search-producttoQRHPO />
-            </div>
-        </div>
 
         <div class="row mt-4">
             <div class="col-md-12">
@@ -160,7 +155,7 @@
                                         <label for="temp_ambiente">Temperatura del Ambiente <span
                                                 class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="temp_ambiente" required
-                                            value="{{ old('temp_ambiente') }}" min="1" step="0.1" >
+                                            value="{{ old('temp_ambiente') }}" min="1" step="0.1">
                                     </div>
                                 </div>
 
@@ -168,12 +163,21 @@
                                     <div class="form-group">
                                         <label>Operador</label>
                                         <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}" readonly>
+                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>
+                            <br>
+                            <br>
+                            <div class="row">
+                                <div class="col-12">
+                                    <livewire:search-producttoQRHPO />
+                                </div>
+                            </div>
 
-
+                            <br>
+                            <br>
                             <livewire:product-carttoQRHPO :cartInstance="'labelqr'" />
 
                             <div class="form-row">

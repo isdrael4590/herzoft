@@ -81,7 +81,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="note">Nota (Si se necesita)</label>
-                                <textarea name="note" id="note" rows="5" class="form-control"></textarea>
+                                <textarea name="note" id="note" rows="5" class="form-control" maxlength="400" onkeyup="updateCounter()"></textarea>
+                                <small class="text-muted"><span id="charCount">0</span>/400 caracteres</small>
                             </div>
 
                             <div>
@@ -101,5 +102,11 @@
 @endsection
 
 @push('page_scripts')
-  
+  <script>
+function updateCounter() {
+    const textarea = document.getElementById('note');
+    const counter = document.getElementById('charCount');
+    counter.textContent = textarea.value.length;
+}
+</script>
 @endpush

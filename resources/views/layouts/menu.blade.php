@@ -147,9 +147,10 @@
                         <i class="c-sidebar-nav-icon bi bi-list-check" style="line-height: 1;"></i> Instrumental Procesado.
                     </a>
                 </li>
-            @endcan
-        </ul>
-    </li>
+
+            </ul>
+        </li>
+    @endcan
 @endcan
 
 @can('access_esteril_area')
@@ -170,9 +171,10 @@
                         </a>
                     </li>
                 @endcan
-            @endcan
-        </ul>
-    </li>
+            </ul>
+        </li>
+    @endcan
+
 @endcan
 
 @can('access_almacen_area')
@@ -341,13 +343,13 @@
                 </li>
             @endcan
             @can('access_informat_proceso')
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link {{ request()->routeIs('proceso.*') ? 'c-active' : '' }}"
-                    href="{{ route('proceso.index') }}">
-                    <i class="c-sidebar-nav-icon bi bi-minecart" style="line-height: 1;"></i> Tipo Procesos
-                </a>
-            </li>
-        @endcan
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('proceso.*') ? 'c-active' : '' }}"
+                        href="{{ route('proceso.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-minecart" style="line-height: 1;"></i> Tipo Procesos
+                    </a>
+                </li>
+            @endcan
             @can('access_informat_lotes')
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('lote.*') ? 'c-active' : '' }}"
