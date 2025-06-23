@@ -32,6 +32,7 @@ class ReceptionPreparationController extends Controller
 
         if ($area == 'Zona Esteril') {
             foreach ($reception_details as $reception_detail) {
+                
                 $cart->add([
                     'id'      => $reception_detail->product_id,
                     'name'    => $reception_detail->product_name,

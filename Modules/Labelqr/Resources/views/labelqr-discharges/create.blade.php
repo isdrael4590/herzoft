@@ -141,9 +141,13 @@
                                 </div>
                             </div>
 
-                            <livewire:product-carttoQR :cartInstance="'discharge'" :data="$discharge" />
 
-
+                            @if ($discharge->machine_type == 'Autoclave')
+                                <livewire:product-carttoQR :cartInstance="'discharge'" :data="$discharge" />
+                            @endif
+                            @if ($discharge->machine_type == 'Peroxido')
+                               <livewire:product-carttoQRHPO :cartInstance="'discharge'" :data="$discharge" />
+                            @endif
 
                             <div class="form-group">
                                 <label for="note">Nota (Si se necesita)</label>
@@ -153,8 +157,8 @@
                             <input type="hidden" name="labelqr_id" value="{{ $labelqr_id }}">
 
                             <div class="mt-3">
-                     
-                                  <button type="submit" id="submitBtn" class="btn btn-primary">
+
+                                <button type="submit" id="submitBtn" class="btn btn-primary">
                                     Envío de Cíclo Esterilizador<i class="bi bi-check"></i>
                                 </button>
                             </div>

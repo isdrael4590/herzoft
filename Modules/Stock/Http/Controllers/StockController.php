@@ -99,7 +99,7 @@ public function create()
 
         toast('Despacho Generado!', 'success');
 
-        return redirect()->route('stockDetails.index');
+        return redirect()->route('discharges.index');
     }
 
 

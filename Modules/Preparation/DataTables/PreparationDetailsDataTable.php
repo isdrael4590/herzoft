@@ -33,7 +33,7 @@ class PreparationDetailsDataTable extends DataTable
 
     public function query(PreparationDetails $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('product_quantity', 'desc');
     }
 
 
@@ -49,7 +49,7 @@ class PreparationDetailsDataTable extends DataTable
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[3, 'desc']],
+                'order' => [[5, 'desc']],
             ])
             ->buttons(
                 Button::make('excel')
@@ -65,36 +65,43 @@ class PreparationDetailsDataTable extends DataTable
 
     protected function getColumns()
     {
-        return [
-       
-            Column::make('dates')
-                ->title('Fecha Ingreso')
-                ->className('text-center align-middle'),
 
-            Column::make('product_name')
-                ->title('Nombre del producto')
-                ->className('text-center align-middle'),
-            Column::make('product_code')
-                ->title('Código del producto')
-                ->className('text-center align-middle'),
-            Column::make('product_quantity')
-                ->title('Cantidad')
-                ->className('text-center align-middle'),
-            Column::make('product_coming_zone')
-                ->title('Proveniente')
-                ->className('text-center align-middle'),
-            Column::make('product_area')
-                ->title('Area')
-                ->className('text-center align-middle'),
-                Column::make('product_type_process')
-                ->title('Tipo de proceso')
-                ->className('text-center align-middle'),
-            Column::computed('action2')
-                ->exportable(false)
-                ->printable(true)
-                ->className('text-center align-middle'),
+        $user = auth()->user();
+        $columns = [];
+        if ($user->can('access_admin')) {
+            $columns[] = Column::computed('id')
+                ->title('id')
+                ->className('text-center align-middle');
+        }
+        $columns[] = Column::computed('dates2')
+            ->title('Fecha de Ingreso')
+            ->className('text-center align-middle');
+        $columns[] = Column::computed('product_name')
+            ->title('Nombre del Producto')
+            ->className('text-center align-middle');
+        $columns[] = Column::computed('product_code')
+            ->title('Código del Producto')
+            ->className('text-center align-middle');
+        $columns[] = Column::computed('product_quantity')
+            ->title('Cantidad')
+            ->className('text-center align-middle');
+        $columns[] = Column::computed('product_coming_zone')
+            ->title('Proveniente')
+            ->className('text-center align-middle');
+        $columns[] = Column::computed('product_area')
+            ->title('Area')
+            ->className('text-center align-middle');
+        $columns[] = Column::computed('product_type_process')
+            ->title('Tipo de Proceso')
+            ->className('text-center align-middle');
+        $columns[] = Column::computed('action2')
+            ->exportable(false)
+            ->printable(true)
+            ->className('text-center align-middle');
 
-        ];
+
+
+        return $columns;
     }
 
     protected function filename(): string

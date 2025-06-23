@@ -20,9 +20,10 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        {{-- <th class="align-middle">Id</th> --}}
+                        @can('edit_admin')
+                            <th class="align-middle">Id</th>
+                        @endcan
                         <th class="align-middle">Descripción / Código</th>
-                        <th class="align-middle">Stock Preparación.</th>
                         <th class="align-middle">Cantidad</th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
                         <th class="align-middle text-center"> Embalaje </th>
@@ -36,9 +37,11 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
-                                {{-- <td class="align-middle text-center">
-                                    {{ $cart_item->id }}
-                                </td> --}}
+                                @can('edit_admin')
+                                    <td class="align-middle text-center">
+                                        {{ $cart_item->id }}
+                                    </td>
+                                @endcan
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                     <span class="badge badge-success">
@@ -46,17 +49,15 @@
                                     </span>
 
                                 </td>
-                                <td class="align-middle text-center text-center">
-                                    <span class="badge badge-info">{{ $cart_item->options->stock }}</span>
-                                </td>
+
                                 <td class="align-middle text-center">
                                     @include('livewire.includes.product-carttoQR-quantity')
                                 </td>
                                 <td class="align-middle text-center">
 
                                     {{ $cart_item->options->product_package_wrap }}
-                                        @include('livewire.includes.product-cart-modaltoQRHPO')
-                                  
+                                    @include('livewire.includes.product-cart-modaltoQRHPO')
+
 
                                 </td>
                                 <td class="align-middle text-center">

@@ -98,6 +98,9 @@ class ProductDataTable extends DataTable
                 ->className('text-center align-middle');
         }
         if ($user->can('access_admin')) {
+            $columns[] = Column::computed('id')
+                ->title('ID')
+                ->className('text-center align-middle');
             $columns[] = Column::make('product_barcode_symbology')
                 ->title('Simbolología barcode')
                 ->className('text-center align-middle');

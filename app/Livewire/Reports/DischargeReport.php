@@ -6,6 +6,7 @@ use Livewire\Component;
 use Carbon\Carbon;
 use Livewire\WithPagination;
 use Modules\Discharge\Entities\Discharge;
+use Modules\Discharge\Entities\DischargeDetails;
 
 class DischargeReport extends Component
 {
@@ -40,10 +41,11 @@ class DischargeReport extends Component
 
     public function loadData()
     {
-        $this->data = Discharge::whereBetween('updated_at', [
-            $this->startDate . ' 00:00:00',
-            $this->endDate . ' 23:59:59',
-        ])
+        $data = Discharge::with('dischargeDetails')
+            ->whereBetween('updated_at', [
+                $this->startDate . ' 00:00:00',
+                $this->endDate . ' 23:59:59',
+            ])
             ->when($this->machine_name, function ($query) {
                 return $query->where('machine_name', $this->machine_name);
             })
@@ -53,7 +55,13 @@ class DischargeReport extends Component
             ->when($this->validation_biologic, function ($query) {
                 return $query->where('validation_biologic', $this->validation_biologic);
             })
-            ->orderBy('updated_at', 'desc')->get()->toArray();
+            ->orderBy('updated_at', 'desc')->get();
+            $this->data = $data->map(function ($discharge) {
+                $dischargeArray = $discharge->toArray();
+                $dischargeArray['details_count'] = $discharge->dischargeDetails->count();
+                return $dischargeArray;
+            })        
+            ->toArray();
 
         $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();;
         $this->selectAll = true;

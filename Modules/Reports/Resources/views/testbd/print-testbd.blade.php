@@ -69,8 +69,8 @@
                         <div class="printer-top">
                             <div class="row g-3">
                                 <div class="col-3">
-                                    <img src="{{ $institute->getFirstMediaUrl('institutes') }}" alt="Institute Image" width="80%" height="auto"
-                                        class="img-fluid  mb-1">
+                                    <img src="{{ $institute->getFirstMediaUrl('institutes') }}" alt="Institute Image"
+                                        width="80%" height="auto" class="img-fluid  mb-1">
                                 </div>
                                 <div class="col-7">
                                     <h6>{{ Institutes()->institute_name }}</h6>
@@ -157,12 +157,12 @@
                                     <tr>
                                         <td>Fecha: <span> {{ $testbd->updated_at }}</span></td>
                                     </tr>
-                                    
+
                                 </table>
                                 <table class="default-table ">
                                     <tr>
                                         <br><br><br>
-                                        <td>Responsable: <span> {{ $testbd->operator }}</span></td>
+                                        <td>Responsable: <span> {{ Auth::user()->name }}</span></td>
                                     </tr>
                                 </table>
                             </div>

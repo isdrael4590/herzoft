@@ -93,7 +93,7 @@ class PreparationController extends Controller
 
         toast('preparation registrada!', 'success');
 
-        return redirect()->route('preparationDetails.index');
+        return redirect()->route('receptions.index');
     }
 
     public function show(Preparation $preparation)

@@ -131,6 +131,54 @@ class ProductCarttoEXP extends Component
         Cart::instance($this->cart_instance)->remove($row_id);
     }
 
+    public function incrementQuantity($row_id, $product_id)
+    {
+        $currentQuantity = $this->quantity[$product_id] ?? 0;
+        $newQuantity = $currentQuantity + 1;
+
+        // Validar stock antes de incrementar (solo para labelqr)
+        if ($this->cart_instance == 'labelqr') {
+            $availableStock = $this->getAvailableStock($product_id);
+
+            if ($newQuantity > $availableStock) {
+                session()->flash('message', 'La cantidad Requerida NO ESTA DISPONIBLE en el STOCK. Solo hay ' . $availableStock . ' en STOCK PREPARACIÓN');
+                return;
+            }
+        }
+
+        // Incrementar la cantidad en el array local
+        $this->quantity[$product_id] = $newQuantity;
+
+        // Actualizar el carrito automáticamente
+        $this->updateQuantity($row_id, $product_id);
+    }
+
+
+    // Método para decrementar cantidad
+    public function decrementQuantity($row_id, $product_id)
+    {
+        $currentQuantity = $this->quantity[$product_id] ?? 1;
+        // Solo decrementar si la cantidad es mayor a 1
+        if ($currentQuantity > 1) {
+            $this->quantity[$product_id] = $currentQuantity - 1;
+
+            // Actualizar el carrito automáticamente
+            $this->updateQuantity($row_id, $product_id);
+        }
+    }
+
+    // Método auxiliar para obtener el stock disponible
+    private function getAvailableStock($product_id)
+    {
+        $stockData = $this->check_quantity[$product_id] ?? 0;
+
+        if (is_array($stockData)) {
+            return (int)implode('', $stockData);
+        }
+
+        return (int)$stockData;
+    }
+
 
     public function updateQuantity($row_id, $product_id)
     {

@@ -15,8 +15,13 @@ class Reception extends Model
 
     public function receptionDetails()
     {
-        return $this->hasMany(ReceptionDetails::class);
+        return $this->hasMany(ReceptionDetails::class, 'reception_id', 'id');
     }
+
+    public function getDetailsCountAttribute()
+{
+    return $this->receptionDetails()->count();
+}
 
     public static function boot() {
         parent::boot();
