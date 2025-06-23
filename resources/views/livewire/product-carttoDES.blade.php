@@ -17,6 +17,9 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
+                        @can('edit_admin')
+                            <th class="align-middle">Id</th>
+                        @endcan
                         <th class="align-middle text-center">Descripción del Instrumental</th>
                         <th class="align-middle text-center">Código del Instrumental</th>
                         <th class="align-middle text-center">Cantidad Procesado</th>
@@ -33,6 +36,11 @@
                     @if ($cart_items->isNotEmpty())
                         @foreach ($cart_items as $cart_item)
                             <tr>
+                                  @can('edit_admin')
+                                    <td class="align-middle text-center">
+                                        {{ $cart_item->id }}
+                                    </td>
+                                @endcan
                                 <td class="align-middle">
                                     {{ $cart_item->name }} <br>
                                 </td>

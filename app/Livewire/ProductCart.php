@@ -28,7 +28,7 @@ class ProductCart extends Component
 
     public $unit_price;
 
-    
+
     private $product;
 
     public function mount($cartInstance, $data = null)
@@ -46,15 +46,13 @@ class ProductCart extends Component
                 $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
                 $this->item_patient[$cart_item->id] = $cart_item->options->product_patient;
                 $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
-                
+
                 $this->type_dirt[$cart_item->id] = $cart_item->options->product_type_dirt;
                 $this->state_rumed[$cart_item->id] = $cart_item->options->product_state_rumed;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
-                
-
             }
         } else {
-            
+
             $this->type_dirt = [];
             $this->state_rumed = [];
             $this->type_process = [];
@@ -88,9 +86,47 @@ class ProductCart extends Component
             return $cartItem->id == $product['id'];
         });
 
-        if ($exists->isNotEmpty()) {
-            session()->flash('message', 'Product exists in the cart!');
+        // Validar y obtener la cantidad del producto
+        $productQuantity = isset($product['product_quantity']) && is_numeric($product['product_quantity'])
+            ? (int)$product['product_quantity']
+            : 1;
 
+
+        // Si el producto ya existe en el carrito, incrementar la cantidad
+        if ($exists->isNotEmpty()) {
+            $rowId = $exists->keys()->first(); // Obtener la clave del primer resultado
+
+            // Obtener el item actual del carrito
+            $cartItem = $cart->get($rowId);
+
+            // Incrementar la cantidad actual con la nueva cantidad del producto
+            $newQuantity = $cartItem->qty + $productQuantity;
+
+            // Actualizar la cantidad en el carrito
+            $cart->update($rowId, $newQuantity);
+
+            // Actualizar también las propiedades del componente
+            $this->quantity[$product['id']] = $newQuantity;
+
+            // Actualizar las opciones del carrito con la nueva cantidad
+            $cart->update($rowId, [
+                'options' => [
+                    'product_quantity' => $newQuantity,
+                    'sub_total' => $cartItem->price * $newQuantity,
+                    'unit_price' => $cartItem->options->unit_price ?? $cartItem->price,
+                    'unit' => $cartItem->options->unit ?? ($product['product_unit'] ?? ''),
+                    'code' => $cartItem->options->code ?? ($product['product_code'] ?? ''),
+                    'product_type_process' => $cartItem->options->product_type_process ?? ($product['product_type_process'] ?? ''),
+                    'product_patient' => $cartItem->options->product_patient ?? ($product['product_patient'] ?? ''),
+                    'product_info' => $cartItem->options->product_info ?? ($product['product_info'] ?? ''),
+                    'product_area' => $cartItem->options->product_area ?? ($product['area'] ?? ''),
+                    'product_type_dirt' => $cartItem->options->product_type_dirt ?? 'CRITICO',
+                    'product_state_rumed' => $cartItem->options->product_state_rumed ?? 'BUENO',
+                    'product_outside_company' => $cartItem->options->product_outside_company ?? ''
+                ]
+            ]);
+
+            session()->flash('message', 'Cantidad del producto actualizada en el carrito! Nueva cantidad: ' . $newQuantity);
             return;
         }
 
@@ -127,17 +163,51 @@ class ProductCart extends Component
         $this->state_rumed[$product['id']] = 'BUENO';
     }
 
-    public function updateQuantity($row_id, $product_id) {
-      
 
-        Cart::instance($this->cart_instance)->update($row_id, $this->quantity[$product_id]);
 
+    // Método para incrementar cantidad
+    public function incrementQuantity($row_id, $product_id)
+    {
+        // Incrementar la cantidad en el array local
+        $this->quantity[$product_id] = ($this->quantity[$product_id] ?? 0) + 1;
+
+        // Actualizar el carrito automáticamente
+        $this->updateQuantity($row_id, $product_id);
+    }
+
+    // Método para decrementar cantidad
+    public function decrementQuantity($row_id, $product_id)
+    {
+        // Solo decrementar si la cantidad es mayor a 1
+        if (($this->quantity[$product_id] ?? 1) > 1) {
+            $this->quantity[$product_id] = $this->quantity[$product_id] - 1;
+
+            // Actualizar el carrito automáticamente
+            $this->updateQuantity($row_id, $product_id);
+        }
+    }
+
+
+
+
+
+
+    public function updateQuantity($row_id, $product_id)
+    {
+
+        // Validar que la cantidad sea válida
+        $newQuantity = max(1, (int)$this->quantity[$product_id]);
+        $this->quantity[$product_id] = $newQuantity;
+
+        // Actualizar cantidad en el carrito
+        Cart::instance($this->cart_instance)->update($row_id, $newQuantity);
+        
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
 
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
                 'product_quantity'             => $cart_item->qty,
-                'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+                'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
                 'unit'                  => $cart_item->options->unit, // se añade
                 'unit_price'            => $cart_item->options->unit_price, // se añade
                 'code'                   => $cart_item->options->code,
@@ -181,18 +251,19 @@ class ProductCart extends Component
     {
         Cart::instance($this->cart_instance)->remove($row_id);
     }
-  
+
     public function inputDyrtState($product_id, $row_id)
     { // se añade
         $this->updateDataInput($row_id, $product_id); // se añade
     } // se añade
 
-    
 
 
 
 
-    public function updateDataInput($row_id, $product_id) {// se añade
+
+    public function updateDataInput($row_id, $product_id)
+    { // se añade
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
 
         Cart::instance($this->cart_instance)->update($row_id, [
@@ -206,7 +277,7 @@ class ProductCart extends Component
                 'product_info'    => $cart_item->options->product_info,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
-                'sub_total'             => $cart_item->price *$cart_item->qty , // se añade
+                'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
                 'unit'                  => $cart_item->options->unit, // se añade
                 'unit_price'            => $cart_item->options->unit_price, // se añade
 
@@ -214,11 +285,12 @@ class ProductCart extends Component
         ]);
     }
 
-    public function setProductoptions($row_id, $product_id) {
+    public function setProductoptions($row_id, $product_id)
+    {
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
 
         $this->updateCartOptions($row_id, $product_id, $cart_item);
-  
+
 
         session()->flash('message_inputDyrtState' . $product_id, 'Observaciones añadidos...!');
     }
@@ -229,7 +301,7 @@ class ProductCart extends Component
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
             'code'                  => $cart_item->options->code,
             'product_quantity'             => $cart_item->qty,
-            'product_type_process'=> $cart_item->options->product_type_process,
+            'product_type_process' => $cart_item->options->product_type_process,
             'product_type_dirt'     => $this->type_dirt[$product_id],
             'product_state_rumed'   => $this->state_rumed[$product_id],
             'product_patient'   => $this->item_patient[$product_id],

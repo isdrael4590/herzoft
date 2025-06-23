@@ -9,7 +9,6 @@ use Modules\Product\Entities\Product;
 
 class ProductCarttoQRHPO extends Component
 {
-
     public $listeners = ['productSelected'];
     public $cart_instance;
     public $data;
@@ -29,13 +28,12 @@ class ProductCarttoQRHPO extends Component
     public $operator_package;
     public $expiration_data = 270; // Default value
 
-
-
     private $preparation_detail;
 
     public function mount($cartInstance, $data = null)
     {
         $this->cart_instance = $cartInstance;
+        
         if ($data) {
             $this->data = $data;
             $cart_items = Cart::instance($this->cart_instance)->content();
@@ -43,33 +41,33 @@ class ProductCarttoQRHPO extends Component
             foreach ($cart_items as $cart_item) {
                 $this->check_quantity[$cart_item->id] = [$cart_item->options->stock];
                 $this->quantity[$cart_item->id] = $cart_item->qty;
-                $this->unit_price[$cart_item->id] = $cart_item->price; // se añade
+                $this->unit_price[$cart_item->id] = $cart_item->price;
                 $this->item_patient[$cart_item->id] = $cart_item->options->product_patient;
                 $this->package_wrap[$cart_item->id] = $cart_item->options->product_package_wrap;
                 $this->ref_qr[$cart_item->id] = $cart_item->options->product_ref_qr;
                 $this->eval_package[$cart_item->id] = $cart_item->options->product_eval_package;
                 $this->eval_indicator[$cart_item->id] = $cart_item->options->product_eval_indicator;
-                // $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
+                $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
                 $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
-                $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company; // se añade
-                $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
+                $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company;
+                $this->item_area[$cart_item->id] = $cart_item->options->product_area;
                 $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
                 $this->operator_package[$cart_item->id] = $cart_item->options->product_operator_package;
             }
         } else {
-
+            // Inicializar todos los arrays vacíos
             $this->package_wrap = [];
             $this->ref_qr = [];
             $this->eval_package = [];
             $this->eval_indicator = [];
-            // $this->expiration = [];
+            $this->expiration = [];
             $this->type_process = [];
             $this->check_quantity = [];
             $this->quantity = [];
             $this->item_patient = [];
-            $this->unit_price = []; // se añade
-            $this->item_outside_company = []; // se añade
-            $this->item_area = []; // se añade
+            $this->unit_price = [];
+            $this->item_outside_company = [];
+            $this->item_area = [];
             $this->item_product_info = [];
             $this->operator_package = [];
         }
@@ -88,65 +86,99 @@ class ProductCarttoQRHPO extends Component
     {
         $cart = Cart::instance($this->cart_instance);
 
-        $exists = $cart->search(function ($cartItem, $rowId) use ($preparation_detail) {
-            return $cartItem->id == $preparation_detail['id'];
-        });
+        // Debug: Agregar logging para identificar el problema
+        \Log::info('ProductSelected called with:', [
+            'product_id' => $preparation_detail['id'],
+            'product_name' => $preparation_detail['product_name'] ?? 'N/A',
+            'product_code' => $preparation_detail['product_code'] ?? 'N/A',
+            'cart_instance' => $this->cart_instance
+        ]);
 
-        if ($exists->isNotEmpty()) {
-            session()->flash('message', 'Product exists in the cart!');
+        $existingRowId = null;
+        foreach ($cart->content() as $rowId => $cartItem) {
+            if ($cartItem->id == $preparation_detail['product_code']) {
+                $existingRowId = $rowId;
+                break;
+            }
+        }
 
+        \Log::info('Product search result:', [
+            'found' => $existingRowId !== null,
+            'existing_row_id' => $existingRowId
+        ]);
+
+        // Si el producto ya existe en el carrito, incrementar la cantidad
+        if ($existingRowId !== null) {
+            $cartItem = $cart->get($existingRowId);
+
+            // Validar stock disponible antes de incrementar
+            if ($this->cart_instance == 'labelqrhpo') {
+                $availableStock = $this->getAvailableStock($preparation_detail['id']);
+
+                if (($cartItem->qty + 1) > $availableStock) {
+                    session()->flash('message', 'No se puede añadir más cantidad. Stock disponible: ' . $availableStock);
+                    return;
+                }
+            }
+
+            // Incrementar la cantidad actual
+            $newQuantity = $cartItem->qty + 1;
+
+            // Solo actualizar la cantidad, manteniendo todas las opciones existentes
+            $cart->update($existingRowId, $newQuantity);
+
+            // Actualizar también las propiedades del componente
+            $this->quantity[$preparation_detail['id']] = $newQuantity;
+
+            session()->flash('message', 'Cantidad del producto actualizada en el carrito! Nueva cantidad: ' . $newQuantity);
             return;
         }
 
         $this->preparation_detail = $preparation_detail;
-        // if ($preparation_detail['product_type_process'] == 'Alta Temperatura') {
-        //     $this->expiration_data = 14;
-        // } else {
-        //     $this->expiration_data = 270;
-        // }
-
-
+        if ($preparation_detail['product_type_process'] == 'Alta Temperatura') {
+            $this->expiration_data = 14;
+        } else {
+            $this->expiration_data = 270;
+        }
         $cart->add([
             'id'      => $preparation_detail['id'],
             'name'    => $preparation_detail['product_name'],
             'qty'     => 1,
-            'price'     => $this->calculate($preparation_detail)['price'],
-            'weight'     => 1,
-
+            'price'   => $this->calculate($preparation_detail)['price'],
+            'weight'  => 1,
             'options' => [
-                'sub_total'             => $this->calculate($preparation_detail)['sub_total'], // se añade
-                'unit_price'            => $this->calculate($preparation_detail)['unit_price'], // se añade
-                'product_id'            => $preparation_detail['product_id'],
-                'code'                  => $preparation_detail['product_code'],
-                'stock'                 => $preparation_detail['product_quantity'],
-                'product_patient'       => $preparation_detail['product_patient'],
-                'product_outside_company'  => $preparation_detail['product_outside_company'],
-                'product_info'    => $preparation_detail['product_info'],
-                'product_area'           => $preparation_detail['product_area'],
-                'product_type_process'           => $preparation_detail['product_type_process'],
-                'product_package_wrap'  =>  'Papel Tyvek',
-                'product_ref_qr'        =>  'Cargado',
-                'product_eval_package'   => "OK",
-                'product_eval_indicator' =>  '4',
-                'product_operator_package'    => 'N/A',
-                'product_expiration' =>  '270',
+                'sub_total'                  => $this->calculate($preparation_detail)['sub_total'],
+                'unit_price'                 => $this->calculate($preparation_detail)['unit_price'],
+                'product_id'                 => $preparation_detail['product_id'],
+                'code'                       => $preparation_detail['product_code'],
+                'stock'                      => $preparation_detail['product_quantity'],
+                'product_patient'            => $preparation_detail['product_patient'],
+                'product_outside_company'    => $preparation_detail['product_outside_company'],
+                'product_info'               => $preparation_detail['product_info'],
+                'product_area'               => $preparation_detail['product_area'],
+                'product_type_process'       => $preparation_detail['product_type_process'],
+                'product_package_wrap'       => 'Papel Tyvek',
+                'product_ref_qr'             => 'Cargado',
+                'product_eval_package'       => 'OK',
+                'product_eval_indicator'     => '4',
+                'product_operator_package'   => 'N/A',
+                'product_expiration'         => $this->expiration_data,
             ]
         ]);
+
+        // Inicializar propiedades del componente
         $this->item_patient[$preparation_detail['id']] = $preparation_detail['product_patient'];
         $this->item_product_info[$preparation_detail['id']] = $preparation_detail['product_info'];
-
         $this->check_quantity[$preparation_detail['id']] = $preparation_detail['product_quantity'];
         $this->quantity[$preparation_detail['id']] = 1;
-
+        $this->unit_price[$preparation_detail['id']] = $preparation_detail['price'] ?? 0;
         $this->item_area[$preparation_detail['id']] = $preparation_detail['product_area'];
         $this->item_outside_company[$preparation_detail['id']] = $preparation_detail['product_outside_company'];
-
         $this->package_wrap[$preparation_detail['id']] = 'Papel Tyvek';
         $this->ref_qr[$preparation_detail['id']] = 'Cargado';
-
         $this->eval_package[$preparation_detail['id']] = 'OK';
         $this->eval_indicator[$preparation_detail['id']] = '4';
-        // $this->expiration[$preparation_detail['id']] = '270';
+        $this->expiration[$preparation_detail['id']] = $this->expiration_data;
         $this->operator_package[$preparation_detail['id']] = 'N/A';
     }
 
@@ -155,20 +187,78 @@ class ProductCarttoQRHPO extends Component
         Cart::instance($this->cart_instance)->remove($row_id);
     }
 
+    public function incrementQuantity($row_id, $product_id)
+    {
+        $currentQuantity = $this->quantity[$product_id] ?? 0;
+        $newQuantity = $currentQuantity + 1;
+
+        // Validar stock antes de incrementar (solo para labelqrhpo)
+        if ($this->cart_instance == 'labelqrhpo') {
+            $availableStock = $this->getAvailableStock($product_id);
+
+            if ($newQuantity > $availableStock) {
+                session()->flash('message', 'La cantidad Requerida NO ESTA DISPONIBLE en el STOCK. Solo hay ' . $availableStock . ' en STOCK PREPARACIÓN');
+                return;
+            }
+        }
+
+        // Incrementar la cantidad en el array local
+        $this->quantity[$product_id] = $newQuantity;
+
+        // Actualizar el carrito automáticamente
+        $this->updateQuantity($row_id, $product_id);
+    }
+
+    public function decrementQuantity($row_id, $product_id)
+    {
+        $currentQuantity = $this->quantity[$product_id] ?? 1;
+
+        // Solo decrementar si la cantidad es mayor a 1
+        if ($currentQuantity > 1) {
+            $this->quantity[$product_id] = $currentQuantity - 1;
+
+            // Actualizar el carrito automáticamente
+            $this->updateQuantity($row_id, $product_id);
+        }
+    }
+
+    /**
+     * Método auxiliar para obtener el stock disponible
+     */
+    private function getAvailableStock($product_id)
+    {
+        $stockData = $this->check_quantity[$product_id] ?? 0;
+
+        if (is_array($stockData)) {
+            return (int)implode('', $stockData);
+        }
+
+        return (int)$stockData;
+    }
+
     public function updateQuantity($row_id, $product_id)
     {
-        if ($this->cart_instance == 'labelqr') {
-            //| dd("prunea",$this->quantity[$product_id]);
-
+        if ($this->cart_instance == 'labelqrhpo') {
             $array = $this->check_quantity[$product_id];
             if (is_array($array)) {
                 if (implode('', $this->check_quantity[$product_id]) < $this->quantity[$product_id]) {
                     session()->flash('message', 'La cantidad Requerida NO ESTA DISPONIBLE en el STOCK. Solo hay ' . implode('', $this->check_quantity[$product_id]) . ' en STOCK PREPARACIÓN');
+
+                    // Revertir la cantidad al valor anterior válido
+                    $availableStock = (int)implode('', $this->check_quantity[$product_id]);
+                    if ($this->quantity[$product_id] > $availableStock) {
+                        $this->quantity[$product_id] = $availableStock;
+                    }
                     return;
                 }
             } else {
                 if ($this->check_quantity[$product_id] < $this->quantity[$product_id]) {
                     session()->flash('message', 'La cantidad Requerida NO ESTA DISPONIBLE en el STOCK. Solo hay ' . $this->check_quantity[$product_id] . ' en STOCK PREPARACIÓN');
+
+                    // Revertir la cantidad al valor anterior válido
+                    if ($this->quantity[$product_id] > $this->check_quantity[$product_id]) {
+                        $this->quantity[$product_id] = $this->check_quantity[$product_id];
+                    }
                     return;
                 }
             }
@@ -180,24 +270,23 @@ class ProductCarttoQRHPO extends Component
 
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
-                'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
-                'product_id'      => $cart_item->options->product_id,
-                'code'                   => $cart_item->options->code,
-                'unit_price'            => $cart_item->options->unit_price, // se añade
-                'stock'                 => $cart_item->options->stock,
-                'product_patient'    => $cart_item->options->product_patient,
+                'sub_total'                  => $cart_item->price * $cart_item->qty,
+                'product_id'                 => $cart_item->options->product_id,
+                'code'                       => $cart_item->options->code,
+                'unit_price'                 => $cart_item->options->unit_price,
+                'stock'                      => $cart_item->options->stock,
+                'product_patient'            => $cart_item->options->product_patient,
                 'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
-                'product_package_wrap'      => $cart_item->options->product_package_wrap,
-                'product_ref_qr'    => $cart_item->options->product_ref_qr,
-                'product_eval_package'      => $cart_item->options->product_eval_package,
-                'product_eval_indicator'    => $cart_item->options->product_eval_indicator,
-                'product_expiration'    => $cart_item->options->product_expiration,
-                'product_type_process'    => $cart_item->options->product_type_process,
+                'product_package_wrap'       => $cart_item->options->product_package_wrap,
+                'product_ref_qr'             => $cart_item->options->product_ref_qr,
+                'product_eval_package'       => $cart_item->options->product_eval_package,
+                'product_eval_indicator'     => $cart_item->options->product_eval_indicator,
+                'product_expiration'         => $cart_item->options->product_expiration,
+                'product_type_process'       => $cart_item->options->product_type_process,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
-                'product_area'    => $cart_item->options->product_area,
-                'product_info'    => $cart_item->options->product_info,
-                'product_operator_package'    => $cart_item->options->product_operator_package,
-
+                'product_area'               => $cart_item->options->product_area,
+                'product_info'               => $cart_item->options->product_info,
+                'product_operator_package'   => $cart_item->options->product_operator_package,
             ]
         ]);
     }
@@ -206,74 +295,63 @@ class ProductCarttoQRHPO extends Component
     {
         if ($new_price) {
             $product_price = $new_price;
+            $product_quantity = 1;
         } else {
             $this->unit_price[$product['id']] = $product['price'];
             $product_price = $this->unit_price[$product['id']];
-            $this->quantity[$product['id']] = $product['product_quantity'];
-            $product_quantity =  $this->quantity[$product['id']];
+            $this->quantity[$product['id']] = 1;
+            $product_quantity = $this->quantity[$product['id']];
         }
-
-        $price = 0;
-        $unit_price = 0;
-        $sub_total = 0;
 
         $price = $product_price;
         $unit_price = $product_price;
-        $sub_total = $product_quantity;
+        $sub_total = $product_price * $product_quantity;
 
         return ['price' => $price, 'unit_price' => $unit_price, 'sub_total' => $sub_total];
     }
 
-
-
     public function InputWrap_package($preparation_detail_id, $row_id)
-    { // se añade
+    {
+        $this->updateDataInput($row_id, $preparation_detail_id);
+    }
+
+    public function updateDataInput($row_id, $preparation_detail_id)
+    {
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
-        if ($cart_item->options->product_package_wrap == "Papel Tyvek") {
-            $this->expiration = '270';
-        } elseif ($cart_item->options->product_package_wrap == "Tela Tejida") {
-            $this->expiration = '180';
-        }
 
         Cart::instance($this->cart_instance)->update($row_id, [
             'options' => [
-                'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
-                'code'                   => $cart_item->options->code,
-                'product_id'      => $cart_item->options->product_id,
-                'stock'                 => $cart_item->options->stock,
+                'sub_total'                  => $cart_item->price * $cart_item->qty,
+                'code'                       => $cart_item->options->code,
+                'product_id'                 => $cart_item->options->product_id,
+                'stock'                      => $cart_item->options->stock,
                 'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
-                'unit_price'            => $cart_item->options->unit_price, // se añade
-                'product_package_wrap'      => $cart_item->options->product_package_wrap,
-                'product_ref_qr'    => $cart_item->options->product_ref_qr,
-                'product_eval_package'      => $cart_item->options->product_eval_package,
-                'product_eval_indicator'    => $cart_item->options->product_eval_indicator,
-                'product_expiration'    => $this->expiration,
-                'product_type_process'    => $cart_item->options->product_type_process,
-                'product_patient'    => $cart_item->options->product_patient,
+                'unit_price'                 => $cart_item->options->unit_price,
+                'product_package_wrap'       => $cart_item->options->product_package_wrap,
+                'product_ref_qr'             => $cart_item->options->product_ref_qr,
+                'product_eval_package'       => $cart_item->options->product_eval_package,
+                'product_eval_indicator'     => $cart_item->options->product_eval_indicator,
+                'product_expiration'         => $cart_item->options->product_expiration,
+                'product_type_process'       => $cart_item->options->product_type_process,
+                'product_patient'            => $cart_item->options->product_patient,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
-                'product_area'    => $cart_item->options->product_area,
-                'product_info'    => $cart_item->options->product_info,
-                'product_operator_package'    => $cart_item->options->product_operator_package,
-
+                'product_area'               => $cart_item->options->product_area,
+                'product_info'               => $cart_item->options->product_info,
+                'product_operator_package'   => $cart_item->options->product_operator_package,
             ]
         ]);
-    } // se añade
-
-
+    }
 
     public function setProductoptions($row_id, $preparation_detail_id)
     {
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
-
         $this->updateCartOptions($row_id, $preparation_detail_id, $cart_item);
-
-
-        session()->flash('message_InputWrap_package' . $preparation_detail_id, 'Observaciones añadidos...!');
+        session()->flash('message_InputWrap_package' . $preparation_detail_id, 'Observaciones añadidas...!');
     }
 
     public function updateCartOptions($row_id, $preparation_detail_id, $cart_item)
     {
-
+        // Configurar expiración e indicador según el tipo de empaque
         if ($this->package_wrap[$preparation_detail_id] == "Papel Tyvek") {
             $this->expiration = '270';
             $this->eval_indicator = '4';
@@ -281,26 +359,25 @@ class ProductCarttoQRHPO extends Component
             $this->expiration = '270';
             $this->eval_indicator = '4';
         }
+
         Cart::instance($this->cart_instance)->update($row_id, ['options' => [
-
-            'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
-            'code'                  => $cart_item->options->code,
-            'product_id'            => $cart_item->options->product_id,
-            'stock'                 => $cart_item->options->stock,
+            'sub_total'                  => $cart_item->price * $cart_item->qty,
+            'code'                       => $cart_item->options->code,
+            'product_id'                 => $cart_item->options->product_id,
+            'stock'                      => $cart_item->options->stock,
             'preparation_detail_id'      => $cart_item->options->preparation_detail_id,
-            'product_type_process'  => $cart_item->options->product_type_process,
-            'product_package_wrap'  => $this->package_wrap[$preparation_detail_id],
-            'product_ref_qr'        => $this->ref_qr[$preparation_detail_id],
-            'unit_price'        => $this->unit_price[$preparation_detail_id],
-            'product_eval_package'  => $this->eval_package[$preparation_detail_id],
-            'product_eval_indicator' => $this->eval_indicator,
-            'product_expiration'   =>  $this->expiration,
-            'product_patient'   => $this->item_patient[$preparation_detail_id],
-            'product_area'   => $this->item_area[$preparation_detail_id],
-            'product_outside_company'   => $this->item_outside_company[$preparation_detail_id],
-            'product_info'   => $this->item_product_info[$preparation_detail_id],
+            'product_type_process'       => $cart_item->options->product_type_process,
+            'product_package_wrap'       => $this->package_wrap[$preparation_detail_id],
+            'product_ref_qr'             => $this->ref_qr[$preparation_detail_id],
+            'unit_price'                 => $this->unit_price[$preparation_detail_id],
+            'product_eval_package'       => $this->eval_package[$preparation_detail_id],
+            'product_eval_indicator'     => $this->eval_indicator,
+            'product_expiration'         => $this->expiration,
+            'product_patient'            => $this->item_patient[$preparation_detail_id],
+            'product_area'               => $this->item_area[$preparation_detail_id],
+            'product_outside_company'    => $this->item_outside_company[$preparation_detail_id],
+            'product_info'               => $this->item_product_info[$preparation_detail_id],
             'product_operator_package'   => $this->operator_package[$preparation_detail_id],
-
         ]]);
     }
 }

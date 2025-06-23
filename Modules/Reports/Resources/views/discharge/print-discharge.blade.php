@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Reporte Descargas</title>
+    <title>Reporte Descarga</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
 
@@ -47,10 +47,35 @@
             background-color: #f2f2f2;
         }
 
+        .text-center {
+            text-align: center;
+        }
+
+        .details-count {
+            background-color: #007bff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
         @media print {
             .no-print {
                 display: none;
             }
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .details-count {
+            background-color: #cad0d6;
+            color: rgb(0, 0, 0);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
         }
     </style>
 </head>
@@ -69,8 +94,8 @@
                         <div class="printer-top">
                             <div class="row g-3">
                                 <div class="col-3">
-                                    <img src="{{ $institute->getFirstMediaUrl('institutes') }}" alt="Institute Image" width="80%" height="auto"
-                                        class="img-fluid  mb-1">
+                                    <img src="{{ $institute->getFirstMediaUrl('institutes') }}" alt="Institute Image"
+                                        width="80%" height="auto" class="img-fluid  mb-1">
                                 </div>
                                 <div class="col-7">
                                     <h6>{{ Institutes()->institute_name }}</h6>
@@ -123,25 +148,43 @@
                                             <th>Referencia</th>
                                             <th>Equipo</th>
                                             <th>Lote Equipo</th>
-                                            <th>Validación Proceso</th>
-                                            <th>Validación Biológico</th>
+                                            <th>Valid. Proceso</th>
+                                            <th>Valid. Biológico</th>
+                                            <th class="text-center">Cantidad de Paquetes</th>
+
 
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         @foreach ($data as $discharge)
-                                        <tr>
-                                            <td>{{ \Carbon\Carbon::parse($discharge->updated_at)->format('d M, Y') }}</td>
-                                            <td>{{ $discharge->reference }}</td>
-                                            <td>{{ $discharge->machine_name }}</td>
-                                            <td>{{ $discharge->lote_machine }}</td>
-                                            <td>{{ $discharge->status_cycle }}</td>
-                                            <td>{{ $discharge->validation_biologic }}</td>
-    
-                                        </tr>
+                                            <tr>
+                                                <td>{{ \Carbon\Carbon::parse($discharge->updated_at)->format('d M, Y') }}
+                                                </td>
+                                                <td>{{ $discharge->reference }}</td>
+                                                <td>{{ $discharge->machine_name }}</td>
+                                                <td>{{ $discharge->lote_machine }}</td>
+                                                <td>{{ $discharge->status_cycle }}</td>
+                                                <td>{{ $discharge->validation_biologic }}</td>
+                                                <td class="text-center">
+                                                    <span class="details-count">
+                                                        {{ $discharge->details_count ?? 0 }} </span>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
+                                    <!-- Fila de totales -->
+                                    <tfoot>
+                                        <tr style="background-color: #f8f9fa; font-weight: bold;">
+                                            <td colspan="6" class="text-center">TOTAL GENERAL</td>
+                                            <td class="text-center">
+                                                <span class="details-count">
+                                                    {{ $data->sum('details_count') }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+
                                 </table>
                             </div>
 
@@ -150,14 +193,21 @@
                                 <h6 class="print-title-2">Información de Reporte generado:</h6>
                                 <table class="default-table ">
                                     <tr>
-                                        <td>Fecha: <span> {{ $discharge->updated_at }}</span></td>
+                                        <td>Fecha de generación:
+                                            <span>{{ \Carbon\Carbon::now()->format('d/m/Y H:i:s') }}</span>
+                                        </td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <td>Total de Procesados: <span>{{ $data->count() }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total de paquetes: <span>{{ $data->sum('details_count') }}</span></td>
+                                    </tr>
                                 </table>
                                 <table class="default-table ">
                                     <tr>
                                         <br><br><br>
-                                        <td>Responsable: <span> {{ $discharge->operator }}</span></td>
+                                        <td>Responsable: <span> {{ Auth::user()->name }}</span></td>
                                     </tr>
                                 </table>
                             </div>

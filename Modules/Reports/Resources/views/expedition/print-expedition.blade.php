@@ -69,8 +69,8 @@
                         <div class="printer-top">
                             <div class="row g-3">
                                 <div class="col-3">
-                                    <img src="{{ $institute->getFirstMediaUrl('institutes') }}" alt="Institute Image" width="80%" height="auto"
-                                        class="img-fluid  mb-1">
+                                    <img src="{{ $institute->getFirstMediaUrl('institutes') }}" alt="Institute Image"
+                                        width="80%" height="auto" class="img-fluid  mb-1">
                                 </div>
                                 <div class="col-7">
                                     <h6>{{ Institutes()->institute_name }}</h6>
@@ -125,6 +125,8 @@
                                             <th>Estado</th>
                                             <th>Persona Entrega</th>
                                             <th>Persona que recibe</th>
+                                            <th class="text-center">Cantidad de Paquetes</th>
+
 
                                         </tr>
                                     </thead>
@@ -142,10 +144,26 @@
                                                 </td>
                                                 <td>{{ $expedition->operator }}</td>
                                                 <td>{{ $expedition->staff_expedition }}</td>
+                                                <td class="text-center">
+                                                    <span class="details-count">
+                                                        {{ $expedition->details_count ?? 0 }} </span>
+                                                </td>
 
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                    <!-- Fila de totales -->
+                                    <tfoot>
+                                        <tr style="background-color: #f8f9fa; font-weight: bold;">
+                                            <td colspan="6" class="text-center">TOTAL GENERAL</td>
+                                            <td class="text-center">
+                                                <span class="details-count">
+                                                    {{ $data->sum('details_count') }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+
                                 </table>
                             </div>
 
@@ -156,12 +174,12 @@
                                     <tr>
                                         <td>Fecha: <span> {{ $expedition->updated_at }}</span></td>
                                     </tr>
-                                    
+
                                 </table>
                                 <table class="default-table ">
                                     <tr>
                                         <br><br><br>
-                                        <td>Responsable: <span> {{ $expedition->operator }}</span></td>
+                                        <td>Responsable: <span> {{ Auth::user()->name }}</span></td>
                                     </tr>
                                 </table>
                             </div>

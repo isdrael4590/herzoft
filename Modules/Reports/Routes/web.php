@@ -53,7 +53,10 @@ Route::get('/printexpedition-data/{items}', function ($items) {
 
 Route::get('/printdisch-data/{items}', function ($items) {
     $itemIds = explode(',', $items);
-    $data = Discharge::whereIn('id', $itemIds)->get();
+    $data = Discharge::with('dischargeDetails')
+    ->whereIn('id', $itemIds)->get();
+
+
     $institute = Institute::all()->first();
 
  
@@ -74,10 +77,13 @@ if ($setting && $setting->getFirstMedia('settings')) {
 
 Route::get('/print-data/{items}', function ($items) {
     $itemIds = explode(',', $items);
-    $data = Reception::whereIn('id', $itemIds)->get();
+
+       // Cargar las recepciones con sus detalles relacionados
+    $data = Reception::with('ReceptionDetails')
+        ->whereIn('id', $itemIds)
+        ->get();
+
     $institute = Institute::all()->first();
-
-
 
     $setting = Setting::all()->first();
     $urlLogoHerz = null;

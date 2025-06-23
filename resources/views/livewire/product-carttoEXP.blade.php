@@ -22,7 +22,6 @@
                     <tr>
                         <th class="align-middle">Descripción del Instrumental</th>
                         <th class="align-middle">Código del Instrumental</th>
-                        <th class="align-middle text-center">Stock </th>
                         <th class="align-middle text-center">Cantidad </th>
                         <th class="align-middle text-center">Tipo de Envoltura </th>
                         <th class="align-middle text-center">Expiración</th>
@@ -42,9 +41,7 @@
                                 <td class="align-middle">
                                     {{ $cart_item->options->code }}
                                 </td>
-                                <td class="align-middle text-center text-center">
-                                    <span class="badge badge-info">{{ $cart_item->options->stock }}</span>
-                                </td>
+                         
                                 <td class="align-middle text-center">
                                     @include('livewire.includes.product-carttoEXP-quantity')
 

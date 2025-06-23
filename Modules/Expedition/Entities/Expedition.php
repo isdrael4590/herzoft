@@ -11,11 +11,17 @@ class Expedition extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function ExpeditionDetails() {
+    public function ExpeditionDetails()
+    {
         return $this->hasMany(ExpeditionDetails::class, 'expedition_id', 'id');
     }
 
-    public static function boot() {
+    public function getDetailsCountAttribute()
+    {
+        return $this->ExpeditionDetails()->count();
+    }
+    public static function boot()
+    {
         parent::boot();
 
         static::creating(function ($model) {
@@ -24,13 +30,13 @@ class Expedition extends Model
         });
     }
 
-    public function Expedition() {
+    public function Expedition()
+    {
         return $this->hasMany(Expedition::class, 'expedition_id', 'id');
     }
 
-    public function scopeCompleted($query) {
+    public function scopeCompleted($query)
+    {
         return $query->where('status', 'Completed');
     }
-
-
 }

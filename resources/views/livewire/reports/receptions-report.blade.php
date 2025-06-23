@@ -8,47 +8,47 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                   
-                        <div class="form-row">
-                            <div class="col-md-5">
-                                <label for="startDate">Fecha Inicio</label>
-                                <input type="date" wire:model="startDate" id="startDate" class="form-control">
-                            </div>
-                            <div class="col-md-5">
-                                <label for="endDate">Fecha Fin</label>
-                                <input type="date" wire:model="endDate" id="endDate" class="form-control">
-                            </div>
-                            <div class="col-md-2 d-flex align-items-end">
-                                <button class="btn btn-primary" wire:click="loadData">Buscar</button>
-                            </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Área</label>
-                                    <select wire:model="area" class="form-control" name="area">
-                                        <option value="">Seleccione el área</option>
-                                        @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                            <option value="{{ $area->area_name }}">{{ $area->area_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="form-row">
+                        <div class="col-md-5">
+                            <label for="startDate">Fecha Inicio</label>
+                            <input type="date" wire:model="startDate" id="startDate" class="form-control">
+                        </div>
+                        <div class="col-md-5">
+                            <label for="endDate">Fecha Fin</label>
+                            <input type="date" wire:model="endDate" id="endDate" class="form-control">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button class="btn btn-primary" wire:click="loadData">Buscar</button>
+                        </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                             
-                                    <label>Estado</label>
-                                    <select wire:model="status" class="form-control" name="status">
-                                        <option value="">Selecione la Validación</option>
-                                        <option value="Registrado">Registrado</option>
-                                        <option value="Pendiente">Pendiente</option>
-                                        <option value="Procesado">Procesado</option>
-                                    </select>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Área</label>
+                                <select wire:model="area" class="form-control" name="area">
+                                    <option value="">Seleccione el área</option>
+                                    @foreach (\Modules\Informat\Entities\Area::all() as $area)
+                                        <option value="{{ $area->area_name }}">{{ $area->area_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 
-                    
+                        <div class="col-lg-6">
+                            <div class="form-group">
+
+                                <label>Estado</label>
+                                <select wire:model="status" class="form-control" name="status">
+                                    <option value="">Selecione la Validación</option>
+                                    <option value="Registrado">Registrado</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Procesado">Procesado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -77,6 +77,7 @@
                                 <th>Estado</th>
                                 <th>Persona Entrega</th>
                                 <th>Persona que Recibe</th>
+                                <th>Cantidad de Paquetes</th>
 
                             </tr>
                         </thead>
@@ -94,6 +95,11 @@
 
                                     <td>{{ $reception['delivery_staff'] }}</td>
                                     <td>{{ $reception['operator'] }}</td>
+                                    <td>
+                                        <span class="badge badge-primary">
+                                            {{ $reception['details_count'] }}
+                                        </span>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>

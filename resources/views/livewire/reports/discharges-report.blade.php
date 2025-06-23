@@ -20,41 +20,41 @@
                         <div class="col-md-2 d-flex align-items-end">
                             <button class="btn btn-primary" wire:click="loadData">Buscar</button>
                         </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Equipo</label>
-                                    <select wire:model="machine_name" class="form-control" name="machine_name">
-                                        <option value="">Seleccione el Equipo</option>
-                                        @foreach (\Modules\Informat\Entities\Machine::all() as $machine)
-                                            <option value="{{ $machine->machine_name }}">{{ $machine->machine_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Equipo</label>
+                                <select wire:model="machine_name" class="form-control" name="machine_name">
+                                    <option value="">Seleccione el Equipo</option>
+                                    @foreach (\Modules\Informat\Entities\Machine::all() as $machine)
+                                        <option value="{{ $machine->machine_name }}">{{ $machine->machine_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
+                        </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Validación Biologico</label>
-                                    <select wire:model="validation_biologic" class="form-control"
-                                        name="validation_biologic">
-                                        <option value="">Selecione la Validación</option>
-                                        <option value="Correcto">Correcto</option>
-                                        <option value="Falla">Falla</option>
-                                    </select>
-                                </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Validación Biologico</label>
+                                <select wire:model="validation_biologic" class="form-control"
+                                    name="validation_biologic">
+                                    <option value="">Selecione la Validación</option>
+                                    <option value="Correcto">Correcto</option>
+                                    <option value="Falla">Falla</option>
+                                </select>
                             </div>
+                        </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Validación Proceso</label>
-                                    <select wire:model="status_cycle" class="form-control" name="status_cycle">
-                                        <option value="">Selecione el Estado de Proceso</option>
-                                        <option value="Ciclo Aprobado ">Ciclo Aprobado</option>
-                                        <option value="Ciclo Falla">Ciclo Falla</option>
-                                    </select>
-                                </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Validación Proceso</label>
+                                <select wire:model="status_cycle" class="form-control" name="status_cycle">
+                                    <option value="">Selecione el Estado de Proceso</option>
+                                    <option value="Ciclo Aprobado ">Ciclo Aprobado</option>
+                                    <option value="Ciclo Falla">Ciclo Falla</option>
+                                </select>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,6 +84,8 @@
                                 <th>Lote Equipo</th>
                                 <th>Validación Proceso</th>
                                 <th>Validación Biológico</th>
+                                <th>Cantidad de Paquetes</th>
+
 
                             </tr>
                         </thead>
@@ -121,7 +123,12 @@
                                             </span>
                                         @endif
 
-
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-primary">
+                                            {{ $discharge['details_count'] }}
+                                        </span>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
