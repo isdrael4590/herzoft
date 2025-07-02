@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //preparations
     Route::resource('preparations', 'PreparationController');
-    Route::resource('preparationzes', 'PreparationfromZEController');
+   // Route::resource('preparationzes', 'PreparationfromZEController');
     Route::resource('preparationDetails', 'PreparationDetailsController');
 
 

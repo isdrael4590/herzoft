@@ -31,7 +31,30 @@ class ProductDataTable extends DataTable
             ->addColumn('product_note', function ($data) {
                 return ($data->product_note);
             })
-            ->rawColumns(['product_image']);
+            ->addColumn('barcode', function ($data) {
+                try {
+                    // Check if the symbology requires digits only
+                    $digitOnlySymbologies = ['UPCA', 'UPCE', 'EAN13', 'EAN8', 'EAN5', 'EAN2', 'MSI'];
+
+                    if (in_array($data->product_barcode_symbology, $digitOnlySymbologies) && !ctype_digit($data->product_code)) {
+                        return '<div class="col-md-12"><small class="text-muted">Invalid code for ' . $data->product_barcode_symbology . '</small></div>';
+                    }
+
+                    // Generate barcode
+                    $barcode = \Milon\Barcode\Facades\DNS1DFacade::getBarCodeSVG(
+                        $data->product_code,
+                        $data->product_barcode_symbology,
+                        2,
+                        110
+                    );
+
+                    return '<div class="col-md-12">' . $barcode . '</div>';
+                } catch (\Exception $e) {
+                    // Return error message or fallback
+                    return '<div class="col-md-12"><small class="text-danger">Barcode Error: ' . $e->getMessage() . '</small></div>';
+                }
+            })
+            ->rawColumns(['product_image', 'barcode']);
     }
 
     public function query(Product $model)
@@ -90,13 +113,27 @@ class ProductDataTable extends DataTable
                 ->title('Tipo Proceso')
                 ->className('text-center align-middle');
 
+            // Add the barcode column
+            $columns[] = Column::computed('barcode')
+                ->title('Código de Barras')
+                ->exportable(true)
+                ->printable(true)
+                ->className('text-center align-middle');
             $columns[] = Column::computed('product_info')
                 ->title('Info Paquete')
+                ->exportable(false)
+                ->printable(false)
                 ->className('text-center align-middle');
+
+
+
             $columns[] = Column::make('action')
                 ->title('Acciones')
+                ->exportable(false)
+                ->printable(false)
                 ->className('text-center align-middle');
         }
+
         if ($user->can('access_admin')) {
             $columns[] = Column::computed('id')
                 ->title('ID')
@@ -122,7 +159,6 @@ class ProductDataTable extends DataTable
                 ->title('Nota')
                 ->className('text-center align-middle');
         }
-
 
         return $columns;
     }

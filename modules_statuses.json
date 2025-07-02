@@ -11,5 +11,6 @@
     "Labelqr": true,
     "Discharge": true,
     "Expedition": true,
-    "Stock": true
+    "Stock": true,
+    "Backup": true
 }
