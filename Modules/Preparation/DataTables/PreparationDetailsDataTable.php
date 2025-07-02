@@ -31,10 +31,23 @@ class PreparationDetailsDataTable extends DataTable
             });
     }
 
-    public function query(PreparationDetails $model)
-    {
-        return $model->newQuery()->orderBy('product_quantity', 'desc');
+public function query(PreparationDetails $model)
+{
+    $query = $model->newQuery()->orderBy('product_quantity', 'desc');
+    $user = auth()->user();
+    
+    // Check permissions instead of roles
+    if ($user->can('access_admin') || $user->can('access_user_management')) {
+        // Admin with all permission can see all receptions
+        return $query;
+    } elseif ($user->can('access_preparations')) {
+        // Users with basic 'access_preparations' permission see only quantities > 0
+        return $query->where('product_quantity', '>', 0);
+    } else {
+        // No permissions - return empty result
+        return $query->whereRaw('1 = 0'); // This ensures no results are returned
     }
+}
 
 
 
@@ -78,10 +91,12 @@ class PreparationDetailsDataTable extends DataTable
             ->className('text-center align-middle');
         $columns[] = Column::computed('product_name')
             ->title('Nombre del Producto')
-            ->className('text-center align-middle');
+            ->className('text-center align-middle')
+            ->searchable(true); // Hacer searchable
         $columns[] = Column::computed('product_code')
             ->title('Código del Producto')
-            ->className('text-center align-middle');
+            ->className('text-center align-middle')
+            ->searchable(true); // Hacer searchable
         $columns[] = Column::computed('product_quantity')
             ->title('Cantidad')
             ->className('text-center align-middle');
@@ -90,7 +105,8 @@ class PreparationDetailsDataTable extends DataTable
             ->className('text-center align-middle');
         $columns[] = Column::computed('product_area')
             ->title('Area')
-            ->className('text-center align-middle');
+            ->className('text-center align-middle')
+            ->searchable(true); // Hacer searchable
         $columns[] = Column::computed('product_type_process')
             ->title('Tipo de Proceso')
             ->className('text-center align-middle');

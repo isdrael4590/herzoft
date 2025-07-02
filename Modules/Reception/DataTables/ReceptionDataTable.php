@@ -39,13 +39,13 @@ class ReceptionDataTable extends DataTable
         $user = auth()->user();
 
         // Check permissions insteadca of roles
-        if ($user->can('access_admin')) {
+        if ($user->can('access_admin') || $user->can('access_user_management')) {
             // Admin  with all permission can see all receptions
             return $query;
         } elseif ($user->can('access_dirty_area')) {
             // Users with basic 'access_receptions' permission see limited statuses
             return $query->whereIn('status', ['Pendiente', 'Registrado']);
-        } elseif ($user->can('edit_receptions')) {
+        } elseif ($user->can('show_receptions')) {
             // Users with reception area access see only pending items
             return $query->where('status', 'Pendiente');
         } else {
@@ -100,12 +100,15 @@ class ReceptionDataTable extends DataTable
                 ->printable(false)
                 ->className('text-center align-middle');
         }
+        if ($user->can('access_admin')) {
 
-        // Basic columns that all users with access can see
-        if ($user->can('access_receptions')) {
             $columns[] = Column::make('id')
                 ->title('ID')
                 ->className('text-center align-middle');
+        }
+
+        // Basic columns that all users with access can see
+        if ($user->can('access_receptions')) {
 
             $columns[] = Column::make('dates')
                 ->title('Fecha')
@@ -125,8 +128,8 @@ class ReceptionDataTable extends DataTable
         }
 
         // Additional columns for users with show permissions
-        if ($user->can('showr_eceptions')) {
-        
+        if ($user->can('show_receptions')) {
+
 
             $columns[] = Column::make('operator')
                 ->title('Operador')
@@ -135,7 +138,7 @@ class ReceptionDataTable extends DataTable
             $columns[] = Column::make('status')
                 ->title('Estado')
                 ->className('text-center align-middle');
-                    $columns[] = Column::make('note')
+            $columns[] = Column::make('note')
                 ->title('Notas')
                 ->className('text-center align-middle')
                 ->renderAs(function ($row) {

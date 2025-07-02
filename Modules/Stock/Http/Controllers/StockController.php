@@ -97,7 +97,7 @@ public function create()
             Cart::instance('stock')->destroy();
         });
 
-        toast('Despacho Generado!', 'success');
+        toast('Producto Almacenado!', 'success');
 
         return redirect()->route('discharges.index');
     }

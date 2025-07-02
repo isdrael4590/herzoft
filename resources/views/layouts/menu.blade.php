@@ -436,6 +436,16 @@
                     </a>
                 </li>
             </ul>
+            @if (Route::has('backups.index'))
+                <ul class="c-sidebar-nav-dropdown-items">
+                    <li class="c-sidebar-nav-item">
+                        <a class="c-sidebar-nav-link {{ request()->routeIs('backups*') ? 'c-active' : '' }}"
+                            href="{{ route('backups.index') }}">
+                            <i class="c-sidebar-nav-icon bi bi-database" style="line-height: 1;"></i> Backups del Sistema
+                        </a>
+                    </li>
+                </ul>
+            @endif
         @endcan
     </li>
 @endcan
