@@ -4,6 +4,10 @@ use Modules\Discharge\Entities\Discharge;
 use Modules\Expedition\Entities\Expedition;
 use Modules\Informat\Entities\Institute;
 use Modules\Reception\Entities\Reception;
+use Modules\Reports\Http\Controllers\ReceptionPrintController;
+use Modules\Reports\Http\Controllers\DischargePrintController;
+use Modules\Reports\Http\Controllers\ExpeditionPrintController;
+use Modules\Reports\Http\Controllers\TestbdPrintController;
 use Modules\Setting\Entities\Setting;
 use Modules\Testbd\Entities\Testbd;
 
@@ -15,111 +19,75 @@ use Modules\Testbd\Entities\Testbd;
 
 Route::group(['middleware' => 'auth'], function () {
     //Print Barcode
-    Route::get('/testbd-report', 'ReportsController@testbdReport')->name('testbd-report.index');
+    
 
     Route::get('/reception-report', 'ReportsController@receptionReport')->name('reception-report.index');
+
+    // Ruta POST para imprimir recepciones
+    Route::post('/print-reception-data', [ReceptionPrintController::class, 'printFromPost'])
+        ->name('printreception.post')
+        ->middleware(['auth']); // Agregar middleware según tu configuración
+
+    // NUEVAS RUTAS - Agregar estas
+    Route::get('/reports/reception/print-session', [ReceptionPrintController::class, 'printFromSession'])
+        ->name('reports.reception.print-session');
+
+    Route::get('/reports/reception/print-chunks', [ReceptionPrintController::class, 'printFromChunks'])
+        ->name('reports.reception.print-chunks');
+
 
 
     Route::get('/discharge-report', 'ReportsController@dischargeReport')->name('discharge-report.index');
 
+    // Para los nuevos métodos de impresión
+    Route::post('/discharge/print', [DischargePrintController::class, 'printPost'])
+        ->name('printdisch.post')
+        ->middleware(['auth']); // Agregar middleware si es necesario
+
+    // Rutas GET para descargas
+    Route::get('/reports/discharge/print-session', [DischargePrintController::class, 'printFromSession'])
+        ->name('reports.discharge.print-session');
+
+    Route::get('/reports/discharge/print-chunks', [DischargePrintController::class, 'printFromChunks'])
+        ->name('reports.discharge.print-chunks');
+
+
     Route::get('/expedition-report', 'ReportsController@expeditionReport')->name('expedition-report.index');
+
+
+
+    // Para los nuevos métodos de impresión de Expedition
+    Route::post('/expedition/print', [ExpeditionPrintController::class, 'printPost'])
+        ->name('printexpedition.post')
+        ->middleware(['auth']); // Agregar middleware si es necesario
+
+    // Rutas GET para descargas de Expedition
+    Route::get('/reports/expedition/print-session', [ExpeditionPrintController::class, 'printFromSession'])
+        ->name('reports.expedition.print-session');
+
+    Route::get('/reports/expedition/print-chunks', [ExpeditionPrintController::class, 'printFromChunks'])
+        ->name('reports.expedition.print-chunks');
+
+    // Ruta principal del reporte de expedición (ya existente)
+    Route::get('/expedition-report', 'ReportsController@expeditionReport')->name('expedition-report.index');
+
+
+    Route::get('/testbd-report', 'ReportsController@testbdReport')->name('testbd-report.index');
+
+    // Para los nuevos métodos de impresión de Testbd
+    Route::post('/testbd/print', [TestbdPrintController::class, 'printPost'])
+        ->name('printtestbd.post')
+        ->middleware(['auth']); // Agregar middleware si es necesario
+
+    // Rutas GET para descargas de Testbd
+    Route::get('/reports/testbd/print-session', [TestbdPrintController::class, 'printFromSession'])
+        ->name('reports.testbd.print-session');
+
+    Route::get('/reports/testbd/print-chunks', [TestbdPrintController::class, 'printFromChunks'])
+        ->name('reports.testbd.print-chunks');
+
 });
 
 
 
-Route::get('/printexpedition-data/{items}', function ($items) {
-    $itemIds = explode(',', $items);
-    $data = Expedition::whereIn('id', $itemIds)->get();
-    $institute = Institute::all()->first();
 
-
-    $setting = Setting::all()->first();
-    $urlLogoHerz = null;
-    if ($setting && $setting->getFirstMedia('settings')) {
-        $urlLogoHerz = $setting->getFirstMedia('settings')->getPath();
-        $imageLogo = file_get_contents($urlLogoHerz);
-        $base64Logo = base64_encode($imageLogo);
-        $dataUrlLogo = 'data:image/jpeg;base64,' . $base64Logo;
-    } else {
-        // Provide a fallback for when the logo isn't available
-        $dataUrlLogo = ''; // Or path to a default image
-    }
-
-    return view('reports::expedition.print-expedition', compact('data', 'institute', 'dataUrlLogo'));
-})->name('printexp.data');
-
-
-
-
-Route::get('/printdisch-data/{items}', function ($items) {
-    $itemIds = explode(',', $items);
-    $data = Discharge::with('dischargeDetails')
-    ->whereIn('id', $itemIds)->get();
-
-
-    $institute = Institute::all()->first();
-
- 
-$setting = Setting::all()->first();
-$urlLogoHerz = null;
-if ($setting && $setting->getFirstMedia('settings')) {
-    $urlLogoHerz = $setting->getFirstMedia('settings')->getPath();
-    $imageLogo = file_get_contents($urlLogoHerz);
-    $base64Logo = base64_encode($imageLogo);
-    $dataUrlLogo = 'data:image/jpeg;base64,' . $base64Logo;
-} else {
-    // Provide a fallback for when the logo isn't available
-    $dataUrlLogo = ''; // Or path to a default image
-}
-
-    return view('reports::discharge.print-discharge', compact('data', 'institute', 'dataUrlLogo'));
-})->name('printdisch.data');
-
-Route::get('/print-data/{items}', function ($items) {
-    $itemIds = explode(',', $items);
-
-       // Cargar las recepciones con sus detalles relacionados
-    $data = Reception::with('ReceptionDetails')
-        ->whereIn('id', $itemIds)
-        ->get();
-
-    $institute = Institute::all()->first();
-
-    $setting = Setting::all()->first();
-    $urlLogoHerz = null;
-    if ($setting && $setting->getFirstMedia('settings')) {
-        $urlLogoHerz = $setting->getFirstMedia('settings')->getPath();
-        $imageLogo = file_get_contents($urlLogoHerz);
-        $base64Logo = base64_encode($imageLogo);
-        $dataUrlLogo = 'data:image/jpeg;base64,' . $base64Logo;
-    } else {
-        // Provide a fallback for when the logo isn't available
-        $dataUrlLogo = ''; // Or path to a default image
-    }
-
-    return view('reports::reception.print-reception', compact('data', 'institute', 'dataUrlLogo'));
-})->name('printreception.data');
-
-
-
-
-
-
-Route::get('/printtbd-data/{items}', function ($items) {
-    $itemIds = explode(',', $items);
-    $data = Testbd::whereIn('id', $itemIds)->get();
-    $institute = Institute::all()->first();
-
-$setting = Setting::all()->first();
-$urlLogoHerz = null;
-if ($setting && $setting->getFirstMedia('settings')) {
-    $urlLogoHerz = $setting->getFirstMedia('settings')->getPath();
-    $imageLogo = file_get_contents($urlLogoHerz);
-    $base64Logo = base64_encode($imageLogo);
-    $dataUrlLogo = 'data:image/jpeg;base64,' . $base64Logo;
-} else {
-    // Provide a fallback for when the logo isn't available
-    $dataUrlLogo = ''; // Or path to a default image
-}
-    return view('reports::testbd.print-testbd', compact('data', 'institute', 'dataUrlLogo'));
-  })->name('printtbd.data'); // Changed to 'printtbd.data' to match your Livewire component

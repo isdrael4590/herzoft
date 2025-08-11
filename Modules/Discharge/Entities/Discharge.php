@@ -17,6 +17,8 @@ class Discharge extends Model
         return $this->hasMany(DischargeDetails::class, 'discharge_id', 'id');
     }
 
+ 
+
     public function getDetailsCountAttribute()
     {
         return $this->dischargeDetails()->count();

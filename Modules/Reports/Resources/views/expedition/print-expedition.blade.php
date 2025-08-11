@@ -1,216 +1,265 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <title>Reporte Despachos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-
-    <!-- External CSS libraries -->
-    <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/bootstrap.min.css') }}">
-
-    <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-
-    <!-- Custom Stylesheet -->
-    <link type="text/css" rel="stylesheet" href="{{ asset('assets/printer/css/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Expediciones</title>
     <style>
-        /* default for all pages */
-        @page {
-            size: A4 portrait;
-        }
-
-        p {
-            font-size: 1.5em;
-        }
-
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            font-size: 12px;
+            line-height: 1.4;
+            margin: 0;
+            padding: 15px;
         }
-
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+        }
+        
+        .logo {
+            max-height: 60px;
+            margin-bottom: 10px;
+        }
+        
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #333;
+        }
+        
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .info-item {
+            font-size: 11px;
+        }
+        
+        .info-item strong {
+            color: #495057;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 10px;
         }
-
-        th,
-        td {
+        
+        th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 6px;
             text-align: left;
         }
-
+        
         th {
-            background-color: #f2f2f2;
+            background-color: #343a40;
+            color: white;
+            font-weight: bold;
+            text-align: center;
         }
-
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+            min-width: 60px;
+        }
+        
+        .badge-pendiente {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .badge-despachado {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        
+        .stats {
+            margin: 15px 0;
+            font-size: 11px;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            background-color: #e9ecef;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 14px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
         @media print {
-            .no-print {
-                display: none;
+            body {
+                margin: 0;
+                padding: 10px;
             }
         }
     </style>
 </head>
-
 <body>
-    <div class="no-print" style="margin-bottom: 20px;">
-        <button onclick="window.print()">Print</button>
-        <button onclick="window.history.back()">Back</button>
+    <div class="header">
+        @if($dataUrl)
+            <img src="{{ $dataUrl }}" alt="Logo Instituto" class="logo">
+        @endif
+        
+        @if($institute)
+            <div style="font-size: 14px; font-weight: bold;">{{ $institute->institute_name }}</div>
+            <div style="font-size: 11px; color: #666;">{{ $institute->address ?? '' }}</div>
+        @endif
+        
+        <div class="title">REPORTE DE EXPEDICIONES</div>
     </div>
 
-    <div class="printer-16 printer-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="printer-inner-12" id="printer_wrapper">
-                        <div class="printer-top">
-                            <div class="row g-3">
-                                <div class="col-3">
-                                    <img src="{{ $institute->getFirstMediaUrl('institutes') }}" alt="Institute Image"
-                                        width="80%" height="auto" class="img-fluid  mb-1">
-                                </div>
-                                <div class="col-7">
-                                    <h6>{{ Institutes()->institute_name }}</h6>
-                                    <div>Dirección: {{ Institutes()->institute_address }}</div>
-                                    <div>Área: {{ Institutes()->institute_area }}</div>
-                                    <div>Ciudad: {{ Institutes()->institute_city }}</div>
-                                    <div>País: {{ Institutes()->institute_country }}</div>
-                                </div>
-                                <div class="col-2">
-                                    <div>Versión: <strong> 01</strong></div>
-                                    <div>Vigente: <strong> Septiembre 2024</strong></div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="printer-info">
-                            <div class="row">
-
-                                <div class="printer-number">
-                                    <h6 class="print-title-2">Reporte Físico de despachos en esterilización:</h6>
-                                    <p class="printo-addr"> Fecha:
-                                        {{ \Carbon\Carbon::parse($data[0]['updated_at'])->format('d M, Y') }}
-                                    </p>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="printer-info">
-                            <div class="row mb-12">
-
-
-
-
-                            </div>
-                        </div>
-
-                        <div class="product-summary">
-                            <div>
-                                <table class="default-table printer-table">
-                                    <div wire:loading.flex
-                                        class="col-12 position-absolute justify-content-center align-items-center"
-                                        style="top:0;right:0;left:0;bottom:0;background-color: rgba(255,255,255,0.5);z-index: 99;">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>
-                                    </div>
-                                    <thead>
-                                        <tr>
-                                            <th>Fecha</th>
-                                            <th>Referencia</th>
-                                            <th>Área</th>
-                                            <th>Estado</th>
-                                            <th>Persona Entrega</th>
-                                            <th>Persona que recibe</th>
-                                            <th class="text-center">Cantidad de Paquetes</th>
-
-
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach ($data as $expedition)
-                                            <tr>
-
-                                                <td>{{ \Carbon\Carbon::parse($expedition->updated_at)->format('d M, Y') }}
-                                                </td>
-                                                <td>{{ $expedition->reference }}</td>
-                                                <td>{{ $expedition->area_expedition }}</td>
-                                                <td>
-                                                    {{ $expedition->status_expedition }}
-                                                </td>
-                                                <td>{{ $expedition->operator }}</td>
-                                                <td>{{ $expedition->staff_expedition }}</td>
-                                                <td class="text-center">
-                                                    <span class="details-count">
-                                                        {{ $expedition->details_count ?? 0 }} </span>
-                                                </td>
-
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <!-- Fila de totales -->
-                                    <tfoot>
-                                        <tr style="background-color: #f8f9fa; font-weight: bold;">
-                                            <td colspan="6" class="text-center">TOTAL GENERAL</td>
-                                            <td class="text-center">
-                                                <span class="details-count">
-                                                    {{ $data->sum('details_count') }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-
-                                </table>
-                            </div>
-
-                            <br>
-                            <div class="printer-informeshon">
-                                <h6 class="print-title-2">Información de Reporte generado:</h6>
-                                <table class="default-table ">
-                                    <tr>
-                                        <td>Fecha: <span> {{ $expedition->updated_at }}</span></td>
-                                    </tr>
-
-                                </table>
-                                <table class="default-table ">
-                                    <tr>
-                                        <br><br><br>
-                                        <td>Responsable: <span> {{ Auth::user()->name }}</span></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="printer-informeshon-footer">
-                                <ul>
-                                    <li><strong>Nota:</strong> Asegurarse que el producto entregado sea el correcto.
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li>
-
-                                        <img src="{{ $dataUrlLogo }}" alt="Institute Image" class="img-fluid mb-2"
-                                            width="80px">
-                                        <br>
-                                        {{ Settings()->company_name }} -
-                                        {{ Settings()->company_email }} -
-                                        {{ Settings()->company_phone }}
-
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
+    <div class="info-section">
+        <div class="info-item">
+            <strong>Fecha de generación:</strong> {{ $print_date }}
+        </div>
+        <div class="info-item">
+            <strong>Total registros:</strong> {{ $selected_count }}
+        </div>
+        <div class="info-item">
+            <strong>Elementos solicitados:</strong> {{ $total_items }}
         </div>
     </div>
 
-</body>
+    @if(isset($status_stats) && $status_stats->count() > 0)
+        <div class="stats">
+            <strong>Estadísticas por Estado:</strong>
+            <div class="stats-row">
+                @foreach($status_stats as $status => $count)
+                    <div class="stat-item">
+                        <div class="stat-number">{{ $count }}</div>
+                        <div>{{ $status }}</div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
 
+    @if(isset($area_stats) && $area_stats->count() > 0)
+        <div class="stats">
+            <strong>Estadísticas por Área:</strong>
+            <div class="stats-row">
+                @foreach($area_stats as $area => $count)
+                    <div class="stat-item">
+                        <div class="stat-number">{{ $count }}</div>
+                        <div>{{ $area ?: 'Sin área' }}</div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 8%;">Fecha</th>
+                <th style="width: 15%;">Referencia</th>
+                <th style="width: 12%;">Área</th>
+                <th style="width: 10%;">Estado</th>
+                <th style="width: 10%;">Persona Entrega</th>
+                <th style="width: 10%;">Persona Recibe</th>
+                <th style="width: 5%;">Paquetes</th>
+                <th style="width: 37%;">Detalles</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($expeditions as $expedition)
+                <tr>
+                    <td>{{ \Carbon\Carbon::parse($expedition->updated_at)->format('d/m/Y') }}</td>
+                    <td><strong>{{ $expedition->reference }}</strong></td>
+                    <td>{{ $expedition->area_expedition ?? 'N/A' }}</td>
+                    <td>
+                        @if($expedition->status_expedition == 'Pendiente')
+                            <span class="badge badge-pendiente">{{ $expedition->status_expedition }}</span>
+                        @elseif($expedition->status_expedition == 'Despachado')
+                            <span class="badge badge-despachado">{{ $expedition->status_expedition }}</span>
+                        @else
+                            <span class="badge">{{ $expedition->status_expedition ?? 'N/A' }}</span>
+                        @endif
+                    </td>
+                    <td>{{ $expedition->operator ?? 'N/A' }}</td>
+                    <td>{{ $expedition->staff_expedition ?? 'N/A' }}</td>
+                    <td style="text-align: center;">
+                        {{ $expedition->expeditionDetails ? $expedition->expeditionDetails->count() : 0 }}
+                    </td>
+                    <td style="font-size: 8px;">
+                        @if($expedition->expeditionDetails && $expedition->expeditionDetails->count() > 0)
+                            @foreach($expedition->expeditionDetails->take(3) as $detail)
+                                {{ $detail->product_name ?? 'Producto' }}{{ !$loop->last ? ', ' : '' }}
+                            @endforeach
+                            @if($expedition->expeditionDetails->count() > 3)
+                                <br><em>+{{ $expedition->expeditionDetails->count() - 3 }} más...</em>
+                            @endif
+                        @else
+                            <em>Sin detalles</em>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="8" style="text-align: center; color: #666; font-style: italic;">
+                        No se encontraron expediciones para mostrar
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <div>
+            Reporte generado el {{ now()->format('d/m/Y H:i:s') }} 
+            @if($setting)
+                | {{ $setting->company_name ?? 'Sistema de Gestión' }}
+            @endif
+        </div>
+        <div style="margin-top: 5px; font-size: 9px;">
+            Total de expediciones en el reporte: {{ $expeditions->count() }}
+            @if(isset($total_packages) && $total_packages > 0)
+                | Total de paquetes: {{ $total_packages }}
+            @endif
+        </div>
+    </div>
+</body>
 </html>

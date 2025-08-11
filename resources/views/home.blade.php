@@ -47,7 +47,7 @@
                     <div class="row">
                         @can('access_dirty_area')
                             <div class="col-md-6 col-lg-3">
-                                <div class="card border-0">
+                                <div class="card border-0 shadow-lg rounded-xl mb-4">
                                     <div class="card-body p-0 d-flex align-items-center shadow-sm">
                                         <div class="bg-gradient-primary p-4 mfe-3 rounded-left">
                                             <i class="bi bi-caret-down-square font-4xl"></i>
@@ -79,7 +79,7 @@
                                                     </a>
                                                 </div>
                                             @endcan
-                                          
+
                                         </div>
                                     </div>
                                 </div>
