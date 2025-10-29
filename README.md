@@ -1,12 +1,10 @@
-<picture>
-    <source srcset="public/images/LOGOHERZ.jpg"  
-            media="(prefers-color-scheme: dark)">
-    <img src="public/images/LOGOHERZ.jpg" alt="App Logo">
-</picture>
+# Herzoft
+
+![Logo Herzoft](public/images/LOGOHERZ.jpg)
 
 ## Instalación
 
-1. Instale Docker Engine para su plataforma como se explica en el siguiente [link](https://docs.docker.com/engine/install/)
+1. Instale Docker Engine para su plataforma como se explica aquí [Instalación](https://docs.docker.com/engine/install/)
 2. Clone los archivos de este repositorio, por ejemplo con `git clone git@github.com:isdrael4590/herzoft.git`
 3. Instale las dependencias de software necesarias para correr el proyecto, por ejemplo para Ubuntu:
 
@@ -53,8 +51,14 @@
 
 ## Despliegue
 
-1. Inicializar contenedores `docker compose -f docker-compose.prod.yml up nginx laravel-horizon -d --build`
-2. Establecer las configuraciones iniciales de Laravel
+1. Inicializar contenedores
+
+```bash
+./vendor/bin/sail down # Desactiva el modo debug
+docker compose -f docker-compose.prod.yml up nginx laravel-horizon -d --build
+```
+
+1. Establecer las configuraciones iniciales de Laravel
 
     ```bash
     docker compose -f docker-compose.prod.yml exec app php artisan key:generate
@@ -63,8 +67,26 @@
     docker compose -f docker-compose.prod.yml exec app php artisan optimize
     ```
 
-3. Generar el certificado HTTPS de Let's Encrypt con el siguiente comando`docker compose -f docker-compose.prod.yml run --rm certbot`
-4. Reiniciar nginx con `docker compose -f docker-compose.prod.yml exec nginx nginx -s reload` para recargar las configuraciones.
+2. Generar el certificado HTTPS de Let's Encrypt con el siguiente comando`docker compose -f docker-compose.prod.yml run --rm certbot`
+3. Reiniciar nginx con para recargar las configuraciones.
+
+```bash
+docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
+```
+
+### Despliegue Local
+
+En caso desees usar el servidor en modo producción en tu computadora, utiliza los siguientes comandos para generar un certificado local compatible con el proyecto.
+
+```bash
+source .env
+KEYS_PATH=docker/etc/letsencrypt/live/$DOMAIN
+mkdir -p $KEYS_PATH
+PRIV_KEY="$KEYS_PATH/privkey.pem"
+FULL_KEY="$KEYS_PATH/fullchain.pem"
+openssl genrsa -out $PRIV_KEY 4096
+openssl req -new -x509 -sha256 -key $PRIV_KEY -out $FULL_KEY -days 3650 -subj "/CN=herzgroup.net"
+```
 
 > **Important Note:** "herZoft" uses Laravel Snappy Package for PDFs. If you are using Linux then no configuration is needed. But in other Operating Systems please refer to [Laravel Snappy Documentation](https://github.com/barryvdh/laravel-snappy).
 >
@@ -72,15 +94,11 @@
 
 - `admin@admin.com`, contraseña en el archivo `credenciales/admin.txt`
 
-## Demo
-
-Features
-
-# License
+## Licencia
 
 Comercial, Todos los derechos reservados Herzoft© 2024
 
-# Problemas conocidos
+## Problemas conocidos
 
 - No se cargan los códigos RUMED descritos en la carpeta `init/codigos_rumed.sql`: Por favor borre el volumen `docker compose down && docker volume rm herzoft_sail-mysql`
 - En caso de error 500, `docker compose -f docker-compose.prod.yml exec app php artisan cache:clear` o revisar los permisos de la carpeta `storage/logs`
