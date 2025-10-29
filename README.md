@@ -64,7 +64,7 @@ DOMAIN=herzgroup.net
 docker compose -f docker-compose.prod.yml up nginx laravel-horizon -d --build
 ```
 
-1. Establecer las configuraciones iniciales de Laravel
+1. Establece las configuraciones iniciales de Laravel
 
    ```bash
    docker compose -f docker-compose.prod.yml exec app php artisan key:generate
@@ -73,12 +73,11 @@ docker compose -f docker-compose.prod.yml up nginx laravel-horizon -d --build
    docker compose -f docker-compose.prod.yml exec app php artisan optimize
    ```
 
-2. Generar el certificado HTTPS de Let's Encrypt con el siguiente comando`docker compose -f docker-compose.prod.yml run --rm certbot`
-3. Reiniciar nginx con para recargar las configuraciones.
+2. Para renovar automáticamente el certificado HTTPS de Let's Encrypt y reiniciar Nginx, como root edita crontab con `crontab -e` para regenerar el certificado para primer día del mes en un mes impar
 
-```bash
-docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
-```
+   ```bash
+   0 5 1 */2 * /usr/bin/docker/docker compose -f /opt/docker/herzoft/docker-compose.prod.yml rup certbot && /usr/bin/docker/docker compose -f /opt/docker/herzoft/docker-compose.prod.yml exec nginx -s reload
+   ```
 
 ### Despliegue Local
 
@@ -86,27 +85,27 @@ En caso desees usar el servidor en modo producción en tu computadora, sigue los
 
 1. Si tienes Linux, edita el archivo `/etc/hosts` y en la última línea ingresa el siguiente texto para definir un dominio local
 
-```bash
-127.0.1.1 herzgrouplocal.net www.herzgrouplocal.net
-```
+   ```bash
+   127.0.1.1 herzgrouplocal.net www.herzgrouplocal.net
+   ```
 
 1. Cambia el nombre del dominio en el archivo `.env` para que se parezca al definido anteriormente
 
-```bash
-DOMAIN=herzgrouplocal.net
-```
+   ```bash
+   DOMAIN=herzgrouplocal.net
+   ```
 
 1. Generar los certificados locales para ese dominio
 
-```bash
-source .env
-KEYS_PATH=docker/etc/letsencrypt/live/$DOMAIN
-mkdir -p $KEYS_PATH
-PRIV_KEY="$KEYS_PATH/privkey.pem"
-FULL_KEY="$KEYS_PATH/fullchain.pem"
-openssl genrsa -out $PRIV_KEY 4096
-openssl req -new -x509 -sha256 -key $PRIV_KEY -out $FULL_KEY -days 3650 -subj "/CN=herzgrouplocal.net"
-```
+   ```bash
+   source .env
+   KEYS_PATH=docker/etc/letsencrypt/live/$DOMAIN
+   mkdir -p $KEYS_PATH
+   PRIV_KEY="$KEYS_PATH/privkey.pem"
+   FULL_KEY="$KEYS_PATH/fullchain.pem"
+   openssl genrsa -out $PRIV_KEY 4096
+   openssl req -new -x509 -sha256 -key $PRIV_KEY -out $FULL_KEY -days 3650 -subj "/CN=herzgrouplocal.net"
+   ```
 
 1. Ingresa a tu servidor a través de [https://www.herzgrouplocal.net](https://www.herzgrouplocal.net)
 
