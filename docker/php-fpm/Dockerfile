@@ -1,6 +1,6 @@
 # Copied from cyberduck/php-fpm-laravel
 #https://github.com/Cyber-Duck/php-fpm-laravel/blob/8.1/Dockerfile
-FROM php:8.2-fpm
+FROM php:8.4-fpm
 
 #ENV COMPOSER_MEMORY_LIMIT='-1'
 
