@@ -61,6 +61,7 @@ services:
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
+      - EMAIL
     networks:
       - sail
     expose:
