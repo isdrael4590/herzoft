@@ -52,19 +52,23 @@
    sudo chown -R $USER: .
    ./vendor/bin/sail up -d
    ./vendor/bin/sail artisan up
-   # En otro terminal
+   ```
+
+9. ⚠️ Realiza las migraciones y prepara por primera vez tus contenedores con el siguiente comando
+
+   ```bash
    ./vendor/bin/sail artisan key:generate
    ./vendor/bin/sail artisan migrate --seed
    ./vendor/bin/sail artisan storage:link
    ```
 
-9. ⚠️ Para inicializar las bases de datos por primera vez, se recomienda utilizar el comando
+10. El proyecto correrá y estará disponible en la dirección [http://localhost](http://localhost)
+
+>🚨 **(Este comando borra todos los datos)** Para reiniciar la base de datos, usa este comando
 
    ```bash
    ./vendor/bin/sail artisan migrate:fresh --seed
    ```
-
-10. El proyecto correrá y estará disponible en la dirección [http://localhost](http://localhost)
 
 ## Despliegue
 
