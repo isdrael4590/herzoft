@@ -24,7 +24,7 @@
    cp .env.example .env
    ```
 
-6. Añade el nombre del servidor sin www en
+6. Añade el nombre del dominio sin `www` en el archivo `.env`
 
 ```sh
 DOMAIN=herzgroup.net
@@ -82,7 +82,21 @@ docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
 
 ### Despliegue Local
 
-En caso desees usar el servidor en modo producción en tu computadora, utiliza los siguientes comandos para generar un certificado local compatible con el proyecto.
+En caso desees usar el servidor en modo producción en tu computadora, sigue los siguientes pasos para hacerlo funcionar en tu computador local
+
+1. Si tienes Linux, edita el archivo `/etc/hosts` y en la última línea ingresa el siguiente texto para definir un dominio local
+
+```bash
+127.0.1.1 herzgrouplocal.net www.herzgrouplocal.net
+```
+
+1. Cambia el nombre del dominio en el archivo `.env` para que se parezca al definido anteriormente
+
+```bash
+DOMAIN=herzgrouplocal.net
+```
+
+1. Generar los certificados locales para ese dominio
 
 ```bash
 source .env
@@ -91,8 +105,10 @@ mkdir -p $KEYS_PATH
 PRIV_KEY="$KEYS_PATH/privkey.pem"
 FULL_KEY="$KEYS_PATH/fullchain.pem"
 openssl genrsa -out $PRIV_KEY 4096
-openssl req -new -x509 -sha256 -key $PRIV_KEY -out $FULL_KEY -days 3650 -subj "/CN=herzgroup.net"
+openssl req -new -x509 -sha256 -key $PRIV_KEY -out $FULL_KEY -days 3650 -subj "/CN=herzgrouplocal.net"
 ```
+
+1. Ingresa a tu servidor a través de [https://www.herzgrouplocal.net](https://www.herzgrouplocal.net)
 
 > **Important Note:** "herZoft" uses Laravel Snappy Package for PDFs. If you are using Linux then no configuration is needed. But in other Operating Systems please refer to [Laravel Snappy Documentation](https://github.com/barryvdh/laravel-snappy).
 
