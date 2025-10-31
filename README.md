@@ -8,7 +8,7 @@
 2. Instale las dependencias de software necesarias para correr el proyecto, por ejemplo para Ubuntu:
 
    ```bash
-   sudo apt update && sudo apt install composer php php-curl php-dom php-gd php-zip
+   sudo apt update && sudo apt install composer cron php php-curl php-dom php-gd php-zip
    ```
 
 3. Clone los archivos de este repositorio:
@@ -64,11 +64,11 @@
 
 10. El proyecto correrá y estará disponible en la dirección [http://localhost](http://localhost)
 
->🚨 **(Este comando borra todos los datos)** Para reiniciar la base de datos, usa este comando
+> 🚨 **(Este comando borra todos los datos)** Para reiniciar la base de datos, usa este comando
 
-   ```bash
-   ./vendor/bin/sail artisan migrate:fresh --seed
-   ```
+```bash
+./vendor/bin/sail artisan migrate:fresh --seed
+```
 
 ## Despliegue
 
