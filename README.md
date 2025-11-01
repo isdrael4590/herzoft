@@ -96,7 +96,7 @@
 4. Para renovar automáticamente el certificado HTTPS de Let's Encrypt y reiniciar Nginx, como root edita crontab con `crontab -e` para regenerar el certificado para primer día del mes en un mes impar
 
    ```bash
-   0 5 1 */2 * /usr/bin/docker/docker compose -f /opt/docker/herzoft/docker-compose.prod.yml rup certbot && /usr/bin/docker/docker compose -f /opt/docker/herzoft/docker-compose.prod.yml exec nginx -s reload
+   0 5 1 */2 * /usr/bin/docker compose -f /opt/docker/herzoft/docker-compose.prod.yml run --rm certbot && /usr/bin/docker compose -f /opt/docker/herzoft/docker-compose.prod.yml exec nginx nginx -s reload
    ```
 
 ### Despliegue Local
