@@ -87,8 +87,6 @@ services:
       - sail
   certbot:
     image: certbot/certbot:latest
-    depends_on:
-      - nginx
     command: >-
       certonly --webroot -w /var/www/certbot --force-renewal
       --email ${EMAIL} --agree-tos -d ${DOMAIN}
