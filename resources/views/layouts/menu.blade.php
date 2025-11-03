@@ -435,6 +435,12 @@
                         <i class="c-sidebar-nav-icon bi bi-sliders" style="line-height: 1;"></i> Configuración del Sistema
                     </a>
                 </li>
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('settings.licence.*') ? 'c-active' : '' }}"
+                        href="{{ route('settings.licence.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-card-list" style="line-height: 1;"></i> Licencia del Sistema
+                    </a>
+                </li>
             </ul>
             @if (Route::has('backups.index'))
                 <ul class="c-sidebar-nav-dropdown-items">

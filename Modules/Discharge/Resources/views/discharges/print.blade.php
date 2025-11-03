@@ -71,8 +71,8 @@
 
         .printer-16 .default-table thead th {
             position: relative;
-            padding: 3px 3px;
-            font-size: 18px;
+            padding: 2px 3px;
+            font-size: 12px;
             color: #000000;
             font-weight: 500;
             line-height: 30px;
@@ -85,9 +85,34 @@
 
         .printer-16 .default-table tr td {
             position: relative;
-            padding: 3px 3px;
-            font-size: 14px;
+            padding: 2px 3px;
+            font-size: 11px;
             color: #000000;
+            word-wrap: break-word;
+            white-space: normal;
+            word-wrap: break-word;
+            /* Permite dividir palabras largas */
+            word-break: break-word;
+            /* Divide palabras si es necesario */
+            white-space: normal;
+            /* Permite saltos de línea */
+            max-width: 150px;
+            /* Ajusta según necesites */
+        }
+
+
+        /* Columna específica para Paciente */
+        .printer-16 .default-table tr td:nth-child(7) {
+            max-width: 200px;
+            /* Ancho máximo para la columna Paciente */
+            font-size: 11px;
+            /* Reducir un poco el tamaño */
+        }
+
+        /* Para la columna Reporte de Equipo si también es larga */
+        .printer-16 .default-table tr td:nth-child(9) {
+            max-width: 150px;
+            font-size: 11px;
         }
 
         .printer-16 .mb-30 {
@@ -543,8 +568,6 @@
             /* Additional space on pages after first */
             margin-top: 100mm;
         }
-
-
     </style>
 </head>
 

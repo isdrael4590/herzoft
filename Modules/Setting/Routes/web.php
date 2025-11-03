@@ -1,5 +1,7 @@
 <?php
 
+use Modules\Setting\Http\Controllers\LicenceController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,5 +21,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/settings', 'SettingController@index')->name('settings.index');
     Route::patch('/settings', 'SettingController@update')->name('settings.update');
     // Units
+
+ // Licence Settings
+    Route::get('/settings/licence', [LicenceController::class, 'index'])->name('settings.licence.index');
+    Route::put('/settings/licence', [LicenceController::class, 'update'])->name('settings.licence.update');
     
 });
