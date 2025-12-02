@@ -33,4 +33,16 @@ class ReportsController extends Controller
         return view('reports::expedition.index');
         
     }
+        public function productReport() {
+        abort_if(Gate::denies('access_reports'), 403);
+
+        return view('reports::product.products-zona-index');
+        
+    }
+
+     // ⬇️ AGREGA ESTE NUEVO MÉTODO ⬇️
+    public function productsZonaReport() {
+        abort_if(Gate::denies('access_reports'), 403);
+        return view('reports::product.products-zona-index');
+    }
 }
