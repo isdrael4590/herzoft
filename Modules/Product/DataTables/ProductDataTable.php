@@ -91,7 +91,32 @@ class ProductDataTable extends DataTable
         $user = auth()->user();
         $columns = [];
 
-        if ($user->can('edit_products')) {
+
+        if ($user->can('access_admin')) {
+            $columns[] = Column::computed('id')
+                ->title('ID')
+                ->className('text-center align-middle');
+            $columns[] = Column::make('product_barcode_symbology')
+                ->title('Simbolología barcode')
+                ->className('text-center align-middle');
+
+            $columns[] = Column::computed('product_patient')
+                ->title('Paciente')
+                ->className('text-center align-middle');
+
+            $columns[] = Column::computed('area')
+                ->title('Area')
+                ->className('text-center align-middle');
+            $columns[] = Column::computed('product_price')
+                ->title('Precio')
+                ->className('text-center align-middle');
+            $columns[] = Column::computed('product_quantity')
+                ->title('Cantidad')
+                ->className('text-center align-middle');
+            $columns[] = Column::computed('product_note')
+                ->title('Nota')
+                ->className('text-center align-middle');
+        } else {
             $columns[] = Column::computed('product_image')
                 ->exportable(false)
                 ->printable(false)
@@ -131,32 +156,6 @@ class ProductDataTable extends DataTable
                 ->title('Acciones')
                 ->exportable(false)
                 ->printable(false)
-                ->className('text-center align-middle');
-        }
-
-        if ($user->can('access_admin')) {
-            $columns[] = Column::computed('id')
-                ->title('ID')
-                ->className('text-center align-middle');
-            $columns[] = Column::make('product_barcode_symbology')
-                ->title('Simbolología barcode')
-                ->className('text-center align-middle');
-
-            $columns[] = Column::computed('product_patient')
-                ->title('Paciente')
-                ->className('text-center align-middle');
-
-            $columns[] = Column::computed('area')
-                ->title('Area')
-                ->className('text-center align-middle');
-            $columns[] = Column::computed('product_price')
-                ->title('Precio')
-                ->className('text-center align-middle');
-            $columns[] = Column::computed('product_quantity')
-                ->title('Cantidad')
-                ->className('text-center align-middle');
-            $columns[] = Column::computed('product_note')
-                ->title('Nota')
                 ->className('text-center align-middle');
         }
 

@@ -107,4 +107,17 @@ class Licence extends Model
 
         return $texts[$this->status] ?? 'Desconocido';
     }
+
+    /**
+     * Check if licence is expired
+     * @return bool
+     */
+    public function isExpired()
+    {
+        if (!$this->license_expiration_date) {
+            return false;
+        }
+
+        return $this->license_expiration_date->isPast();
+    }
 }

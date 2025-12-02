@@ -51,13 +51,21 @@
                     <div class="form-row mt-3">
                         <div class="col-md-4">
                             <label for="productName">Nombre del Producto</label>
-                            <input type="text" wire:model="productName" id="productName" class="form-control"
+                            <input type="text" wire:model="productName" id="productName"
+                                class="form-control @error('productName') is-invalid @enderror"
                                 placeholder="Buscar por nombre...">
+                            @error('productName')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-4">
                             <label for="productCode">Código del Producto</label>
-                            <input type="text" wire:model="productCode" id="productCode" class="form-control"
+                            <input type="text" wire:model="productCode" id="productCode"
+                                class="form-control @error('productCode') is-invalid @enderror"
                                 placeholder="Buscar por código...">
+                            @error('productCode')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -123,8 +131,22 @@
                         </div>
                     </div>
 
-                    <!-- Tabla según agrupación -->
+                    <!-- Tabla con columnas dinámicas por fecha -->
                     <div class="table-responsive">
+                        @php
+                            // Obtener todas las fechas únicas
+                            $allDates = collect($data)
+                                ->flatMap(function ($item) {
+                                    return collect($item['items'] ?? [])->pluck('date');
+                                })
+                                ->map(function ($date) {
+                                    return \Carbon\Carbon::parse($date)->format('Y-m-d');
+                                })
+                                ->unique()
+                                ->sort()
+                                ->values();
+                        @endphp
+
                         <table class="table table-bordered table-striped text-center mb-0">
                             <div wire:loading.flex
                                 class="col-12 position-absolute justify-content-center align-items-center"
@@ -135,21 +157,27 @@
                             </div>
 
                             @if ($groupBy === 'product')
-                                <!-- Vista agrupada por producto -->
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th style="width: 50px;"></th>
-                                        <th>Producto</th>
-                                        <th>Código</th>
-                                        <th>Cantidad Total</th>
-                                        <th>Zonas</th>
-                                        <th>Registros</th>
-                                        <th>Acciones</th>
+                                        <th style="width: 50px;" rowspan="2"></th>
+                                        <th rowspan="2">Producto</th>
+                                        <th rowspan="2">Código</th>
+                                        <th rowspan="2">Cantidad<br>Total</th>
+                                        <th colspan="{{ $allDates->count() }}" class="bg-secondary">Movimientos por
+                                            Fecha</th>
+                                    </tr>
+                                    <tr>
+                                        @foreach ($allDates as $date)
+                                            <th class="bg-info text-white" style="min-width: 200px;">
+                                                {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
+                                            </th>
+                                        @endforeach
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($data as $index => $item)
-                                        <tr class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
+                                    @forelse($data as $item)
+                                        <tr
+                                            class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
                                             <td>
                                                 <input type="checkbox" wire:model="selectedItems"
                                                     value="{{ $item['id'] }}" class="form-check-input">
@@ -159,64 +187,53 @@
                                             </td>
                                             <td>{{ $item['product_code'] }}</td>
                                             <td>
-                                                <span class="badge badge-primary">{{ $item['total_quantity'] }}</span>
+                                                <span
+                                                    class="badge badge-primary badge-lg">{{ $item['total_quantity'] }}</span>
                                             </td>
-                                            <td>
-                                                <small>{{ $item['zonas'] }}</small>
-                                                <br>
-                                                <span class="badge badge-info">{{ $item['zonas_count'] }} Zonas</span>
-                                            </td>
-                                            <td>
-                                                <span class="badge badge-secondary">{{ $item['records_count'] }}</span>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info toggle-details" 
-                                                        type="button"
-                                                        data-target="details-{{ $index }}">
-                                                    <i class="fas fa-eye"></i> Ver Detalles
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr class="detail-row" id="details-{{ $index }}" style="display: none;">
-                                            <td colspan="7" class="bg-light">
-                                                <div class="p-3">
-                                                    <h6>Detalles de movimientos:</h6>
-                                                    <table class="table table-sm table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Fecha</th>
-                                                                <th>Zona</th>
-                                                                <th>Referencia</th>
-                                                                <th>Cantidad</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($item['items'] as $detail)
-                                                                <tr>
-                                                                    <td>{{ \Carbon\Carbon::parse($detail['date'])->format('d/m/Y H:i') }}</td>
-                                                                    <td>
-                                                                        <span class="badge badge-{{ 
-                                                                            $detail['zona'] === 'reception' ? 'primary' :
-                                                                            ($detail['zona'] === 'labelqr' ? 'info' :
-                                                                            ($detail['zona'] === 'discharge' ? 'success' : 'warning'))
-                                                                        }}">
-                                                                            {{ $detail['zona_name'] }}
-                                                                        </span>
-                                                                    </td>
-                                                                    <td>{{ $detail['reference'] }}</td>
-                                                                    <td>
-                                                                        <span class="badge badge-primary">{{ $detail['quantity'] }}</span>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </td>
+
+                                            @php
+                                                // Agrupar items por fecha
+                                                $itemsByDate = collect($item['items'] ?? [])->groupBy(function (
+                                                    $detail,
+                                                ) {
+                                                    return \Carbon\Carbon::parse($detail['date'])->format('Y-m-d');
+                                                });
+                                            @endphp
+
+                                            @foreach ($allDates as $date)
+                                                <td class="text-left align-top bg-light">
+                                                    @if ($itemsByDate->has($date))
+                                                        @foreach ($itemsByDate[$date] as $detail)
+                                                            <div class="mb-1 p-1 bg-white rounded border">
+                                                                <small>
+                                                                    <i class="fas fa-hashtag text-muted"></i>
+                                                                    <strong>{{ $detail['reference'] }}</strong>
+                                                                    <br>
+                                                                    <span
+                                                                        class="badge badge-{{ $detail['zona'] === 'reception'
+                                                                            ? 'primary'
+                                                                            : ($detail['zona'] === 'labelqr'
+                                                                                ? 'info'
+                                                                                : ($detail['zona'] === 'discharge'
+                                                                                    ? 'success'
+                                                                                    : 'warning')) }} badge-sm">
+                                                                        {{ $detail['zona_name'] }}
+                                                                    </span>
+                                                                    <span class="badge badge-secondary badge-sm ml-1">
+                                                                        {{ $detail['quantity'] }} unid.
+                                                                    </span>
+                                                                </small>
+                                                            </div>
+                                                        @endforeach
+                                                    @else
+                                                        <small class="text-muted">-</small>
+                                                    @endif
+                                                </td>
+                                            @endforeach
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7">
+                                            <td colspan="{{ 4 + $allDates->count() }}">
                                                 <div class="text-center py-3">
                                                     <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
                                                     <p class="text-muted">No hay datos disponibles</p>
@@ -238,22 +255,29 @@
                                 </thead>
                                 <tbody>
                                     @forelse($data as $item)
-                                        <tr class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
+                                        <tr
+                                            class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
                                             <td>
                                                 <input type="checkbox" wire:model="selectedItems"
                                                     value="{{ $item['id'] }}" class="form-check-input">
                                             </td>
                                             <td>
-                                                <span class="badge badge-{{ 
-                                                    $item['zona'] === 'reception' ? 'primary' :
-                                                    ($item['zona'] === 'labelqr' ? 'info' :
-                                                    ($item['zona'] === 'discharge' ? 'success' : 'warning'))
-                                                }}">
-                                                    <i class="fas fa-{{ 
-                                                        $item['zona'] === 'reception' ? 'inbox' :
-                                                        ($item['zona'] === 'labelqr' ? 'qrcode' :
-                                                        ($item['zona'] === 'discharge' ? 'box-open' : 'shipping-fast'))
-                                                    }}"></i>
+                                                <span
+                                                    class="badge badge-{{ $item['zona'] === 'reception'
+                                                        ? 'primary'
+                                                        : ($item['zona'] === 'labelqr'
+                                                            ? 'info'
+                                                            : ($item['zona'] === 'discharge'
+                                                                ? 'success'
+                                                                : 'warning')) }}">
+                                                    <i
+                                                        class="fas fa-{{ $item['zona'] === 'reception'
+                                                            ? 'inbox'
+                                                            : ($item['zona'] === 'labelqr'
+                                                                ? 'qrcode'
+                                                                : ($item['zona'] === 'discharge'
+                                                                    ? 'box-open'
+                                                                    : 'shipping-fast')) }}"></i>
                                                     {{ $item['zona_name'] }}
                                                 </span>
                                             </td>
@@ -264,7 +288,8 @@
                                                 <span class="badge badge-primary">{{ $item['total_quantity'] }}</span>
                                             </td>
                                             <td>
-                                                <span class="badge badge-secondary">{{ $item['records_count'] }}</span>
+                                                <span
+                                                    class="badge badge-secondary">{{ $item['records_count'] }}</span>
                                             </td>
                                         </tr>
                                     @empty
@@ -292,7 +317,8 @@
                                 </thead>
                                 <tbody>
                                     @forelse($data as $item)
-                                        <tr class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
+                                        <tr
+                                            class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
                                             <td>
                                                 <input type="checkbox" wire:model="selectedItems"
                                                     value="{{ $item['id'] }}" class="form-check-input">
@@ -310,7 +336,8 @@
                                                 <span class="badge badge-primary">{{ $item['total_quantity'] }}</span>
                                             </td>
                                             <td>
-                                                <span class="badge badge-secondary">{{ $item['records_count'] }}</span>
+                                                <span
+                                                    class="badge badge-secondary">{{ $item['records_count'] }}</span>
                                             </td>
                                         </tr>
                                     @empty
@@ -334,7 +361,8 @@
                             <small class="text-muted">
                                 Mostrando {{ count($data) }} registros agrupados por {{ $groupBy }}
                                 @if ($this->selectedCount > 0)
-                                    | <span class="text-success font-weight-bold">{{ $this->selectedCount }} seleccionados</span>
+                                    | <span class="text-success font-weight-bold">{{ $this->selectedCount }}
+                                        seleccionados</span>
                                 @endif
                             </small>
                         </div>
@@ -359,6 +387,7 @@
             from {
                 transform: rotate(0deg);
             }
+
             to {
                 transform: rotate(360deg);
             }
@@ -377,34 +406,22 @@
             padding: 0.35em 0.65em;
         }
 
-        .detail-row {
-            transition: all 0.3s ease;
+        .badge-lg {
+            font-size: 1.1rem;
+            padding: 0.5em 0.8em;
+        }
+
+        .badge-sm {
+            font-size: 0.75rem;
+            padding: 0.25em 0.5em;
+        }
+
+        .table th {
+            white-space: nowrap;
+        }
+
+        .table td {
+            vertical-align: middle;
         }
     </style>
-@endpush
-
-@push('scripts')
-    <script>
-        // Usar delegación de eventos para manejar clics incluso después de actualizaciones de Livewire
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.closest('.toggle-details')) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const button = e.target.closest('.toggle-details');
-                const targetId = button.getAttribute('data-target');
-                const detailRow = document.getElementById(targetId);
-                
-                if (detailRow) {
-                    if (detailRow.style.display === 'none' || detailRow.style.display === '') {
-                        detailRow.style.display = 'table-row';
-                        button.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar Detalles';
-                    } else {
-                        detailRow.style.display = 'none';
-                        button.innerHTML = '<i class="fas fa-eye"></i> Ver Detalles';
-                    }
-                }
-            }
-        });
-    </script>
 @endpush

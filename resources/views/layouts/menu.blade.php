@@ -97,16 +97,7 @@
             </a>
 
             <ul class="c-sidebar-nav-dropdown-items">
-                {{--
-                @can('access_reprocess')
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link {{ request()->routeIs('RecepReprocess.index') ? 'c-active' : '' }}"
-                            href="{{ route('RecepReprocess.create') }}">
-                            <i class="c-sidebar-nav-icon bi-bootstrap-reboot" style="line-height: 1;"></i> Reprocesar Instrumental.
-                        </a>
-                    </li>
-                @endcan
-                --}}
+
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('preparations.index') ? 'c-active' : '' }}"
                         href="{{ route('preparationDetails.index') }}">
@@ -257,6 +248,15 @@
                 </a>
             </li>
         </ul>
+        <ul class="c-sidebar-nav-dropdown-items">
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link {{ request()->routeIs('products-report.*') ? 'c-active' : '' }}"
+                    href="{{ route('products-zona-report.index') }}">
+                    <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i>
+                    Reporte Productos
+                </a>
+            </li>
+        </ul>
     </li>
 @endcan
 
@@ -286,7 +286,12 @@
                         <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Crear Paquete
                     </a>
                 </li>
-            @endcan
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link {{ request()->routeIs('instrumental.index') ? 'c-active' : '' }}"
+                        href="{{ route('instrumental.index') }}">
+                        <i class="c-sidebar-nav-icon bi bi-journal-plus" style="line-height: 1;"></i> Instrumental
+                    </a>
+                @endcan
             <li class="c-sidebar-nav-item">
                 <a class="c-sidebar-nav-link {{ request()->routeIs('products.index') ? 'c-active' : '' }}"
                     href="{{ route('products.index') }}">
