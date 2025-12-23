@@ -61,7 +61,7 @@
                                 </tr>
                                 <tr>
                                     <th>Paciente (Solo casa comercial)</th>
-                                    <td>{{ $product->product_patient ?? 'N/A'}}</td>
+                                    <td>{{ $product->product_patient ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Info Paqeute</th>
@@ -84,24 +84,24 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="align-middle">Código del Instrumental</th>
-                                            <th class="align-middle">Descripción</th>
-                                            <th class="align-middle">Cantidad</th>
+                                           <th>Código Único</th>
+                                            <th>Nombre</th>
+                                            <th>Tipo/Familia</th>
+                                            <th>Marca</th>
+                                            <th>Fecha de Compra</th>
+                                            <th>Estado</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($product->Subproduct as $item)
+                                        @foreach ($product->instrumental as $item)
                                             <tr>
-                                                <td class="align-middle">
-                                                    {{ $item->subproduct_code }} <br>
-                                                </td>
-                                                <td class="align-middle">
-                                                    {{ $item->subproduct_name }}
-
-                                                </td>
-                                                <td class="align-middle">
-                                                    {{ $item->subproduct_quantity }}
-                                                </td>
+                                                <td class="align-middle">{{ $item->codigo_unico_ud }}</td>
+                                                <td class="align-middle">{{ $item->nombre_generico }}</td>
+                                                <td class="align-middle">{{ $item->tipo_familia }}</td>
+                                                <td class="align-middle">{{ $item->marca_fabricante }}</td>
+                                                <td class="align-middle">{{ $item->fecha_compra }}</td>
+                                                <td class="align-middle">{{ $item->estado_actual }}</td>
+                       
 
                                             </tr>
                                         @endforeach

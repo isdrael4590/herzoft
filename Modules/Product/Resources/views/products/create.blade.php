@@ -53,7 +53,7 @@
                                                 <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                             @endforeach
                                         </select>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -103,7 +103,7 @@
                                     <div class="form-group">
                                         <label for="product_quantity">Cantidad <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="product_quantity" required
-                                            value="{{ old('product_quantity') }}" min="1">
+                                            value="{{ old('product_quantity', 1) }}" min="1">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -120,7 +120,7 @@
                                     <div class="form-group">
                                         <label for="product_price">Precio <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control" name="product_price" required
-                                            value="{{ old('product_price') }}" min="1">
+                                            value="{{ old('product_price', 1) }}" min="1">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -142,26 +142,24 @@
                             @can('accces_subproduct')
                                 <div class="row">
                                     <div class="col-12">
-                                        <livewire:search-producttoSUB />
+                                        <livewire:search-instrumental />
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div>
-                                        <h3>Detalles del Paquete</h3>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <livewire:instrumental-cart :cartInstance="'product'" >
                                     </div>
-                                </div>
-                                <div class="col-12">
-                                    <livewire:product-carttoSUB :cartInstance="'product'" />
                                 </div>
                             @endcan
                             <div class="form-group">
                                 <label for="product_info"> Información corta del paquete</label>
-                                <input type="text" name="product_info" id="product_info" rows="4 " class="form-control" maxlength="20" ></input>
+                                <input type="text" name="product_info" id="product_info" rows="4 "
+                                    class="form-control" maxlength="20"></input>
                             </div>
 
                             <div class="form-group">
                                 <label for="product_note">Nota / Observaciones</label>
-                                <textarea   name="product_note" id="product_note" rows="4 " class="form-control"></textarea >
+                                <textarea name="product_note" id="product_note" rows="4 " class="form-control"></textarea>
                             </div>
                         </div>
                     </div>

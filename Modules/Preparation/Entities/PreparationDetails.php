@@ -24,8 +24,10 @@ class PreparationDetails extends Model
     {
         return $this->belongsTo(Preparation::class, 'preparation_id', 'id');
     }
-    public function preparationze()
+
+    // Agregar relación
+    public function quantityResets()
     {
-        return $this->belongsTo(Preparationze::class, 'preparation_id', 'id');
+        return $this->hasMany(PreparationQuantityReset::class, 'preparation_detail_id');
     }
 }
