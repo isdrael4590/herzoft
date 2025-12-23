@@ -137,6 +137,7 @@ class PermissionsTableSeeder extends Seeder
             'show_reprocess',
             'edit_reprocess',
             'delete_reprocess',
+            'reset_preparations',
 
             //ZONA NO ESTERIL
             'access_zne_area',

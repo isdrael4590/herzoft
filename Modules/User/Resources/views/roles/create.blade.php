@@ -454,6 +454,7 @@
                                                             for="edit_receptions">Editar</label>
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="col-6">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input"
@@ -740,6 +741,16 @@
                                                             {{ old('edit_preparations') ? 'checked' : '' }}>
                                                         <label class="custom-control-label"
                                                             for="edit_preparations">Editar</label>
+                                                    </div>
+                                                </div>
+                                                 <div class="col-6">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="reset_preparations" name="permissions[]"
+                                                            value="reset_preparations"
+                                                            {{ old('reset_preparations') ? 'checked' : '' }}>
+                                                        <label class="custom-control-label"
+                                                            for="reset_preparations">Resetear cantidades</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">

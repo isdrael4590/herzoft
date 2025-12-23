@@ -37,12 +37,14 @@ class Product extends Model implements HasMedia
             ->height(50);
     }
 
-    public function subproduct()
+
+
+
+     public function instrumental()
     {
-        return $this->hasMany(SubProduct::class);
+        return $this->hasMany(Instrumental::class, 'product_id', 'id');
     }
-    public function getDateAttribute($value)
-    {
-        return Carbon::parse($value)->format('d M, Y');
-    }
+
+
+
 }
