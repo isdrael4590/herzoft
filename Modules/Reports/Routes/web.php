@@ -11,6 +11,10 @@ use Modules\Reports\Http\Controllers\TestbdPrintController;
 use Modules\Setting\Entities\Setting;
 use Modules\Testbd\Entities\Testbd;
 
+use Modules\Reports\Http\Controllers\ProductsZonaPrintController;
+use App\Livewire\Reports\ProductsZonaReport;
+use Modules\Reports\Http\Controllers\ReportsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,7 +23,7 @@ use Modules\Testbd\Entities\Testbd;
 
 Route::group(['middleware' => 'auth'], function () {
     //Print Barcode
-    
+
 
     Route::get('/reception-report', 'ReportsController@receptionReport')->name('reception-report.index');
 
@@ -53,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/expedition-report', 'ReportsController@expeditionReport')->name('expedition-report.index');
+    Route::get('/product-report', 'ReportsController@productReport')->name('product-report.index');
 
 
 
@@ -86,8 +91,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/reports/testbd/print-chunks', [TestbdPrintController::class, 'printFromChunks'])
         ->name('reports.testbd.print-chunks');
 
+    Route::get('/reports/products-zona', function () {
+        return view('reports.products-zona-index');
+    })->name('products-zona-report');
+
+
+
+  Route::get('/reports/products-zona', [ReportsController::class, 'productsZonaReport'])
+    ->name('products-zona-report.index');
+
+Route::get('/reports/products-zona/print', [ProductsZonaPrintController::class, 'printFromSession'])
+    ->name('reports.product.products-zona.print');  // Agregar 'product'
 });
-
-
-
-

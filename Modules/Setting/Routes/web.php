@@ -23,7 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
     // Units
 
  // Licence Settings
-    Route::get('/settings/licence', [LicenceController::class, 'index'])->name('settings.licence.index');
-    Route::put('/settings/licence', [LicenceController::class, 'update'])->name('settings.licence.update');
-    
+    Route::get('/licence', [LicenceController::class, 'index'])
+        ->name('settings.licence.index');
+    Route::put('/licence', [LicenceController::class, 'update'])
+        ->name('settings.licence.update');
 });

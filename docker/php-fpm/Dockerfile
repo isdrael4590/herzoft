@@ -4,29 +4,27 @@ FROM php:8.5-fpm
 
 #ENV COMPOSER_MEMORY_LIMIT='-1'
 
-RUN apt-get update && \
-    apt-get install -y --force-yes --no-install-recommends \
-        libmemcached-dev \
-        libzip-dev \
-        libz-dev \
-        libzip-dev \
-        libpq-dev \
-        libjpeg-dev \
-        libpng-dev \
-        libfreetype6-dev \
-        libssl-dev \
-        openssh-server \
-        libmagickwand-dev \
-        git \
-        cron \
-        nano \
-        libxml2-dev \
-        libreadline-dev \
-        libgmp-dev \
-        mariadb-client \
-        unzip
+RUN apt update && \
+    apt install -y --no-install-recommends \
+        libmemcached-dev=1.* \
+        libzip-dev=1.* \
+        zlib1g-dev=1:1.* \
+        libzip-dev=1.* \
+        libpq-dev=17.* \
+        libjpeg-dev=1:2.* \
+        libpng-dev=1.* \
+        libfreetype-dev=2.* \
+        libssl-dev=3.* \
+        libmagickwand-dev=8:7.* \
+        cron=3.* \
+        libxml2-dev=2.* \
+        libreadline-dev=8.* \
+        libgmp-dev=2:6.* \
+        mariadb-client=1:11.* \
+        unzip=6.* \
+        && rm -rf /var/lib/apt/lists/*
 
-# Install soap extention
+# Install soap extension
 RUN docker-php-ext-install soap exif pcntl zip pdo_mysql pdo_pgsql bcmath intl gmp
 
 #####################################
@@ -112,13 +110,25 @@ RUN chmod +x /usr/bin/t
 RUN echo '#!/bin/bash\n/usr/local/bin/php /var/www/artisan config:clear\n/bin/bash\n/usr/local/bin/php /var/www/artisan dusk -d memory_limit=2G --stop-on-error --stop-on-failure --testdox-text=tests/report-dusk.txt "$@"' > /usr/bin/d
 RUN chmod +x /usr/bin/d
 
-RUN rm -r /var/lib/apt/lists/*
 
 RUN usermod -u 1000 www-data
 
+# Set working directory
 WORKDIR /var/www/html
+
+# Copy only composer files first to leverage Docker cache for dependencies
+COPY composer.json composer.lock ./
+
+# Install composer dependencies (will be cached unless composer files change)
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-interaction --optimize-autoloader || true
+
+# Now copy the rest of the application code
 COPY . /var/www/html
+
+# Set permissions
 RUN chmod -R 777 /var/www/html
+
+# Copy entrypoint script
 COPY ./docker/php-fpm/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /

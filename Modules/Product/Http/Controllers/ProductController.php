@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Product\Entities\Product;
 use Modules\Product\Http\Requests\StoreProductRequest;
@@ -16,12 +17,10 @@ use Modules\Upload\Entities\Upload;
 use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\DB;
-use Modules\Product\Entities\SubProduct;
-use Modules\Product\Http\Requests\StoreSubProductRequest;
+use Modules\Product\Entities\Instrumental;
 
 class ProductController extends Controller
 {
-
     public function index(ProductDataTable $dataTable)
     {
         abort_if(Gate::denies('access_products'), 403);
@@ -29,24 +28,21 @@ class ProductController extends Controller
         return $dataTable->render('product::products.index');
     }
 
-
-
     public function create()
     {
         abort_if(Gate::denies('create_products'), 403);
 
+        // Limpiar carrito de instrumental
         Cart::instance('product')->destroy();
 
         return view('product::products.create');
     }
 
-
-    public function store(StoreProductRequest $request,)
+    public function store(StoreProductRequest $request)
     {
-
         DB::transaction(function () use ($request) {
+            // Crear el producto principal
             $product = Product::create([
-
                 'product_name' => $request->product_name,
                 'product_code' => $request->product_code,
                 'product_barcode_symbology' => $request->product_barcode_symbology,
@@ -61,34 +57,67 @@ class ProductController extends Controller
                 'product_patient' => $request->product_patient,
             ]);
 
+            // Manejar imágenes
             if ($request->has('document')) {
                 foreach ($request->input('document', []) as $file) {
-                    $product->addMedia(Storage::path('temp/dropzone/' . $file))->toMediaCollection('images');
+                    $product->addMedia(Storage::path('temp/dropzone/' . $file))
+                        ->toMediaCollection('images');
                 }
             }
-            foreach (Cart::instance('product')->content() as $cart_item) {
-                if (($cart_item->qty) >= 3) {
-                    $subcode = $request->product_code . "." . $cart_item->id . "." . $cart_item->qty;
-                } else {
-                    $subcode = $request->product_code . "." . $cart_item->id;
+
+            // Procesar INSTRUMENTAL desde el carrito 'instrumental'
+            $cartInstrumentals = Cart::instance('product')->content();
+
+            if ($cartInstrumentals->count() > 0) {
+                // Log::info('🔧 Procesando instrumental desde Cart:', [
+                //     'count' => $cartInstrumentals->count(),
+                //     'product_id' => $product->id
+                // ]);
+
+                foreach ($cartInstrumentals as $cart_item) {
+                    try {
+                        // ✅ SOLO ACTUALIZAR el instrumental existente
+                        $instrumental = Instrumental::find($cart_item->id);
+
+                        if ($instrumental) {
+                            $instrumental->update([
+                                'product_id' => $product->id,  // Asociar al producto
+                                'estado_actual' => 'EN USO'    // Cambiar estado a "EN USO"
+                            ]);
+
+                            // Log::info('✅ Instrumental actualizado:', [
+                            //     'id' => $instrumental->id,
+                            //     'codigo' => $instrumental->codigo_unico_ud,
+                            //     'product_id' => $product->id,
+                            //     'estado' => 'EN USO'
+                            //]);
+                        } else {
+                            Log::warning('⚠️ Instrumental no encontrado:', [
+                                'cart_item_id' => $cart_item->id
+                            ]);
+                        }
+                    } catch (\Exception $e) {
+                        Log::error('❌ Error creando instrumental:', [
+                            'cart_item' => $cart_item->name,
+                            'error' => $e->getMessage()
+                        ]);
+                        throw $e;
+                    }
                 }
-
-
-                SubProduct::create([
-                    'product_id' => $product->id,
-                    'subproduct_name' => $cart_item->name,
-                    'subproduct_code' => $subcode,
-                    'subproduct_quantity' => $cart_item->qty,
-
-                ]);
             }
+
+            // Limpiar carrito después de guardar
             Cart::instance('product')->destroy();
-        });
-        toast('Producto Creado!', 'success');
 
+            // Log::info('✅ Producto creado exitosamente', [
+            //     'product_id' => $product->id,
+            //     'instrumental_count' => $cartInstrumentals->count()
+            // ]);
+        });
+
+        toast('Producto Creado con Éxito!', 'success');
         return redirect()->route('products.index');
     }
-
 
     public function show(Product $product)
     {
@@ -97,41 +126,41 @@ class ProductController extends Controller
         return view('product::products.show', compact('product'));
     }
 
-
     public function edit(Product $product)
     {
         abort_if(Gate::denies('edit_products'), 403);
-        $sub_products = $product->subproduct;
+
+        // Limpiar carrito de instrumental
         Cart::instance('product')->destroy();
 
-        $cart = Cart::instance('product');
+        // Cargar instrumental en el carrito
+        $cartInstrumental = Cart::instance('product');
+        $instrumental = $product->instrumental; // ✅ Usar get() explícitamente
 
-        foreach ($sub_products as $sub_product) {
-            $cart->add([
-                'id'      => $sub_product->product_id,
-                'name'    => $sub_product->subproduct_name,
-                'qty'     => $sub_product->subproduct_quantity,
-                'price'     => 1,
-                'weight'     => 1,
+        foreach ($instrumental as $instrumental) {
+            $cartInstrumental->add([
+                'id'      => $instrumental->id,
+                'name'    => $instrumental->nombre_generico,
+                'qty'     => 1, // Los instrumental son únicos
+                'price'   => 0,
+                'weight'  => 1,
                 'options' => [
-                    'code'     => $sub_product->subproduct_code,
+                    'codigo_unico_ud' => $instrumental->codigo_unico_ud,
+                    'nombre_generico' => $instrumental->nombre_generico,
+                    'tipo_familia' => $instrumental->tipo_familia,
+                    'marca_fabricante' => $instrumental->marca_fabricante,
+                    'fecha_compra' => $instrumental->fecha_compra,
+                    'estado_actual' => $instrumental->estado_actual,
                 ]
             ]);
         }
 
-
-
         return view('product::products.edit', compact('product'));
     }
-
-
     public function update(UpdateProductRequest $request, Product $product)
     {
-
         DB::transaction(function () use ($request, $product) {
-            foreach ($product->subproduct as $sub_product) {
-                $sub_product->delete();
-            }
+            // Actualizar producto principal
             $product->update([
                 'product_name' => $request->product_name,
                 'product_code' => $request->product_code,
@@ -146,6 +175,7 @@ class ProductController extends Controller
                 'product_patient' => $request->product_patient,
             ]);
 
+            // Manejar imágenes
             if ($request->has('document')) {
                 if (count($product->getMedia('images')) > 0) {
                     foreach ($product->getMedia('images') as $media) {
@@ -161,32 +191,81 @@ class ProductController extends Controller
                     }
                 }
             }
-            foreach (Cart::instance('product')->content() as $cart_item) {
 
-                if (($cart_item->qty) >= 3) {
-                    $subcode = $request->product_code . "." . $cart_item->id . "." . $cart_item->qty;
-                } else {
-                    $subcode = $request->product_code . "." . $cart_item->id;
-                }
-                SubProduct::create([
-                    'product_id' => $product->id,
-                    'subproduct_name' => $cart_item->name,
-                    'subproduct_code' => $subcode,
-                    'subproduct_quantity' => $cart_item->qty,
+            // Actualizar instrumental: remover product_id de los anteriores
+            foreach ($product->instrumental as $instrumental) {
+                $instrumental->update([
+                    'product_id' => null,
+                    'estado_actual' => 'DISPONIBLE' // Volver a disponible
                 ]);
             }
+
+            // Actualizar nuevos instrumental desde el carrito 'product'
+            foreach (Cart::instance('product')->content() as $cart_item) {
+                $instrumental = Instrumental::find($cart_item->id);
+
+                if ($instrumental) {
+                    $instrumental->update([
+                        'product_id' => $product->id,  // Asociar al producto
+                        'estado_actual' => 'EN USO'    // Cambiar estado a "EN USO"
+                    ]);
+                }
+            }
+
+            // Limpiar carrito
             Cart::instance('product')->destroy();
         });
+
         toast('Producto Actualizado!', 'info');
         return redirect()->route('products.index');
     }
 
-
     public function destroy(Product $product)
     {
         abort_if(Gate::denies('delete_products'), 403);
-        $product->delete();
-        toast('Producto Eliminado!', 'warning');
-        return redirect()->route('products.index');
+
+        try {
+            DB::beginTransaction();
+
+            // Contar instrumental antes de desvincular
+            $instrumentalCount = $product->instrumental()->count();
+            $productName = $product->product_name;
+
+            // ✅ Desvincular instrumental en lugar de eliminarlos
+            foreach ($product->instrumental as $instrumental) {
+                $instrumental->update([
+                    'product_id' => null,
+                    'estado_actual' => 'DISPONIBLE' // O el campo que uses para el estado
+                ]);
+            }
+
+            // Ahora sí eliminar el producto
+            $product->delete();
+
+            DB::commit();
+
+            // Log::info('🗑️ Producto eliminado exitosamente:', [
+            //     'product_name' => $productName,
+            //     'instrumental_liberados' => $instrumentalCount
+            // ]);
+
+            $mensaje = 'Producto eliminado exitosamente!';
+            if ($instrumentalCount > 0) {
+                $mensaje .= " {$instrumentalCount} instrumental(es) liberado(s) y marcado(s) como DISPONIBLE.";
+            }
+
+            toast($mensaje, 'warning');
+            return redirect()->route('products.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Log::error('❌ Error al eliminar producto:', [
+            //     'product_id' => $product->id,
+            //     'error' => $e->getMessage()
+            // ]);
+
+            toast('Error al eliminar el producto: ' . $e->getMessage(), 'error');
+            return redirect()->back();
+        }
     }
 }
