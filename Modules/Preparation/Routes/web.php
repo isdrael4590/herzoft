@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Preparation\Http\Controllers\PreparationDetailsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,18 +23,21 @@ Route::group(['middleware' => 'auth'], function () {
             'preparation' => $preparation,
         ]);
 
-        return $pdf->stream('preparation-'. $preparation->reference .'.pdf');
+        return $pdf->stream('preparation-' . $preparation->reference . '.pdf');
     })->name('preparations.pdf');
 
     //Send preparation Mail
-   // Route::get('/preparation/mail/{preparation}', 'SendpreparationEmailController')->name('preparation.email');
+    // Route::get('/preparation/mail/{preparation}', 'SendpreparationEmailController')->name('preparation.email');
 
-  
+// En tu a
+Route::post('preparation-details/reset-quantities', [PreparationDetailsController::class, 'resetQuantities'])
+    ->name('preparationDetails.resetQuantities')
+    ->middleware(['auth', 'verified']);
+    // ->middleware(['auth', 'verified']); // Asegúrate de tener los middlewares necesarios
 
+    Route::get('preparation-details/reset-history', [PreparationDetailsController::class, 'resetHistory'])
+        ->name('preparationDetails.resetHistory');
     //preparations
     Route::resource('preparations', 'PreparationController');
-   // Route::resource('preparationzes', 'PreparationfromZEController');
     Route::resource('preparationDetails', 'PreparationDetailsController');
-
-
 });

@@ -19,11 +19,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <a href="{{ route('products.create') }}" class="btn btn-primary">
-                            Add Paquetes <i class="bi bi-plus"></i>
-                        </a>
-                       
-                        <hr>
+                        @can('products.create')
+                            <a href="{{ route('products.create') }}" class="btn btn-primary">
+                                Add Paquetes <i class="bi bi-plus"></i>
+                            </a>
+
+                            <hr>
+                        @endcan
+
 
                         <div class="table-responsive">
                             {!! $dataTable->table() !!}

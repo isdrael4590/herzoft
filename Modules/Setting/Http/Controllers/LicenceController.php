@@ -21,15 +21,21 @@ class LicenceController extends Controller
     {
         abort_if(Gate::denies('access_settings'), 403);
 
-        // Usar first() en lugar de firstOrFail() para evitar error si no existe
         $licence = Licence::first();
 
-        // Si no existe, crear uno por defecto
         if (!$licence) {
             $licence = new Licence();
         }
 
-        return view('setting::licence.index', compact('licence'));
+        // Contar usuarios que están bloqueados
+        $blockedUsersCount = 0;
+        if ($licence->isExpired()) {
+            $blockedUsersCount = \App\Models\User::whereDoesntHave('roles', function ($query) {
+                $query->whereIn('name', ['Admin', 'Super Admin']);
+            })->count();
+        }
+
+        return view('setting::licence.index', compact('licence', 'blockedUsersCount'));
     }
 
     /**

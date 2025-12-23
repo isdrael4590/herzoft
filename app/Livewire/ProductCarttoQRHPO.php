@@ -87,12 +87,12 @@ class ProductCarttoQRHPO extends Component
         $cart = Cart::instance($this->cart_instance);
 
         // Debug: Agregar logging para identificar el problema
-        \Log::info('ProductSelected called with:', [
-            'product_id' => $preparation_detail['id'],
-            'product_name' => $preparation_detail['product_name'] ?? 'N/A',
-            'product_code' => $preparation_detail['product_code'] ?? 'N/A',
-            'cart_instance' => $this->cart_instance
-        ]);
+        // \Log::info('ProductSelected called with:', [
+        //     'product_id' => $preparation_detail['id'],
+        //     'product_name' => $preparation_detail['product_name'] ?? 'N/A',
+        //     'product_code' => $preparation_detail['product_code'] ?? 'N/A',
+        //     'cart_instance' => $this->cart_instance
+        // ]);
 
         $existingRowId = null;
         foreach ($cart->content() as $rowId => $cartItem) {
@@ -102,10 +102,10 @@ class ProductCarttoQRHPO extends Component
             }
         }
 
-        \Log::info('Product search result:', [
-            'found' => $existingRowId !== null,
-            'existing_row_id' => $existingRowId
-        ]);
+        // \Log::info('Product search result:', [
+        //     'found' => $existingRowId !== null,
+        //     'existing_row_id' => $existingRowId
+        // ]);
 
         // Si el producto ya existe en el carrito, incrementar la cantidad
         if ($existingRowId !== null) {

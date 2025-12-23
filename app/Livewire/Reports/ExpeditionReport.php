@@ -35,9 +35,9 @@ class ExpeditionReport extends Component
     {
         try {
             // MODIFICACIÓN: Incluir expeditionDetails en la consulta para obtener product_name
-            $expeditions = Expedition::with(['expeditionDetails' => function($query) {
-                    $query->select('expedition_id', 'product_name'); // Seleccionar campos necesarios
-                }])
+            $expeditions = Expedition::with(['expeditionDetails' => function ($query) {
+                $query->select('expedition_id', 'product_name'); // Seleccionar campos necesarios
+            }])
                 ->whereBetween('updated_at', [
                     $this->startDate . ' 00:00:00',
                     $this->endDate . ' 23:59:59',
@@ -55,7 +55,7 @@ class ExpeditionReport extends Component
             $this->data = $expeditions->map(function ($expedition) {
                 $expeditionArray = $expedition->toArray();
                 $expeditionArray['details_count'] = $expedition->expeditionDetails->count();
-                
+
                 // *** NUEVA FUNCIONALIDAD: Agregar los nombres de productos ***
                 $expeditionArray['product_names'] = $expedition->expeditionDetails
                     ->pluck('product_name')
@@ -63,10 +63,10 @@ class ExpeditionReport extends Component
                     ->unique() // Eliminar duplicados
                     ->values()
                     ->toArray();
-                
+
                 // También agregar una cadena concatenada para mostrar fácilmente
                 $expeditionArray['product_names_string'] = implode(', ', $expeditionArray['product_names']);
-                
+
                 return $expeditionArray;
             })->toArray();
 
@@ -111,13 +111,13 @@ class ExpeditionReport extends Component
             Session::put('print_expedition_items', $this->selectedItems);
             Session::put('print_expedition_timestamp', now());
 
-            \Log::info('Items guardados en sesión para impresión: ' . count($this->selectedItems));
+            // \Log::info('Items guardados en sesión para impresión: ' . count($this->selectedItems));
 
             // Redirigir directamente al controlador
             return redirect()->route('reports.expedition.print-session');
         } catch (\Exception $e) {
             session()->flash('message', 'Error preparando la impresión: ' . $e->getMessage());
-            \Log::error('Error en print(): ' . $e->getMessage());
+            // \Log::error('Error en print(): ' . $e->getMessage());
         }
     }
 
@@ -154,9 +154,9 @@ class ExpeditionReport extends Component
 
         try {
             // MODIFICACIÓN: Incluir expeditionDetails con product_name para la impresión
-            $expeditions = Expedition::with(['expeditionDetails' => function($query) {
-                    $query->select('expedition_id', 'product_name', 'quantity');
-                }])
+            $expeditions = Expedition::with(['expeditionDetails' => function ($query) {
+                $query->select('expedition_id', 'product_name', 'quantity');
+            }])
                 ->whereIn('id', $this->selectedItems)
                 ->orderBy('updated_at', 'desc')
                 ->get();

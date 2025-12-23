@@ -202,6 +202,7 @@
     @endphp
 
     @if ($showNotification)
+
         <div class="license-notification {{ $daysRemaining <= 7 ? 'danger' : ($daysRemaining <= 15 ? 'warning' : '') }}"
             id="licenseNotification">
             <div class="container-fluid">
