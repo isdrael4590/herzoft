@@ -70,7 +70,7 @@ return [
         'timezone' => 'Asia/Dhaka',
     */
 
-    'timezone' => 'America/Bogota',
+    'timezone' => 'America/Guayaquil',
 
     /*
     |--------------------------------------------------------------------------

@@ -52,10 +52,20 @@ class User extends Authenticatable implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatars')
-            ->useFallbackUrl('https://www.gravatar.com/avatar/' . md5("ferisdra@hotmail.com"));
+            ->useFallbackUrl('https://www.gravatar.com/avatar/' . md5("herzoftgroup@gmail.com"));
     }
 
-    public function scopeIsActive(Builder $builder) {
+    public function scopeIsActive(Builder $builder)
+    {
         return $builder->where('is_active', 1);
+    }
+
+    /**
+     * Check if user can access system with expired licence
+     * @return bool
+     */
+    public function canAccessWithExpiredLicence()
+    {
+        return $this->hasRole('Admin') || $this->hasRole('Super Admin');
     }
 }

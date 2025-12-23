@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.1",
         "anayarojo/shoppingcart": "^4.2",
-        "barryvdh/laravel-dompdf": "^2.1",
+        "barryvdh/laravel-dompdf": "^3.1",
         "guzzlehttp/guzzle": "^7.0.1",
         "knplabs/knp-snappy": "^1.5",
         "laravel/framework": "^10.0",
@@ -24,7 +24,7 @@
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-cookie-consent": "^3.2",
         "spatie/laravel-medialibrary": "^10.0",
-        "spatie/laravel-permission": "^5.0",
+        "spatie/laravel-permission": "^6.23",
         "yajra/laravel-datatables": "^10.0"
     },
     "require-dev": {
