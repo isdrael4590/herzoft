@@ -32,6 +32,17 @@ class Preparation extends Model
         return Carbon::parse($value)->format('d M, Y');
     }
 
+        // Relación con Reception
+    public function reception()
+    {
+        return $this->belongsTo(Reception::class, 'reception_id');
+    }
+        // Método helper para obtener la referencia de recepción
+    public function getReceptionReferenceAttribute()
+    {
+        return $this->reception ? $this->reception->reference : null;
+    }
+
 
     public function ReceptiontoPreparation() {
         return $this->hasMany(Reception::class, 'reception_id', 'id');
