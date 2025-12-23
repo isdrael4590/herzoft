@@ -26,7 +26,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::resource('receptions', 'ReceptionController');
-    Route::resource('RecepReprocess', 'ReceptionReprocessController');
 
     //preparacion desde Form reception
     Route::get('/reception-preparations/{reception}', 'ReceptionPreparationController')->name('reception-preparations.create');

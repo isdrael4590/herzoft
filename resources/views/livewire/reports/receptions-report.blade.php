@@ -17,27 +17,31 @@
         </div>
     @endif
 
-    <!-- Formulario oculto para POST (método de respaldo) -->
-    <form id="printForm" method="POST" action="{{ route('printreception.post') }}" style="display: none;"
-        target="_blank">
-        @csrf
-        <input type="hidden" name="items" id="printItems">
-    </form>
-
+    <!-- Filtros -->
     <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <div class="form-row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="startDate">Fecha Inicio</label>
                             <input type="date" wire:model="startDate" id="startDate" class="form-control">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="endDate">Fecha Fin</label>
                             <input type="date" wire:model="endDate" id="endDate" class="form-control">
                         </div>
-                        <div class="col-md-4 d-flex align-items-end">
+                        <div class="col-md-3">
+                            <label for="zona">Zona</label>
+                            <select wire:model="zona" id="zona" class="form-control">
+                                <option value="all">Todas las Zonas</option>
+                                <option value="reception">Recepción</option>
+                                <option value="labelqr">Etiquetado QR</option>
+                                <option value="discharge">Descarga</option>
+                                <option value="expedition">Expedición</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
                             <button class="btn btn-primary btn-block" wire:click="loadData">
                                 <i class="fas fa-search"></i> Buscar
                             </button>
@@ -45,48 +49,46 @@
                     </div>
 
                     <div class="form-row mt-3">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Área</label>
-                                <select wire:model="area" class="form-control" name="area">
-                                    <option value="">Seleccione el área</option>
-                                    @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                        <option value="{{ $area->area_name }}">{{ $area->area_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="col-md-4">
+                            <label for="productName">Nombre del Producto</label>
+                            <input type="text" wire:model="productName" id="productName" class="form-control"
+                                placeholder="Buscar por nombre...">
                         </div>
-
-
+                        <div class="col-md-4">
+                            <label for="productCode">Código del Producto</label>
+                            <input type="text" wire:model="productCode" id="productCode" class="form-control"
+                                placeholder="Buscar por código...">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Resultados -->
     <div class="row mt-3">
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <!-- Información de selección -->
+                    <!-- Botones de selección -->
                     <div class="row mb-3">
-                        <div class="col-md-8">
-                            <div class="btn-group mb-2" role="group">
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    wire:click="selectByStatus('Registrado')">
-                                    Seleccionar Registrados
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    wire:click="selectByStatus('Pendiente')">
-                                    Seleccionar Pendientes
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm"
-                                    wire:click="selectByStatus('Procesado')">
-                                    Seleccionar Procesados
-                                </button>
+                        <div class="col-md-12">
+                            <div class="btn-group mb-2 flex-wrap" role="group">
                                 <button type="button" class="btn btn-outline-primary btn-sm"
-                                    wire:click="selectByStatus('All')">
-                                    <i class="fas fa-check-double"></i> Seleccionar Todo
+                                    wire:click="selectByzona('reception')">
+                                    <i class="fas fa-inbox"></i> Recepción
+                                </button>
+                                <button type="button" class="btn btn-outline-info btn-sm"
+                                    wire:click="selectByzona('labelqr')">
+                                    <i class="fas fa-qrcode"></i> Etiquetado
+                                </button>
+                                <button type="button" class="btn btn-outline-success btn-sm"
+                                    wire:click="selectByzona('discharge')">
+                                    <i class="fas fa-box-open"></i> Descarga
+                                </button>
+                                <button type="button" class="btn btn-outline-warning btn-sm"
+                                    wire:click="selectByzona('expedition')">
+                                    <i class="fas fa-shipping-fast"></i> Expedición
                                 </button>
                             </div>
                         </div>
@@ -102,61 +104,26 @@
                                         <i class="fas fa-check-circle"></i> Seleccionados: {{ $this->selectedCount }}
                                     </span>
                                     <span class="badge badge-primary">
-                                        <i class="fas fa-box"></i> Paquetes: {{ $this->totalPackages }}
+                                        <i class="fas fa-cubes"></i> Cantidad Total: {{ $this->totalQuantity }}
                                     </span>
                                 </div>
-
-                                @if ($this->selectedCount > 2000)
-                                    <div class="alert alert-warning alert-sm mb-0 py-1 px-2">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <small>Gran volumen detectado ({{ $this->selectedCount }} items)</small>
-                                    </div>
-                                @endif
                             </div>
 
-                            <!-- BOTONES DE IMPRESIÓN -->
-                            <div class="d-flex flex-wrap align-items-center" style="gap: 0.5rem;">
-                                <!-- Botón principal - Método por sesión -->
-                                <button type="button" wire:click="print" class="btn btn-success"
-                                    wire:loading.attr="disabled" @if ($this->selectedCount === 0) disabled @endif>
-                                    <span wire:loading.remove wire:target="print">
-                                        <i class="fas fa-print"></i>
-                                        Imprimir ({{ $this->selectedCount }})
-                                    </span>
-                                    <span wire:loading wire:target="print">
-                                        <i class="fas fa-spinner fa-spin"></i> Preparando...
-                                    </span>
-                                </button>
-
-                                <!-- Botón método original (respaldo) -->
-                                <button type="button" onclick="printSelectedLegacy()" class="btn btn-secondary btn-sm"
-                                    @if ($this->selectedCount === 0) disabled @endif>
+                            <!-- Botón de impresión -->
+                            <button type="button" wire:click="print" class="btn btn-success"
+                                wire:loading.attr="disabled" @if ($this->selectedCount === 0) disabled @endif>
+                                <span wire:loading.remove wire:target="print">
                                     <i class="fas fa-print"></i>
-                                    Legacy
-                                </button>
-                            </div>
-
-                            <!-- Información adicional para grandes volúmenes -->
-                            @if ($this->selectedCount > 5000)
-                                <div class="alert alert-info mt-3 mb-0">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-info-circle text-info mr-2"></i>
-                                        <div>
-                                            <strong>Volumen muy grande detectado ({{ $this->selectedCount }}
-                                                elementos)</strong>
-                                            <br>
-                                            <small>
-                                                La generación puede tomar varios minutos. Se recomienda filtrar los
-                                                datos.
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
+                                    Imprimir Reporte ({{ $this->selectedCount }})
+                                </span>
+                                <span wire:loading wire:target="print">
+                                    <i class="fas fa-spinner fa-spin"></i> Preparando...
+                                </span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Tabla -->
+                    <!-- Tabla según agrupación -->
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped text-center mb-0">
                             <div wire:loading.flex
@@ -166,103 +133,209 @@
                                     <span class="sr-only">Cargando...</span>
                                 </div>
                             </div>
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th style="width: 50px;">
 
-                                    </th>
-                                    <th>Fecha</th>
-                                    <th>Referencia</th>
-                                    <th>Área</th>
-                                    <th>Estado</th>
-                                    <th>Persona Entrega</th>
-                                    <th>Persona que Recibe</th>
-                                    <th>Cant. de Paquetes</th>
-                                    <th style="min-width: 200px;">Paquetes</th>
-                                    <th>Observaciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($data as $reception)
-                                    <tr
-                                        class="{{ in_array($reception['id'], $selectedItems) ? 'table-success' : '' }}">
-                                        <td>
-                                            <input type="checkbox" wire:model="selectedItems"
-                                                value="{{ $reception['id'] }}" class="form-check-input">
-                                        </td>
-                                        <td>{{ \Carbon\Carbon::parse($reception['updated_at'])->format('d M, Y') }}
-                                        </td>
-                                        <td>
-                                            <span class="font-weight-bold">{{ $reception['reference'] }}</span>
-                                        </td>
-                                        <td>{{ $reception['area'] }}</td>
-                                        <td>
-                                            <span
-                                                class="badge 
-                                                @if ($reception['status'] == 'Procesado') badge-success
-                                                @elseif($reception['status'] == 'Pendiente') badge-warning
-                                                @else badge-secondary @endif">
-                                                {{ $reception['status'] }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $reception['delivery_staff'] }}</td>
-                                        <td>{{ $reception['operator'] }}</td>
-                                        <td>
-                                            <span class="badge badge-primary">
-                                                {{ $reception['details_count'] }}
-                                            </span>
-                                        </td>
-                                         <td style="text-align: left; max-width: 250px;">
-                                            @if (!empty($reception['product_names']))
-                                                <div class="product-names-container">
-                                                    @foreach ($reception['product_names'] as $productName)
-                                                        <span class="badge badge-info badge-sm mr-1 mb-1">
-                                                            {{ $productName }}
-                                                        </span>
-                                                    @endforeach
-                                                </div>
-                                            @else
-                                                <small class="text-muted">Sin productos</small>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if (!empty($reception['note']))
-                                                <span class="text-muted">{{ $reception['note'] }}</span>
-                                            @else
-                                                <small class="text-muted">Sin observaciones</small>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
+                            @if ($groupBy === 'product')
+                                <!-- Vista agrupada por producto -->
+                                <thead class="thead-dark">
                                     <tr>
-                                        <td colspan="8">
-                                            <div class="text-center py-3">
-                                                <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
-                                                <p class="text-muted">No hay datos disponibles para mostrar</p>
-                                            </div>
-                                        </td>
+                                        <th style="width: 50px;"></th>
+                                        <th>Producto</th>
+                                        <th>Código</th>
+                                        <th>Cantidad Total</th>
+                                        <th>Zonas</th>
+                                        <th>Registros</th>
+                                        <th>Acciones</th>
                                     </tr>
-                                @endforelse
-                            </tbody>
+                                </thead>
+                                <tbody>
+                                    @forelse($data as $index => $item)
+                                        <tr class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
+                                            <td>
+                                                <input type="checkbox" wire:model="selectedItems"
+                                                    value="{{ $item['id'] }}" class="form-check-input">
+                                            </td>
+                                            <td class="text-left">
+                                                <strong>{{ $item['product_name'] }}</strong>
+                                            </td>
+                                            <td>{{ $item['product_code'] }}</td>
+                                            <td>
+                                                <span class="badge badge-primary">{{ $item['total_quantity'] }}</span>
+                                            </td>
+                                            <td>
+                                                <small>{{ $item['zonas'] }}</small>
+                                                <br>
+                                                <span class="badge badge-info">{{ $item['zonas_count'] }} Zonas</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-secondary">{{ $item['records_count'] }}</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-info toggle-details" 
+                                                        type="button"
+                                                        data-target="details-{{ $index }}">
+                                                    <i class="fas fa-eye"></i> Ver Detalles
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="detail-row" id="details-{{ $index }}" style="display: none;">
+                                            <td colspan="7" class="bg-light">
+                                                <div class="p-3">
+                                                    <h6>Detalles de movimientos:</h6>
+                                                    <table class="table table-sm table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Fecha</th>
+                                                                <th>Zona</th>
+                                                                <th>Referencia</th>
+                                                                <th>Cantidad</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($item['items'] as $detail)
+                                                                <tr>
+                                                                    <td>{{ \Carbon\Carbon::parse($detail['date'])->format('d/m/Y H:i') }}</td>
+                                                                    <td>
+                                                                        <span class="badge badge-{{ 
+                                                                            $detail['zona'] === 'reception' ? 'primary' :
+                                                                            ($detail['zona'] === 'labelqr' ? 'info' :
+                                                                            ($detail['zona'] === 'discharge' ? 'success' : 'warning'))
+                                                                        }}">
+                                                                            {{ $detail['zona_name'] }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td>{{ $detail['reference'] }}</td>
+                                                                    <td>
+                                                                        <span class="badge badge-primary">{{ $detail['quantity'] }}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7">
+                                                <div class="text-center py-3">
+                                                    <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                                                    <p class="text-muted">No hay datos disponibles</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            @elseif($groupBy === 'zona')
+                                <!-- Vista agrupada por Zona -->
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="width: 50px;"></th>
+                                        <th>Zona</th>
+                                        <th>Productos Únicos</th>
+                                        <th>Cantidad Total</th>
+                                        <th>Registros</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($data as $item)
+                                        <tr class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
+                                            <td>
+                                                <input type="checkbox" wire:model="selectedItems"
+                                                    value="{{ $item['id'] }}" class="form-check-input">
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-{{ 
+                                                    $item['zona'] === 'reception' ? 'primary' :
+                                                    ($item['zona'] === 'labelqr' ? 'info' :
+                                                    ($item['zona'] === 'discharge' ? 'success' : 'warning'))
+                                                }}">
+                                                    <i class="fas fa-{{ 
+                                                        $item['zona'] === 'reception' ? 'inbox' :
+                                                        ($item['zona'] === 'labelqr' ? 'qrcode' :
+                                                        ($item['zona'] === 'discharge' ? 'box-open' : 'shipping-fast'))
+                                                    }}"></i>
+                                                    {{ $item['zona_name'] }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-info">{{ $item['products_count'] }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary">{{ $item['total_quantity'] }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-secondary">{{ $item['records_count'] }}</span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="text-center py-3">
+                                                    <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                                                    <p class="text-muted">No hay datos disponibles</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            @else
+                                <!-- Vista agrupada por fecha -->
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="width: 50px;"></th>
+                                        <th>Fecha</th>
+                                        <th>Productos</th>
+                                        <th>Zonas</th>
+                                        <th>Cantidad Total</th>
+                                        <th>Registros</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($data as $item)
+                                        <tr class="{{ in_array($item['id'], $selectedItems) ? 'table-success' : '' }}">
+                                            <td>
+                                                <input type="checkbox" wire:model="selectedItems"
+                                                    value="{{ $item['id'] }}" class="form-check-input">
+                                            </td>
+                                            <td>
+                                                <strong>{{ \Carbon\Carbon::parse($item['date'])->format('d M, Y') }}</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-info">{{ $item['products_count'] }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-warning">{{ $item['zonas_count'] }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary">{{ $item['total_quantity'] }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-secondary">{{ $item['records_count'] }}</span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="text-center py-3">
+                                                    <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+                                                    <p class="text-muted">No hay datos disponibles</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            @endif
                         </table>
                     </div>
 
-                    <!-- Footer con información -->
+                    <!-- Footer -->
                     <div class="mt-3 d-flex justify-content-between align-items-center">
                         <div>
                             <small class="text-muted">
-                                Mostrando {{ count($data) }} registros
+                                Mostrando {{ count($data) }} registros agrupados por {{ $groupBy }}
                                 @if ($this->selectedCount > 0)
-                                    | <span class="text-success font-weight-bold">{{ $this->selectedCount }}
-                                        seleccionados</span>
-                                    | <span class="text-primary font-weight-bold">{{ $this->totalPackages }} paquetes
-                                        totales</span>
+                                    | <span class="text-success font-weight-bold">{{ $this->selectedCount }} seleccionados</span>
                                 @endif
-                            </small>
-                        </div>
-                        <div>
-                            <small class="text-muted">
-                                Límite actual: <span class="badge badge-secondary">{{ $maxPrintItems }}</span>
                             </small>
                         </div>
                     </div>
@@ -271,66 +344,6 @@
         </div>
     </div>
 </div>
-
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('ReceptionReport: Vista cargada');
-
-            // Función legacy para compatibilidad
-            window.printSelectedLegacy = function() {
-                const selectedItems = @json($this->selectedItems);
-                const maxItems = {{ $maxPrintItems }};
-
-                if (selectedItems.length === 0) {
-                    alert('Por favor seleccione al menos un elemento para imprimir.');
-                    return;
-                }
-
-                if (selectedItems.length > maxItems) {
-                    alert(`Demasiados elementos seleccionados. El límite actual es ${maxItems} elementos.`);
-                    return;
-                }
-
-                if (!confirm(`¿Está seguro de que desea imprimir ${selectedItems.length} elementos?`)) {
-                    return;
-                }
-
-                console.log('Legacy Print: Procesando', selectedItems.length, 'elementos');
-
-                try {
-                    document.getElementById('printItems').value = JSON.stringify(selectedItems);
-                    document.getElementById('printForm').submit();
-                } catch (error) {
-                    console.error('Error en método legacy:', error);
-                    alert('Error preparando impresión: ' + error.message);
-                }
-            }
-
-            // Manejar eventos de Livewire
-            document.addEventListener('livewire:init', () => {
-                console.log('Livewire inicializado');
-
-                Livewire.on('submitPrintForm', (items) => {
-                    console.log('Evento submitPrintForm recibido:', items[0]?.length || 0,
-                        'elementos');
-
-                    if (items[0] && items[0].length > 0) {
-                        try {
-                            document.getElementById('printItems').value = JSON.stringify(items[0]);
-                            document.getElementById('printForm').submit();
-                        } catch (error) {
-                            console.error('Error procesando evento submitPrintForm:', error);
-                            alert('Error enviando formulario: ' + error.message);
-                        }
-                    } else {
-                        alert('No se recibieron elementos válidos para imprimir.');
-                    }
-                });
-            });
-        });
-    </script>
-@endpush
 
 @push('styles')
     <style>
@@ -346,10 +359,52 @@
             from {
                 transform: rotate(0deg);
             }
-
             to {
                 transform: rotate(360deg);
             }
         }
+
+        .btn-group.flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .btn-group.flex-wrap .btn {
+            margin-bottom: 0.25rem;
+        }
+
+        .badge {
+            font-size: 0.85rem;
+            padding: 0.35em 0.65em;
+        }
+
+        .detail-row {
+            transition: all 0.3s ease;
+        }
     </style>
+@endpush
+
+@push('scripts')
+    <script>
+        // Usar delegación de eventos para manejar clics incluso después de actualizaciones de Livewire
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.closest('.toggle-details')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const button = e.target.closest('.toggle-details');
+                const targetId = button.getAttribute('data-target');
+                const detailRow = document.getElementById(targetId);
+                
+                if (detailRow) {
+                    if (detailRow.style.display === 'none' || detailRow.style.display === '') {
+                        detailRow.style.display = 'table-row';
+                        button.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar Detalles';
+                    } else {
+                        detailRow.style.display = 'none';
+                        button.innerHTML = '<i class="fas fa-eye"></i> Ver Detalles';
+                    }
+                }
+            }
+        });
+    </script>
 @endpush

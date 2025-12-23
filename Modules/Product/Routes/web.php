@@ -13,6 +13,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/products/print-barcode', 'BarcodeController@printBarcode')->name('barcode.print');
     //Product
     Route::resource('products', 'ProductController');
+    //ins
+    Route::resource('instrumental', 'InstrumentalController');
     //Product Category
     Route::resource('product-categories', 'CategoriesController')->except('create', 'show');
     Route::resource('import-categories', 'ImportCategoryController');

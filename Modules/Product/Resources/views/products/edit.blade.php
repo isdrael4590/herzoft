@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('title', 'Edit Product')
 
 @section('breadcrumb')
@@ -9,37 +8,45 @@
         <li class="breadcrumb-item active">Editar</li>
     </ol>
 @endsection
-
 @section('content')
-    <div class="container-fluid mb-4">
-        <form id="product-form" action="{{ route('products.update', $product->id) }}" method="POST"
-            enctype="multipart/form-data">
-            @csrf
-            @method('patch')
-            <div class="row">
-                <div class="col-lg-12">
-                    @include('utils.alerts')
-                    <div class="form-group">
-                        <button class="btn btn-primary">Actualizar Paquete <i class="bi bi-check"></i></button>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Editar Producto: {{ $product->product_name }}</h4>
                     </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="card">
+
+                    <form id="productForm" action="{{ route('products.update', $product) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
                         <div class="card-body">
-                            <div class="form-row">
-                                <div class="col-md-7">
+                            {{-- Campos del producto principal --}}
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="product_name">Nombre del Paquete <span
+                                        <label for="product_name">Nombre del Producto <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="product_name" required
-                                            value="{{ $product->product_name }}">
+                                        <input type="text" name="product_name" id="product_name"
+                                            class="form-control @error('product_name') is-invalid @enderror"
+                                            value="{{ old('product_name', $product->product_name) }}" required>
+                                        @error('product_name')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="product_code">Código <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="product_code" required readonly
-                                            value="{{ $product->product_code }}">
+                                        <label for="product_code">Código del Producto <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="product_code" id="product_code"
+                                            class="form-control @error('product_code') is-invalid @enderror"
+                                            value="{{ old('product_code', $product->product_code) }}" required>
+                                        @error('product_code')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +62,7 @@
                                                     value="{{ $category->id }}">{{ $category->category_name }}</option>
                                             @endforeach
                                         </select>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -75,7 +82,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -108,38 +114,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="col-md-6">
+                            {{-- Más campos del producto... --}}
+                            <div class="row">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="product_quantity">Cantidad <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="product_quantity" required
-                                            value="{{ $product->product_quantity }}" min="1">
+                                        <label for="product_quantity">Cantidad</label>
+                                        <input type="number" name="product_quantity" id="product_quantity"
+                                            class="form-control"
+                                            value="{{ old('product_quantity', $product->product_quantity) }}"
+                                            min="0">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="product_patient">Paciente (Solo casa comercial):<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="product_patient"
-                                            value="{{ $product->product_patient }}">
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="form-row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="product_price">Precio<span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="product_price" required
-                                            value="{{ $product->product_price }}" min="1">
+                                        <label for="product_price">Precio</label>
+                                        <input type="number" name="product_price" id="product_price" class="form-control"
+                                            value="{{ old('product_price', $product->product_price) }}" step="0.01"
+                                            min="0">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="product_unit">Unidad <i class="bi bi-question-circle-fill text-info"
-                                                data-toggle="tooltip" data-placement="top"
-                                                title="This short text will be placed after Product Quantity."></i> <span
-                                                class="text-danger">*</span></label>
+                                        <label for="product_unit">Unidad</label>
                                         <select class="form-control" name="product_unit" id="product_unit" required>
                                             <option value="" selected>Seleccionar Unidad</option>
                                             @foreach (\Modules\Informat\Entities\Unit::all() as $unit)
@@ -150,8 +148,18 @@
                                         </select>
                                     </div>
                                 </div>
+
+
                             </div>
-                            <div class="form-row">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="product_patient">Paciente (Solo casa comercial):<span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="product_patient"
+                                            value="{{ $product->product_patient }}">
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="product_info"> Información corta del Paquete:<span
@@ -161,107 +169,105 @@
                                     </div>
                                 </div>
                             </div>
+
+                            @can('accces_subproduct')
+                                <div class="row">
+                                    <div class="col-12">
+                                        <livewire:search-instrumental />
+                                    </div>
+                                </div>
+                                {{-- Componente Livewire con datos existentes --}}
+                                <livewire:instrumental-cart :cartInstance="'product'" :data="$product">
+                                </livewire:instrumental-cart>
+                            @endcan
                             <div class="form-group">
                                 <label for="product_note">Note</label>
                                 <textarea name="product_note" id="product_note" rows="4 " class="form-control">{{ $product->product_note }}</textarea>
                             </div>
-
-
-                            @can('accces_subproduct')
-                                <div class="form-group">
-                                    <div>
-                                        <h3>Detalles del Paquete</h3>
-                                    </div>
-
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <livewire:search-producttoSUB />
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <livewire:product-carttoSUB :cartInstance="'product'" :data="$product" />
-
-                                </div>
-                            @endcan
                         </div>
-                    </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="bi bi-save"></i> Actualizar Producto
+                            </button>
+                            <a href="{{ route('products.index') }}" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
                 </div>
-
-                @can('add_image')
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="image">Imagen del paquete <i class="bi bi-question-circle-fill text-info"
-                                            data-toggle="tooltip" data-placement="top"
-                                            title="Max Files: 3, Max File Size: 1MB, Image Size: 400x400"></i></label>
-                                    <div class="dropzone d-flex flex-wrap align-items-center justify-content-center"
-                                        id="document-dropzone">
-                                        <div class="dz-message" data-dz-message>
-                                            <i class="bi bi-cloud-arrow-up"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endcan
             </div>
-        </form>
+        </div>
     </div>
 
-    <!-- Create Category Modal -->
-    @include('product::includes.category-modal')
-@endsection
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('product-form');
+                const submitBtn = document.getElementById('submit-btn');
 
-@section('third_party_scripts')
-    <script src="{{ asset('js/dropzone.js') }}"></script>
-@endsection
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('🔵 Form submit interceptado');
 
-@push('page_scripts')
-    <script>
-        var uploadedDocumentMap = {}
-        Dropzone.options.documentDropzone = {
-            url: '{{ route('dropzone.upload') }}',
-            maxFilesize: 1,
-            acceptedFiles: '.jpg, .jpeg, .png',
-            maxFiles: 3,
-            addRemoveLinks: true,
-            dictRemoveFile: "<i class='bi bi-x-circle text-danger'></i> remove",
-            headers: {
-                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-            },
-            success: function(file, response) {
-                $('form').append('<input type="hidden" name="document[]" value="' + response.name + '">');
-                uploadedDocumentMap[file.name] = response.name;
-            },
-            removedfile: function(file) {
-                file.previewElement.remove();
-                var name = '';
-                if (typeof file.file_name !== 'undefined') {
-                    name = file.file_name;
-                } else {
-                    name = uploadedDocumentMap[file.name];
-                }
-                $('form').find('input[name="document[]"][value="' + name + '"]').remove();
-            },
-            init: function() {
-                @if (isset($product) && $product->getMedia('images'))
-                    var files = {!! json_encode($product->getMedia('images')) !!};
-                    for (var i in files) {
-                        var file = files[i];
-                        this.options.addedfile.call(this, file);
-                        this.options.thumbnail.call(this, file, file.original_url);
-                        file.previewElement.classList.add('dz-complete');
-                        $('form').append('<input type="hidden" name="document[]" value="' + file.file_name + '">');
+                    // Buscar el componente por su nombre
+                    const componentElement = document.querySelector(
+                        '[wire\\:id][wire\\:initial-data*="ProductCarttoSUB"]');
+
+                    if (!componentElement) {
+                        console.warn('⚠️ No se encontró componente Livewire, buscando alternativa...');
+
+                        // Intento alternativo: buscar cualquier componente Livewire
+                        const anyLivewireElement = document.querySelector('[wire\\:id]');
+
+                        if (anyLivewireElement) {
+                            const componentId = anyLivewireElement.getAttribute('wire:id');
+                            console.log('🔍 Intentando con component ID:', componentId);
+                            captureAndSubmit(componentId);
+                        } else {
+                            console.error('❌ No hay componentes Livewire en la página');
+                            form.submit();
+                        }
+                        return;
                     }
-                @endif
-            }
-        }
-    </script>
 
-    <script src="{{ asset('js/jquery-mask-money.js') }}"></script>
-@endpush
+                    const componentId = componentElement.getAttribute('wire:id');
+                    console.log('✅ Component ID encontrado:', componentId);
+                    captureAndSubmit(componentId);
+                });
+
+                function captureAndSubmit(componentId) {
+                    try {
+                        const component = window.Livewire.find(componentId);
+
+                        if (!component) {
+                            throw new Error('Componente no encontrado en Livewire.find()');
+                        }
+
+                        console.log('🟢 Componente Livewire encontrado');
+
+                        const subproducts = component.get('subproducts');
+                        console.log('📦 Subproductos obtenidos:', subproducts);
+
+                        const validSubproducts = subproducts.filter(item => {
+                            return item.subproduct_name &&
+                                item.subproduct_name.trim() !== '' &&
+                                item.subproduct_quantity > 0;
+                        });
+
+                        console.log('✅ Subproductos válidos:', validSubproducts);
+
+                        document.getElementById('subproducts_json').value = JSON.stringify(validSubproducts);
+                        console.log('💾 JSON guardado:', document.getElementById('subproducts_json').value);
+
+                        form.submit();
+                    } catch (error) {
+                        console.error('❌ Error al capturar subproductos:', error);
+                        console.log('⚠️ Enviando formulario sin subproductos...');
+                        form.submit();
+                    }
+                }
+            });
+        </script>
+    @endpush
+@endsection
