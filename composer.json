@@ -24,7 +24,7 @@
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-cookie-consent": "^3.2",
         "spatie/laravel-medialibrary": "^10.0",
-        "spatie/laravel-permission": "^5.0",
+        "spatie/laravel-permission": "^6.23",
         "yajra/laravel-datatables": "^10.0"
     },
     "require-dev": {
