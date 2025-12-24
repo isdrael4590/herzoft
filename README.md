@@ -136,6 +136,10 @@ En caso desees usar el servidor en modo producción en tu computadora, sigue los
 
 - Las credenciales del superusuario son definidas por la variable de entorno `EMAIL` y la contraseña en el archivo `credenciales/admin.txt`
 
+## Respaldo
+
+Por favor lee las instrucciones de [Respaldo](RESPALDO.md) para poder configurar las copias de seguridad automáticas en tu sistema
+
 ## Licencia
 
 Comercial, Todos los derechos reservados Herzoft© 2025
