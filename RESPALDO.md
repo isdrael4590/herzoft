@@ -54,8 +54,8 @@ _Nota_: Reemplaza tu `nombre_usuario` y `/tu/carpeta/respaldo` con tus datos de 
     source .env
     # Crea los archivos iniciales
     mkdir -p $RUTA_RESPALDO
-    sudo touch /var/log/respaldo_diario.log /var/log/respaldo_quicenal.log 
-    sudo chown -R $USER:$USER $RUTA_RESPALDO /var/log/respaldo_diario.log /var/log/respaldo_quicenal.log 
+    sudo touch /var/log/respaldo_diario.log /var/log/respaldo_quincenal.log 
+    sudo chown -R $USER:$USER $RUTA_RESPALDO /var/log/respaldo_diario.log /var/log/respaldo_quincenal.log 
     ```
 
 2. Edita en tus scripts, edita las variables `RUTA_PROYECTO` de acuerdo a la ubicación de tu proyecto
@@ -75,7 +75,7 @@ _Nota_: Reemplaza tu `nombre_usuario` y `/tu/carpeta/respaldo` con tus datos de 
 
     ```bash
     0 0 * * * /usr/local/bin/diario.sh >> /var/log/respaldo_diario.log 2>&1
-    0 1 */14 * * /usr/local/bin/quincenal.sh >> /var/log/respaldo_quicenal.log 2>&1
+    0 1 */14 * * /usr/local/bin/quincenal.sh >> /var/log/respaldo_quincenal.log 2>&1
     ```
 
 ## Restaurar
