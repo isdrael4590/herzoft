@@ -12,6 +12,8 @@ Por favor [configura](https://rclone.org/docs/#configure) `rclone` como muestra 
 
 ### Sincronización con GDrive
 
+Utiliza la configuración de SSH para configurar una computadora remota con las [instrucciones](https://rclone.org/remote_setup/#configuring-using-ssh-tunnel) cómo indica este enlace.
+
 1. Inicia tu configuración con el comando
 
     ```bash
@@ -37,11 +39,17 @@ Por favor [configura](https://rclone.org/docs/#configure) `rclone` como muestra 
 
 _Nota_: Reemplaza tu `nombre_usuario` y `/tu/carpeta/respaldo` con tus datos de preferencia
 
-1. Configura la computadora remota con las [instrucciones](https://rclone.org/remote_setup/#configuring-using-ssh-tunnel) de este enlace.
-2. En tu computadora local, sincroniza tus archivos con el comando:
+1. En tu computadora local, utiliza las instrucciones anteriores de 1 - 3 para crear una nueva conexión remota, nombrala cómo `herzoft_respaldo_local`
+2. Escribe `36` para seleccionar la conexión `SSH/SFTP`
+3. Escribe `45.90.220.111` para selecionar tu host
+4. Añade tu `nombre_de_usuario` ahí
+5. Define el puerto por defecto, en este caso `22`
+6. Selecciona el tipo de autenticación
+7. Escribe `true` para darle seguridad a tu cuenta
+8. En tu computadora local, sincroniza tus archivos con el comando:
 
     ```bash
-    rclone sync nombre_usuario@45.90.220.111:/opt/docker/backup /tu/carpeta/respaldo -P
+    rclone sync -P herzoft_respaldo_local:/opt/docker/backup /tu/carpeta/respaldo 
     ```
 
 ## Programar la ejecución de los servicios
