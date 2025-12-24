@@ -38,3 +38,9 @@ docker/letsencrypt/*
 docker/nginx/ssl/*
 docker/etc/letsencrypt
 certbot/*
+
+# Archivos sensibles
+backups/
+mysql/backups/
+*.sql
+*.gz
