@@ -3,7 +3,7 @@
 ## Instalación prerequisitos
 
 ```bash
-sudo apt install rclone
+sudo apt install rclone zip
 ```
 
 ## Sincronizar los datos
