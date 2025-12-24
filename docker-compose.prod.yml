@@ -22,8 +22,6 @@ services:
             timeout: 5s
     redis:
         image: 'redis:alpine'
-        ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
             - '${DATA_PATH_HOST}/redis:/data'
         networks:
@@ -32,6 +30,9 @@ services:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
             timeout: 5s
+        environment:
+          - REDIS_HOST
+          - REDIS_PASSWORD
     nginx:
         image: nginx:latest
         restart: unless-stopped
