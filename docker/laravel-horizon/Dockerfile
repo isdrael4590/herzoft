@@ -6,7 +6,7 @@
 
 # no memcached
 
-FROM php:8.1-alpine
+FROM php:8.5.2-alpine
 
 RUN apk --update add wget \
   curl \
