@@ -29,7 +29,7 @@
                             @can('access_admin')
                                 <a href="{{ route('preparations.index') }}" class="btn btn-primary">
                                     <i class="bi bi-plus-circle"></i>
-                                    Cambios EXCLUSIVOS
+                                    Preparación exclusivo
                                 </a>
 
 

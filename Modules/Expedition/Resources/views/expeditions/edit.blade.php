@@ -1,245 +1,275 @@
 @extends('layouts.app')
 
-@section('title', 'Registrar Despacho')
+@section('title', 'Editar Despacho')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('expeditions.index') }}">Generador Despacho</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('expeditions.index') }}">Despacho de Productos</a></li>
         <li class="breadcrumb-item active">Editar Despacho</li>
     </ol>
 @endsection
 
 @section('content')
     <div class="container-fluid mb-4">
-        <div class="row">
-            <div class="col-12">
+
+        {{-- Page Header --}}
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mr-3"
+                    style="width:48px;height:48px;background:linear-gradient(135deg,#10b981,#059669);">
+                    <i class="bi bi-box-arrow-right text-white" style="font-size:1.4rem;"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0 font-weight-bold text-dark">Editar Despacho</h4>
+                    <small class="text-muted">
+                        Referencia: <strong class="text-dark">{{ $expedition->reference }}</strong>
+                        &nbsp;&bull;&nbsp; Área: <strong class="text-dark">{{ $expedition->area_expedition }}</strong>
+                        &nbsp;&bull;&nbsp;
+                        @if ($expedition->status_expedition == 'Despachado')
+                            <span class="badge badge-dark" style="font-size:.75rem;padding:4px 10px;border-radius:20px;">
+                                <i class="bi bi-box-arrow-right mr-1"></i> Despachado
+                            </span>
+                        @else
+                            <span class="badge badge-warning" style="font-size:.75rem;padding:4px 10px;border-radius:20px;">
+                                <i class="bi bi-clock mr-1"></i> {{ $expedition->status_expedition }}
+                            </span>
+                        @endif
+                    </small>
+                </div>
+            </div>
+            <a href="{{ route('expeditions.index') }}"
+                class="btn btn-outline-secondary d-flex align-items-center"
+                style="border-radius:8px;padding:9px 18px;font-weight:600;">
+                <i class="bi bi-arrow-left mr-2"></i> Volver
+            </a>
+        </div>
+
+        @include('utils.alerts')
+
+        {{-- Buscador de Productos --}}
+        <div class="card border-0 mb-4" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+            <div class="card-header border-0 d-flex align-items-center"
+                style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px 12px 0 0;padding:14px 24px;border-left:4px solid #0ea5e9;">
+                <i class="bi bi-search mr-2" style="color:#0ea5e9;"></i>
+                <span class="font-weight-bold text-secondary" style="font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;">
+                    Buscar Instrumental
+                </span>
+            </div>
+            <div class="card-body" style="padding:24px;">
                 <livewire:search-producttoEXP />
             </div>
         </div>
 
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        @include('utils.alerts')
-                        <form id="expedition-form" action="{{ route('expeditions.update', $expedition) }}" method="POST"  onsubmit="return handleFormSubmit(event)">
-                            @csrf
-                            @method('patch')
-                                    {{-- Token adicional para prevenir duplicados --}}
-                            <input type="hidden" name="form_token" value="{{ uniqid('expedition_edit_', true) }}">
-                            <div class="form-row">
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="reference">Referencia <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reference" required
-                                            value="{{ $expedition->reference }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="status_expedition">Estado del Despacho <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-control" name="status_expedition" id="status_expedition"
-                                            required>
-                                            <option {{ $expedition->status_expedition == 'Despachado' ? 'selected' : '' }}
-                                                value="Despachado">
-                                                Despachar</option>
-                                            <option {{ $expedition->status_expedition == 'Pendiente' ? 'selected' : '' }}
-                                                value="Pendiente">
-                                                Pendiente</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="temp_ambiente">Temperatura del Ambiente <span
-                                                class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="temp_ambiente" required
-                                            value="{{ $expedition->temp_ambiente }}" min="1" step="0.1">
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="area_expedition">Area de expedición <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-control" id="area_expedition" name="area_expedition" required>
-                                            @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                                <option
-                                                    {{ $expedition->area_expedition == $area->area_name ? 'selected' : '' }}
-                                                    value="{{ $area->area_name }}">
-                                                    {{ $area->area_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="staff_expedition">Persona quién Recibe <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="staff_expedition" required
-                                            value="{{ $expedition->staff_expedition }}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label>Operador</label>
-                                        <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
-                                            readonly>
-                                    </div>
-                                </div>
-                            </div>
+        <form id="expedition-form" action="{{ route('expeditions.update', $expedition) }}" method="POST"
+            onsubmit="return handleFormSubmit(event)">
+            @csrf
+            @method('patch')
+            <input type="hidden" name="form_token" value="{{ uniqid('expedition_edit_', true) }}">
 
+            {{-- Datos del Despacho --}}
+            <div class="card border-0 mb-4" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+                <div class="card-header border-0 d-flex align-items-center"
+                    style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px 12px 0 0;padding:14px 24px;border-left:4px solid #10b981;">
+                    <i class="bi bi-clipboard-check text-success mr-2"></i>
+                    <span class="font-weight-bold text-secondary" style="font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;">
+                        Datos del Despacho
+                    </span>
+                </div>
+                <div class="card-body" style="padding:24px;">
+                    <div class="form-row">
 
-                            <livewire:product-carttoEXP :cartInstance="'expedition'" :data="$expedition" />
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <label class="text-muted" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">
+                                Referencia
+                            </label>
+                            <input type="text" class="form-control form-control-sm" name="reference"
+                                value="{{ $expedition->reference }}" readonly
+                                style="background:#f8fafc;border-color:#e2e8f0;border-radius:8px;">
+                        </div>
 
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <label class="text-muted" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">
+                                Estado <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-control form-control-sm" name="status_expedition" id="status_expedition"
+                                required style="border-radius:8px;">
+                                <option {{ $expedition->status_expedition == 'Despachado' ? 'selected' : '' }}
+                                    value="Despachado">Despachar</option>
+                                <option {{ $expedition->status_expedition == 'Pendiente' ? 'selected' : '' }}
+                                    value="Pendiente">Pendiente</option>
+                            </select>
+                        </div>
 
-                            <div class="form-row">
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <label class="text-muted" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">
+                                Temp. Ambiente <span class="text-danger">*</span>
+                            </label>
+                            <input type="number" class="form-control form-control-sm" name="temp_ambiente" required
+                                value="{{ $expedition->temp_ambiente }}" min="1" step="0.1"
+                                style="border-radius:8px;">
+                        </div>
 
-                            </div>
-                            <div class="form-group">
-                                <label for="note_expedition">Nota (Si se necesita)</label>
-                                <textarea name="note_expedition" id="note_expedition" rows="5" class="form-control"></textarea>
-                            </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <label class="text-muted" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">
+                                Área de Expedición <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-control form-control-sm" id="area_expedition" name="area_expedition"
+                                required style="border-radius:8px;">
+                                @foreach (\Modules\Informat\Entities\Area::all() as $area)
+                                    <option {{ $expedition->area_expedition == $area->area_name ? 'selected' : '' }}
+                                        value="{{ $area->area_name }}">{{ $area->area_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                <button type="submit" class="btn btn-primary" id="submit-btn">
-                                    <span id="submit-text">Despachar Producto</span>
-                                    <i class="bi bi-check" id="submit-icon"></i>
-                                </button>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <label class="text-muted" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">
+                                Persona que Recibe <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-sm" name="staff_expedition" required
+                                value="{{ $expedition->staff_expedition }}" style="border-radius:8px;">
+                        </div>
 
-                                <div id="loading-indicator" class="d-none">
-                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                        <span class="sr-only">Procesando...</span>
-                                    </div>
-                                    <span class="ml-2">Despachando...</span>
-                                </div>
-                            </div>
-                        </form>
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <label class="text-muted" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">
+                                Operador
+                            </label>
+                            <input type="text" class="form-control form-control-sm" name="operator"
+                                value="{{ Auth::user()->name }}" readonly
+                                style="background:#f8fafc;border-color:#e2e8f0;border-radius:8px;">
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
+
+            {{-- Carrito de Productos --}}
+            <div class="card border-0 mb-4" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+                <div class="card-header border-0 d-flex align-items-center"
+                    style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px 12px 0 0;padding:14px 24px;border-left:4px solid #0ea5e9;">
+                    <i class="bi bi-cart3 text-info mr-2"></i>
+                    <span class="font-weight-bold text-secondary" style="font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;">
+                        Instrumental a Despachar
+                    </span>
+                </div>
+                <div class="card-body" style="padding:24px;">
+                    <livewire:product-carttoEXP :cartInstance="'expedition'" :data="$expedition" />
+                </div>
+            </div>
+
+            {{-- Observaciones --}}
+            <div class="card border-0 mb-4" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+                <div class="card-header border-0 d-flex align-items-center"
+                    style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px 12px 0 0;padding:14px 24px;border-left:4px solid #94a3b8;">
+                    <i class="bi bi-chat-left-text text-secondary mr-2"></i>
+                    <span class="font-weight-bold text-secondary" style="font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;">
+                        Observaciones
+                    </span>
+                </div>
+                <div class="card-body" style="padding:24px;">
+                    <textarea name="note_expedition" id="note_expedition" rows="3" class="form-control"
+                        placeholder="Notas u observaciones adicionales (opcional)..."
+                        style="border-radius:8px;resize:none;">{{ $expedition->note }}</textarea>
+                    <small class="text-muted" style="font-size:.75rem;">
+                        <span id="charCount">0</span> caracteres
+                    </small>
+                </div>
+            </div>
+
+            {{-- Acciones --}}
+            <div class="d-flex align-items-center justify-content-between">
+                <div id="loading-indicator" class="d-none d-flex align-items-center text-muted" style="gap:8px;">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="sr-only">Procesando...</span>
+                    </div>
+                    <span style="font-size:.9rem;">Actualizando despacho...</span>
+                </div>
+                <div></div>
+                <button type="submit" id="submit-btn"
+                    class="btn d-flex align-items-center text-white"
+                    style="border-radius:8px;padding:11px 28px;font-weight:600;background:linear-gradient(135deg,#10b981,#059669);border:none;box-shadow:0 4px 12px rgba(16,185,129,0.35);gap:8px;">
+                    <i class="bi bi-check-lg" id="submit-icon"></i>
+                    <span id="submit-text">Actualizar Despacho</span>
+                </button>
+            </div>
+
+        </form>
     </div>
-
 @endsection
-
 
 @push('page_scripts')
     <script>
         let isSubmitting = false;
         let submitTimestamp = null;
-        const SUBMIT_COOLDOWN = 3000; // 3 segundos
+        const SUBMIT_COOLDOWN = 3000;
 
         function updateCounter() {
-            const textarea = document.getElementById('note');
+            const textarea = document.getElementById('note_expedition');
             const counter = document.getElementById('charCount');
-            if (textarea && counter) {
-                counter.textContent = textarea.value.length;
-            }
+            if (textarea && counter) counter.textContent = textarea.value.length;
         }
 
         function handleFormSubmit(event) {
             const now = Date.now();
-            const submitBtn = document.getElementById('submit-btn');
-            const submitText = document.getElementById('submit-text');
-            const submitIcon = document.getElementById('submit-icon');
-            const loadingIndicator = document.getElementById('loading-indicator');
 
-            // Prevenir doble envío
             if (isSubmitting) {
                 event.preventDefault();
-                console.log('Envío bloqueado - formulario ya en proceso');
                 return false;
             }
 
-            // Verificar cooldown
             if (submitTimestamp && (now - submitTimestamp) < SUBMIT_COOLDOWN) {
                 event.preventDefault();
-                console.log('Envío bloqueado - muy pronto desde el último envío');
                 return false;
             }
 
-            // Validar que hay productos en el carrito (esto depende de tu implementación de Livewire)
-            // Puedes añadir aquí validaciones adicionales
-
-            // Marcar como enviando
             isSubmitting = true;
             submitTimestamp = now;
 
-            // Deshabilitar botón y mostrar loading
+            const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
-            submitBtn.classList.add('btn-secondary');
-            submitBtn.classList.remove('btn-primary');
+            submitBtn.style.opacity = '0.7';
+            document.getElementById('submit-text').textContent = 'Procesando...';
+            document.getElementById('submit-icon').className = 'bi bi-hourglass-split';
+            document.getElementById('loading-indicator').classList.remove('d-none');
 
-            submitText.textContent = 'Procesando...';
-            submitIcon.className = 'bi bi-hourglass-split';
-
-            loadingIndicator.classList.remove('d-none');
-
-            // Timeout de seguridad para rehabilitar el botón si algo sale mal
-            setTimeout(() => {
-                if (isSubmitting) {
-                    resetSubmitButton();
-                }
-            }, 10000); // 10 segundos
+            setTimeout(() => { if (isSubmitting) resetSubmitButton(); }, 10000);
 
             return true;
         }
 
         function resetSubmitButton() {
-            const submitBtn = document.getElementById('submit-btn');
-            const submitText = document.getElementById('submit-text');
-            const submitIcon = document.getElementById('submit-icon');
-            const loadingIndicator = document.getElementById('loading-indicator');
-
             isSubmitting = false;
             submitTimestamp = null;
 
+            const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = false;
-            submitBtn.classList.remove('btn-secondary');
-            submitBtn.classList.add('btn-primary');
-
-            submitText.textContent = 'Despachar';
-            submitIcon.className = 'bi bi-check';
-
-            loadingIndicator.classList.add('d-none');
+            submitBtn.style.opacity = '1';
+            document.getElementById('submit-text').textContent = 'Actualizar Despacho';
+            document.getElementById('submit-icon').className = 'bi bi-check-lg';
+            document.getElementById('loading-indicator').classList.add('d-none');
         }
 
-        // Prevenir envío con Enter en campos de texto (excepto textarea)
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('reception-form');
-            const inputs = form.querySelectorAll('input[type="text"], select');
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('expedition-form');
+            const inputs = form.querySelectorAll('input[type="text"], input[type="number"], select');
 
             inputs.forEach(input => {
-                input.addEventListener('keypress', function(e) {
+                input.addEventListener('keypress', function (e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
-                        // Mover al siguiente campo
                         const formElements = Array.from(form.elements);
-                        const currentIndex = formElements.indexOf(this);
-                        const nextElement = formElements[currentIndex + 1];
-                        if (nextElement && nextElement.focus) {
-                            nextElement.focus();
-                        }
+                        const next = formElements[formElements.indexOf(this) + 1];
+                        if (next && next.focus) next.focus();
                     }
                 });
             });
 
-            // Inicializar contador de caracteres
-            updateCounter();
+            const note = document.getElementById('note_expedition');
+            if (note) {
+                note.addEventListener('input', updateCounter);
+                updateCounter();
+            }
         });
-
-        // Detectar si el usuario intenta cerrar la página mientras se está enviando
-        /* window.addEventListener('beforeunload', function(e) {
-             if (isSubmitting) {
-                 const message = 'El formulario se está enviando. ¿Estás seguro de que quieres salir?';
-                 e.preventDefault();
-                 e.returnValue = message;
-                 return message;
-             }
-         });
-         */
     </script>
 @endpush

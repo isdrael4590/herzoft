@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use Illuminate\Support\Collection;
 use Livewire\Component;
-use Modules\Preparation\Entities\PreparationDetails;
 use Modules\Product\Entities\Product;
 
 class SearchProduct extends Component
@@ -20,30 +19,6 @@ class SearchProduct extends Component
         $this->how_many = 10;
         $this->search_results = Collection::empty();
     }
-    public $selectedIndex = 0;
-
-    public function moveUp()
-    {
-        if ($this->selectedIndex > 0) {
-            $this->selectedIndex--;
-        }
-    }
-
-    public function moveDown()
-    {
-        if ($this->selectedIndex < count($this->search_results) - 1) {
-            $this->selectedIndex++;
-        }
-    }
-
-    public function selectRow()
-    {
-        $selectedRow = $this->search_results[$this->selectedIndex];
-        // Perform the desired action with the selected row.
-        session()->flash('message', "Selected: $selectedRow");
-    }
-
-
     public $barcode = '';
 
 
@@ -60,6 +35,8 @@ class SearchProduct extends Component
             ->orWhere('product_code',  'like', '%' . $this->query . '%')
             ->orWhere('product_name', 'like', '%' . $this->query . '%')
             ->take($this->how_many)->get();
+
+        $this->dispatch('searchUpdated');
     }
 
     public function loadMore()

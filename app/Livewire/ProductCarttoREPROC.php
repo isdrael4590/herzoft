@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 
 class ProductCarttoREPROC extends Component
@@ -17,30 +16,28 @@ class ProductCarttoREPROC extends Component
     public $type_dirt;
     public $state_rumed;
     public $type_process;
+    public $quantity;
 
-    
     private $discharge_detail;
 
     public function mount($cartInstance, $data = null)
     {
         $this->cart_instance = $cartInstance;
 
+        $this->type_dirt    = [];
+        $this->state_rumed  = [];
+        $this->type_process = [];
+        $this->quantity     = [];
+
         if ($data) {
             $this->data = $data;
-            $cart_items = Cart::instance($this->cart_instance)->content();
+        }
 
-            foreach ($cart_items as $cart_item) {
-                $this->type_dirt[$cart_item->id] = $cart_item->options->product_type_dirt;
-                $this->state_rumed[$cart_item->id] = $cart_item->options->product_state_rumed;
-                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
-
-            }
-        } else {
-            
-            $this->type_dirt = [];
-            $this->state_rumed = [];
-            $this->type_process = [];
-
+        foreach (Cart::instance($this->cart_instance)->content() as $cart_item) {
+            $this->type_dirt[$cart_item->id]    = $cart_item->options->product_type_dirt;
+            $this->state_rumed[$cart_item->id]  = $cart_item->options->product_state_rumed;
+            $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
+            $this->quantity[$cart_item->id]     = $cart_item->qty;
         }
     }
 
@@ -85,8 +82,57 @@ class ProductCarttoREPROC extends Component
             ]
 
         ]);
-        $this->type_dirt[$discharge_detail['id']] = 'REPROCESADO';
+        $this->type_dirt[$discharge_detail['id']]  = 'REPROCESADO';
         $this->state_rumed[$discharge_detail['id']] = 'BUENO';
+        $this->quantity[$discharge_detail['id']]    = 1;
+
+        $this->dispatch('focusQuantity', productId: $discharge_detail['id']);
+    }
+
+    public function incrementQuantity($row_id, $product_id)
+    {
+        $this->quantity[$product_id] = ($this->quantity[$product_id] ?? 0) + 1;
+        $this->updateQuantity($row_id, $product_id);
+    }
+
+    public function decrementQuantity($row_id, $product_id)
+    {
+        if (($this->quantity[$product_id] ?? 1) > 1) {
+            $this->quantity[$product_id]--;
+            $this->updateQuantity($row_id, $product_id);
+        }
+    }
+
+    public function setAndUpdateQuantity(string $row_id, int $product_id, int $qty): void
+    {
+        $this->quantity[$product_id] = max(1, $qty);
+        $this->updateQuantity($row_id, $product_id);
+    }
+
+    public function updateQuantity($row_id, $product_id)
+    {
+        $cart      = Cart::instance($this->cart_instance);
+        $cart_item = $cart->get($row_id);
+
+        if (!$cart_item) {
+            return;
+        }
+
+        $newQty = max(1, (int) ($this->quantity[$product_id] ?? 1));
+        $this->quantity[$product_id] = $newQty;
+
+        $cart->update($row_id, [
+            'qty'     => $newQty,
+            'options' => [
+                'code'                 => $cart_item->options->code,
+                'product_id'           => $cart_item->options->product_id,
+                'product_type_process' => $cart_item->options->product_type_process,
+                'product_type_dirt'    => $cart_item->options->product_type_dirt,
+                'product_state_rumed'  => $cart_item->options->product_state_rumed,
+            ],
+        ]);
+
+        $this->dispatch('qty-confirmed-' . $product_id, qty: $newQty);
     }
 
     public function removeItem($row_id)

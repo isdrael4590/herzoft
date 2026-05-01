@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 
 class ProductCarttoSUB2 extends Component
@@ -24,20 +23,16 @@ class ProductCarttoSUB2 extends Component
     {
         $this->cart_instance = $cartInstance;
 
+        $this->subcode   = [];
+        $this->quantity  = [];
+
         if ($data) {
             $this->data = $data;
-            $cart_items = Cart::instance($this->cart_instance)->content();
+        }
 
-            foreach ($cart_items as $cart_item) {
-                $this->subcode[$cart_item->id] = $cart_item->options->product_subcode;
-                $this->quantity[$cart_item->id] = $cart_item->options->qty;
-
-            }
-        } else {
-            
-            $this->subcode = [];
-            $this->quantity = [];
-
+        foreach (Cart::instance($this->cart_instance)->content() as $cart_item) {
+            $this->subcode[$cart_item->id]   = $cart_item->options->product_subcode;
+            $this->quantity[$cart_item->id]  = $cart_item->options->qty;
         }
     }
 

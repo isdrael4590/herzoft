@@ -37,6 +37,11 @@ Route::post('preparation-details/reset-quantities', [PreparationDetailsControlle
 
     Route::get('preparation-details/reset-history', [PreparationDetailsController::class, 'resetHistory'])
         ->name('preparationDetails.resetHistory');
+
+    Route::get('preparationDetails/{code}/history', [PreparationDetailsController::class, 'codeHistory'])
+        ->name('preparationDetails.codeHistory')
+        ->where('code', '.*');
+
     //preparations
     Route::resource('preparations', 'PreparationController');
     Route::resource('preparationDetails', 'PreparationDetailsController');

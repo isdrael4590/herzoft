@@ -112,9 +112,10 @@ class LabelqrController extends Controller
 
         $labelqr_details = $labelqr->labelqrDetails;
 
-        Cart::instance('labelqr')->destroy();
+        $cartInstance = $labelqr->machine_type == 'Peroxido' ? 'labelqrhpo' : 'labelqr';
+        Cart::instance($cartInstance)->destroy();
 
-        $cart = Cart::instance('labelqr');
+        $cart = Cart::instance($cartInstance);
 
         foreach ($labelqr_details as $labelqr_detail) {
             $cart->add([
@@ -171,7 +172,8 @@ class LabelqrController extends Controller
                 'total_amount' => $request->total_amount // se añade
             ]);
 
-            foreach (Cart::instance('labelqr')->content() as $cart_item) {
+            $cartInstance = $labelqr->machine_type == 'Peroxido' ? 'labelqrhpo' : 'labelqr';
+            foreach (Cart::instance($cartInstance)->content() as $cart_item) {
                 //$preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 if ($cart_item->options->preparation_detail_id != null) {
                     LabelqrDetails::create([
@@ -241,7 +243,7 @@ class LabelqrController extends Controller
                 }
             }
 
-            Cart::instance('labelqr')->destroy();
+            Cart::instance($cartInstance)->destroy();
         });
 
         toast('Ingreso actualizado!', 'info');

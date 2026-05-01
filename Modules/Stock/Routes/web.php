@@ -32,6 +32,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     //stocks
     Route::resource('stocks', 'StockController');
+    Route::get('/stockDetails/history/{code}', 'StockDetailsController@codeHistory')->name('stockDetails.codeHistory');
+    Route::post('/stockDetails/reset-quantities', 'StockDetailsController@resetQuantities')->name('stockDetails.resetQuantities');
+    Route::get('/stockDetails/reset-history', 'StockDetailsController@resetHistory')->name('stockDetails.resetHistory');
     Route::resource('stockDetails', 'StockDetailsController');
 
 });

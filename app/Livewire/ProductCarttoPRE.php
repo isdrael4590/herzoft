@@ -3,9 +3,7 @@
 namespace App\Livewire;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Request;
 use Livewire\Component;
-use Modules\Product\Entities\Product;
 
 class ProductCarttoPRE extends Component
 {
@@ -13,7 +11,8 @@ class ProductCarttoPRE extends Component
     public $listeners = ['productSelected'];
 
     public $cart_instance;
- 
+    public $readonly_qty = false;
+
     public $data;
     public $state_preparation;
     public $coming_zone ;
@@ -29,37 +28,33 @@ class ProductCarttoPRE extends Component
 
     private $product;
 
-    public function mount($cartInstance, $data = null)
+    public function mount($cartInstance, $data = null, $readonlyQty = false)
     {
         $this->cart_instance = $cartInstance;
+        $this->readonly_qty = $readonlyQty;
+
+        $this->state_preparation = [];
+        $this->type_process = [];
+        $this->coming_zone = [];
+        $this->item_product_info = [];
+        $this->check_quantity = [];
+        $this->quantity = [];
+        $this->item_patient = [];
+        $this->unit_price = [];
+
         if ($data) {
             $this->data = $data;
-            $cart_items = Cart::instance($this->cart_instance)->content();
-
-            foreach ($cart_items as $cart_item) {
-                $this->quantity[$cart_item->id] = $cart_item->qty;
-                $this->unit_price[$cart_item->id] = $cart_item->price; // se añade
-
-                $this->item_patient[$cart_item->id] = $cart_item->options->product_patient;
-                $this->state_preparation[$cart_item->id] = $cart_item->options->product_state_preparation;
-                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
-                $this->coming_zone[$cart_item->id] = $cart_item->options->product_coming_zone;
-                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
-
-            }
-        } else {
-            
-            $this->state_preparation = [];
-            $this->type_process = [];
-            $this->coming_zone = [];
-            $this->item_product_info = [];
-            $this->check_quantity = [];
-            $this->quantity = [];
-            $this->item_patient = [];
-            $this->unit_price = []; // se añade
-
         }
-      
+
+        foreach (Cart::instance($this->cart_instance)->content() as $cart_item) {
+            $this->quantity[$cart_item->id]          = $cart_item->qty;
+            $this->unit_price[$cart_item->id]        = $cart_item->price;
+            $this->item_patient[$cart_item->id]      = $cart_item->options->product_patient;
+            $this->state_preparation[$cart_item->id] = $cart_item->options->product_state_preparation;
+            $this->type_process[$cart_item->id]      = $cart_item->options->product_type_process;
+            $this->coming_zone[$cart_item->id]       = $cart_item->options->product_coming_zone;
+            $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
+        }
     }
 
     public function render()
@@ -67,7 +62,8 @@ class ProductCarttoPRE extends Component
         $cart_items = Cart::instance($this->cart_instance)->content();
 
         return view('livewire.product-carttoPRE', [
-            'cart_items' => $cart_items
+            'cart_items'   => $cart_items,
+            'readonly_qty' => $this->readonly_qty,
         ]);
     }
 
@@ -110,9 +106,11 @@ class ProductCarttoPRE extends Component
 
         ]);
         $this->state_preparation[$product['id']] = 'Disponible';
-        $this->item_patient[$product['id']] = $product['product_patient'];
-        $this->quantity[$product['id']] = $product['product_quantity'];
+        $this->item_patient[$product['id']]      = $product['product_patient'];
+        $this->quantity[$product['id']]          = $product['product_quantity'];
         $this->item_product_info[$product['id']] = $product['product_info'];
+
+        $this->dispatch('focusQuantity', productId: $product['id']);
 
 
 
@@ -138,6 +136,57 @@ class ProductCarttoPRE extends Component
         $sub_total = $product_quantity;
 
         return ['price' => $price, 'unit_price' => $unit_price, 'sub_total' => $sub_total];
+    }
+
+    public function incrementQuantity($row_id, $product_id)
+    {
+        $this->quantity[$product_id] = ($this->quantity[$product_id] ?? 0) + 1;
+        $this->updateQuantity($row_id, $product_id);
+    }
+
+    public function decrementQuantity($row_id, $product_id)
+    {
+        if (($this->quantity[$product_id] ?? 1) > 1) {
+            $this->quantity[$product_id]--;
+            $this->updateQuantity($row_id, $product_id);
+        }
+    }
+
+    public function setAndUpdateQuantity(string $row_id, int $product_id, int $qty): void
+    {
+        $this->quantity[$product_id] = max(1, $qty);
+        $this->updateQuantity($row_id, $product_id);
+    }
+
+    public function updateQuantity($row_id, $product_id)
+    {
+        $cart      = Cart::instance($this->cart_instance);
+        $cart_item = $cart->get($row_id);
+
+        if (!$cart_item) {
+            return;
+        }
+
+        $newQty = max(1, (int) ($this->quantity[$product_id] ?? 1));
+        $this->quantity[$product_id] = $newQty;
+
+        $cart->update($row_id, [
+            'qty'     => $newQty,
+            'options' => [
+                'code'                    => $cart_item->options->code,
+                'product_quantity'        => $newQty,
+                'sub_total'               => $cart_item->price * $newQty,
+                'unit'                    => $cart_item->options->unit ?? '',
+                'unit_price'              => $cart_item->options->unit_price ?? $cart_item->price,
+                'product_type_process'    => $cart_item->options->product_type_process,
+                'product_state_preparation' => $cart_item->options->product_state_preparation,
+                'product_coming_zone'     => $cart_item->options->product_coming_zone,
+                'product_patient'         => $cart_item->options->product_patient,
+                'product_info'            => $cart_item->options->product_info,
+            ],
+        ]);
+
+        $this->dispatch('qty-confirmed-' . $product_id, qty: $newQty);
     }
 
     public function removeItem($row_id)

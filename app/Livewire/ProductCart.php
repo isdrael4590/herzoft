@@ -3,9 +3,7 @@
 namespace App\Livewire;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Request;
 use Livewire\Component;
-use Modules\Product\Entities\Product;
 
 class ProductCart extends Component
 {
@@ -24,48 +22,46 @@ class ProductCart extends Component
     public $item_product_info;
     public $item_outside_company;
     public $item_area;
+    public $item_lavado;
 
 
     public $unit_price;
 
 
-    private $product;
-
     public function mount($cartInstance, $data = null)
     {
         $this->cart_instance = $cartInstance;
 
+        // Inicializar arrays vacíos
+        $this->type_dirt = [];
+        $this->state_rumed = [];
+        $this->type_process = [];
+        $this->check_quantity = [];
+        $this->quantity = [];
+        $this->item_patient = [];
+        $this->item_product_info = [];
+        $this->unit_price = [];
+        $this->item_outside_company = [];
+        $this->item_area = [];
+        $this->item_lavado = [];
+
         if ($data) {
             $this->data = $data;
-            $cart_items = Cart::instance($this->cart_instance)->content();
+        }
 
-            foreach ($cart_items as $cart_item) {
-                $this->quantity[$cart_item->id] = $cart_item->qty;
-                $this->unit_price[$cart_item->id] = $cart_item->price; // se añade
-                $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company; // se añade
-                $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
-                $this->item_patient[$cart_item->id] = $cart_item->options->product_patient;
-                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
-
-                $this->type_dirt[$cart_item->id] = $cart_item->options->product_type_dirt;
-                $this->state_rumed[$cart_item->id] = $cart_item->options->product_state_rumed;
-                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
-            }
-        } else {
-
-            $this->type_dirt = [];
-            $this->state_rumed = [];
-            $this->type_process = [];
-            $this->check_quantity = [];
-            $this->quantity = [];
-            $this->item_patient = [];
-            $this->item_product_info = [];
-            $this->unit_price = []; // se añade
-            $this->item_outside_company = []; // se añade
-            $this->item_area = []; // se añade
-
-
-
+        // Siempre cargar ítems existentes del carrito (persiste al recargar la página)
+        $cart_items = Cart::instance($this->cart_instance)->content();
+        foreach ($cart_items as $cart_item) {
+            $this->quantity[$cart_item->id]             = $cart_item->qty;
+            $this->unit_price[$cart_item->id]           = $cart_item->price;
+            $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company;
+            $this->item_area[$cart_item->id]            = $cart_item->options->product_area;
+            $this->item_patient[$cart_item->id]         = $cart_item->options->product_patient;
+            $this->item_product_info[$cart_item->id]    = $cart_item->options->product_info;
+            $this->type_dirt[$cart_item->id]            = $cart_item->options->product_type_dirt;
+            $this->state_rumed[$cart_item->id]          = $cart_item->options->product_state_rumed;
+            $this->type_process[$cart_item->id]         = $cart_item->options->product_type_process;
+            $this->item_lavado[$cart_item->id]          = $cart_item->options->product_lavado ?? false;
         }
     }
 
@@ -82,7 +78,7 @@ class ProductCart extends Component
     {
         $cart = Cart::instance($this->cart_instance);
 
-        $exists = $cart->search(function ($cartItem, $rowId) use ($product) {
+        $exists = $cart->search(function ($cartItem, $_rowId) use ($product) {
             return $cartItem->id == $product['id'];
         });
 
@@ -122,7 +118,8 @@ class ProductCart extends Component
                     'product_area' => $cartItem->options->product_area ?? ($product['area'] ?? ''),
                     'product_type_dirt' => $cartItem->options->product_type_dirt ?? 'CRITICO',
                     'product_state_rumed' => $cartItem->options->product_state_rumed ?? 'BUENO',
-                    'product_outside_company' => $cartItem->options->product_outside_company ?? ''
+                    'product_outside_company' => $cartItem->options->product_outside_company ?? '',
+                    'product_lavado' => $cartItem->options->product_lavado ?? false,
                 ]
             ]);
 
@@ -149,7 +146,8 @@ class ProductCart extends Component
                 'product_info'    => $product['product_info'],
                 'product_area'    => $product['area'],
                 'product_type_dirt' => 'CRITICO', //ESTE ES EL DATO A MODIFICAR
-                'product_state_rumed' => 'BUENO' //ESTE ES EL DATO A MODIFICAR
+                'product_state_rumed' => 'BUENO', //ESTE ES EL DATO A MODIFICAR
+                'product_lavado' => false,
             ]
 
         ]);
@@ -161,6 +159,9 @@ class ProductCart extends Component
         $this->quantity[$product['id']] = 1;
         $this->type_dirt[$product['id']] = 'CRITICO';
         $this->state_rumed[$product['id']] = 'BUENO';
+        $this->item_lavado[$product['id']] = false;
+
+        $this->dispatch('focusQuantity', productId: $product['id']);
     }
 
 
@@ -192,36 +193,46 @@ class ProductCart extends Component
 
 
 
+    // Llamado desde Alpine: recibe qty directamente (1 roundtrip, sin wire:model.live)
+    public function setAndUpdateQuantity(string $row_id, int $product_id, int $qty): void
+    {
+        $this->quantity[$product_id] = max(1, $qty);
+        $this->updateQuantity($row_id, $product_id);
+    }
+
     public function updateQuantity($row_id, $product_id)
     {
+        $cart      = Cart::instance($this->cart_instance);
+        $cart_item = $cart->get($row_id);
 
-        // Validar que la cantidad sea válida
-        $newQuantity = max(1, (int)$this->quantity[$product_id]);
+        if (!$cart_item) {
+            return;
+        }
+
+        $newQuantity = max(1, (int)($this->quantity[$product_id] ?? 1));
         $this->quantity[$product_id] = $newQuantity;
 
-        // Actualizar cantidad en el carrito
-        Cart::instance($this->cart_instance)->update($row_id, $newQuantity);
-        
-        $cart_item = Cart::instance($this->cart_instance)->get($row_id);
-
-        Cart::instance($this->cart_instance)->update($row_id, [
+        // Una sola llamada: qty + options juntos
+        $cart->update($row_id, [
+            'qty'     => $newQuantity,
             'options' => [
-                'product_quantity'             => $cart_item->qty,
-                'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
-                'unit'                  => $cart_item->options->unit, // se añade
-                'unit_price'            => $cart_item->options->unit_price, // se añade
-                'code'                   => $cart_item->options->code,
-                'product_type_dirt'      => $cart_item->options->product_type_dirt,
-                'product_state_rumed'    => $cart_item->options->product_state_rumed,
+                'product_quantity'        => $newQuantity,
+                'sub_total'               => $cart_item->price * $newQuantity,
+                'unit'                    => $cart_item->options->unit,
+                'unit_price'              => $cart_item->options->unit_price,
+                'code'                    => $cart_item->options->code,
+                'product_type_dirt'       => $cart_item->options->product_type_dirt,
+                'product_state_rumed'     => $cart_item->options->product_state_rumed,
                 'product_type_process'    => $cart_item->options->product_type_process,
-                'product_patient'    => $cart_item->options->product_patient,
-                'product_info'    => $cart_item->options->product_info,
-                'product_outside_company'    => $cart_item->options->product_outside_company,
-                'product_area'    => $cart_item->options->product_area,
-
-
+                'product_patient'         => $cart_item->options->product_patient,
+                'product_info'            => $cart_item->options->product_info,
+                'product_outside_company' => $cart_item->options->product_outside_company,
+                'product_area'            => $cart_item->options->product_area,
+                'product_lavado'          => $cart_item->options->product_lavado ?? false,
             ]
         ]);
+
+        $this->dispatch('qty-confirmed-' . $product_id, qty: $newQuantity);
     }
 
 
@@ -262,7 +273,7 @@ class ProductCart extends Component
 
 
 
-    public function updateDataInput($row_id, $product_id)
+    public function updateDataInput($row_id, $_product_id = null)
     { // se añade
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
 
@@ -277,6 +288,7 @@ class ProductCart extends Component
                 'product_info'    => $cart_item->options->product_info,
                 'product_outside_company'    => $cart_item->options->product_outside_company,
                 'product_area'    => $cart_item->options->product_area,
+                'product_lavado'  => $cart_item->options->product_lavado ?? false,
                 'sub_total'             => $cart_item->price * $cart_item->qty, // se añade
                 'unit'                  => $cart_item->options->unit, // se añade
                 'unit_price'            => $cart_item->options->unit_price, // se añade
@@ -285,14 +297,36 @@ class ProductCart extends Component
         ]);
     }
 
+    public function toggleLavado($row_id, $product_id)
+    {
+        $cart_item = Cart::instance($this->cart_instance)->get($row_id);
+        $newLavado = !($cart_item->options->product_lavado ?? false);
+        $this->item_lavado[$product_id] = $newLavado;
+
+        Cart::instance($this->cart_instance)->update($row_id, ['options' => [
+            'code'                    => $cart_item->options->code,
+            'product_quantity'        => $cart_item->qty,
+            'product_type_process'    => $cart_item->options->product_type_process,
+            'product_type_dirt'       => $cart_item->options->product_type_dirt,
+            'product_state_rumed'     => $cart_item->options->product_state_rumed,
+            'product_patient'         => $cart_item->options->product_patient,
+            'product_info'            => $cart_item->options->product_info,
+            'product_area'            => $cart_item->options->product_area,
+            'product_outside_company' => $cart_item->options->product_outside_company,
+            'product_lavado'          => $newLavado,
+            'sub_total'               => $cart_item->price * $cart_item->qty,
+            'unit_price'              => $cart_item->options->unit_price,
+            'unit'                    => $cart_item->options->unit,
+        ]]);
+    }
+
     public function setProductoptions($row_id, $product_id)
     {
         $cart_item = Cart::instance($this->cart_instance)->get($row_id);
 
         $this->updateCartOptions($row_id, $product_id, $cart_item);
 
-
-        session()->flash('message_inputDyrtState' . $product_id, 'Observaciones añadidos...!');
+        $this->dispatch('closeProductModal', productId: $product_id);
     }
 
 
@@ -309,6 +343,7 @@ class ProductCart extends Component
             'product_state_rumed'   => $this->state_rumed[$product_id],
             'product_area'   => $this->item_area[$product_id],
             'product_outside_company'   => $this->item_outside_company[$product_id],
+            'product_lavado'            => $this->item_lavado[$product_id] ?? false,
             'sub_total'             => $cart_item->price * $cart_item->qty,
             'unit_price'            => $cart_item->options->unit_price,
         ]]);

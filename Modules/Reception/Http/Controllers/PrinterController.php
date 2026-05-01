@@ -34,15 +34,16 @@ class PrinterController extends Controller
             ->get()->first();
 
         $institute = Institute::all()->first();
-        $urlImage = $institute->getFirstMedia('institutes')->getPath();
-       
-        $Image = file_get_contents($urlImage);
+        $instituteMedia = $institute->getFirstMedia('institutes');
+        $urlImage = $instituteMedia ? $instituteMedia->getPath() : public_path('images/fallback_product_image.png');
+        $Image = file_exists($urlImage) ? file_get_contents($urlImage) : file_get_contents(public_path('images/fallback_product_image.png'));
         $base64 = base64_encode($Image);
         $dataUrl = 'data:image/jpeg;base64,' . $base64;
 
         $setting = Setting::all()->first();
-        $urllogoHerz = $setting->getFirstMedia('settings')->getPath();
-        $Imagelogo =  file_get_contents($urllogoHerz);
+        $settingMedia = $setting->getFirstMedia('settings');
+        $urllogoHerz = $settingMedia ? $settingMedia->getPath() : public_path('images/fallback_product_image.png');
+        $Imagelogo = file_exists($urllogoHerz) ? file_get_contents($urllogoHerz) : file_get_contents(public_path('images/fallback_product_image.png'));
         $base64Logo = base64_encode($Imagelogo);
         $dataUrlogo = 'data:image/jpeg;base64,' . $base64Logo;
        

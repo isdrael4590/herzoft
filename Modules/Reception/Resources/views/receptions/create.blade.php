@@ -5,119 +5,189 @@
 
 @extends('layouts.app')
 
-@section('title', 'Registrar Ingreso')
+@section('title', 'Nuevo Ingreso Instrumental')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('receptions.index') }}">Recepción Instrumental</a></li>
-        <li class="breadcrumb-item active">Añadir</li>
+        <li class="breadcrumb-item"><a href="{{ route('receptions.index') }}">Ingreso Instrumental</a></li>
+        <li class="breadcrumb-item active">Nuevo</li>
     </ol>
 @endsection
 
 @section('content')
     <div class="container-fluid mb-4">
-        <div class="row">
-            <div class="col-12">
+
+        {{-- Page Header --}}
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mr-3"
+                    style="width:48px;height:48px;background:linear-gradient(135deg,#10b981,#059669);">
+                    <i class="bi bi-plus-circle text-white" style="font-size:1.4rem;"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0 font-weight-bold text-dark">Nuevo Ingreso Instrumental</h4>
+                    <small class="text-muted">
+                        Referencia: <strong class="text-dark">{{ $reception_code }}</strong>
+                    </small>
+                </div>
+            </div>
+            <a href="{{ route('receptions.index') }}"
+                class="btn btn-outline-secondary d-flex align-items-center"
+                style="border-radius:8px;padding:9px 18px;font-weight:600;">
+                <i class="bi bi-arrow-left mr-2"></i> Volver
+            </a>
+        </div>
+
+        {{-- Búsqueda de Instrumental --}}
+        <div class="card border-0 mb-4" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+            <div class="card-header border-0 d-flex align-items-center"
+                style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px 12px 0 0;padding:14px 24px;border-left:4px solid #0ea5e9;">
+                <i class="bi bi-search text-info mr-2"></i>
+                <span class="font-weight-bold text-secondary" style="font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;">
+                    Búsqueda de Instrumental
+                </span>
+            </div>
+            <div class="card-body" style="padding:24px;">
                 <livewire:search-product />
             </div>
         </div>
 
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        @include('utils.alerts')
+        {{-- Formulario de Registro --}}
+        <div class="card border-0 mb-4" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+            <div class="card-header border-0 d-flex align-items-center"
+                style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px 12px 0 0;padding:14px 24px;border-left:4px solid #3b82f6;">
+                <i class="bi bi-clipboard-plus text-primary mr-2"></i>
+                <span class="font-weight-bold text-secondary" style="font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;">
+                    Datos del Ingreso
+                </span>
+            </div>
+            <div class="card-body" style="padding:24px;">
 
-                        {{-- Formulario con token CSRF único y prevención de doble envío --}}
-                        <form id="reception-form" action="{{ route('receptions.store') }}" method="POST"
-                            onsubmit="return handleFormSubmit(event)">
-                            @csrf
-                            {{-- Token adicional para prevenir duplicados --}}
-                            <input type="hidden" name="form_token" value="{{ uniqid('reception_', true) }}">
+                @include('utils.alerts')
 
-                            <div class="form-row">
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="reference">Referencia <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reference" required readonly
-                                            value="{{ $reception_code }}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label>Área Procedente</label>
-                                        <select class="form-control" id="area" name="area" required>
-                                            @foreach (\Modules\Informat\Entities\Area::all() as $area)
-                                                <option value="{{ $area->area_name }}"
-                                                    {{ old('area') == $area->area_name ? 'selected' : '' }}>
-                                                    {{ $area->area_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label>Persona que entrega</label>
-                                        <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
-                                            placeholder="Ingrese el nombre de la persona que entrega"
-                                            value="{{ old('delivery_staff') }}" required>
-                                    </div>
-                                </div>
+                <form id="reception-form" action="{{ route('receptions.store') }}" method="POST"
+                    onsubmit="return handleFormSubmit(event)">
+                    @csrf
+                    <input type="hidden" name="form_token" value="{{ uniqid('reception_', true) }}">
 
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label>Operador</label>
-                                        <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder="{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
-                                            required readonly>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <livewire:product-cart :cartInstance="'reception'" />
-
-                            <div class="form-row">
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="status">Estado de Ingreso <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="status" id="status" required>
-                                            <option value="Pendiente" {{ old('status') == 'Pendiente' ? 'selected' : '' }}>
-                                                Pendiente</option>
-                                            <option value="Registrado"
-                                                {{ old('status') == 'Registrado' ? 'selected' : '' }}>Registrado</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
+                    {{-- Campos de cabecera --}}
+                    <div class="form-row mb-3">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                <label for="note">Nota (Si se necesita)</label>
-                                <textarea name="note" id="note" rows="5" class="form-control" maxlength="400" onkeyup="updateCounter()"
-                                    placeholder="Escriba aquí cualquier observación adicional...">{{ old('note') }}</textarea>
-                                <small class="text-muted"><span id="charCount">{{ strlen(old('note', '')) }}</span>/400
-                                    caracteres</small>
+                                <label class="text-dark font-weight-semibold" style="font-size:.875rem;">
+                                    <i class="bi bi-hash text-primary mr-1"></i>
+                                    Referencia <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" name="reference" required readonly
+                                    value="{{ $reception_code }}"
+                                    style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;background:#f8fafc;">
                             </div>
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <button type="submit" class="btn btn-primary" id="submit-btn">
-                                    <span id="submit-text">Registrar Ingreso</span>
-                                    <i class="bi bi-check" id="submit-icon"></i>
-                                </button>
-
-                                <div id="loading-indicator" class="d-none">
-                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                        <span class="sr-only">Procesando...</span>
-                                    </div>
-                                    <span class="ml-2">Guardando registro...</span>
-                                </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="text-dark font-weight-semibold" style="font-size:.875rem;">
+                                    <i class="bi bi-diagram-3 text-primary mr-1"></i>
+                                    Área Procedente <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-control" id="area" name="area" required
+                                    style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
+                                    @foreach (\Modules\Informat\Entities\Area::all() as $area)
+                                        <option value="{{ $area->area_name }}"
+                                            {{ old('area') == $area->area_name ? 'selected' : '' }}>
+                                            {{ $area->area_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-                        </form>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="text-dark font-weight-semibold" style="font-size:.875rem;">
+                                    <i class="bi bi-person text-primary mr-1"></i>
+                                    Persona que entrega <span class="text-danger">*</span>
+                                </label>
+                                <input class="form-control" type="text" id="delivery_staff" name="delivery_staff"
+                                    placeholder="Nombre de quien entrega"
+                                    value="{{ old('delivery_staff') }}" required
+                                    style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="text-dark font-weight-semibold" style="font-size:.875rem;">
+                                    <i class="bi bi-person-badge text-primary mr-1"></i>
+                                    Operador
+                                </label>
+                                <input class="form-control" type="text" id="operator" name="operator"
+                                    value="{{ Auth::user()->name }}" required readonly
+                                    style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;background:#f8fafc;">
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+                    {{-- Carrito de productos --}}
+                    <livewire:product-cart :cartInstance="'reception'" />
+
+                    {{-- Estado y Nota --}}
+                    <div class="form-row mt-3">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="text-dark font-weight-semibold" style="font-size:.875rem;">
+                                    <i class="bi bi-toggle-on text-primary mr-1"></i>
+                                    Estado de Ingreso <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-control" name="status" id="status" required
+                                    style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
+                                    <option value="Pendiente" {{ old('status') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                    <option value="Registrado" {{ old('status') == 'Registrado' ? 'selected' : '' }}>Registrado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="text-dark font-weight-semibold" style="font-size:.875rem;">
+                                    <i class="bi bi-chat-text text-secondary mr-1"></i>
+                                    Nota (opcional)
+                                </label>
+                                <textarea name="note" id="note" rows="4" class="form-control" maxlength="400"
+                                    onkeyup="updateCounter()"
+                                    placeholder="Observaciones adicionales..."
+                                    style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;resize:vertical;">{{ old('note') }}</textarea>
+                                <small class="text-muted">
+                                    <span id="charCount">{{ strlen(old('note', '')) }}</span>/400 caracteres
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Acciones --}}
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <div id="loading-indicator" class="d-none d-flex align-items-center text-primary">
+                            <div class="spinner-border spinner-border-sm mr-2" role="status">
+                                <span class="sr-only">Procesando...</span>
+                            </div>
+                            <span style="font-size:.875rem;">Guardando registro...</span>
+                        </div>
+                        <div class="d-flex ml-auto" style="gap:10px;">
+                            <a href="{{ route('receptions.index') }}"
+                                class="btn btn-outline-secondary d-flex align-items-center"
+                                style="border-radius:8px;padding:10px 20px;font-weight:600;">
+                                <i class="bi bi-x-circle mr-2"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success d-flex align-items-center"
+                                id="submit-btn"
+                                style="border-radius:8px;padding:10px 24px;font-weight:600;box-shadow:0 4px 12px rgba(16,185,129,0.35);">
+                                <span id="submit-text">Registrar Ingreso</span>
+                                <i class="bi bi-check-lg ml-2" id="submit-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
             </div>
         </div>
+
     </div>
 @endsection
 
@@ -125,7 +195,7 @@
     <script>
         let isSubmitting = false;
         let submitTimestamp = null;
-        const SUBMIT_COOLDOWN = 3000; // 3 segundos
+        const SUBMIT_COOLDOWN = 3000;
 
         function updateCounter() {
             const textarea = document.getElementById('note');
@@ -142,43 +212,31 @@
             const submitIcon = document.getElementById('submit-icon');
             const loadingIndicator = document.getElementById('loading-indicator');
 
-            // Prevenir doble envío
             if (isSubmitting) {
                 event.preventDefault();
-                console.log('Envío bloqueado - formulario ya en proceso');
                 return false;
             }
 
-            // Verificar cooldown
             if (submitTimestamp && (now - submitTimestamp) < SUBMIT_COOLDOWN) {
                 event.preventDefault();
-                console.log('Envío bloqueado - muy pronto desde el último envío');
                 return false;
             }
 
-            // Validar que hay productos en el carrito (esto depende de tu implementación de Livewire)
-            // Puedes añadir aquí validaciones adicionales
-
-            // Marcar como enviando
             isSubmitting = true;
             submitTimestamp = now;
 
-            // Deshabilitar botón y mostrar loading
             submitBtn.disabled = true;
             submitBtn.classList.add('btn-secondary');
-            submitBtn.classList.remove('btn-primary');
+            submitBtn.classList.remove('btn-success');
 
             submitText.textContent = 'Procesando...';
-            submitIcon.className = 'bi bi-hourglass-split';
+            submitIcon.className = 'bi bi-hourglass-split ml-2';
 
             loadingIndicator.classList.remove('d-none');
 
-            // Timeout de seguridad para rehabilitar el botón si algo sale mal
             setTimeout(() => {
-                if (isSubmitting) {
-                    resetSubmitButton();
-                }
-            }, 10000); // 10 segundos
+                if (isSubmitting) resetSubmitButton();
+            }, 10000);
 
             return true;
         }
@@ -194,24 +252,22 @@
 
             submitBtn.disabled = false;
             submitBtn.classList.remove('btn-secondary');
-            submitBtn.classList.add('btn-primary');
+            submitBtn.classList.add('btn-success');
 
             submitText.textContent = 'Registrar Ingreso';
-            submitIcon.className = 'bi bi-check';
+            submitIcon.className = 'bi bi-check-lg ml-2';
 
             loadingIndicator.classList.add('d-none');
         }
 
-        // Prevenir envío con Enter en campos de texto (excepto textarea)
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('reception-form');
             const inputs = form.querySelectorAll('input[type="text"], select');
 
             inputs.forEach(input => {
-                input.addEventListener('keypress', function(e) {
+                input.addEventListener('keypress', function (e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
-                        // Mover al siguiente campo
                         const formElements = Array.from(form.elements);
                         const currentIndex = formElements.indexOf(this);
                         const nextElement = formElements[currentIndex + 1];
@@ -222,19 +278,7 @@
                 });
             });
 
-            // Inicializar contador de caracteres
             updateCounter();
         });
-
-        // Detectar si el usuario intenta cerrar la página mientras se está enviando
-       /* window.addEventListener('beforeunload', function(e) {
-            if (isSubmitting) {
-                const message = 'El formulario se está enviando. ¿Estás seguro de que quieres salir?';
-                e.preventDefault();
-                e.returnValue = message;
-                return message;
-            }
-        });
-        */
     </script>
 @endpush

@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('preparations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('reception_id');
+            $table->unsignedBigInteger('reception_id')->nullable();
+            $table->unsignedBigInteger('lavado_id')->nullable();
             $table->string('reference');
             $table->string('operator');
             $table->text('note')->nullable();
             $table->integer('total_amount');
-            $table->foreign('reception_id')->references('id')->on('receptions')->cascadeOnDelete();
+            $table->foreign('reception_id')->references('id')->on('receptions')->nullOnDelete();
+            $table->foreign('lavado_id')->references('id')->on('lavados')->nullOnDelete();
             $table->timestamps();
         });
     }

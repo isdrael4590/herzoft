@@ -1,10 +1,14 @@
 <div class="d-inline-block">
     <!-- Button trigger Discount Modal -->
-    <span wire:click="$dispatch('inputDyrtStateRefresh', { product_id: {{ $cart_item->id }}, row_id: '{{ $cart_item->rowId }}' })" role="button" class="badge badge-warning pointer-event" data-toggle="modal" data-target="#inputDyrtState{{ $cart_item->id }}">
+    <span
+        wire:click="$dispatch('inputDyrtStateRefresh', { product_id: {{ $cart_item->id }}, row_id: '{{ $cart_item->rowId }}' })"
+        role="button" class="badge badge-warning pointer-event" data-toggle="modal"
+        data-target="#inputDyrtState{{ $cart_item->id }}">
         <i class="bi bi-pencil-square text-white"></i>
     </span>
     <!-- Discount Modal -->
-    <div wire:ignore.self class="modal fade" id="inputDyrtState{{ $cart_item->id }}" tabindex="-1" role="dialog" aria-labelledby="inputDyrtStateLabel" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="inputDyrtState{{ $cart_item->id }}" tabindex="-1" role="dialog"
+        aria-labelledby="inputDyrtStateLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -12,8 +16,8 @@
                         {{ $cart_item->name }}
                         <br>
                         <span class="badge badge-success">
-                        {{ $cart_item->options->code }}
-                    </span>
+                            {{ $cart_item->options->code }}
+                        </span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -33,11 +37,11 @@
                     <div class="form-group">
                         <label>Nivel de Infección <span class="text-danger">*</span></label>
                         <select wire:model.live="type_dirt.{{ $cart_item->id }}" class="form-control" required>
-                            <option  disabled>-- SELECCIONAR EL NIVEL DE INFECCION--</option>
+                            <option disabled>-- SELECCIONAR EL NIVEL DE INFECCION--</option>
                             <option value="NO CRITICO"> NO CRITICO</option>
                             <option value="SEMICRITICO"> SEMI-CRITICO</option>
                             <option selected value="CRITICO"> CRÍTICO</option>
-                           {{--<option selected value="REPROCESADO"> REPROCESADO</option>--}}
+                            {{-- <option selected value="REPROCESADO"> REPROCESADO</option> --}}
                         </select>
                     </div>
                     <div class="form-group">
@@ -50,22 +54,26 @@
                     </div>
                     <div class="form-group">
                         <label>Info. corta Paquete <span class="text-danger">*</span></label>
-                        <input wire:model="item_product_info.{{ $cart_item->id }}" type="text" class="form-control" value="{{ $item_product_info[$cart_item->id] }}" maxlength="20">
+                        <input wire:model="item_product_info.{{ $cart_item->id }}" type="text" class="form-control"
+                            value="{{ $item_product_info[$cart_item->id] }}" maxlength="20">
                     </div>
                     <div class="form-group">
                         <label>Paciente (Solo Casa Comercial) <span class="text-danger">*</span></label>
-                        <input wire:model="item_patient.{{ $cart_item->id }}" type="text" class="form-control" value="{{ $item_patient[$cart_item->id] }}">
+                        <input wire:model="item_patient.{{ $cart_item->id }}" type="text" class="form-control"
+                            value="{{ $item_patient[$cart_item->id] }}">
                     </div>
                     <div class="form-group">
                         <label>Casa Comercial (Si Aplica) <span class="text-danger">*</span></label>
-                        <input wire:model="item_outside_company.{{ $cart_item->id }}" type="text" class="form-control" value="{{ $item_outside_company[$cart_item->id] }}">
+                        <input wire:model="item_outside_company.{{ $cart_item->id }}" type="text"
+                            class="form-control" value="{{ $item_outside_company[$cart_item->id] }}">
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button wire:click="setProductoptions('{{ $cart_item->rowId }}', {{ $cart_item->id }})" type="button" class="btn btn-primary">Guardar Cambios</button>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button wire:click="setProductoptions('{{ $cart_item->rowId }}', {{ $cart_item->id }})"
+                            type="button" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

@@ -21,72 +21,88 @@
                 <thead class="thead-dark">
                     <tr>
                         <th class="align-middle">Descripción/Código</th>
-                        <th class="align-middle">Cantidad</th>
-                        <th class="align-middle text-center">Zona proveniente </th>
+                        <th class="align-middle text-center">Cantidad</th>
+                        <th class="align-middle text-center">Zona proveniente</th>
                         <th class="align-middle text-center">Disponibilidad</th>
                         <th class="align-middle text-center">Paciente</th>
                         <th class="align-middle text-center">Casa Comercial</th>
-
-
-
+                        <th class="align-middle text-center">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($cart_items->isNotEmpty())
-                        @foreach ($cart_items as $cart_item)
-                            <tr>
-                              
-                                <td class="align-middle text-center">
-                                    {{ $cart_item->name }} <br>
-                                    <span class="badge badge-info">
-                                        {{ $cart_item->options->code }}
+                    @forelse ($cart_items as $cart_item)
+                        <tr wire:key="cart-{{ $cart_item->rowId }}">
+                            <td class="align-middle text-center">
+                                {{ $cart_item->name }} <br>
+                                <span class="badge badge-info">
+                                    {{ $cart_item->options->code }}
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                @if($readonly_qty ?? false)
+                                    <span class="badge badge-secondary" style="font-size:.9rem;padding:6px 12px;">
+                                        {{ $cart_item->qty }}
                                     </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    {{ $cart_item->qty }} <br>
-                                </td>
-                                <td class="align-middle text-center">
-                                    @if ($cart_item->options->product_coming_zone == 'Zona Esteril')
-                                        <span class="badge badge-warning">
-                                            {{ $cart_item->options->product_coming_zone }}
-                                        </span>
-                                    @elseif($cart_item->options->product_coming_zone == 'Recepcion')
-                                        <span class="badge badge-primary">
-                                            {{ $cart_item->options->product_coming_zone }}
-                                        </span>
-                                    @endif
-                                    @include('livewire.includes.product-cart-modaltoPRE')
-                                </td>
-
-                                <td class="align-middle text-center text-center">
-                                    @if ($cart_item->options->product_state_preparation == 'Reprocesar')
-                                        <span class="badge badge-info">
-                                            {{ $cart_item->options->product_state_preparation }}
-                                        </span>
-                                    @elseif($cart_item->options->product_state_preparation == 'Disponible')
-                                        <span class="badge badge-success">
-                                            {{ $cart_item->options->product_state_preparation }}
-                                        </span>
-                                    @endif
-
-                                </td>
-                                <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_patient }} <br>
-                                </td>
-                                <td class="align-middle text-center">
-                                    {{ $cart_item->options->product_outside_company }} <br>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
+                                @else
+                                    @include('livewire.includes.product-cart-quantity')
+                                @endif
+                            </td>
+                            <td class="align-middle text-center">
+                                @if ($cart_item->options->product_coming_zone == 'Zona Esteril')
+                                    <span class="badge badge-warning">
+                                        {{ $cart_item->options->product_coming_zone }}
+                                    </span>
+                                @elseif($cart_item->options->product_coming_zone == 'Recepcion')
+                                    <span class="badge badge-primary">
+                                        {{ $cart_item->options->product_coming_zone }}
+                                    </span>
+                                @elseif($cart_item->options->product_coming_zone == 'Lavado')
+                                    <span class="badge badge-info">
+                                        {{ $cart_item->options->product_coming_zone }}
+                                    </span>
+                                @elseif($cart_item->options->product_coming_zone == 'Preparación')
+                                    <span class="badge badge-success">
+                                        {{ $cart_item->options->product_coming_zone }}
+                                    </span>
+                                @endif
+                                @include('livewire.includes.product-cart-modaltoPRE')
+                            </td>
+                            <td class="align-middle text-center">
+                                @if ($cart_item->options->product_state_preparation == 'Reprocesar')
+                                    <span class="badge badge-info">
+                                        {{ $cart_item->options->product_state_preparation }}
+                                    </span>
+                                @elseif($cart_item->options->product_state_preparation == 'Disponible')
+                                    <span class="badge badge-success">
+                                        {{ $cart_item->options->product_state_preparation }}
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="align-middle text-center">
+                                {{ $cart_item->options->product_patient }} <br>
+                            </td>
+                            <td class="align-middle text-center">
+                                {{ $cart_item->options->product_outside_company }} <br>
+                            </td>
+                            <td class="align-middle text-center">
+                                @if(!($readonly_qty ?? false))
+                                    <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
+                                        <i class="bi bi-x-circle font-2xl text-danger"></i>
+                                    </a>
+                                @else
+                                    <i class="bi bi-lock text-secondary"></i>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
                         <tr>
-                            <td colspan="8" class="text-center">
+                            <td colspan="7" class="text-center">
                                 <span class="text-danger">
-                                    Por favor buscar y seleccionar el paquete !
+                                    Por favor buscar y seleccionar el paquete!
                                 </span>
                             </td>
                         </tr>
-                    @endif
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -95,11 +111,10 @@
         <div class="col-md-4">
             <div class="table-responsive">
                 <table class="table table-striped">
-
                     <tr>
                         <th>Total Paquetes Ingresados</th>
                         @php
-                            $total_package = Cart::instance($cart_instance)->subtotal();
+                            $total_package = Cart::instance($cart_instance)->count();
                         @endphp
                         <th>
                             {{ $total_package }}
@@ -112,4 +127,15 @@
 
     <input type="hidden" name="total_amount" value="{{ $total_package }}">
 
+    <script>
+        window.addEventListener('focusQuantity', (event) => {
+            setTimeout(() => {
+                const input = document.getElementById('qty-' + event.detail.productId);
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            }, 150);
+        });
+    </script>
 </div>

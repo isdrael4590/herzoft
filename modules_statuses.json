@@ -12,5 +12,6 @@
     "Discharge": true,
     "Expedition": true,
     "Stock": true,
-    "Backup": true
+    "Backup": true,
+    "Lavado": true
 }

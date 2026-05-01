@@ -72,6 +72,7 @@ class ReceptionController extends Controller
                     'product_type_dirt' => $cart_item->options->product_type_dirt,
                     'product_type_process' => $cart_item->options->product_type_process,
                     'product_state_rumed' => $cart_item->options->product_state_rumed,
+                    'product_lavado' => $cart_item->options->product_lavado ?? false,
                 ]);
             }
 
@@ -117,6 +118,7 @@ class ReceptionController extends Controller
                     'product_type_dirt'   => $reception_detail->product_type_dirt,
                     'product_type_process'   => $reception_detail->product_type_process,
                     'product_state_rumed'   => $reception_detail->product_state_rumed,
+                    'product_lavado'      => $reception_detail->product_lavado ?? false,
                     'sub_total'   => $reception_detail->sub_total, // se añade
                     'unit_price'  => $reception_detail->unit_price, // se añade
                     
@@ -159,6 +161,7 @@ class ReceptionController extends Controller
                     'product_type_process' => $cart_item->options->product_type_process,
                     'product_type_dirt' => $cart_item->options->product_type_dirt,
                     'product_state_rumed' => $cart_item->options->product_state_rumed,
+                    'product_lavado' => $cart_item->options->product_lavado ?? false,
                     'price' => $cart_item->price, // se añade
                     'unit_price' => $cart_item->options->unit_price, // se añade
                     'sub_total' => $cart_item->options->sub_total, // se añade

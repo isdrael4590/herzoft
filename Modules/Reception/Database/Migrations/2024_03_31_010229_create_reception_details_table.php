@@ -30,6 +30,7 @@ class CreateReceptionDetailsTable extends Migration
             $table->string('product_type_dirt');
             $table->string('product_state_rumed')->nullable();
             $table->string('product_type_process')->nullable();
+            $table->boolean('product_lavado')->default(false);
             $table->foreign('reception_id')->references('id')->on('receptions')->onDelete('cascade');
             $table->foreign('product_id')->references('id')
                 ->on('products')->nullOnDelete();

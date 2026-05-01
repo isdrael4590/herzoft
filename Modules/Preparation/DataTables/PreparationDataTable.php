@@ -23,13 +23,21 @@ class PreparationDataTable extends DataTable
             })
             ->addColumn('reception_reference', function ($data) {
                 if ($data->reception) {
-                    return '<a href="' . route('receptions.show', $data->reception_id) . '" 
-                            class="badge bg-info text-decoration-none px-3 py-2" 
-                            data-bs-toggle="tooltip" 
+                    return '<a href="' . route('receptions.show', $data->reception_id) . '"
+                            class="badge bg-info text-decoration-none px-3 py-2"
+                            data-bs-toggle="tooltip"
                             title="Ver detalles de recepción">
                             <i class="bi bi-box-arrow-in-down me-1"></i>' .
                         htmlspecialchars($data->reception->reference) .
                         '</a>';
+                }
+                if ($data->lavado) {
+                    return '<span class="badge bg-warning text-dark px-2 py-1"
+                            data-bs-toggle="tooltip"
+                            title="Proviene de lavado">
+                            <i class="bi bi-water me-1"></i>' .
+                        htmlspecialchars($data->lavado->reference) .
+                        '</span>';
                 }
                 return '<span class="badge bg-secondary px-2 py-1">Sin recepción</span>';
             })
@@ -204,7 +212,7 @@ protected function generateProductsModal($data)
     public function query(Preparation $model)
     {
         return $model->newQuery()
-            ->with(['preparationDetails', 'reception'])
+            ->with(['preparationDetails', 'reception', 'lavado'])
             ->select('preparations.*');
     }
 
@@ -218,8 +226,8 @@ protected function generateProductsModal($data)
                                 'tr' .
                                 <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[1, 'desc']],
-                'pageLength' => 10,
+                'order' => [[2, 'desc']],
+                'pageLength' => 20,
                 'responsive' => false,
                 'autoWidth' => false,
                 'scrollX' => true,

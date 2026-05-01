@@ -34,9 +34,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($cart_items->isNotEmpty())
-                        @foreach ($cart_items as $cart_item)
-                            <tr>
+                    @forelse ($cart_items as $cart_item)
+                            <tr wire:key="cart-{{ $cart_item->rowId }}">
                                 @can('edit_admin')
                                     <td class="align-middle text-center">
                                         {{ $cart_item->id }}
@@ -95,16 +94,13 @@
                                     </a>
                                 </td>
                             </tr>
-                        @endforeach
-                    @else
+                    @empty
                         <tr>
                             <td colspan="8" class="text-center">
-                                <span class="text-danger">
-                                    Por favor buscar y seleccionar el paquete !
-                                </span>
+                                <span class="text-danger">Por favor buscar y seleccionar el paquete!</span>
                             </td>
                         </tr>
-                    @endif
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -131,5 +127,25 @@
 
     <input type="hidden" name="total_amount" value="{{ $total_package }}">
 
+    <script>
+        window.addEventListener('focusQuantity', (event) => {
+            setTimeout(() => {
+                const input = document.getElementById('qty-' + event.detail.productId);
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            }, 150);
+        });
 
+        window.addEventListener('closeProductModal', (event) => {
+            const modalEl = document.getElementById('inputDyrtState' + event.detail.productId);
+            if (modalEl) {
+                $(modalEl).removeClass('show').hide();
+                $(modalEl).attr('aria-hidden', 'true').removeAttr('aria-modal').css('display', '');
+            }
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open').css('padding-right', '');
+        });
+    </script>
 </div>

@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 */
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'force.password.change']], function () {
 
     //User Profile
     Route::get('/user/profile', 'ProfileController@edit')->name('profile.edit');
@@ -15,6 +15,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Users
     Route::resource('users', 'UsersController')->except('show');
+    Route::post('users/{user}/reset-password', 'UsersController@resetPassword')->name('users.reset-password');
 
     //Roles
     Route::resource('roles', 'RolesController')->except('show');

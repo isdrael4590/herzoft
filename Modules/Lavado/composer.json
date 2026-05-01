@@ -1,0 +1,29 @@
+{
+    "name": "nwidart/lavado",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Lavado\\": "",
+            "Modules\\Lavado\\App\\": "app/",
+            "Modules\\Lavado\\Database\\Factories\\": "database/factories/",
+            "Modules\\Lavado\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Lavado\\Tests\\": "tests/"
+        }
+    }
+}

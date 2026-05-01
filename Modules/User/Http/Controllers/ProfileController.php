@@ -2,8 +2,6 @@
 
 namespace Modules\User\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -59,10 +57,11 @@ class ProfileController extends Controller
         ]);
 
         auth()->user()->update([
-            'password' => Hash::make($request->password)
+            'password'             => Hash::make($request->password),
+            'must_change_password' => false,
         ]);
 
-        toast('Password Updated!', 'success');
+        toast('Contraseña actualizada correctamente.', 'success');
 
         return back();
     }

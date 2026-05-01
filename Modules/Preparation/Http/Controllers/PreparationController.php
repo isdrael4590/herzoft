@@ -15,6 +15,8 @@ use Modules\Preparation\DataTables\PreparationDetailsDataTable;
 use Modules\Preparation\DataTables\PreparationDataTable;
 use Modules\Reception\Entities\Reception;
 use Modules\Reception\Entities\ReceptionDetails;
+use Modules\Lavado\Entities\Lavado;
+use Modules\Lavado\Entities\DescargaLavado;
 use Modules\Preparation\Entities\PreparationDetails;
 use Modules\Preparation\Http\Requests\StorePreparationRequest;
 use Modules\Preparation\Http\Requests\UpdatePreparationRequest;
@@ -74,30 +76,46 @@ class PreparationController extends Controller
         try {
             DB::beginTransaction();
 
-            // Verificar que el carrito no esté vacío
             $cartContent = Cart::instance(self::CART_INSTANCE)->content();
-            
-            if ($cartContent->isEmpty()) {
-                DB::rollBack();
-                toast('El carrito está vacío. Agregue productos antes de guardar.', 'warning');
-                return redirect()->back();
+
+            // Determinar si viene desde recepción o desde lavado
+            $reception      = $request->reception_id      ? Reception::find($request->reception_id)         : null;
+            $descargaLavado = $request->descargalavado_id ? DescargaLavado::find($request->descargalavado_id) : null;
+            $lavado         = $request->lavado_id         ? Lavado::find($request->lavado_id)               : null;
+
+            // Si viene desde descarga lavado, obtener el lavado asociado
+            if (!$lavado && $descargaLavado?->lavado_id) {
+                $lavado = $descargaLavado->lavado;
             }
 
-            // Verificar que la recepción existe
-            $reception = Reception::findOrFail($request->reception_id);
+            // Permitir carrito vacío solo si viene desde recepción y hay items en prelavado
+            if ($cartContent->isEmpty()) {
+                $hasPrelavado = $reception ? $reception->prelavadoDetalles()->exists() : false;
+
+                if (!$hasPrelavado) {
+                    DB::rollBack();
+                    toast('El carrito está vacío. Agregue productos antes de guardar.', 'warning');
+                    return redirect()->back();
+                }
+            }
 
             // Crear la preparación
             $preparation = Preparation::create([
-                'reception_id' => $request->reception_id,
-                'operator' => $request->operator,
-                'note' => $request->note,
+                'reception_id' => $reception?->id,
+                'lavado_id'    => $lavado?->id,
+                'operator'     => $request->operator,
+                'note'         => $request->note,
                 'total_amount' => $request->total_amount ?? 0,
             ]);
 
-            // Actualizar el estado de la recepción
-            $reception->update([
-                'status' => 'Procesado',
-            ]);
+            // Actualizar el estado según el origen
+            if ($reception) {
+                $reception->update(['status' => 'Procesado']);
+            }
+           
+            if ($descargaLavado) {
+                $descargaLavado->update(['status' => 'Procesado']);
+            }
 
             // Crear los detalles de la preparación
             foreach ($cartContent as $cart_item) {
@@ -125,6 +143,11 @@ class PreparationController extends Controller
             DB::commit();
 
             toast('¡Preparación registrada exitosamente!', 'success');
+
+            if ($descargaLavado) {
+                return redirect()->route('descarga-lavado.index');
+            }
+        
             return redirect()->route('receptions.index');
             
         } catch (\Exception $e) {

@@ -29,6 +29,8 @@ class SearchProducttoREPROC extends Component
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
             ->where('product_ref_qr','=','Reprocesar')
             ->take($this->how_many)->get();
+
+        $this->dispatch('searchUpdated');
     }
 
     public function loadMore() {

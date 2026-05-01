@@ -15,10 +15,11 @@ class StorePreparationRequest extends FormRequest
     public function rules()
     {
         return [
-            'reference' => 'required|string|max:255',
-            'operator' => 'required|string|max:255',
-            
-            'note' => 'nullable|string|max:255'
+            'reference'    => 'required|string|max:255',
+            'operator'     => 'required|string|max:255',
+            'note'         => 'nullable|string|max:255',
+            'reception_id' => 'nullable|integer|exists:receptions,id',
+            'lavado_id'    => 'nullable|integer|exists:lavados,id',
         ];
     }
 

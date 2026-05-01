@@ -89,25 +89,22 @@ public function query(PreparationDetails $model)
         $columns[] = Column::computed('dates2')
             ->title('Fecha de Ingreso')
             ->className('text-center align-middle');
-        $columns[] = Column::computed('product_name')
+        $columns[] = Column::make('product_name')
             ->title('Nombre del Producto')
-            ->className('text-center align-middle')
-            ->searchable(true); // Hacer searchable
-        $columns[] = Column::computed('product_code')
+            ->className('text-center align-middle');
+        $columns[] = Column::make('product_code')
             ->title('Código del Producto')
-            ->className('text-center align-middle')
-            ->searchable(true); // Hacer searchable
-        $columns[] = Column::computed('product_quantity')
+            ->className('text-center align-middle');
+        $columns[] = Column::make('product_quantity')
             ->title('Cantidad')
             ->className('text-center align-middle');
         $columns[] = Column::computed('product_coming_zone')
             ->title('Proveniente')
             ->className('text-center align-middle');
-        $columns[] = Column::computed('product_area')
+        $columns[] = Column::make('product_area')
             ->title('Area')
-            ->className('text-center align-middle')
-            ->searchable(true); // Hacer searchable
-        $columns[] = Column::computed('product_type_process')
+            ->className('text-center align-middle');
+        $columns[] = Column::make('product_type_process')
             ->title('Tipo de Proceso')
             ->className('text-center align-middle');
         $columns[] = Column::computed('action2')

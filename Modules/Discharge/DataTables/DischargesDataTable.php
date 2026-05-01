@@ -28,6 +28,9 @@ class DischargesDataTable extends DataTable
             })
             ->addColumn('action', function ($data) {
                 return view('discharge::partials.actions', compact('data'));
+            })
+            ->filterColumn('status_cycle', function ($query, $keyword) {
+                $query->where('status_cycle', $keyword);
             });
     }
 
@@ -43,21 +46,26 @@ class DischargesDataTable extends DataTable
 
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>> .
-                                'tr' .
-                                <'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
+            ->dom("<'row'<'col-md-3'l><'col-md-5 mb-2'B><'col-md-4'f>>" .
+                 "'tr'" .
+                 "<'row'<'col-md-5'i><'col-md-7 mt-2'p>>")
             ->parameters([
-                'order' => [[1, 'desc']],
+                'order'      => [[1, 'desc']],
+                'pageLength' => 15,
+                'responsive' => true,
+                'language'   => [
+                    'url' => '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+                ],
             ])
             ->buttons(
                 Button::make('excel')
                     ->text('<i class="bi bi-file-earmark-excel-fill"></i> Excel'),
                 Button::make('print')
-                    ->text('<i class="bi bi-printer-fill"></i> Print'),
+                    ->text('<i class="bi bi-printer-fill"></i> Imprimir'),
                 Button::make('reset')
-                    ->text('<i class="bi bi-x-circle"></i> Reset'),
+                    ->text('<i class="bi bi-x-circle"></i> Resetear'),
                 Button::make('reload')
-                    ->text('<i class="bi bi-arrow-repeat"></i> Reload')
+                    ->text('<i class="bi bi-arrow-repeat"></i> Recargar')
             );
     }
 
@@ -80,6 +88,7 @@ class DischargesDataTable extends DataTable
 
             Column::computed('status_cycle')
                 ->title('Estado Ciclo')
+                ->searchable(true)
                 ->className('text-center align-middle'),
 
             Column::computed('validation_biologic')

@@ -11,7 +11,6 @@ class SearchInstrumental extends Component
     public $query;
     public $search_results;
     public $how_many;
-    public $selectedIndex = 0;
     public $barcode = '';
 
     public function mount()
@@ -19,26 +18,6 @@ class SearchInstrumental extends Component
         $this->query = '';
         $this->how_many = 10;
         $this->search_results = Collection::empty();
-    }
-
-    public function moveUp()
-    {
-        if ($this->selectedIndex > 0) {
-            $this->selectedIndex--;
-        }
-    }
-
-    public function moveDown()
-    {
-        if ($this->selectedIndex < count($this->search_results) - 1) {
-            $this->selectedIndex++;
-        }
-    }
-
-    public function selectRow()
-    {
-        $selectedRow = $this->search_results[$this->selectedIndex];
-        session()->flash('message', "Selected: $selectedRow");
     }
 
     public function render()
@@ -66,6 +45,8 @@ class SearchInstrumental extends Component
             })
             ->take($this->how_many)
             ->get();
+
+        $this->dispatch('searchUpdated');
     }
 
     public function loadMore()

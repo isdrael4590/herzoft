@@ -3,10 +3,7 @@
 namespace App\Livewire;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Request;
 use Livewire\Component;
-use Modules\Product\Entities\Product;
 
 class ProductCarttoStock extends Component
 {
@@ -31,31 +28,27 @@ class ProductCarttoStock extends Component
     public function mount($cartInstance, $data = null)
     {
         $this->cart_instance = $cartInstance;
+
+        $this->package_wrap      = [];
+        $this->ref_qr            = [];
+        $this->status_stock      = [];
+        $this->date_sterilized   = [];
+        $this->expiration        = [];
+        $this->type_process      = [];
+        $this->item_product_info = [];
+
         if ($data) {
             $this->data = $data;
-            $cart_items = Cart::instance($this->cart_instance)->content();
+        }
 
-            foreach ($cart_items as $cart_item) {
-                $this->package_wrap[$cart_item->id] = $cart_item->options->product_package_wrap;
-                $this->ref_qr[$cart_item->id] = $cart_item->options->product_ref_qr;
-                $this->status_stock[$cart_item->id] = $cart_item->options->product_status_stock;
-                $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
-                $this->date_sterilized[$cart_item->id] = $cart_item->options->product_date_sterilized;
-                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
-                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
-      
-    
-            }
-        } else {
-            
-            $this->package_wrap = [];
-            $this->ref_qr = [];
-            $this->status_stock = [];
-            $this->date_sterilized = [];
-            $this->expiration = [];
-            $this->type_process = [];
-            $this->item_product_info = [];
-
+        foreach (Cart::instance($this->cart_instance)->content() as $cart_item) {
+            $this->package_wrap[$cart_item->id]      = $cart_item->options->product_package_wrap;
+            $this->ref_qr[$cart_item->id]            = $cart_item->options->product_ref_qr;
+            $this->status_stock[$cart_item->id]      = $cart_item->options->product_status_stock;
+            $this->expiration[$cart_item->id]        = $cart_item->options->product_expiration;
+            $this->date_sterilized[$cart_item->id]   = $cart_item->options->product_date_sterilized;
+            $this->type_process[$cart_item->id]      = $cart_item->options->product_type_process;
+            $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
         }
     }
 
