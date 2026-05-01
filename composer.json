@@ -14,7 +14,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "knplabs/knp-snappy": "^1.5",
         "laravel/framework": "^10.0",
-        "laravel/tinker": "^2.5",
+        "laravel/tinker": "^3.0",
         "laravel/ui": "^4.0",
         "livewire/livewire": "^4.1",
         "maatwebsite/excel": "^3.1",
