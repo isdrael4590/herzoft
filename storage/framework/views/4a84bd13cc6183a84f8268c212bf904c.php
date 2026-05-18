@@ -23,13 +23,13 @@
                     <small class="text-muted">
                         Referencia: <strong class="text-dark"><?php echo e($reception->reference); ?></strong>
                         &nbsp;&bull;&nbsp;
-                        <?php if($reception->status === 'Registrado'): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($reception->status === 'Registrado'): ?>
                             <span class="badge badge-success" style="font-size:.75rem;padding:3px 8px;border-radius:20px;">Registrado</span>
                         <?php elseif($reception->status === 'Procesado'): ?>
                             <span class="badge badge-secondary" style="font-size:.75rem;padding:3px 8px;border-radius:20px;">Procesado</span>
                         <?php else: ?>
                             <span class="badge badge-warning" style="font-size:.75rem;padding:3px 8px;border-radius:20px;">Pendiente</span>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </small>
                 </div>
             </div>
@@ -58,11 +58,16 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('search-product', []);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-2009328524-0', $__slots ?? [], get_defined_vars());
+$__key = null;
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2009328524-0', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key);
 
 echo $__html;
 
 unset($__html);
+unset($__key);
 unset($__name);
 unset($__params);
 unset($__split);
@@ -111,11 +116,11 @@ if (isset($__slots)) unset($__slots);
                                 </label>
                                 <select class="form-control" id="area" name="area" required
                                     style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
-                                    <?php $__currentLoopData = \Modules\Informat\Entities\Area::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $area): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = \Modules\Informat\Entities\Area::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $area): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option <?php echo e($reception->area == $area->area_name ? 'selected' : ''); ?>
 
                                             value="<?php echo e($area->area_name); ?>"><?php echo e($area->area_name); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </select>
                             </div>
                         </div>
@@ -150,11 +155,16 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('product-cart', ['cartInstance' => 'reception','data' => $reception]);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-2009328524-1', $__slots ?? [], get_defined_vars());
+$__key = null;
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2009328524-1', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key);
 
 echo $__html;
 
 unset($__html);
+unset($__key);
 unset($__name);
 unset($__params);
 unset($__split);

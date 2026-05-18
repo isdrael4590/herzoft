@@ -65,7 +65,7 @@ class CheckLicenceExpiration
                 // Admins: permitir acceso con advertencia
                 if (!session()->has('licence_expired_warning')) {
                     session()->flash('licence_expired_warning', true);
-                    session()->flash('days_expired', abs(now()->diffInDays($licence->license_expiration_date, false)));
+                    session()->flash('days_expired', $licence?->license_expiration_date ? abs(now()->diffInDays($licence->license_expiration_date, false)) : 0);
                 }
                 return $next($request);
             }

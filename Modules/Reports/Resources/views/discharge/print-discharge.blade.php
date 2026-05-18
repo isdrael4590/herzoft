@@ -364,7 +364,7 @@
             <strong>Paquetes:</strong> {{ number_format($total_packages) }}
         </div>
         <div style="text-align: right;">
-            <strong>Versión:</strong> 01<br>
+            <strong>Versión:</strong> 02<br>
             <strong>Vigente:</strong> {{ now()->format('F Y') }}
         </div>
     </div>

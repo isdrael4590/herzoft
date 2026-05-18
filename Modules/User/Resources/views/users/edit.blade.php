@@ -56,7 +56,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-weight-semibold text-secondary" style="font-size:.85rem;">
-                                            Nombre <span class="text-danger">*</span>
+                                            Nombres Completos <span class="text-danger">*</span>
                                         </label>
                                         <input class="form-control" type="text" name="name" required
                                             style="border-radius:8px;border:1px solid #e2e8f0;"
@@ -66,11 +66,11 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-weight-semibold text-secondary" style="font-size:.85rem;">
-                                            Email <span class="text-danger">*</span>
+                                            Usuario <span class="text-danger">*</span>
                                         </label>
-                                        <input class="form-control" type="email" name="email" required
+                                        <input class="form-control" type="text" name="username" required
                                             style="border-radius:8px;border:1px solid #e2e8f0;"
-                                            value="{{ $user->email }}">
+                                            value="{{ $user->username }}">
                                     </div>
                                 </div>
                             </div>

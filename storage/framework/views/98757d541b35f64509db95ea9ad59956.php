@@ -22,7 +22,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!--[if BLOCK]><![endif]--><?php if(session()->has('message_inputPreparation' . $cart_item->id)): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message_inputPreparation' . $cart_item->id)): ?>
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <div class="alert-body">
                                 <span><?php echo e(session('message_inputPreparation' . $cart_item->id)); ?></span>
@@ -31,7 +31,7 @@
                                 </button>
                             </div>
                         </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                   
                     <div class="form-group">
                         <label>Estado de Preparación <span class="text-danger">*</span></label>

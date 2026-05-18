@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="col-lg-4 col-sm-4">
                                     <div class="printer">
-                                        <div>Versión: <strong> 01</strong></div>
+                                        <div>Versión: <strong> 02</strong></div>
                                         <div>Vigente: <strong> Junio 2024</strong></div>
                                     </div>
                                 </div>

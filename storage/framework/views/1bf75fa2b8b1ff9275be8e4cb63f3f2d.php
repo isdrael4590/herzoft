@@ -54,7 +54,7 @@
             <div class="col-md-8">
 
                 <div class="card license-card">
-                    <?php if($licence->isExpired()): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($licence->isExpired()): ?>
                         <div class="alert alert-danger" role="alert">
                             <h4 class="alert-heading">
                                 <i class="fas fa-exclamation-triangle"></i> ¡Licencia Expirada!
@@ -71,18 +71,18 @@
                                 Solo administradores y super administradores pueden acceder con la licencia expirada.
                             </p>
                         </div>
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     <div class="card-header bg-transparent border-bottom-0">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5 class="mb-0">
                                 <i class="fas fa-key text-primary"></i> Gestión de Licencia
                             </h5>
-                            <?php if($licence && $licence->license_expiration_date): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($licence && $licence->license_expiration_date): ?>
                                 <span class="license-status-badge bg-<?php echo e($licence->status_color); ?> text-white">
                                     <?php echo e($licence->status_text); ?>
 
                                 </span>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </div>
                     <div class="card-body">
@@ -109,7 +109,7 @@ unset($__errorArgs, $__bag); ?>"
                                             id="license_expiration_date" name="license_expiration_date"
                                             value="<?php echo e(old('license_expiration_date', $licence && $licence->license_expiration_date ? $licence->license_expiration_date->format('Y-m-d') : '')); ?>"
                                             min="<?php echo e(now()->addDay()->format('Y-m-d')); ?>" required>
-                                        <?php $__errorArgs = ['license_expiration_date'];
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['license_expiration_date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -118,7 +118,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         <small class="form-text text-muted">
                                             Seleccione la fecha en que vence la licencia del sistema
                                         </small>
@@ -153,7 +153,7 @@ unset($__errorArgs, $__bag); ?>
 
                                 <div class="col-md-5">
                                     <div class="license-info-box">
-                                        <?php if($licence && $licence->license_expiration_date): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($licence && $licence->license_expiration_date): ?>
                                             <?php
                                                 $icons = [
                                                     'expired' => '🔴',
@@ -165,14 +165,14 @@ unset($__errorArgs, $__bag); ?>
                                             <div class="license-icon"><?php echo e($icons[$licence->status] ?? '📋'); ?></div>
 
                                             <h2 class="mb-2 text-<?php echo e($licence->status_color); ?>">
-                                                <?php if($licence->days_remaining < 0): ?>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($licence->days_remaining < 0): ?>
                                                     Expirada
                                                 <?php else: ?>
                                                     <?php echo e($licence->days_remaining); ?>
 
                                                     <small
                                                         style="font-size: 0.5em;"><?php echo e($licence->days_remaining == 1 ? 'día' : 'días'); ?></small>
-                                                <?php endif; ?>
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                             </h2>
 
                                             <p class="mb-2 text-muted">
@@ -187,18 +187,18 @@ unset($__errorArgs, $__bag); ?>
 
                                             </p>
 
-                                            <?php if($licence->days_remaining <= 15 && $licence->days_remaining >= 0): ?>
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($licence->days_remaining <= 15 && $licence->days_remaining >= 0): ?>
                                                 <div class="alert alert-<?php echo e($licence->status_color); ?> mt-3 mb-0 py-2">
                                                     <small>
                                                         <i class="fas fa-exclamation-triangle"></i>
-                                                        <?php if($licence->days_remaining <= 7): ?>
+                                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($licence->days_remaining <= 7): ?>
                                                             ¡Renueve su licencia urgentemente!
                                                         <?php else: ?>
                                                             Considere renovar su licencia pronto
-                                                        <?php endif; ?>
+                                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                     </small>
                                                 </div>
-                                            <?php endif; ?>
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         <?php else: ?>
                                             <div class="license-icon">⚙️</div>
                                             <h4 class="text-muted mb-3">Sin configurar</h4>
@@ -206,7 +206,7 @@ unset($__errorArgs, $__bag); ?>
                                                 Configure la fecha de vencimiento de su licencia para activar las
                                                 notificaciones del sistema
                                             </p>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                 </div>
                             </div>

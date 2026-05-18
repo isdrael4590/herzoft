@@ -32,17 +32,18 @@ class PrinterExpeditionController extends Controller
             ->orderBy('id', 'DESC')
             ->get();
             $institute = Institute::all()->first();
-            $urlImage = $institute->getFirstMedia('institutes')->getPath();
-
-            $Image = file_get_contents($urlImage);
-            $base64 = base64_encode($Image);
-            $dataUrl = 'data:image/jpeg;base64,' . $base64;
+            $instituteMedia = $institute->getFirstMedia('institutes');
+            $dataUrl = '';
+            if ($instituteMedia && file_exists($instituteMedia->getPath())) {
+                $dataUrl = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($instituteMedia->getPath()));
+            }
 
             $setting = Setting::all()->first();
-        $urllogoHerz = $setting->getFirstMedia('settings')->getPath();
-        $Imagelogo =  file_get_contents($urllogoHerz);
-        $base64Logo = base64_encode($Imagelogo);
-        $dataUrlogo = 'data:image/jpeg;base64,' . $base64Logo;
+            $settingMedia = $setting->getFirstMedia('settings');
+            $dataUrlogo = '';
+            if ($settingMedia && file_exists($settingMedia->getPath())) {
+                $dataUrlogo = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($settingMedia->getPath()));
+            }
        
         $pdf = PDF::loadView('expedition::expeditions.print', [
             'expedition' => $expedition,

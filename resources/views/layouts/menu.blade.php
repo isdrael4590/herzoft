@@ -1,5 +1,5 @@
 {{-- ============================================================
-     MENU LATERAL - HERZOFT
+     MENU LATERAL - HERZTRACE
      ============================================================ --}}
 
 {{-- ── HOME ─────────────────────────────────────────────────── --}}
@@ -81,14 +81,14 @@
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link {{ request()->routeIs('testvacuums.index') ? 'c-active' : '' }}"
                             href="{{ route('testvacuums.index') }}">
-                            <i class="c-sidebar-nav-icon bi bi-speedometer2"></i> Test de Vacío
+                            <i class="c-sidebar-nav-icon bi bi-speedometer"></i> Test de Vacío
                         </a>
                     </li>
                 @endcan
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link {{ request()->routeIs('testbds.index') ? 'c-active' : '' }}"
                         href="{{ route('testbds.index') }}">
-                        <i class="c-sidebar-nav-icon bi bi-patch-check-fill"></i> Test Bowie &amp; Dick
+                        <i class="c-sidebar-nav-icon bi bi-clipboard-check-fill"></i> Test Bowie &amp; Dick
                     </a>
                 </li>
             </ul>

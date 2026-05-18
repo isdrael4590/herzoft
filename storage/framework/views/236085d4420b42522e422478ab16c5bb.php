@@ -11,11 +11,11 @@
 <?php endif; ?>
 
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('edit_receptions')): ?>
-    <?php if($data->status != 'Procesado'): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($data->status != 'Procesado'): ?>
         <a href="<?php echo e(route('receptions.edit', $data->id)); ?>" class="dropdown-item">
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar Operario
         </a>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php endif; ?>
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('edit_admin')): ?>
     <a href="<?php echo e(route('receptions.edit', $data->id)); ?>" class="dropdown-item">
@@ -28,11 +28,11 @@
     </a>
 <?php endif; ?>
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create_reception_preparations')): ?>
-    <?php if($data->status == 'Registrado'): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($data->status == 'Registrado'): ?>
         <a href="<?php echo e(route('reception-preparations.create', $data)); ?>" class="dropdown-item">
             <i class="bi bi-check2-circle mr-2 text-success" style="line-height: 1;"></i> Enviar a ZNE Preparación.
         </a>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php endif; ?>
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete_receptions')): ?>
     <button id="delete" class="dropdown-item"

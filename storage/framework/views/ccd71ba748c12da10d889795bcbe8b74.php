@@ -1,5 +1,5 @@
 <div>
-    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message')): ?>
         <div class="alert alert-info alert-dismissible fade show" role="alert">
             <?php echo e(session('message')); ?>
 
@@ -7,9 +7,9 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    <?php if(session()->has('error')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('error')): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <?php echo e(session('error')); ?>
 
@@ -17,7 +17,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- Formulario oculto para POST (método de respaldo) -->
     <form id="printForm" method="POST" action="<?php echo e(route('printdisch.post')); ?>" style="display: none;" target="_blank">
@@ -51,11 +51,11 @@
                                 <label>Equipo</label>
                                 <select wire:model="machine_name" class="form-control" name="machine_name">
                                     <option value="">Seleccione el Equipo</option>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = \Modules\Informat\Entities\Machine::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $machine): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = \Modules\Informat\Entities\Machine::all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $machine): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($machine->machine_name); ?>"><?php echo e($machine->machine_name); ?>
 
                                         </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </select>
                             </div>
                         </div>
@@ -115,12 +115,12 @@
                                     </span>
                                 </div>
 
-                                <!--[if BLOCK]><![endif]--><?php if($this->selectedCount > 2000): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->selectedCount > 2000): ?>
                                     <div class="alert alert-warning alert-sm mb-0 py-1 px-2">
                                         <i class="fas fa-exclamation-triangle"></i>
                                         <small>Gran volumen detectado (<?php echo e($this->selectedCount); ?> items)</small>
                                     </div>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
 
                             <!-- BOTONES DE IMPRESIÓN -->
@@ -141,7 +141,7 @@
                             </div>
 
                             <!-- Información adicional para grandes volúmenes -->
-                            <!--[if BLOCK]><![endif]--><?php if($this->selectedCount > 5000): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->selectedCount > 5000): ?>
                                 <div class="alert alert-info mt-3 mb-0">
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-info-circle text-info mr-2"></i>
@@ -157,7 +157,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </div>
 
@@ -187,7 +187,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $discharge): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $discharge): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr
                                         class="<?php echo e(in_array($discharge['id'], $selectedItems) ? 'table-success' : ''); ?>">
                                         <td>
@@ -229,18 +229,18 @@
                                             </span>
                                         </td>
                                         <td style="text-align: left; max-width: 250px;">
-                                            <!--[if BLOCK]><![endif]--><?php if(!empty($discharge['product_names'])): ?>
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($discharge['product_names'])): ?>
                                                 <div class="product-names-container">
-                                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $discharge['product_names']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $productName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $discharge['product_names']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $productName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                         <span class="badge badge-info badge-sm mr-1 mb-1">
                                                             <?php echo e($productName); ?>
 
                                                         </span>
-                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                 </div>
                                             <?php else: ?>
                                                 <small class="text-muted">Sin productos</small>
-                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -252,7 +252,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -262,13 +262,13 @@
                         <div>
                             <small class="text-muted">
                                 Mostrando <?php echo e(count($data)); ?> registros
-                                <!--[if BLOCK]><![endif]--><?php if($this->selectedCount > 0): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->selectedCount > 0): ?>
                                     | <span class="text-success font-weight-bold"><?php echo e($this->selectedCount); ?>
 
                                         seleccionados</span>
                                     | <span class="text-primary font-weight-bold"><?php echo e($this->totalPackages); ?> paquetes
                                         totales</span>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </small>
                         </div>
                         <div>

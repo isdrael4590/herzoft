@@ -64,15 +64,15 @@
         </div>
     </div>
 
-    <!--[if BLOCK]><![endif]--><?php if(!empty($query)): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($query)): ?>
         <div wire:click="resetQuery" class="position-fixed w-100 h-100"
             style="left:0;top:0;right:0;bottom:0;z-index:9997;"></div>
 
-        <!--[if BLOCK]><![endif]--><?php if($search_results->isNotEmpty()): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($search_results->isNotEmpty()): ?>
             <div class="card position-absolute mt-1" style="z-index:9999;left:0;right:0;border:0;">
                 <div class="card-body shadow" style="max-height:380px;overflow-y:auto;">
                     <ul id="search-results-list" class="list-group list-group-flush">
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $search_results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $result): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $search_results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $result): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <li class="list-group-item list-group-item-action search-result-item"
                                 :class="focusedIndex === <?php echo e($loop->index); ?> ? 'active' : ''"
                                 @mouseenter="focusedIndex = <?php echo e($loop->index); ?>"
@@ -84,14 +84,14 @@
 
                                 </a>
                             </li>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        <!--[if BLOCK]><![endif]--><?php if($search_results->count() >= $how_many): ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($search_results->count() >= $how_many): ?>
                             <li class="list-group-item list-group-item-action text-center">
                                 <a wire:click.prevent="loadMore" class="btn btn-primary btn-sm" href="#">
                                     Cargar Más <i class="bi bi-arrow-down-circle"></i>
                                 </a>
                             </li>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                     </div>
                 </div>
             </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH /var/www/html/resources/views/livewire/search-product.blade.php ENDPATH**/ ?>

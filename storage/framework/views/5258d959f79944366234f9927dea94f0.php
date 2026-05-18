@@ -24,7 +24,7 @@
                         <?php echo e(\Carbon\Carbon::parse($discharge->updated_at)->format('d M, Y H:i')); ?>
 
                         &nbsp;&bull;&nbsp;
-                        <?php if($discharge->status_cycle == 'Ciclo Aprobado'): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($discharge->status_cycle == 'Ciclo Aprobado'): ?>
                             <span class="badge badge-success" style="font-size:.75rem;padding:4px 10px;border-radius:20px;">
                                 <i class="bi bi-check-circle mr-1"></i> Ciclo Aprobado
                             </span>
@@ -41,7 +41,7 @@
                                 <i class="bi bi-clock mr-1"></i> <?php echo e($discharge->status_cycle); ?>
 
                             </span>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </small>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                                 ['icon' => 'bi-thermometer-half', 'label' => 'Temp. Ambiente',       'value' => $discharge->temp_ambiente],
                             ];
                         ?>
-                        <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="d-flex justify-content-between align-items-center mb-2" style="font-size:.82rem;">
                                 <span class="text-muted">
                                     <i class="bi <?php echo e($item['icon']); ?> mr-1" style="color:#8b5cf6;"></i><?php echo e($item['label']); ?>
@@ -127,7 +127,7 @@
                                 </span>
                                 <span class="font-weight-semibold text-dark"><?php echo e($item['value']); ?></span>
                             </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -184,7 +184,7 @@
                                 <p class="mb-0 font-weight-semibold text-dark" style="font-size:.875rem;"><?php echo e($discharge->operator); ?></p>
                             </div>
                         </div>
-                        <?php if($discharge->operator != $discharge->operator_discharge): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($discharge->operator != $discharge->operator_discharge): ?>
                             <div class="d-flex align-items-start">
                                 <div class="rounded mr-3 d-flex align-items-center justify-content-center flex-shrink-0"
                                     style="width:34px;height:34px;background:rgba(16,185,129,0.1);">
@@ -195,7 +195,7 @@
                                     <p class="mb-0 font-weight-semibold text-dark" style="font-size:.875rem;"><?php echo e($discharge->operator_discharge); ?></p>
                                 </div>
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -250,7 +250,7 @@
                     <table class="table table-hover mb-0">
                         <thead style="background:#f8fafc;">
                             <tr>
-                                <?php $__currentLoopData = [
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [
                                     'Instrumental', 'Código', 'Cant. Procesada', 'Cant. Validada',
                                     'Envoltura', 'Valid. Embalaje', 'Ind. Químico',
                                     'Vencimiento', 'Paciente / Casa Com.', 'QR Paquete'
@@ -260,11 +260,11 @@
                                         <?php echo e($col); ?>
 
                                     </th>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $__currentLoopData = $discharge->dischargeDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $discharge->dischargeDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr style="border-color:#f1f5f9;">
                                     <td class="align-middle" style="padding:14px 12px;">
                                         <span class="font-weight-semibold text-dark" style="font-size:.875rem;"><?php echo e($item->product_name); ?></span>
@@ -286,11 +286,11 @@
 
                                     </td>
                                     <td class="align-middle text-center" style="padding:14px 12px;">
-                                        <?php if($item->product_eval_package == 'Correcto' || $item->product_eval_package == 'Aprobado'): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->product_eval_package == 'Correcto' || $item->product_eval_package == 'Aprobado'): ?>
                                             <span class="badge badge-success" style="font-size:.75rem;padding:4px 10px;border-radius:20px;"><?php echo e($item->product_eval_package); ?></span>
                                         <?php else: ?>
                                             <span class="badge badge-warning" style="font-size:.75rem;padding:4px 10px;border-radius:20px;"><?php echo e($item->product_eval_package); ?></span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </td>
                                     <td class="align-middle" style="padding:14px 12px;font-size:.85rem;">
                                         <?php echo e($item->product_eval_indicator); ?>
@@ -298,12 +298,12 @@
                                     </td>
                                     <td class="align-middle" style="padding:14px 12px;">
                                         <span class="text-muted" style="font-size:.8rem;">
-                                            <?php if($item->product_expiration == 180): ?> 6 Meses
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->product_expiration == 180): ?> 6 Meses
                                             <?php elseif($item->product_expiration == 270): ?> 9 Meses
                                             <?php elseif($item->product_expiration == 365): ?> 12 Meses
                                             <?php elseif($item->product_expiration == 545): ?> 18 Meses
                                             <?php else: ?> <?php echo e($item->product_expiration); ?> Días
-                                            <?php endif; ?>
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </span>
                                         <br>
                                         <span class="font-weight-semibold text-dark" style="font-size:.8rem;">
@@ -313,9 +313,9 @@
                                     </td>
                                     <td class="align-middle" style="padding:14px 12px;font-size:.85rem;">
                                         <span><?php echo e($item->product_patient ?: '—'); ?></span>
-                                        <?php if($item->product_outside_company): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->product_outside_company): ?>
                                             <br><span class="text-muted" style="font-size:.78rem;"><?php echo e($item->product_outside_company); ?></span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </td>
                                     <td class="align-middle text-center" style="padding:14px 12px;">
                                         <?php echo QrCode::size(50)->style('square')->generate(
@@ -333,7 +333,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </tbody>
                     </table>
                 </div>

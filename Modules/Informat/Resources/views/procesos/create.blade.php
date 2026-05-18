@@ -108,7 +108,7 @@
                                 </label>
                                 <select class="form-control @error('proceso_type') is-invalid @enderror"
                                     name="proceso_type" id="proceso_type" required
-                                    style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
+                                    style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;font-size:1rem;letter-spacing:normal;">
                                     <option value="" selected disabled>-- Seleccionar tipo --</option>
                                     <option value="ALTA TEMPERATURA" {{ old('proceso_type') == 'ALTA TEMPERATURA' ? 'selected' : '' }}>ALTA TEMPERATURA</option>
                                     <option value="BAJA TEMPERATURA" {{ old('proceso_type') == 'BAJA TEMPERATURA' ? 'selected' : '' }}>BAJA TEMPERATURA</option>

@@ -70,7 +70,7 @@
                                             <div class="form-group">
                                                 <label for="image">Imagen de Empresa <i class="bi bi-question-circle-fill text-info"
                                                         data-toggle="tooltip" data-placement="top"
-                                                        title="Max Files: 3, Max File Size: 1MB, Image Size: 400x400"></i></label>
+                                                        title="1 imagen máx · Tamaño: 2MB · Formatos: JPG, PNG"></i></label>
                                                 <div class="dropzone d-flex flex-wrap align-items-center justify-content-center"
                                                     id="document-dropzone">
                                                     <div class="dz-message" data-dz-message>
@@ -92,7 +92,7 @@
             </div>
 
             <div class="col-lg-12">
-                <?php if(session()->has('settings_smtp_message')): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('settings_smtp_message')): ?>
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <div class="alert-body">
                             <span><?php echo e(session('settings_smtp_message')); ?></span>
@@ -101,7 +101,7 @@
                             </button>
                         </div>
                     </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">Mail Settings</h5>
@@ -194,40 +194,38 @@
 <?php $__env->startPush('page_scripts'); ?>
 <script>
     var uploadedDocumentMap = {}
+    var settingsForm = document.querySelector('form[action="<?php echo e(route('settings.update')); ?>"]');
+
     Dropzone.options.documentDropzone = {
         url: '<?php echo e(route('dropzone.upload')); ?>',
-        maxFilesize: 1,
+        maxFilesize: 2,
         acceptedFiles: '.jpg, .jpeg, .png',
-        maxFiles: 3,
+        maxFiles: 1,
         addRemoveLinks: true,
         dictRemoveFile: "<i class='bi bi-x-circle text-danger'></i> remove",
+        dictMaxFilesExceeded: 'Solo se permite una imagen. Elimina la actual antes de subir otra.',
         headers: {
             'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
         },
         success: function(file, response) {
-            $('form').append('<input type="hidden" name="document[]" value="' + response.name + '">');
+            // Remove any previous hidden document inputs from the settings form only
+            $(settingsForm).find('input[name="document[]"]').remove();
+            $(settingsForm).append('<input type="hidden" name="document[]" value="' + response.name + '">');
             uploadedDocumentMap[file.name] = response.name;
         },
         removedfile: function(file) {
             file.previewElement.remove();
-            var name = '';
-            if (typeof file.file_name !== 'undefined') {
-                name = file.file_name;
-            } else {
-                name = uploadedDocumentMap[file.name];
-            }
-            $('form').find('input[name="document[]"][value="' + name + '"]').remove();
+            var name = (typeof file.file_name !== 'undefined') ? file.file_name : uploadedDocumentMap[file.name];
+            $(settingsForm).find('input[name="document[]"][value="' + name + '"]').remove();
         },
         init: function() {
-            <?php if(isset($settings) && $settings->getMedia('settings')): ?>
-                var files = <?php echo json_encode($settings->getMedia('settings')); ?>;
-                for (var i in files) {
-                    var file = files[i];
-                    this.options.addedfile.call(this, file);
-                    this.options.thumbnail.call(this, file, file.original_url);
-                    file.previewElement.classList.add('dz-complete');
-                    $('form').append('<input type="hidden" name="document[]" value="' + file.file_name + '">');
-                }
+            <?php if(isset($settings) && $settings->getMedia('settings')->isNotEmpty()): ?>
+                // Show only the most recent image
+                var latestFile = <?php echo json_encode($settings->getMedia('settings')->last()); ?>;
+                this.options.addedfile.call(this, latestFile);
+                this.options.thumbnail.call(this, latestFile, latestFile.original_url);
+                latestFile.previewElement.classList.add('dz-complete');
+                $(settingsForm).append('<input type="hidden" name="document[]" value="' + latestFile.file_name + '">');
             <?php endif; ?>
         }
     }

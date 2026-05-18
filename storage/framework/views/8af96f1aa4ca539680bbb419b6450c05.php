@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title><?php echo $__env->yieldContent('title'); ?> || <?php echo e(config('app.name')); ?></title>
-    <meta content="herZoft" name="author">
+    <meta content="HerzTrace" name="author">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <!-- Favicon -->
@@ -21,7 +21,7 @@
     <!-- stack css -->
     <style>
         /* ═══════════════════════════════════════════════════════════
-           SIDEBAR MODERNO — HERZOFT
+           SIDEBAR MODERNO — HERZTRACE
            ═══════════════════════════════════════════════════════════ */
 
         /* ── Fondo principal ──────────────────────────────────────── */
@@ -372,14 +372,14 @@
     </div>
 
     
-    <?php if($showNotification): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($showNotification): ?>
 
         <div class="license-notification <?php echo e($daysRemaining <= 7 ? 'danger' : ($daysRemaining <= 15 ? 'warning' : '')); ?>"
             id="licenseNotification">
             <div class="container-fluid">
                 <div class="license-content">
                     <span class="license-icon">
-                        <?php if($daysRemaining == 0): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($daysRemaining == 0): ?>
                             🔴
                         <?php elseif($daysRemaining <= 3): ?>
                             ⚠️
@@ -387,11 +387,11 @@
                             ⏰
                         <?php else: ?>
                             ⚡
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </span>
                     <div>
                         <div class="license-text">
-                            <?php if($daysRemaining == 0): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($daysRemaining == 0): ?>
                                 <strong>¡Su licencia expira HOY!</strong> El sistema podría dejar de funcionar.
                             <?php elseif($daysRemaining == 1): ?>
                                 <strong>¡Su licencia expira MAÑANA!</strong> Renueve su licencia urgentemente.
@@ -399,7 +399,7 @@
                                 <strong>¡Atención!</strong> Su licencia está por vencer pronto.
                             <?php else: ?>
                                 <strong>Recordatorio:</strong> Su licencia está próxima a vencer.
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                         <div class="license-text" style="font-size: 12px; opacity: 0.9;">
                             Fecha de vencimiento: <?php echo e($licence->license_expiration_date->format('d/m/Y')); ?>
@@ -424,7 +424,7 @@
                 </div>
             </div>
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <?php echo $__env->make('includes.main-js', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 

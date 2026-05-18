@@ -26,7 +26,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!--[if BLOCK]><![endif]--><?php if(session()->has('message_inputDyrtState' . $cart_item->id)): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message_inputDyrtState' . $cart_item->id)): ?>
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <div class="alert-body">
                                 <span><?php echo e(session('message_inputDyrtState' . $cart_item->id)); ?></span>
@@ -35,7 +35,7 @@
                                 </button>
                             </div>
                         </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     <div class="form-group">
                         <label>Nivel de Infección <span class="text-danger">*</span></label>
                         <select wire:model.live="type_dirt.<?php echo e($cart_item->id); ?>" class="form-control" required>

@@ -7,24 +7,24 @@
 
         <div class="card-body">
             
-            <!--[if BLOCK]><![endif]--><?php if(session()->has('success')): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('success')): ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <?php echo e(session('success')); ?>
 
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <?php if(session()->has('error')): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('error')): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <?php echo e(session('error')); ?>
 
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             
-            <!--[if BLOCK]><![endif]--><?php if($product): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product): ?>
                 <div class="row mb-4">
                     <div class="col-md-8">
                         <div class="card bg-light">
@@ -75,7 +75,7 @@
                                 <i class="fas fa-bug me-1"></i> Debug
                             </button>
                         <?php endif; ?>
-                        <!--[if BLOCK]><![endif]--><?php if(count($barcodes) > 0): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($barcodes) > 0): ?>
                             <button type="button" class="btn btn-success me-2" wire:click="downloadPdf"
                                 wire:loading.attr="disabled">
                                 <span wire:loading.remove wire:target="downloadPdf">
@@ -95,7 +95,7 @@
                                     <i class="fas fa-spinner fa-spin me-1"></i> Loading Preview...
                                 </span>
                             </button>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
             <?php else: ?>
@@ -103,10 +103,10 @@
                     <i class="fas fa-info-circle me-2"></i>
                     Please select a product to generate barcodes.
                 </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             
-            <!--[if BLOCK]><![endif]--><?php if(count($barcodes) > 0): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($barcodes) > 0): ?>
                 <div class="mt-4">
                     <h6 class="mb-3">Generated Barcodes (<?php echo e(count($barcodes)); ?>)</h6>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('access_admin')): ?>
@@ -115,41 +115,41 @@
                             <small>
                                 <strong>Debug Info:</strong><br>
                                 Total barcodes: <?php echo e(count($barcodes)); ?><br>
-                                <!--[if BLOCK]><![endif]--><?php if(count($barcodes) > 0): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($barcodes) > 0): ?>
                                     First barcode code: <?php echo e($barcodes[0]['code'] ?? 'N/A'); ?><br>
                                     Has HTML: <?php echo e(!empty($barcodes[0]['html'] ?? '') ? 'Yes' : 'No'); ?><br>
                                     HTML length: <?php echo e(strlen($barcodes[0]['html'] ?? '')); ?> chars
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </small>
                         </div>
                     <?php endif; ?>
                     <div class="row">
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $barcodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $barcode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $barcodes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $barcode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="col-md-3 col-sm-4 col-6 mb-3">
                                 <div class="card text-center">
                                     <div class="card-body py-2">
                                         <div class="barcode-preview-grid mb-1">
-                                            <!--[if BLOCK]><![endif]--><?php if(!empty($barcode['html'] ?? '')): ?>
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($barcode['html'] ?? '')): ?>
                                                 <?php echo $barcode['html']; ?>
 
                                             <?php else: ?>
                                                 <div class="alert alert-warning p-1">
                                                     <small>No barcode HTML</small>
                                                 </div>
-                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </div>
-                                        <!--[if BLOCK]><![endif]--><?php if(isset($barcode['description'])): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($barcode['description'])): ?>
                                             <p class="mb-0 small text-muted">
                                                 <?php echo e(Str::limit($barcode['description'], 20)); ?></p>
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                                     </div>
                                 </div>
                             </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 </div>

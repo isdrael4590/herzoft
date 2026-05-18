@@ -75,7 +75,7 @@
                             <td><img
                                     src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(110)->generate($dataqr . $item->product_code)) }}">
                                 <p style="font-size: 10px;">
-                                    <small>HERZOFT GROUP</small><br>
+                                    <small>HERZGROUP</small><br>
                                 </p>
                             </td>
                             <td>

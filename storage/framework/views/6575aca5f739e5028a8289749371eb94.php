@@ -31,12 +31,12 @@
             </div>
         </div>
 
-        <?php if($user->must_change_password): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($user->must_change_password): ?>
             <div class="alert alert-warning d-flex align-items-center mb-4" style="border-radius:10px;">
                 <i class="bi bi-exclamation-triangle-fill mr-2" style="font-size:1.2rem;"></i>
                 <span>Este usuario tiene una <strong>contraseña temporal</strong> asignada y deberá cambiarla en su próximo inicio de sesión.</span>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <form id="edit-user-form" action="<?php echo e(route('users.update', $user->id)); ?>" method="POST" enctype="multipart/form-data">
             <?php echo csrf_field(); ?>
@@ -54,7 +54,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-weight-semibold text-secondary" style="font-size:.85rem;">
-                                            Nombre <span class="text-danger">*</span>
+                                            Nombres Completos <span class="text-danger">*</span>
                                         </label>
                                         <input class="form-control" type="text" name="name" required
                                             style="border-radius:8px;border:1px solid #e2e8f0;"
@@ -64,11 +64,11 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="font-weight-semibold text-secondary" style="font-size:.85rem;">
-                                            Email <span class="text-danger">*</span>
+                                            Usuario <span class="text-danger">*</span>
                                         </label>
-                                        <input class="form-control" type="email" name="email" required
+                                        <input class="form-control" type="text" name="username" required
                                             style="border-radius:8px;border:1px solid #e2e8f0;"
-                                            value="<?php echo e($user->email); ?>">
+                                            value="<?php echo e($user->username); ?>">
                                     </div>
                                 </div>
                             </div>
@@ -78,12 +78,12 @@
                                 </label>
                                 <select class="form-control" name="role" id="role" required
                                     style="border-radius:8px;border:1px solid #e2e8f0;">
-                                    <?php $__currentLoopData = \Spatie\Permission\Models\Role::where('name', '!=', 'Super Admin')->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = \Spatie\Permission\Models\Role::where('name', '!=', 'Super Admin')->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option <?php echo e($user->hasRole($role->name) ? 'selected' : ''); ?> value="<?php echo e($role->name); ?>">
                                             <?php echo e($role->name); ?>
 
                                         </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </select>
                             </div>
                             <div class="form-group mb-0">

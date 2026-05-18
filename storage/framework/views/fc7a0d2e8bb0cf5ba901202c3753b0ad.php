@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Instrumental.... – <?php echo e($reception->reference); ?></title>
+    <title>Registro Instrumental – <?php echo e($reception->reference); ?></title>
     <style>
         @page { size: A5; margin: 10mm 10mm 10mm 15mm; }
 

@@ -103,7 +103,7 @@ unset($__errorArgs, $__bag); ?>"
                                             type="text" name="institute_name" required
                                             value="<?php echo e(old('institute_name', $institute->institute_name)); ?>"
                                             style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
-                                        <?php $__errorArgs = ['institute_name'];
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['institute_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -112,7 +112,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -132,7 +132,7 @@ unset($__errorArgs, $__bag); ?>"
                                             type="text" name="institute_area" required
                                             value="<?php echo e(old('institute_area', $institute->institute_area)); ?>"
                                             style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
-                                        <?php $__errorArgs = ['institute_area'];
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['institute_area'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -141,7 +141,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@ unset($__errorArgs, $__bag); ?>"
                                             type="text" name="institute_address" required
                                             value="<?php echo e(old('institute_address', $institute->institute_address)); ?>"
                                             style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
-                                        <?php $__errorArgs = ['institute_address'];
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['institute_address'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -185,7 +185,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -205,7 +205,7 @@ unset($__errorArgs, $__bag); ?>"
                                             type="text" name="institute_city" required
                                             value="<?php echo e(old('institute_city', $institute->institute_city)); ?>"
                                             style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
-                                        <?php $__errorArgs = ['institute_city'];
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['institute_city'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -214,7 +214,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -234,7 +234,7 @@ unset($__errorArgs, $__bag); ?>"
                                             type="text" name="institute_country" required
                                             value="<?php echo e(old('institute_country', $institute->institute_country)); ?>"
                                             style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
-                                        <?php $__errorArgs = ['institute_country'];
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['institute_country'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -243,7 +243,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                 </div>
                             </div>

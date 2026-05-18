@@ -1,4 +1,4 @@
-<?php if($data->status_cycle == 'En Curso'): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($data->status_cycle == 'En Curso'): ?>
     <span class="badge badge-primary" style="font-size:.8rem;padding:5px 10px;border-radius:20px;">
         <i class="bi bi-arrow-repeat mr-1"></i> <?php echo e($data->status_cycle); ?>
 
@@ -16,5 +16,5 @@
     <span class="badge badge-danger" style="font-size:.8rem;padding:5px 10px;border-radius:20px;">
         <i class="bi bi-x-circle mr-1"></i> Ciclo Falla
     </span>
-<?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php /**PATH /var/www/html/Modules/Discharge/Resources/views/partials/status_cycle.blade.php ENDPATH**/ ?>

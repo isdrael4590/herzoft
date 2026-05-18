@@ -102,7 +102,7 @@ unset($__errorArgs, $__bag); ?>"
                                     placeholder="Ej: Esterilización Vapor"
                                     value="<?php echo e(old('proceso_name')); ?>"
                                     style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
-                                <?php $__errorArgs = ['proceso_name'];
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['proceso_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -111,7 +111,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -135,7 +135,7 @@ unset($__errorArgs, $__bag); ?>"
                                     <option value="BAJA TEMPERATURA" <?php echo e(old('proceso_type') == 'BAJA TEMPERATURA' ? 'selected' : ''); ?>>BAJA TEMPERATURA</option>
                                     <option value="LAVADO" <?php echo e(old('proceso_type') == 'LAVADO' ? 'selected' : ''); ?>>LAVADO</option>
                                 </select>
-                                <?php $__errorArgs = ['proceso_type'];
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['proceso_type'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -144,7 +144,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -165,7 +165,7 @@ unset($__errorArgs, $__bag); ?>"
                                     placeholder="Ej: 134°C"
                                     value="<?php echo e(old('proceso_temp')); ?>"
                                     style="border-radius:8px;border-color:#e2e8f0;padding:10px 14px;">
-                                <?php $__errorArgs = ['proceso_temp'];
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['proceso_temp'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -174,7 +174,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
                     </div>

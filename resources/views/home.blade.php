@@ -211,11 +211,11 @@ $today = \Carbon\Carbon::now();
                     <div class="hz-chart-card__body d-flex align-items-center justify-content-center gap-4 flex-wrap">
                         <div class="hz-donut-wrap">
                             <div class="hz-donut-label">Test B&amp;D</div>
-                            <canvas id="currentMonthChart" width="150" height="150"></canvas>
+                            <canvas id="currentMonthChart" height="180"></canvas>
                         </div>
                         <div class="hz-donut-wrap">
                             <div class="hz-donut-label">Test Vacío</div>
-                            <canvas id="currentMonthChart2" width="150" height="150"></canvas>
+                            <canvas id="currentMonthChart2" height="180"></canvas>
                         </div>
                     </div>
                 </div>
@@ -257,11 +257,11 @@ $today = \Carbon\Carbon::now();
                     <div class="hz-chart-card__body d-flex align-items-center justify-content-center gap-4 flex-wrap">
                         <div class="hz-donut-wrap">
                             <div class="hz-donut-label">Vapor</div>
-                            <canvas id="currentMonthProductionChart" width="150" height="150"></canvas>
+                            <canvas id="currentMonthProductionChart" height="180"></canvas>
                         </div>
                         <div class="hz-donut-wrap">
                             <div class="hz-donut-label">Peróxido</div>
-                            <canvas id="currentMonthProductionChart2" width="150" height="150"></canvas>
+                            <canvas id="currentMonthProductionChart2" height="180"></canvas>
                         </div>
                     </div>
                 </div>
@@ -569,13 +569,19 @@ $today = \Carbon\Carbon::now();
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hz-chart-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.09);
 }
 .hz-chart-card__head {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    padding: 18px 20px 0;
+    padding: 18px 20px 12px;
+    border-bottom: 1px solid #f8fafc;
 }
 .hz-chart-card__title {
     font-size: 13.5px;
@@ -591,6 +597,31 @@ $today = \Carbon\Carbon::now();
 .hz-chart-card__body {
     padding: 16px 20px 20px;
     flex: 1;
+}
+
+/* ── Chart loader ──────────────────────────────────────── */
+.hz-chart-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(2px);
+    border-radius: 14px;
+    z-index: 10;
+}
+.hz-chart-loader::after {
+    content: '';
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: hz-spin 0.75s linear infinite;
+}
+@keyframes hz-spin {
+    to { transform: rotate(360deg); }
 }
 
 /* ── Badges ────────────────────────────────────────────── */
@@ -617,14 +648,26 @@ $today = \Carbon\Carbon::now();
 .hz-badge--cyan   { background: #ecfeff; color: #0891b2; }
 
 /* ── Donut wraps ───────────────────────────────────────── */
-.hz-donut-wrap { text-align: center; }
+.hz-donut-wrap {
+    text-align: center;
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+}
+.hz-donut-wrap canvas {
+    max-width: 100%;
+}
 .hz-donut-label {
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 10.5px;
+    font-weight: 700;
     color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
+    letter-spacing: 1.2px;
+    margin-bottom: 10px;
+    padding: 4px 10px;
+    background: #f8fafc;
+    border-radius: 20px;
+    display: inline-block;
 }
 </style>
 @endsection

@@ -79,14 +79,14 @@
                     <li class="c-sidebar-nav-item">
                         <a class="c-sidebar-nav-link <?php echo e(request()->routeIs('testvacuums.index') ? 'c-active' : ''); ?>"
                             href="<?php echo e(route('testvacuums.index')); ?>">
-                            <i class="c-sidebar-nav-icon bi bi-speedometer2"></i> Test de Vacío
+                            <i class="c-sidebar-nav-icon bi bi-speedometer"></i> Test de Vacío
                         </a>
                     </li>
                 <?php endif; ?>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link <?php echo e(request()->routeIs('testbds.index') ? 'c-active' : ''); ?>"
                         href="<?php echo e(route('testbds.index')); ?>">
-                        <i class="c-sidebar-nav-icon bi bi-patch-check-fill"></i> Test Bowie &amp; Dick
+                        <i class="c-sidebar-nav-icon bi bi-clipboard-check-fill"></i> Test Bowie &amp; Dick
                     </a>
                 </li>
             </ul>

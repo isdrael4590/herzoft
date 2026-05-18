@@ -24,7 +24,7 @@
                         <?php echo e($reception->updated_at->format('d M, Y H:i')); ?>
 
                         &nbsp;&bull;&nbsp;
-                        <?php if($reception->status === 'Registrado'): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($reception->status === 'Registrado'): ?>
                             <span class="badge badge-success" style="font-size:.75rem;padding:4px 10px;border-radius:20px;">
                                 <i class="bi bi-check-circle mr-1"></i> Registrado
                             </span>
@@ -36,7 +36,7 @@
                             <span class="badge badge-warning" style="font-size:.75rem;padding:4px 10px;border-radius:20px;">
                                 <i class="bi bi-clock mr-1"></i> Pendiente
                             </span>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </small>
                 </div>
             </div>
@@ -173,7 +173,7 @@
                             </div>
                             <div>
                                 <p class="text-muted mb-0" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.4px;">Estado</p>
-                                <?php if($reception->status === 'Registrado'): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($reception->status === 'Registrado'): ?>
                                     <span class="badge badge-success" style="font-size:.8rem;padding:4px 10px;border-radius:20px;">
                                         <i class="bi bi-check-circle mr-1"></i> Registrado
                                     </span>
@@ -185,7 +185,7 @@
                                     <span class="badge badge-warning" style="font-size:.8rem;padding:4px 10px;border-radius:20px;">
                                         <i class="bi bi-clock mr-1"></i> Pendiente
                                     </span>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -242,7 +242,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $__currentLoopData = $reception->receptionDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $reception->receptionDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr style="border-color:#f1f5f9;">
                                     <td class="align-middle pl-4" style="padding:14px 12px;">
                                         <span class="font-weight-semibold text-dark" style="font-size:.875rem;"><?php echo e($item->product_name); ?></span>
@@ -278,14 +278,14 @@
                                         </span>
                                     </td>
                                     <td class="align-middle pr-4" style="padding:14px 12px;">
-                                        <?php if($item->product_lavado): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->product_lavado): ?>
                                             <span class="badge badge-success" style="font-size:.75rem;padding:4px 10px;border-radius:20px;">SI</span>
                                         <?php else: ?>
                                             <span class="badge badge-secondary" style="font-size:.75rem;padding:4px 10px;border-radius:20px;">NO</span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </td>
                                 </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </tbody>
                     </table>
                 </div>

@@ -15,11 +15,16 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('reports.discharge-report', []);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-1185535029-0', $__slots ?? [], get_defined_vars());
+$__key = null;
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-1185535029-0', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key);
 
 echo $__html;
 
 unset($__html);
+unset($__key);
 unset($__name);
 unset($__params);
 unset($__split);

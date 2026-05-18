@@ -99,7 +99,7 @@
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <button type="submit" class="btn btn-primary" id="submit-btn">
-                                    <span id="submit-text">Enviar a preparación y/o lavado</span>
+                                    <span id="submit-text">{{ $prelavado_count > 0 ? 'Enviar a preparación y lavado' : 'Enviar a preparación' }}</span>
                                     <i class="bi bi-check" id="submit-icon"></i>
                                 </button>
 
@@ -193,7 +193,7 @@
             submitBtn.classList.remove('btn-secondary');
             submitBtn.classList.add('btn-primary');
 
-            submitText.textContent = 'Enviar a preparación';
+            submitText.textContent = '{{ $prelavado_count > 0 ? 'Enviar a preparación y lavado' : 'Enviar a preparación' }}';
             submitIcon.className = 'bi bi-check';
 
             loadingIndicator.classList.add('d-none');

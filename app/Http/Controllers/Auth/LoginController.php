@@ -40,6 +40,22 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function username()
+    {
+        return 'login';
+    }
+
+    protected function credentials(Request $request)
+    {
+        $login = $request->input('login');
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        return [
+            $field   => $login,
+            'password' => $request->input('password'),
+        ];
+    }
+
     protected function authenticated(Request $request, $user) {
         if ($user->is_active != 1) {
             Auth::logout();

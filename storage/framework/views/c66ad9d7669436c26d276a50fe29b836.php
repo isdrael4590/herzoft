@@ -22,11 +22,16 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('search-product', []);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-922513065-0', $__slots ?? [], get_defined_vars());
+$__key = null;
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-922513065-0', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key);
 
 echo $__html;
 
 unset($__html);
+unset($__key);
 unset($__name);
 unset($__params);
 unset($__split);
@@ -48,11 +53,16 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('barcode.product-table', []);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-922513065-1', $__slots ?? [], get_defined_vars());
+$__key = null;
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-922513065-1', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key);
 
 echo $__html;
 
 unset($__html);
+unset($__key);
 unset($__name);
 unset($__params);
 unset($__split);

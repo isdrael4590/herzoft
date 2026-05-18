@@ -1,16 +1,16 @@
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('print_admin')): ?>
-    <?php if($data->status_expedition == 'Despachado'): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($data->status_expedition == 'Despachado'): ?>
         <a href="<?php echo e(route('expeditions.pdf', $data->id)); ?>" class="dropdown-item">
             <i class="bi bi-cursor mr-2 text-warning" style="line-height: 1;"></i> Imprimir
         </a>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php endif; ?>
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('edit_expeditions')): ?>
-    <?php if($data->status_expedition != 'Despachado'): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($data->status_expedition != 'Despachado'): ?>
         <a href="<?php echo e(route('expeditions.edit', $data->id)); ?>" class="dropdown-item">
             <i class="bi bi-pencil mr-2 text-primary" style="line-height: 1;"></i> Editar
         </a>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
 <?php endif; ?>
 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('edit_admin')): ?>

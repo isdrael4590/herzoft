@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title') || {{ config('app.name') }}</title>
-    <meta content="herZoft" name="author">
+    <meta content="HerzTrace" name="author">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <!-- Favicon -->
@@ -21,7 +21,7 @@
     <!-- stack css -->
     <style>
         /* ═══════════════════════════════════════════════════════════
-           SIDEBAR MODERNO — HERZOFT
+           SIDEBAR MODERNO — HERZTRACE
            ═══════════════════════════════════════════════════════════ */
 
         /* ── Fondo principal ──────────────────────────────────────── */
