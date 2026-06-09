@@ -1,408 +1,597 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Reporte de Recepciones</title>
-    <style>
-        @page { size: A4 portrait; margin: 12mm 10mm; }
+<meta charset="UTF-8">
+<title>Reporte de Recepciones</title>
+<style>
+    @page {
+        size: A4 portrait;
+        margin: 14mm 12mm 12mm 12mm;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 7pt;
-            color: #1a1a2e;
-            line-height: 1.2;
-            background: #fff;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 7pt;
+        color: #1a1a2e;
+        line-height: 1.25;
+        background: #fff;
+        width: 100%;
+    }
 
-        table { width: 100%; border-collapse: collapse; }
+    /* ── UTILIDADES ── */
+    table  { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .mb2   { margin-bottom: 2mm; }
+    .mb4   { margin-bottom: 4mm; }
+    .avoid { page-break-inside: avoid; }
+    .break { page-break-before: always; }
+    .right { text-align: right !important; }
+    .center{ text-align: center !important; }
+    .left  { text-align: left !important; }
+    .bold  { font-weight: 700; }
+    .mono  { font-family: 'Courier New', monospace; font-size: 6.5pt; }
 
-        .mb { margin-bottom: 3mm; }
-        .avoid-break { page-break-inside: avoid; }
-        .page-break { page-break-before: always; }
+    /* ── HEADER ── */
+    .header-wrap {
+        border: 1.5px solid #1a1a2e;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .header-wrap table { table-layout: fixed; }
 
-        /* ── HEADER ── */
-        .tbl-header { border: 1.5px solid #1a1a2e; }
-        .tbl-header td { border: none; vertical-align: middle; }
+    .col-logo {
+        width: 22mm;
+        text-align: center;
+        vertical-align: middle;
+        padding: 2.5mm;
+        background: #f0f3fa;
+        border-right: 1.5px solid #1a1a2e;
+    }
+    .col-logo img { max-width: 19mm; max-height: 15mm; object-fit: contain; }
 
-        .hdr-logo {
-            width: 22mm; text-align: center; padding: 2mm;
-            background: #f4f6fb;
-            border-right: 1.5px solid #1a1a2e !important;
-        }
-        .hdr-logo img { max-width: 20mm; max-height: 16mm; object-fit: contain; }
+    .col-title {
+        vertical-align: middle;
+        text-align: center;
+        padding: 2mm 3mm;
+        border-right: 1.5px solid #1a1a2e;
+    }
+    .col-title h1 {
+        font-size: 9.5pt; font-weight: 700;
+        text-transform: uppercase; color: #1a1a2e; line-height: 1.3;
+    }
+    .col-title h2 {
+        font-size: 6.5pt; font-weight: 400; color: #666; margin-top: 1mm;
+    }
 
-        .hdr-title { text-align: center; padding: 2mm 3mm; border-right: 1.5px solid #1a1a2e !important; }
-        .hdr-title h1 { font-size: 10pt; font-weight: 700; text-transform: uppercase; color: #1a1a2e; line-height: 1.3; }
-        .hdr-title h2 { font-size: 7pt; font-weight: 400; color: #555; margin-top: 1mm; }
+    .col-meta {
+        width: 46mm;
+        vertical-align: top;
+        background: #f0f3fa;
+    }
+    .meta-item {
+        display: block;
+        padding: 1.2mm 2.5mm;
+        border-bottom: 1px solid #d8dce8;
+    }
+    .meta-item:last-child { border-bottom: none; }
+    .meta-lbl { display: block; font-size: 4.5pt; font-weight: 700; text-transform: uppercase; color: #888; letter-spacing: 0.4px; }
+    .meta-val { display: block; font-size: 6.5pt; font-weight: 700; color: #1a1a2e; }
 
-        .hdr-meta { width: 38mm; padding: 0; vertical-align: top !important; background: #f4f6fb; }
-        .meta-row { display: block; padding: 1mm 2mm; border-bottom: 1px solid #d0d5e0; }
-        .meta-row:last-child { border-bottom: none; }
-        .meta-label { display: block; font-size: 4.5pt; font-weight: 700; text-transform: uppercase; color: #999; letter-spacing: 0.3px; }
-        .meta-value { display: block; font-size: 6.5pt; font-weight: 700; color: #1a1a2e; line-height: 1.2; }
+    /* ── KPIs ── */
+    .kpi-bar { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .kpi-bar td {
+        background: #1a1a2e;
+        text-align: center;
+        vertical-align: middle;
+        padding: 2.5mm 1mm;
+        border-right: 1px solid #2d3a50;
+    }
+    .kpi-bar td:last-child { border-right: none; }
+    .kpi-num { font-size: 12pt; font-weight: 700; color: #5b9bd5; line-height: 1; }
+    .kpi-lbl { font-size: 5pt; text-transform: uppercase; color: #bdc3c7; margin-top: 0.8mm; letter-spacing: 0.3px; }
 
-        /* ── KPIs ── */
-        .tbl-kpi { border-collapse: collapse; width: 100%; }
-        .tbl-kpi td {
-            background: #1a1a2e;
-            text-align: center;
-            padding: 2.5mm 2mm;
-            border-right: 1px solid #2d3a50;
-            vertical-align: middle;
-        }
-        .tbl-kpi td:last-child { border-right: none; }
-        .kpi-number { font-size: 13pt; font-weight: 700; color: #5b9bd5; line-height: 1; }
-        .kpi-label  { font-size: 5pt; text-transform: uppercase; color: #bdc3c7; margin-top: 0.8mm; letter-spacing: 0.4px; }
+    /* ── SECTION TITLE ── */
+    .sec-title {
+        font-size: 6.5pt; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.6px; color: #1a1a2e;
+        border-left: 3px solid #1a1a2e;
+        padding: 0.5mm 0 0.5mm 2mm;
+        margin-bottom: 1.5mm;
+    }
 
-        /* ── SECTION TITLE ── */
-        .section-title {
-            font-size: 6.5pt; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-left: 3px solid #1a1a2e;
-            padding-left: 2mm;
-            margin-bottom: 1.5mm;
-        }
+    /* ── DOS COLUMNAS ── */
+    .two-col { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .two-col > tbody > tr > td {
+        vertical-align: top;
+        padding: 0;
+    }
+    .two-col > tbody > tr > td:first-child { padding-right: 2mm; }
 
-        /* ── PANEL (3-col info) ── */
-        .tbl-info td { width: 33.33%; vertical-align: top; border: 1px solid #c8cdd8; padding: 0; }
-        .tbl-info td:not(:last-child) { border-right: none; }
-        .panel-hdr {
-            display: block; background: #1a1a2e; color: #fff;
-            padding: 1mm 2mm; font-size: 5.5pt; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.4px; text-align: center;
-        }
-        .panel-body { display: block; padding: 1mm 1.5mm; }
-        .irow { display: block; padding: 0.5mm 0; border-bottom: 1px dotted #e0e4ed; }
-        .irow:last-child { border-bottom: none; }
-        .irow-lbl { display: block; font-size: 4.5pt; font-weight: 700; color: #999; text-transform: uppercase; }
-        .irow-val { display: block; font-size: 6pt; font-weight: 700; color: #1a1a2e; word-break: break-word; }
+    /* ── TABLA DATOS ── */
+    .tbl { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .tbl thead tr { background: #1a1a2e; }
+    .tbl thead th {
+        color: #fff; font-size: 6pt; font-weight: 700;
+        text-transform: uppercase; text-align: center;
+        padding: 1.5mm 1mm; border: none; vertical-align: middle;
+        letter-spacing: 0.3px;
+    }
+    .tbl thead th.left-h { text-align: left; padding-left: 2mm; }
 
-        /* ── TABLES ── */
-        .tbl-items thead tr { background: #1a1a2e; }
-        .tbl-items thead th {
-            color: #fff; padding: 1.2mm 1.5mm; font-size: 6pt; font-weight: 700;
-            text-align: center; text-transform: uppercase; border: none; vertical-align: middle;
-        }
-        .tbl-items tbody tr:nth-child(even) { background: #f2f4fa; }
-        .tbl-items tbody tr:nth-child(odd)  { background: #fff; }
-        .tbl-items tbody td {
-            padding: 1mm 1.5mm; font-size: 6.5pt; text-align: center; vertical-align: middle;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .tbl-items tbody td.text-left { text-align: left !important; padding-left: 2mm; }
-        .tbl-items tbody tr:last-child td { border-bottom: 1.5px solid #1a1a2e; }
+    .tbl tbody tr:nth-child(even) { background: #f2f4fa; }
+    .tbl tbody tr:nth-child(odd)  { background: #fff; }
+    .tbl tbody td {
+        padding: 1.2mm 1mm; font-size: 6.5pt;
+        text-align: center; vertical-align: middle;
+        border-bottom: 1px solid #e8eaf0;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .tbl tbody td.td-left { text-align: left; padding-left: 2mm; }
+    .tbl tbody tr:last-child td { border-bottom: 2px solid #1a1a2e; }
 
-        /* ── BADGES ── */
-        .badge {
-            display: inline-block; padding: 0.5mm 3px;
-            border-radius: 2px; font-size: 6pt; font-weight: 700; color: #fff;
-        }
-        .b-dark   { background: #1a1a2e; }
-        .b-blue   { background: #2980b9; }
-        .b-green  { background: #27ae60; }
-        .b-orange { background: #e67e22; }
-        .b-purple { background: #8e44ad; }
+    /* ── BADGES ── */
+    .b {
+        display: inline-block; padding: 0.4mm 2.5px;
+        border-radius: 2px; font-size: 6pt; font-weight: 700; color: #fff;
+        white-space: nowrap;
+    }
+    .b-dark   { background: #1a1a2e; }
+    .b-blue   { background: #2980b9; }
+    .b-green  { background: #27ae60; }
+    .b-orange { background: #e67e22; }
+    .b-purple { background: #8e44ad; }
+    .b-red    { background: #c0392b; }
 
-        /* ── FOOTER ── */
-        .doc-footer { border-top: 1.5px solid #1a1a2e; padding-top: 2mm; text-align: center; }
-        .footer-inner { display: inline-flex; align-items: center; gap: 2mm; }
-        .footer-inner img { height: 6mm; object-fit: contain; }
-        .footer-info { font-size: 5.5pt; color: #555; line-height: 1.4; text-align: left; }
-        .footer-info strong { font-size: 6pt; color: #1a1a2e; }
-    </style>
+    /* ── FILTROS ── */
+    .filter-bar {
+        background: #f8f9fc;
+        border: 1px solid #d0d5e8;
+        border-radius: 2px;
+        padding: 1.5mm 2mm;
+        font-size: 6pt;
+        color: #444;
+    }
+    .filter-bar strong { color: #1a1a2e; }
+
+    /* ── TOTALS ROW ── */
+    .tbl tfoot tr { background: #edf0f8; }
+    .tbl tfoot td {
+        padding: 1.2mm 1mm; font-size: 6.5pt; font-weight: 700;
+        text-align: center; vertical-align: middle;
+        border-top: 2px solid #1a1a2e;
+        color: #1a1a2e;
+    }
+    .tbl tfoot td.td-left { text-align: left; padding-left: 2mm; }
+
+    /* ── FOOTER ── */
+    .footer {
+        border-top: 1.5px solid #1a1a2e;
+        padding-top: 2mm;
+        margin-top: 3mm;
+        text-align: center;
+    }
+    .footer table { table-layout: auto; width: auto; margin: 0 auto; }
+    .footer td { padding: 0 2mm; vertical-align: middle; border: none; }
+    .footer img { height: 6mm; object-fit: contain; }
+    .footer-txt { font-size: 5.5pt; color: #555; line-height: 1.4; }
+    .footer-txt strong { font-size: 6pt; color: #1a1a2e; }
+</style>
 </head>
 <body>
 
-{{-- ══ HEADER ══ --}}
-<table class="tbl-header mb avoid-break">
-    <tr>
-        <td class="hdr-logo">
-            @if($dataUrl)
-                <img src="{{ $dataUrl }}" alt="Logo">
-            @endif
-        </td>
-        <td class="hdr-title">
-            @if($institute)
-                <h1>{{ $institute->institute_name ?? 'Hospital de Especialidades FF.AA N°1' }}</h1>
-                <h2>Central de Esterilización &mdash; Reporte de Recepciones</h2>
-            @else
-                <h1>Reporte de Recepciones</h1>
-            @endif
-        </td>
-        <td class="hdr-meta">
-            <span class="meta-row">
-                <span class="meta-label">Generado</span>
-                <span class="meta-value">{{ $print_date }}</span>
-            </span>
-            @if(!empty($filters['startDate']))
-            <span class="meta-row">
-                <span class="meta-label">Período</span>
-                <span class="meta-value">{{ $filters['startDate'] }} → {{ $filters['endDate'] }}</span>
-            </span>
-            @endif
-            <span class="meta-row">
-                <span class="meta-label">Agrupado por</span>
-                <span class="meta-value">{{ ['date' => 'Fecha', 'product' => 'Producto', 'area' => 'Área'][$group_by] ?? $group_by }}</span>
-            </span>
-            <span class="meta-row">
-                <span class="meta-label">Versión &nbsp;|&nbsp; Vigente</span>
-                <span class="meta-value">01 &nbsp;|&nbsp; {{ now()->format('m/Y') }}</span>
-            </span>
-        </td>
-    </tr>
-</table>
+{{-- ══════════════════════════════════════════
+     PÁGINA 1 — CABECERA + KPIs + RESÚMENES
+     ══════════════════════════════════════════ --}}
 
-{{-- ══ KPIs ══ --}}
-<table class="tbl-kpi mb avoid-break">
+{{-- HEADER --}}
+<div class="header-wrap mb4 avoid">
+    <table>
+        <colgroup>
+            <col style="width:22mm">
+            <col>
+            <col style="width:46mm">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td class="col-logo">
+                @if($dataUrl)
+                    <img src="{{ $dataUrl }}" alt="Logo">
+                @else
+                    <div style="font-size:5pt;color:#999;">LOGO</div>
+                @endif
+            </td>
+            <td class="col-title">
+                <h1>{{ $institute->institute_name ?? 'Reporte de Recepciones' }}</h1>
+                <h2>Central de Esterilización &mdash; Reporte de Recepciones</h2>
+            </td>
+            <td class="col-meta">
+                <span class="meta-item">
+                    <span class="meta-lbl">Generado</span>
+                    <span class="meta-val">{{ $print_date }}</span>
+                </span>
+                @if(!empty($filters['startDate']))
+                <span class="meta-item">
+                    <span class="meta-lbl">Período</span>
+                    <span class="meta-val">{{ $filters['startDate'] }} → {{ $filters['endDate'] }}</span>
+                </span>
+                @endif
+                <span class="meta-item">
+                    <span class="meta-lbl">Agrupado por</span>
+                    <span class="meta-val">{{ ['date'=>'Fecha','product'=>'Producto','area'=>'Área','code_date'=>'Código + Fecha'][$group_by] ?? $group_by }}</span>
+                </span>
+                <span class="meta-item">
+                    <span class="meta-lbl">Versión &nbsp;|&nbsp; Vigente</span>
+                    <span class="meta-val">01 &nbsp;|&nbsp; {{ now()->format('m/Y') }}</span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+{{-- KPIs --}}
+<table class="kpi-bar mb4 avoid">
+    <tbody>
     <tr>
         <td>
-            <div class="kpi-number">{{ number_format($total_receptions) }}</div>
-            <div class="kpi-label">Recepciones</div>
+            <div class="kpi-num">{{ number_format($total_receptions) }}</div>
+            <div class="kpi-lbl">Recepciones</div>
         </td>
         <td>
-            <div class="kpi-number">{{ number_format($total_packages) }}</div>
-            <div class="kpi-label">Paquetes</div>
+            <div class="kpi-num">{{ number_format($total_packages) }}</div>
+            <div class="kpi-lbl">Paquetes</div>
         </td>
         @foreach($status_stats as $st => $cnt)
         <td>
-            <div class="kpi-number">{{ number_format($cnt) }}</div>
-            <div class="kpi-label">{{ strtoupper($st ?: 'Sin estado') }}</div>
+            <div class="kpi-num">{{ number_format($cnt) }}</div>
+            <div class="kpi-lbl">{{ strtoupper($st ?: 'Sin estado') }}</div>
         </td>
         @endforeach
         <td>
-            <div class="kpi-number">{{ $area_summary->count() }}</div>
-            <div class="kpi-label">Áreas</div>
+            <div class="kpi-num">{{ $area_summary->count() }}</div>
+            <div class="kpi-lbl">Áreas</div>
+        </td>
+        <td>
+            <div class="kpi-num">{{ $date_summary->count() }}</div>
+            <div class="kpi-lbl">Días</div>
         </td>
     </tr>
+    </tbody>
 </table>
 
-{{-- ══ FILTROS ACTIVOS ══ --}}
+{{-- FILTROS ACTIVOS --}}
 @if(!empty($filters['area']) || !empty($filters['status']))
-<table class="tbl-info mb avoid-break">
-    <tr>
-        @if(!empty($filters['area']))
-        <td>
-            <span class="panel-hdr">Área</span>
-            <span class="panel-body">
-                <div class="irow"><span class="irow-val">{{ $filters['area'] }}</span></div>
-            </span>
-        </td>
-        @endif
-        @if(!empty($filters['status']))
-        <td>
-            <span class="panel-hdr">Estado</span>
-            <span class="panel-body">
-                <div class="irow"><span class="irow-val">{{ ucfirst($filters['status']) }}</span></div>
-            </span>
-        </td>
-        @endif
-    </tr>
-</table>
-@endif
-
-{{-- ══ RESUMEN POR ÁREA ══ --}}
-@if($area_summary->count() > 0)
-<div class="mb avoid-break">
-    <p class="section-title mb">Resumen por Área</p>
-    <table class="tbl-items">
-        <thead>
-            <tr>
-                <th class="text-left" style="text-align:left;padding-left:2mm">Área</th>
-                <th>Recepciones</th>
-                <th>Paquetes</th>
-                <th>Cant. Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($area_summary as $row)
-            <tr>
-                <td class="text-left">{{ $row->area ?: '(Sin área)' }}</td>
-                <td><span class="badge b-dark">{{ number_format($row->records_count) }}</span></td>
-                <td><span class="badge b-blue">{{ number_format($row->packages_count) }}</span></td>
-                <td><span class="badge b-green">{{ number_format($row->total_quantity) }}</span></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="filter-bar mb4 avoid">
+    Filtros activos:
+    @if(!empty($filters['area'])) &nbsp;<strong>Área:</strong> {{ $filters['area'] }} @endif
+    @if(!empty($filters['status'])) &nbsp;<strong>Estado:</strong> {{ ucfirst($filters['status']) }} @endif
 </div>
 @endif
 
-{{-- ══ RESUMEN POR FECHA ══ --}}
-@if($date_summary->count() > 0 && $group_by !== 'date')
-<div class="mb avoid-break">
-    <p class="section-title mb">Resumen por Fecha</p>
-    <table class="tbl-items">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Recepciones</th>
-                <th>Paquetes</th>
-                <th>Cant. Total</th>
-            </tr>
-        </thead>
+{{-- RESÚMENES EN DOS COLUMNAS --}}
+<table class="two-col mb4 avoid">
+    <colgroup><col style="width:49%"><col style="width:51%"></colgroup>
+    <tbody>
+    <tr>
+        {{-- Resumen por Área --}}
+        <td>
+            @if($area_summary->count() > 0)
+            <p class="sec-title">Resumen por Área</p>
+            <table class="tbl">
+                <colgroup>
+                    <col style="width:42%">
+                    <col style="width:19%">
+                    <col style="width:19%">
+                    <col style="width:20%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="left-h">Área</th>
+                        <th>Recep.</th>
+                        <th>Paquetes</th>
+                        <th>Cant.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($area_summary as $row)
+                    <tr>
+                        <td class="td-left">{{ $row->area ?: '(Sin área)' }}</td>
+                        <td><span class="b b-dark">{{ number_format($row->records_count) }}</span></td>
+                        <td><span class="b b-blue">{{ number_format($row->packages_count) }}</span></td>
+                        <td><span class="b b-green">{{ number_format($row->total_quantity) }}</span></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="td-left bold">TOTAL</td>
+                        <td><span class="b b-dark">{{ number_format($area_summary->sum('records_count')) }}</span></td>
+                        <td><span class="b b-blue">{{ number_format($area_summary->sum('packages_count')) }}</span></td>
+                        <td><span class="b b-green">{{ number_format($area_summary->sum('total_quantity')) }}</span></td>
+                    </tr>
+                </tfoot>
+            </table>
+            @endif
+        </td>
+
+        {{-- Resumen por Fecha --}}
+        <td>
+            @if($date_summary->count() > 0)
+            <p class="sec-title">Resumen por Fecha</p>
+            <table class="tbl">
+                <colgroup>
+                    <col style="width:30%">
+                    <col style="width:23%">
+                    <col style="width:23%">
+                    <col style="width:24%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Recep.</th>
+                        <th>Paquetes</th>
+                        <th>Cant.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($date_summary as $row)
+                    <tr>
+                        <td class="bold">{{ \Carbon\Carbon::parse($row->date)->format('d/m/Y') }}</td>
+                        <td><span class="b b-dark">{{ number_format($row->records_count) }}</span></td>
+                        <td><span class="b b-blue">{{ number_format($row->packages_count) }}</span></td>
+                        <td><span class="b b-green">{{ number_format($row->total_quantity) }}</span></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="td-left bold">TOTAL</td>
+                        <td><span class="b b-dark">{{ number_format($date_summary->sum('records_count')) }}</span></td>
+                        <td><span class="b b-blue">{{ number_format($date_summary->sum('packages_count')) }}</span></td>
+                        <td><span class="b b-green">{{ number_format($date_summary->sum('total_quantity')) }}</span></td>
+                    </tr>
+                </tfoot>
+            </table>
+            @endif
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+{{-- ══════════════════════════════════════════
+     PÁGINA 2 — DETALLE AGRUPADO
+     ══════════════════════════════════════════ --}}
+<div class="break"></div>
+
+{{-- HEADER página 2 --}}
+<div class="header-wrap mb4 avoid">
+    <table>
+        <colgroup>
+            <col style="width:22mm">
+            <col>
+            <col style="width:46mm">
+        </colgroup>
         <tbody>
-            @foreach($date_summary as $row)
-            <tr>
-                <td><strong>{{ \Carbon\Carbon::parse($row->date)->format('d/m/Y') }}</strong></td>
-                <td><span class="badge b-dark">{{ number_format($row->records_count) }}</span></td>
-                <td><span class="badge b-blue">{{ number_format($row->packages_count) }}</span></td>
-                <td><span class="badge b-green">{{ number_format($row->total_quantity) }}</span></td>
-            </tr>
-            @endforeach
+        <tr>
+            <td class="col-logo">
+                @if($dataUrl)
+                    <img src="{{ $dataUrl }}" alt="Logo">
+                @endif
+            </td>
+            <td class="col-title">
+                <h1>Detalle — Agrupado por {{ ['date'=>'Fecha','product'=>'Producto','area'=>'Área','code_date'=>'Código + Fecha'][$group_by] ?? $group_by }}</h1>
+                <h2>{{ $print_date }} &nbsp;|&nbsp; {{ number_format($total_receptions) }} recepciones &nbsp;|&nbsp; {{ number_format($total_packages) }} paquetes</h2>
+            </td>
+            <td class="col-meta">
+                <span class="meta-item">
+                    <span class="meta-lbl">Versión &nbsp;|&nbsp; Vigente</span>
+                    <span class="meta-val">01 &nbsp;|&nbsp; {{ now()->format('m/Y') }}</span>
+                </span>
+                @if(!empty($filters['startDate']))
+                <span class="meta-item">
+                    <span class="meta-lbl">Período</span>
+                    <span class="meta-val">{{ $filters['startDate'] }} → {{ $filters['endDate'] }}</span>
+                </span>
+                @endif
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
-@endif
 
-{{-- ══ DETALLE AGRUPADO ══ --}}
-<div class="page-break"></div>
-
-{{-- Repeat header on second page --}}
-<table class="tbl-header mb avoid-break">
-    <tr>
-        <td class="hdr-logo">
-            @if($dataUrl) <img src="{{ $dataUrl }}" alt="Logo"> @endif
-        </td>
-        <td class="hdr-title">
-            <h1>Detalle &mdash; Agrupado por {{ ['date'=>'Fecha','product'=>'Producto','area'=>'Área','code_date'=>'Código + Fecha'][$group_by] ?? $group_by }}</h1>
-            <h2>{{ $print_date }} &nbsp;|&nbsp; {{ number_format($total_receptions) }} recepciones &nbsp;|&nbsp; {{ number_format($total_packages) }} paquetes</h2>
-        </td>
-        <td class="hdr-meta">
-            <span class="meta-row">
-                <span class="meta-label">Versión &nbsp;|&nbsp; Vigente</span>
-                <span class="meta-value">01 &nbsp;|&nbsp; {{ now()->format('m/Y') }}</span>
-            </span>
-        </td>
-    </tr>
-</table>
-
+{{-- ── DETALLE POR FECHA ── --}}
 @if($group_by === 'date')
-<div class="mb">
-    <p class="section-title mb">Por Fecha</p>
-    <table class="tbl-items">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Recepciones</th>
-                <th>Productos Únicos</th>
-                <th>Áreas</th>
-                <th>Cant. Total</th>
-                <th>Paquetes</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($grouped_data as $row)
-            <tr>
-                <td><strong>{{ \Carbon\Carbon::parse($row->date)->format('d/m/Y') }}</strong></td>
-                <td><span class="badge b-dark">{{ number_format($row->records_count) }}</span></td>
-                <td><span class="badge b-purple">{{ number_format($row->products_count) }}</span></td>
-                <td><span class="badge b-orange">{{ number_format($row->areas_count) }}</span></td>
-                <td><span class="badge b-green">{{ number_format($row->total_quantity) }}</span></td>
-                <td><span class="badge b-blue">{{ number_format($row->total_packages) }}</span></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+<p class="sec-title mb2">Detalle por Fecha</p>
+<table class="tbl mb4">
+    <colgroup>
+        <col style="width:16%">
+        <col style="width:17%">
+        <col style="width:17%">
+        <col style="width:17%">
+        <col style="width:16%">
+        <col style="width:17%">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Recepciones</th>
+            <th>Prod. Únicos</th>
+            <th>Áreas</th>
+            <th>Cant. Total</th>
+            <th>Paquetes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($grouped_data as $row)
+        <tr>
+            <td class="bold">{{ \Carbon\Carbon::parse($row->date)->format('d/m/Y') }}</td>
+            <td><span class="b b-dark">{{ number_format($row->records_count) }}</span></td>
+            <td><span class="b b-purple">{{ number_format($row->products_count) }}</span></td>
+            <td><span class="b b-orange">{{ number_format($row->areas_count) }}</span></td>
+            <td><span class="b b-green">{{ number_format($row->total_quantity) }}</span></td>
+            <td><span class="b b-blue">{{ number_format($row->total_packages) }}</span></td>
+        </tr>
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="td-left bold">TOTAL</td>
+            <td><span class="b b-dark">{{ number_format($grouped_data->sum('records_count')) }}</span></td>
+            <td>—</td>
+            <td>—</td>
+            <td><span class="b b-green">{{ number_format($grouped_data->sum('total_quantity')) }}</span></td>
+            <td><span class="b b-blue">{{ number_format($grouped_data->sum('total_packages')) }}</span></td>
+        </tr>
+    </tfoot>
+</table>
 
+{{-- ── DETALLE POR PRODUCTO ── --}}
 @elseif($group_by === 'product')
-<div class="mb">
-    <p class="section-title mb">Por Producto</p>
-    <table class="tbl-items">
-        <thead>
-            <tr>
-                <th class="text-left" style="text-align:left;padding-left:2mm">Producto</th>
-                <th>Código</th>
-                <th>Cant. Total</th>
-                <th>Paquetes</th>
-                <th>Recepciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($grouped_data as $row)
-            <tr>
-                <td class="text-left"><strong>{{ $row->product_name ?: '—' }}</strong></td>
-                <td style="font-family:monospace;font-size:6pt">{{ $row->product_code ?: '—' }}</td>
-                <td><span class="badge b-green">{{ number_format($row->total_quantity) }}</span></td>
-                <td><span class="badge b-blue">{{ number_format($row->total_packages) }}</span></td>
-                <td><span class="badge b-dark">{{ number_format($row->records_count) }}</span></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+<p class="sec-title mb2">Detalle por Producto</p>
+<table class="tbl mb4">
+    <colgroup>
+        <col style="width:45%">
+        <col style="width:20%">
+        <col style="width:12%">
+        <col style="width:12%">
+        <col style="width:11%">
+    </colgroup>
+    <thead>
+        <tr>
+            <th class="left-h">Producto</th>
+            <th class="left-h">Código</th>
+            <th>Cant. Total</th>
+            <th>Paquetes</th>
+            <th>Recep.</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($grouped_data as $row)
+        <tr>
+            <td class="td-left bold">{{ $row->product_name ?: '—' }}</td>
+            <td class="td-left mono">{{ $row->product_code ?: '—' }}</td>
+            <td><span class="b b-green">{{ number_format($row->total_quantity) }}</span></td>
+            <td><span class="b b-blue">{{ number_format($row->total_packages) }}</span></td>
+            <td><span class="b b-dark">{{ number_format($row->records_count) }}</span></td>
+        </tr>
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="td-left bold" colspan="2">TOTAL</td>
+            <td><span class="b b-green">{{ number_format($grouped_data->sum('total_quantity')) }}</span></td>
+            <td><span class="b b-blue">{{ number_format($grouped_data->sum('total_packages')) }}</span></td>
+            <td><span class="b b-dark">{{ number_format($grouped_data->sum('records_count')) }}</span></td>
+        </tr>
+    </tfoot>
+</table>
 
+{{-- ── DETALLE POR ÁREA ── --}}
 @elseif($group_by === 'area')
-<div class="mb">
-    <p class="section-title mb">Por Área</p>
-    <table class="tbl-items">
-        <thead>
-            <tr>
-                <th class="text-left" style="text-align:left;padding-left:2mm">Área</th>
-                <th>Recepciones</th>
-                <th>Productos Únicos</th>
-                <th>Cant. Total</th>
-                <th>Paquetes</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($grouped_data as $row)
-            <tr>
-                <td class="text-left">{{ $row->area ?: '(Sin área)' }}</td>
-                <td><span class="badge b-dark">{{ number_format($row->records_count) }}</span></td>
-                <td><span class="badge b-purple">{{ number_format($row->products_count) }}</span></td>
-                <td><span class="badge b-green">{{ number_format($row->total_quantity) }}</span></td>
-                <td><span class="badge b-blue">{{ number_format($row->total_packages) }}</span></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+<p class="sec-title mb2">Detalle por Área</p>
+<table class="tbl mb4">
+    <colgroup>
+        <col style="width:35%">
+        <col style="width:16%">
+        <col style="width:17%">
+        <col style="width:16%">
+        <col style="width:16%">
+    </colgroup>
+    <thead>
+        <tr>
+            <th class="left-h">Área</th>
+            <th>Recepciones</th>
+            <th>Prod. Únicos</th>
+            <th>Cant. Total</th>
+            <th>Paquetes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($grouped_data as $row)
+        <tr>
+            <td class="td-left">{{ $row->area ?: '(Sin área)' }}</td>
+            <td><span class="b b-dark">{{ number_format($row->records_count) }}</span></td>
+            <td><span class="b b-purple">{{ number_format($row->products_count) }}</span></td>
+            <td><span class="b b-green">{{ number_format($row->total_quantity) }}</span></td>
+            <td><span class="b b-blue">{{ number_format($row->total_packages) }}</span></td>
+        </tr>
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="td-left bold">TOTAL</td>
+            <td><span class="b b-dark">{{ number_format($grouped_data->sum('records_count')) }}</span></td>
+            <td>—</td>
+            <td><span class="b b-green">{{ number_format($grouped_data->sum('total_quantity')) }}</span></td>
+            <td><span class="b b-blue">{{ number_format($grouped_data->sum('total_packages')) }}</span></td>
+        </tr>
+    </tfoot>
+</table>
 
-@else {{-- code_date --}}
-<div class="mb">
-    <p class="section-title mb">Por Código + Fecha</p>
-    <table class="tbl-items">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Código</th>
-                <th class="text-left" style="text-align:left;padding-left:2mm">Descripción</th>
-                <th>Cant. Total</th>
-                <th>Paquetes</th>
-                <th>Recepciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($grouped_data as $row)
-            <tr>
-                <td><strong>{{ \Carbon\Carbon::parse($row->date)->format('d/m/Y') }}</strong></td>
-                <td style="font-family:monospace;font-size:6pt">{{ $row->product_code ?: '—' }}</td>
-                <td class="text-left">{{ $row->product_name ?: '—' }}</td>
-                <td><span class="badge b-green">{{ number_format($row->total_quantity) }}</span></td>
-                <td><span class="badge b-blue">{{ number_format($row->total_packages) }}</span></td>
-                <td><span class="badge b-dark">{{ number_format($row->records_count) }}</span></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+{{-- ── DETALLE POR CÓDIGO + FECHA ── --}}
+@else
+<p class="sec-title mb2">Detalle por Código + Fecha</p>
+<table class="tbl mb4">
+    <colgroup>
+        <col style="width:13%">
+        <col style="width:17%">
+        <col style="width:38%">
+        <col style="width:11%">
+        <col style="width:11%">
+        <col style="width:10%">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th class="left-h">Código</th>
+            <th class="left-h">Descripción</th>
+            <th>Cant.</th>
+            <th>Paquetes</th>
+            <th>Recep.</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($grouped_data as $row)
+        <tr>
+            <td class="bold">{{ \Carbon\Carbon::parse($row->date)->format('d/m/Y') }}</td>
+            <td class="td-left mono">{{ $row->product_code ?: '—' }}</td>
+            <td class="td-left">{{ $row->product_name ?: '—' }}</td>
+            <td><span class="b b-green">{{ number_format($row->total_quantity) }}</span></td>
+            <td><span class="b b-blue">{{ number_format($row->total_packages) }}</span></td>
+            <td><span class="b b-dark">{{ number_format($row->records_count) }}</span></td>
+        </tr>
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="td-left bold">TOTAL</td>
+            <td><span class="b b-green">{{ number_format($grouped_data->sum('total_quantity')) }}</span></td>
+            <td><span class="b b-blue">{{ number_format($grouped_data->sum('total_packages')) }}</span></td>
+            <td><span class="b b-dark">{{ number_format($grouped_data->sum('records_count')) }}</span></td>
+        </tr>
+    </tfoot>
+</table>
 @endif
 
-{{-- ══ FOOTER ══ --}}
-<div class="doc-footer avoid-break">
-    <div class="footer-inner">
-        @if($dataUrlogo)
-            <img src="{{ $dataUrlogo }}" alt="Logo empresa">
-        @endif
-        <div class="footer-info">
-            <strong>{{ Settings()->company_name ?? '' }}</strong>
-            @if(Settings()->company_email) &nbsp;·&nbsp; {{ Settings()->company_email }} @endif
-            @if(Settings()->company_phone) &nbsp;·&nbsp; {{ Settings()->company_phone }} @endif
-        </div>
-    </div>
+{{-- FOOTER --}}
+<div class="footer avoid">
+    <table>
+        <tbody>
+        <tr>
+            @if($dataUrlogo)
+            <td><img src="{{ $dataUrlogo }}" alt="Logo empresa"></td>
+            @endif
+            <td>
+                <div class="footer-txt">
+                    <strong>{{ Settings()->company_name ?? '' }}</strong>
+                    @if(Settings()->company_email) &nbsp;·&nbsp; {{ Settings()->company_email }} @endif
+                    @if(Settings()->company_phone) &nbsp;·&nbsp; {{ Settings()->company_phone }} @endif
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>
