@@ -44,3 +44,4 @@ backups/
 mysql/backups/
 *.sql
 *.gz
+.env
