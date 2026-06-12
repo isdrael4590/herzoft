@@ -34,7 +34,7 @@ services:
   mysql:
     image: "mysql:8"
     ports:
-      - "${FORWARD_DB_PORT:-3309}:3306"
+      - "${FORWARD_DB_PORT:-3306}:3306"
     secrets:
       - db_root_password
       - db_password
