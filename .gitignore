@@ -44,4 +44,15 @@ backups/
 mysql/backups/
 *.sql
 *.gz
-.env
+
+ storage/*.key 
+ .env 
+
+
+# Backups
+backup/
+*.sql
+
+# Información sensitiva
+database/credenciales/*
+credenciales/*
