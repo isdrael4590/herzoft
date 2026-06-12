@@ -55,4 +55,4 @@ backup/
 
 # Información sensitiva
 database/credenciales/*
-credenciales/*
+credenciales/*storage/debugbar/
