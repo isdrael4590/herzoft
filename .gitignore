@@ -1,37 +1,31 @@
-/vendor/
-node_modules/
-npm-debug.log
-yarn-error.log
+# Laravel 12 Settings
+/.phpunit.cache
+/node_modules
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
 
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
-
-# Laravel 5 & Lumen specific
-public/storage
-public/hot
-
-# Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
-
-storage/*.key
 .env
-Homestead.yaml
-Homestead.json
-/.vagrant
+.env.backup
+.env.production
+.phpactor.json
 .phpunit.result.cache
-
-docker-compose.override.yml
+Homestead.json
+Homestead.yaml
 npm-debug.log
 yarn-error.log
+
 # Información sensitiva
 database/credenciales/*
 credenciales/*
+credenciales/*storage/debugbar/
+
 # Composer log que no es necesario
 composer.lock
-# Archivos autogenerados
-storage/framework/views/*.php
 
 docker/logs/*
 docker/letsencrypt/*
@@ -40,19 +34,15 @@ docker/etc/letsencrypt
 certbot/*
 
 # Archivos sensibles
-backups/
+backup/
 mysql/backups/
 *.sql
 *.gz
 
- storage/*.key 
- .env 
-
-
-# Backups
-backup/
-*.sql
-
-# Información sensitiva
-database/credenciales/*
-credenciales/*storage/debugbar/
+# archivos de editores de texto
+/auth.json
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
