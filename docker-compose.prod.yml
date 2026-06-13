@@ -57,6 +57,7 @@ services:
     build:
       context: .
       dockerfile: "./docker/php-fpm/Dockerfile"
+    image: app:${APP_VERSION:-v1.0.0} 
     volumes:
       - ./:/var/www/html
     environment:
