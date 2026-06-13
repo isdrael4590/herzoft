@@ -17,10 +17,10 @@
    git clone git@github.com:isdrael4590/HerzTrace.git
    ```
 
-4. Para iniciar con las opciones de desarrollo o correr los contenedores, instale las dependencias de PHP proyecto a través del siguiente comando:
+4. Para iniciar con las opciones de desarrollo o correr los contenedores, instale las dependencias de PHP y Javascript del proyecto a través del siguiente comando:
 
    ```bash
-   composer update
+   composer install && npm install && npm run build
    ```
 
 5. Los contenedores utilizan [variables de entorno](https://docs.docker.com/compose/environment-variables/set-environment-variables/) para establecer valores globales de funcionamiento, en la primera configuración, haga una copia del archivo `.env.example` y renombrelo como `.env`
