@@ -38,7 +38,6 @@ class SettingController extends Controller
                 'company_phone' => $request->company_phone,
                 'notification_email' => $request->notification_email,
                 'company_address' => $request->company_address,
-
             ]);
       
             if ($request->has('document')) {

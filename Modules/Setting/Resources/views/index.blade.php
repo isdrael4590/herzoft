@@ -62,7 +62,6 @@
                                         <input type="text" class="form-control" name="company_address" value="{{ $settings->company_address }}">
                                     </div>
                                 </div>
-                                
                             </div>
 
                             <div class="form-row">

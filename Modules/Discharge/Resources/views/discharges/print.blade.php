@@ -603,7 +603,7 @@
                                                 </h4>
                                             </th>
                                             <th>
-                                                <div>Versión: <strong> 02</strong></div>
+                                                <div>Versión: <strong>{{ config('app.version') }}</strong></div>
                                                 <div>Vigente: <strong> Septiembre 2024</strong></div>
                                                 </h5>
                                             </th>
@@ -745,7 +745,7 @@
                                                         ]
                                                     </td>
                                                     <td style= "text-align:center">
-                                                        {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') !!}
+                                                        {!! Carbon\Carbon::parse($item->updated_at)->addDays((int) $item->product_expiration)->format('d M, Y') !!}
                                                     </td>
 
                                                 </tr>

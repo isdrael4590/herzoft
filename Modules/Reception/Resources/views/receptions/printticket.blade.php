@@ -88,7 +88,7 @@
 
                             </th>
                             <th style="font-size: 7px;">
-                                <div>Versión: <strong> 02</strong></div>
+                                <div>Versión: <strong>{{ config('app.version') }}</strong></div>
                                 <div>Vigente: <strong> Septiembre 2024</strong></div>
 
                             </th>

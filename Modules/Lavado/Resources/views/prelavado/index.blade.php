@@ -42,7 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($prelavados as $item)
+                                    @foreach($prelavados as $item)
                                         @if($item->total_quantity == 0 && !auth()->user()->hasAnyRole(['Admin', 'Super Admin', 'supervisor']))
                                             @continue
                                         @endif
@@ -66,13 +66,7 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="4" class="text-center text-muted py-4">
-                                                No hay instrumental pendiente de prelavado.
-                                            </td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

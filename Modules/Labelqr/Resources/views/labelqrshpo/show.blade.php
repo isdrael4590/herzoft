@@ -200,7 +200,7 @@
                                                 @endif
                                                 <br>
                                                 <small class="text-muted">
-                                                    {{ \Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') }}
+                                                    {{ \Carbon\Carbon::parse($item->updated_at)->addDays((int) $item->product_expiration)->format('d M, Y') }}
                                                 </small>
                                             </td>
                                             <td class="align-middle text-center">

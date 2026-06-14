@@ -294,7 +294,7 @@
                                         </span>
                                         <br>
                                         <span class="font-weight-semibold text-dark" style="font-size:.8rem;">
-                                            {{ \Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') }}
+                                            {{ \Carbon\Carbon::parse($item->updated_at)->addDays((int) $item->product_expiration)->format('d M, Y') }}
                                         </span>
                                     </td>
                                     <td class="align-middle" style="padding:14px 12px;font-size:.85rem;">
@@ -309,7 +309,7 @@
                                             ' // Lote: ' . $discharge->lote_machine .
                                             ' // Cod: ' . $item->product_code .
                                             ' // Elab: ' . $item->updated_at .
-                                            ' // Venc: ' . \Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y')
+                                            ' // Venc: ' . \Carbon\Carbon::parse($item->updated_at)->addDays((int) $item->product_expiration)->format('d M, Y')
                                         ) !!}
                                         <div style="font-size:.7rem;color:#64748b;margin-top:4px;">
                                             Lote: {{ $discharge->lote_machine }}<br>

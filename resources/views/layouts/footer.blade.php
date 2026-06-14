@@ -41,7 +41,7 @@
             padding: 2px 10px;
             border-radius: 20px;
         ">
-            v2.0
+            V:{{ config('app.version') }}
         </span>
     </div>
 </footer>

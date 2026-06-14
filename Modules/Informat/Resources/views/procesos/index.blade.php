@@ -35,6 +35,41 @@
             @endcan
         </div>
 
+        {{-- Configuración de Etiquetas --}}
+        @can('print_labelqrs_direct')
+        <div class="card border-0 mb-4" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);border-left:4px solid #14b8a6 !important;">
+            <div class="card-body py-3 px-4">
+                <form action="{{ route('proceso.label-type') }}" method="POST"
+                      class="d-flex align-items-center flex-wrap gap-3">
+                    @csrf
+                    @method('PATCH')
+                    <div class="d-flex align-items-center mr-3">
+                        <i class="bi bi-tags-fill text-teal mr-2" style="font-size:1.2rem;color:#14b8a6;"></i>
+                        <span class="font-weight-semibold text-dark" style="font-size:.9rem;">Tipo de Etiqueta Global</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <select name="label_type" class="form-control form-control-sm mr-2" style="width:200px;">
+                            <option value="qr"      {{ (institutes()->label_type ?? 'qr') == 'qr'      ? 'selected' : '' }}>
+                                QR — Imprimir directa
+                            </option>
+                            <option value="barcode" {{ (institutes()->label_type ?? 'qr') == 'barcode' ? 'selected' : '' }}>
+                                Código de Barras
+                            </option>
+                            <option value="simple"  {{ (institutes()->label_type ?? 'qr') == 'simple'  ? 'selected' : '' }}>
+                                Simple
+                            </option>
+                        </select>
+                        <button type="submit" class="btn btn-sm text-white"
+                                style="background:linear-gradient(135deg,#14b8a6,#0d9488);border:none;border-radius:8px;">
+                            <i class="bi bi-save mr-1"></i> Guardar
+                        </button>
+                    </div>
+                    <small class="text-muted ml-auto">Aplica a todos los procesos del sistema.</small>
+                </form>
+            </div>
+        </div>
+        @endcan
+
         {{-- Main Card --}}
         <div class="card border-0" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
             <div class="card-header border-0 d-flex align-items-center justify-content-between"

@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Modules\Informat\Entities\Proceso;
 use Modules\Informat\DataTables\ProcesoDataTable;
+use Modules\Informat\Entities\Institute;
 
 class ProcesoController extends Controller
 {
@@ -78,6 +79,20 @@ class ProcesoController extends Controller
         return redirect()->route('proceso.index');
     }
 
+
+    public function updateLabelType(Request $request) {
+        abort_if(Gate::denies('print_labelqrs_direct'), 403);
+
+        $request->validate(['label_type' => 'required|in:qr,barcode,simple']);
+
+        Institute::firstOrFail()->update(['label_type' => $request->label_type]);
+
+        cache()->forget('institutes');
+
+        toast('Tipo de etiqueta actualizado', 'success');
+
+        return back();
+    }
 
     public function destroy($id) {
         abort_if(Gate::denies('delete_proceso'), 403);

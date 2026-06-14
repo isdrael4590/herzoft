@@ -1,129 +1,116 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <title>QR ETIQUETAS</title>
-    <meta name="viewport">
     <meta charset="UTF-8">
-
-    <!-- External CSS libraries -->
     <style>
-        /** Print ticket **/
-        @media print {
-            .cabecera-ticket {}
-        }
-
-
-        /*css para etiquetas */
-        /*Informacion equipo tickets */
-        table,
-        th,
-        td {
-            border: 1px solid black;
-            border-style: dotted;
-            border-collapse: collapse;
-            padding-top: 1px;
-            padding-right: 1px;
-            padding-bottom: 1px;
-            padding-left: 1px;
-        }
-
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         @page {
-            margin-left: 1cm;
-            margin-right: 0.3cm;
-            margin-top: 0.2cm;
-            margin-bottom: 0.2cm;
-
+            margin: 0;
         }
 
-        .verticalText {
-            transform: rotate(90deg);
+        body {
+            font-family: sans-serif;
+            font-size: 6pt;
         }
 
+        .label {
+            width: 100%;
+            page-break-after: always;
+            page-break-inside: avoid;
+        }
 
+        .label-last {
+            width: 100%;
+            page-break-after: avoid;
+            page-break-inside: avoid;
+        }
 
-        p {
-            font-size: 7px;
-            margin-top: 0;
-            margin-bottom: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 0.3pt solid #000;
+        }
 
+        td, th {
+            border: 0.3pt solid #000;
+            padding: 1pt;
+            vertical-align: middle;
+        }
+
+        .header-row th {
+            text-align: center;
+            font-size: 6.5pt;
+            padding: 1pt;
+        }
+
+        .header-sub {
+            font-size: 5pt;
+            font-weight: normal;
+        }
+
+        .qr-cell {
+            width: 36%;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .info-cell {
+            width: 64%;
+            vertical-align: top;
+            font-size: 5.5pt;
+            padding: 1.5pt;
+        }
+
+        .info-cell p { margin: 0.5pt 0; line-height: 1.1; }
+        .info-cell .venc { font-size: 7pt; font-weight: bold; }
+        .footer-row td {
+            text-align: center;
+            font-size: 4.5pt;
+            padding: 1pt;
         }
     </style>
-
-
-    <!-- Custom Stylesheet -->
 </head>
-
 <body>
-    @foreach ($labelqr->labelqrDetails as $item)
-        @for ($i = 1; $i <= $item->product_quantity; $i++)
-            <div>
-                <table style="width:100%">
+    @php
+        $allLabels = [];
+        foreach ($labelqr->labelqrDetails as $item) {
+            for ($i = 0; $i < $item->product_quantity; $i++) {
+                $allLabels[] = $item;
+            }
+        }
+        $lastIdx = count($allLabels) - 1;
+    @endphp
 
-                    <head>
-                        <tr style="font-size: 14px;">
-                            <th colspan="2"> {{ institutes()->institute_name }}<br>
-                                <p style="font-size: 10px;"> {{ institutes()->institute_area }} -
-                                    {{ institutes()->institute_city }} -{{ institutes()->institute_country }}</p>
-                            </th>
-
-                        </tr>
-                        <tr style="text-align: center;">
-
-                            <td><img
-                                    src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(110)->generate($dataqr . $item->product_code)) }}">
-                                <p style="font-size: 10px;">
-                                    <small>HERZGROUP</small><br>
-                                </p>
-                            </td>
-                            <td>
-                                <p style="font-size: 15px;">
-                                    <strong>Venc. {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d M, Y') !!}</strong><br>
-                                </p>
-                                <p style="font-size: 10px;">
-                                    <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d M, Y') !!}</small><br>
-                                </p>
-                                <p style="font-size: 10px;">
-                                    <strong>{{ $labelqr->machine_name }} - Lote: {{ $labelqr->lote_machine }}
-                                    </strong><br>
-                                </p>
-                                <p style="font-size: 10px;">
-                                    <strong>{{ $labelqr->reference }} -</strong>
-                                    <small>{{ $labelqr->type_program }}</small><br>
-                                </p>
-
-                                <p style="font-size: 9px;">
-                                    <strong>{{ $item->product_name }} - </strong>
-                                    <small style="font-size: 10px;">{{ $item->product_code }} <br>
-                                    </small>
-                                </p>
-                                <p style="font-size: 12px;">
-                                    <small> {{ $item->product_patient }}<br>
-                                    </small>
-                                </p>
-                                <p style="font-size: 10px;">
-                                    <small>Operario: {{ $labelqr->operator }} </small>
-                                </p>
-                            </td>
-                        </tr>
-                        <tr style="font-size: 10px;">
-                            <td style="text-align: center;" colspan="2">
-                                <p style="font-size: 10px;">
-                                    <small>El producto no ESTERIL, si el empaque esta ABIERTO o
-                                        HUMEDO</small>
-                                </p>
-
-                            </td>
-
-                        </tr>
-
-                    </head>
-                </table>
-            </div>
-        @endfor
+    @foreach ($allLabels as $idx => $item)
+    <div class="{{ $idx === $lastIdx ? 'label-last' : 'label' }}">
+        <table>
+            <tr class="header-row">
+                <th colspan="2">
+                    {{ institutes()->institute_name }}
+                    <br><span class="header-sub">{{ institutes()->institute_area }} — {{ institutes()->institute_city }}</span>
+                </th>
+            </tr>
+            <tr>
+                <td class="qr-cell">
+                    <img src="{{ $qrCodes[$item->product_code] }}" style="width:52pt;height:52pt;">
+                    <div style="font-size:4pt;">HERZGROUP</div>
+                </td>
+                <td class="info-cell">
+                    <p class="venc">Venc. {!! \Carbon\Carbon::parse($item->updated_at)->addDays((int)$item->product_expiration)->format('d M, Y') !!}</p>
+                    <p>Elab. {!! \Carbon\Carbon::parse($item->updated_at)->format('d M, Y') !!}</p>
+                    <p><strong>{{ $labelqr->machine_name }}</strong> — Lote: {{ $labelqr->lote_machine }}</p>
+                    <p>{{ $labelqr->reference }} / {{ $labelqr->type_program }}</p>
+                    <p><strong>{{ $item->product_name }}</strong> · {{ $item->product_code }}</p>
+                    <p>{{ $item->product_patient }}</p>
+                    <p>Op: {{ $labelqr->operator }}</p>
+                </td>
+            </tr>
+            <tr class="footer-row">
+                <td colspan="2">No ESTERIL si empaque ABIERTO o HÚMEDO</td>
+            </tr>
+        </table>
+    </div>
     @endforeach
 </body>
-
 </html>
