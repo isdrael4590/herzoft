@@ -111,5 +111,5 @@ _Nota_: Usar las mismas contraseñas y `APP_KEY` que en producción
 4. Descomprime y cargar la base de datos
 
     ```bash
-    docker compose -f docker-compose.prod.yml exec -T mysql sh -c 'export MYSQL_PWD="$(cat "$MYSQL_ROOT_PASSWORD_FILE")";  exec mysql -u root --default-character-set=utf8mb4 --database=$MYSQL_DATABASE'   < backup/mysql_backup_reemplaza_el_nombre_de_tu_sql.sql
+    docker compose -f docker-compose.prod.yml exec -T mysql sh -c 'export MYSQL_PWD="$(cat "$MYSQL_ROOT_PASSWORD_FILE")";  exec mysql -u root --default-character-set=utf8mb4 --database=$MYSQL_DATABASE' < backup/mysql_backup_reemplaza_el_nombre_de_tu_sql.sql
     ```
