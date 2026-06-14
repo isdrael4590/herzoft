@@ -57,12 +57,13 @@ services:
     build:
       context: .
       dockerfile: "./docker/php-fpm/Dockerfile"
-    image: app:${APP_VERSION:-v1.1.0} 
+    image: app:${APP_VERSION:-1.1.0} 
     volumes:
       - ./:/var/www/html
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
+      - APP_VERSION=${APP_VERSION:-1.1.0}
       - EMAIL
     networks:
       - sail

@@ -35,7 +35,7 @@
    DB_HOST=mysql
    DOMAIN=example.com # Sin el www.
    EMAIL=mail@example.com
-   APP_VERSION=latest # O cualquier version con el formato v1.0.0
+   APP_VERSION=latest # O cualquier version con el formato 1.0.0
    ```
 
 7. Las contraseñas de MySQL y del Administrador son almacenadas a través de [Docker secrets](`https://docs.docker.com/compose/use-secrets/`) por seguridad. Antes de iniciar el programa, es necesario crear dos archivos en la carpeta `database/credenciales` llamados `root_password.txt` y `user_password.txt` para establecer las constraseñas de MySQL y una en la carpeta `credenciales/admin.txt` para las credenciales de Adminstrador, use cualquier editor de texto para realizar esta tarea o con el siguiente comando en Linux.
