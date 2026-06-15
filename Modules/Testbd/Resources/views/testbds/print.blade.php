@@ -562,7 +562,7 @@
 
                                             </th>
                                             <th>
-                                                <div>Versión: <strong> 01</strong></div>
+                                                <div>Versión: <strong>{{ config('app.version') }}</strong></div>
                                                 <div>Vigente: <strong> Septiembre 2024</strong></div>
                                                 </h5>
                                             </th>

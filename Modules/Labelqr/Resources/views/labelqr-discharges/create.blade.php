@@ -1,10 +1,13 @@
 @php
     $discharge_max_id = \Modules\Discharge\Entities\Discharge::max('id') + 1;
-    $discharge_code = 'DES-' . str_pad($discharge_max_id, 5, '0', STR_PAD_LEFT);
+    $discharge_code   = 'DES-' . str_pad($discharge_max_id, 5, '0', STR_PAD_LEFT);
+    $isSteam          = $discharge->machine_type == 'Autoclave';
+    $isHpo            = $discharge->machine_type == 'Peroxido';
 @endphp
+
 @extends('layouts.app')
 
-@section('title', ' Envio Etiquetas Generadas')
+@section('title', 'Envío Etiquetas Generadas')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
@@ -16,177 +19,202 @@
 
 @section('content')
     <div class="container-fluid">
-
         <div class="row mt-4">
             <div class="col-md-12">
                 <div class="card">
+
+                    {{-- Card header con badge de tipo --}}
+                    <div class="card-header d-flex align-items-center" style="gap:10px;">
+                        <strong>Enviar a Ciclo &mdash; {{ $discharge->reference }}</strong>
+                        @if ($isSteam)
+                            <span class="badge badge-pill"
+                                  style="background-color:#a46c05; color:#fff; font-size:.82rem; padding:5px 12px;">
+                                <i class="bi bi-thermometer-high"></i> STEAM — Alta Temperatura (Autoclave)
+                            </span>
+                        @elseif ($isHpo)
+                            <span class="badge badge-pill"
+                                  style="background-color:#4990e1; color:#fff; font-size:.82rem; padding:5px 12px;">
+                                <i class="bi bi-wind"></i> HPO — Baja Temperatura (Peróxido)
+                            </span>
+                        @endif
+                    </div>
+
                     <div class="card-body">
                         @include('utils.alerts')
 
                         <form onsubmit="return handleFormSubmit(event)" id="discharge-form"
-                            action="{{ route('discharges.store') }}" method="POST">
+                              action="{{ route('discharges.store') }}" method="POST">
                             @csrf
-                            {{-- Token adicional para prevenir duplicados --}}
                             <input type="hidden" name="form_token" value="{{ uniqid('discharge_', true) }}">
 
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-
-                                <button type="submit" id="submit-btn" class="btn btn-primary">
-                                    <span id="submit-text">Enviar a Ciclo</span> <i class="bi bi-check"
-                                        id="submit-icon"></i>
+                            {{-- Botón superior --}}
+                            <div class="d-flex align-items-center mb-3" style="gap:12px;">
+                                <button type="submit" id="submit-btn"
+                                        class="btn {{ $isHpo ? 'btn-primary' : 'btn-warning' }}"
+                                        style="{{ $isHpo ? 'background-color:#4990e1; border-color:#4990e1; color:#fff;' : 'background-color:#a46c05; border-color:#a46c05; color:#fff;' }}">
+                                    <span id="submit-text">Enviar a Ciclo</span>
+                                    <i class="bi bi-check" id="submit-icon"></i>
                                 </button>
-                                <div id="loading-indicator" class="d-none">
+                                <div id="loading-indicator" class="d-none align-items-center" style="gap:6px; display:flex;">
                                     <div class="spinner-border spinner-border-sm text-primary" role="status">
                                         <span class="sr-only">Procesando...</span>
-
                                     </div>
-                                    <span class="ml-2">Enviando a Descargas...</span>
+                                    <span class="ml-1 text-muted">Enviando a Descargas...</span>
                                 </div>
                             </div>
-                            <br>
-                            <div class="form-row">
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="reference">Referencia Descarga <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="reference" required readonly
-                                            value="{{ $discharge_code }}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="machine_type">Tipo de esterilización <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="machine_type" required
-                                            value="{{ $discharge->machine_type }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="machine_name">Nombre del Equipo <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="machine_name" required
-                                            value="{{ $discharge->machine_name }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="lote_machine">Lote del Equipo <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="lote_machine" required
-                                            value="{{ $discharge->lote_machine }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="lote_agente">Lote del Agente <span class="text-danger">*</span></label>
-                                        @if ($discharge->machine_type == 'Peroxido')
-                                            <input type="text" class="form-control" name="lote_agente" required
-                                                value="{{ $discharge->lote_agente }}" readonly>
-                                        @else
-                                            <input type="text" class="form-control" name="lote_agente" required
-                                                value="NA" readonly>
+
+                            {{-- Sección: Información del proceso --}}
+                            <div class="card mb-3"
+                                 style="border-left: 4px solid {{ $isHpo ? '#4990e1' : '#a46c05' }};">
+                                <div class="card-header py-2"
+                                     style="background-color: {{ $isHpo ? '#e8f4ff' : '#fff8ee' }};">
+                                    <strong>
+                                        @if ($isSteam)
+                                            <i class="bi bi-thermometer-high" style="color:#a46c05;"></i> Datos del Proceso STEAM
+                                        @elseif ($isHpo)
+                                            <i class="bi bi-wind" style="color:#4990e1;"></i> Datos del Proceso HPO
                                         @endif
-                                    </div>
+                                    </strong>
                                 </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="temp_machine">Temperatura del Equipo <span
-                                                class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="temp_machine" required
-                                            value="{{ $discharge->temp_machine }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="type_program">TIPO DE PROGRAMA</label>
-                                        <input type="text" class="form-control" name="type_program" required
-                                            value="{{ $discharge->type_program }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="lote_bd">Lote del Insumo Biológico <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="lote_biologic" required
-                                            value="{{ $discharge->lote_biologic }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="validation_biologic">Validación Ciclo Biológico</label>
-                                        <select class="form-control" name="validation_biologic" id="validation_biologic"
-                                            readonly>
-                                            <option
-                                                {{ $discharge->validation_biologic == 'sin_validar' ? 'selected' : '' }}
-                                                value="sin_validar">
-                                                Sin Validar</option>
+                                <div class="card-body py-3">
+                                    <div class="form-row">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Referencia Descarga <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="reference"
+                                                       required readonly value="{{ $discharge_code }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Tipo de esterilización <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="machine_type"
+                                                       required readonly value="{{ $discharge->machine_type }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Nombre del Equipo <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="machine_name"
+                                                       required readonly value="{{ $discharge->machine_name }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Lote del Equipo <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" name="lote_machine"
+                                                       required readonly value="{{ $discharge->lote_machine }}">
+                                            </div>
+                                        </div>
 
-                                        </select>
-                                    </div>
-                                </div>
+                                        @if ($isHpo)
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label>Lote del Agente <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="lote_agente"
+                                                           required readonly value="{{ $discharge->lote_agente }}">
+                                                </div>
+                                            </div>
+                                        @else
+                                            <input type="hidden" name="lote_agente" value="NA">
+                                        @endif
 
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="status_cycle">Estado del Proceso <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-control" name="status_cycle" id="status_cycle" required
-                                            readonly>
-                                            <option {{ $discharge->status_cycle == 'Cargar' ? 'selected' : '' }}
-                                                value="En Curso">En Curso</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="temp_ambiente">Temperatura del Ambiente <span
-                                                class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="temp_ambiente" required
-                                            value="{{ $discharge->temp_ambiente }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label>Operador</label>
-                                        <input class="form-control" type="text" id="operator" name="operator"
-                                            placeholder= "{{ Auth::user()->name }}" value="{{ Auth::user()->name }}"
-                                            readonly>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Temperatura del Equipo <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" name="temp_machine"
+                                                       required readonly value="{{ $discharge->temp_machine }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Tipo de Programa</label>
+                                                <input type="text" class="form-control" name="type_program"
+                                                       required readonly value="{{ $discharge->type_program }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Lote del Insumo Biológico <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="lote_biologic"
+                                                       required readonly value="{{ $discharge->lote_biologic }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Validación Ciclo Biológico</label>
+                                                <select class="form-control" name="validation_biologic" readonly>
+                                                    <option value="sin_validar" selected>Sin Validar</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Estado del Proceso <span class="text-danger">*</span></label>
+                                                <select class="form-control" name="status_cycle" required readonly>
+                                                    <option value="En Curso" selected>En Curso</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Temperatura del Ambiente <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" name="temp_ambiente"
+                                                       required readonly value="{{ $discharge->temp_ambiente }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Operador</label>
+                                                <input class="form-control" type="text" name="operator"
+                                                       value="{{ Auth::user()->name }}" readonly>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
+                            {{-- Sección: Instrumentos --}}
+                            <div class="card mb-3"
+                                 style="border-left: 4px solid {{ $isHpo ? '#4990e1' : '#a46c05' }};">
+                                <div class="card-header py-2"
+                                     style="background-color: {{ $isHpo ? '#e8f4ff' : '#fff8ee' }};">
+                                    <strong>
+                                        <i class="bi bi-cart3"></i> Instrumentos en el Proceso
+                                    </strong>
+                                </div>
+                                <div class="card-body py-3">
+                                    @if ($isSteam)
+                                        <livewire:product-carttoQR :cartInstance="'discharge'" :data="$discharge" />
+                                    @elseif ($isHpo)
+                                        <livewire:product-carttoQRHPO :cartInstance="'discharge_hpo'" :data="$discharge" />
+                                    @endif
+                                </div>
+                            </div>
 
-                            @if ($discharge->machine_type == 'Autoclave')
-                                <livewire:product-carttoQR :cartInstance="'discharge'" :data="$discharge" />
-                            @endif
-                            @if ($discharge->machine_type == 'Peroxido')
-                                <livewire:product-carttoQRHPO :cartInstance="'discharge'" :data="$discharge" />
-                            @endif
-
+                            {{-- Nota --}}
                             <div class="form-group">
                                 <label for="note">Nota (Si se necesita)</label>
-                                <textarea name="note" id="note" rows="5" class="form-control" maxlength="400"
-                                    onkeyup="updateCounter()" placeholder="Escriba aquí cualquier observación adicional...">{{ $discharge->note }}</textarea>
-                                <small class="text-muted"><span
-                                        id="charCount">{{ strlen($discharge->note ?? '') }}</span>/400
-                                    caracteres</small>
+                                <textarea name="note" id="note" rows="4" class="form-control" maxlength="400"
+                                          onkeyup="updateCounter()"
+                                          placeholder="Escriba aquí cualquier observación adicional...">{{ $discharge->note }}</textarea>
+                                <small class="text-muted">
+                                    <span id="charCount">{{ strlen($discharge->note ?? '') }}</span>/400 caracteres
+                                </small>
                             </div>
 
                             <input type="hidden" name="labelqr_id" value="{{ $labelqr_id }}">
 
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-
-                                <button type="submit" id="submit-btn" class="btn btn-primary">
-                                    <span id="submit-text">Enviar a Ciclo</span> <i class="bi bi-check"
-                                        id="submit-icon"></i>
+                            {{-- Botón inferior --}}
+                            <div class="d-flex align-items-center mt-3" style="gap:12px;">
+                                <button type="submit" id="submit-btn-bottom"
+                                        class="btn"
+                                        style="{{ $isHpo ? 'background-color:#4990e1; border-color:#4990e1; color:#fff;' : 'background-color:#a46c05; border-color:#a46c05; color:#fff;' }}"
+                                        onclick="document.getElementById('submit-btn').click(); return false;">
+                                    <i class="bi bi-check"></i> Enviar a Ciclo
                                 </button>
-                                <div id="loading-indicator" class="d-none">
-                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                        <span class="sr-only">Procesando...</span>
-
-                                    </div>
-                                    <span class="ml-2">Enviando a Descargas...</span>
-                                </div>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -199,116 +227,82 @@
     <script>
         let isSubmitting = false;
         let submitTimestamp = null;
-        const SUBMIT_COOLDOWN = 3000; // 3 segundos
+        const SUBMIT_COOLDOWN = 3000;
 
         function updateCounter() {
             const textarea = document.getElementById('note');
-            const counter = document.getElementById('charCount');
-            if (textarea && counter) {
-                counter.textContent = textarea.value.length;
-            }
+            const counter  = document.getElementById('charCount');
+            if (textarea && counter) counter.textContent = textarea.value.length;
         }
 
         function handleFormSubmit(event) {
-            const now = Date.now();
-            const submitBtn = document.getElementById('submit-btn'); // ✅ Corregido: era 'submitBtn'
-            const submitText = document.getElementById('submit-text');
-            const submitIcon = document.getElementById('submit-icon');
+            const now              = Date.now();
+            const submitBtn        = document.getElementById('submit-btn');
+            const submitText       = document.getElementById('submit-text');
+            const submitIcon       = document.getElementById('submit-icon');
             const loadingIndicator = document.getElementById('loading-indicator');
 
-            // Prevenir doble envío
             if (isSubmitting) {
                 event.preventDefault();
-                console.log('Envío bloqueado - formulario ya en proceso');
                 return false;
             }
-
-            // Verificar cooldown
             if (submitTimestamp && (now - submitTimestamp) < SUBMIT_COOLDOWN) {
                 event.preventDefault();
-                console.log('Envío bloqueado - muy pronto desde el último envío');
                 return false;
             }
 
-            // Validar que hay productos en el carrito (esto depende de tu implementación de Livewire)
-            // Puedes añadir aquí validaciones adicionales
-
-            // Marcar como enviando
-            isSubmitting = true;
+            isSubmitting    = true;
             submitTimestamp = now;
 
-            // Deshabilitar botón y mostrar loading
             submitBtn.disabled = true;
             submitBtn.classList.add('btn-secondary');
             submitBtn.classList.remove('btn-primary');
+            submitBtn.style.backgroundColor = '';
+            submitBtn.style.borderColor     = '';
 
-            submitText.textContent = 'Procesando...';
-            submitIcon.className = 'bi bi-hourglass-split'; // ✅ Agregado: cambio de icono
-
+            submitText.textContent  = 'Procesando...';
+            submitIcon.className    = 'bi bi-hourglass-split';
             loadingIndicator.classList.remove('d-none');
 
-            // Timeout de seguridad para rehabilitar el botón si algo sale mal
-            setTimeout(() => {
-                if (isSubmitting) {
-                    resetSubmitButton();
-                }
-            }, 10000); // 10 segundos
+            setTimeout(() => { if (isSubmitting) resetSubmitButton(); }, 10000);
 
             return true;
         }
 
         function resetSubmitButton() {
-            const submitBtn = document.getElementById('submit-btn'); // ✅ Corregido: era 'submitBtn'
-            const submitText = document.getElementById('submit-text');
-            const submitIcon = document.getElementById('submit-icon');
+            const submitBtn        = document.getElementById('submit-btn');
+            const submitText       = document.getElementById('submit-text');
+            const submitIcon       = document.getElementById('submit-icon');
             const loadingIndicator = document.getElementById('loading-indicator');
 
-            isSubmitting = false;
+            isSubmitting    = false;
             submitTimestamp = null;
 
             submitBtn.disabled = false;
             submitBtn.classList.remove('btn-secondary');
             submitBtn.classList.add('btn-primary');
 
-            submitText.textContent = 'Enviar a Ciclo'; // ✅ Corregido: texto consistente
-            submitIcon.className = 'bi bi-check'; // ✅ Agregado: restaurar icono original
-
+            submitText.textContent = 'Enviar a Ciclo';
+            submitIcon.className   = 'bi bi-check';
             loadingIndicator.classList.add('d-none');
         }
 
-        // Prevenir envío con Enter en campos de texto (excepto textarea)
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('discharge-form');
+        document.addEventListener('DOMContentLoaded', function () {
+            const form   = document.getElementById('discharge-form');
             const inputs = form.querySelectorAll('input[type="text"], input[type="number"], select');
 
             inputs.forEach(input => {
-                input.addEventListener('keypress', function(e) {
+                input.addEventListener('keypress', function (e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
-                        // Mover al siguiente campo
-                        const formElements = Array.from(form.elements);
-                        const currentIndex = formElements.indexOf(this);
-                        const nextElement = formElements[currentIndex + 1];
-                        if (nextElement && nextElement.focus) {
-                            nextElement.focus();
-                        }
+                        const els   = Array.from(form.elements);
+                        const next  = els[els.indexOf(this) + 1];
+                        if (next && next.focus) next.focus();
                     }
                 });
             });
 
-            // Inicializar contador de caracteres
             updateCounter();
         });
-
-        // Detectar si el usuario intenta cerrar la página mientras se está enviando
-        /* window.addEventListener('beforeunload', function(e) {
-            if (isSubmitting) {
-                const message = 'El formulario se está enviando. ¿Estás seguro de que quieres salir?';
-                e.preventDefault();
-                e.returnValue = message;
-                return message;
-            }
-        });
-        */
     </script>
 @endpush

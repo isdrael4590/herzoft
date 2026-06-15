@@ -3,9 +3,7 @@
 namespace App\Livewire;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Request;
 use Livewire\Component;
-use Modules\Product\Entities\StockDetails;
 
 class ProductCarttoEXP extends Component
 {
@@ -33,37 +31,35 @@ class ProductCarttoEXP extends Component
     public function mount($cartInstance, $data = null)
     {
         $this->cart_instance = $cartInstance;
+
+        $this->package_wrap         = [];
+        $this->ref_qr               = [];
+        $this->expiration           = [];
+        $this->type_process         = [];
+        $this->check_quantity       = [];
+        $this->quantity             = [];
+        $this->item_patient         = [];
+        $this->unit_price           = [];
+        $this->item_outside_company = [];
+        $this->item_area            = [];
+        $this->item_product_info    = [];
+
         if ($data) {
             $this->data = $data;
-            $cart_items = Cart::instance($this->cart_instance)->content();
+        }
 
-            foreach ($cart_items as $cart_item) {
-                $this->quantity[$cart_item->id] = $cart_item->qty;
-                $this->check_quantity[$cart_item->id] = [$cart_item->options->stock];
-                $this->unit_price[$cart_item->id] = $cart_item->price; // se añade
-                $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company; // se añade
-                $this->item_area[$cart_item->id] = $cart_item->options->product_area; // se añade
-                $this->item_patient[$cart_item->id] = $cart_item->options->product_patient;
-                $this->package_wrap[$cart_item->id] = $cart_item->options->product_package_wrap;
-                $this->ref_qr[$cart_item->id] = $cart_item->options->product_ref_qr;
-
-                $this->expiration[$cart_item->id] = $cart_item->options->product_expiration;
-                $this->type_process[$cart_item->id] = $cart_item->options->product_type_process;
-                $this->item_product_info[$cart_item->id] = $cart_item->options->product_info;
-            }
-        } else {
-
-            $this->package_wrap = [];
-            $this->ref_qr = [];
-            $this->expiration = [];
-            $this->type_process = [];
-            $this->check_quantity = [];
-            $this->quantity = [];
-            $this->item_patient = [];
-            $this->unit_price = []; // se añade
-            $this->item_outside_company = []; // se añade
-            $this->item_area = []; // se añade
-            $this->item_product_info = [];
+        foreach (Cart::instance($this->cart_instance)->content() as $cart_item) {
+            $this->quantity[$cart_item->id]             = $cart_item->qty;
+            $this->check_quantity[$cart_item->id]       = [$cart_item->options->stock];
+            $this->unit_price[$cart_item->id]           = $cart_item->price;
+            $this->item_outside_company[$cart_item->id] = $cart_item->options->product_outside_company;
+            $this->item_area[$cart_item->id]            = $cart_item->options->product_area;
+            $this->item_patient[$cart_item->id]         = $cart_item->options->product_patient;
+            $this->package_wrap[$cart_item->id]         = $cart_item->options->product_package_wrap;
+            $this->ref_qr[$cart_item->id]               = $cart_item->options->product_ref_qr;
+            $this->expiration[$cart_item->id]           = $cart_item->options->product_expiration;
+            $this->type_process[$cart_item->id]         = $cart_item->options->product_type_process;
+            $this->item_product_info[$cart_item->id]    = $cart_item->options->product_info;
         }
     }
 
@@ -115,15 +111,14 @@ class ProductCarttoEXP extends Component
                 'product_info'         => $stock_detail['product_info'],
             ]
         ]);
-        $this->item_patient[$stock_detail['id']] = $stock_detail['product_patient'];
-        $this->item_product_info[$stock_detail['id']] = $stock_detail['product_info'];
-
-        // $this->quantity[$stock_detail['id']] = $stock_detail['product_quantity'];
-        $this->item_area[$stock_detail['id']] = $stock_detail['product_area'];
+        $this->item_patient[$stock_detail['id']]         = $stock_detail['product_patient'];
+        $this->item_product_info[$stock_detail['id']]    = $stock_detail['product_info'];
+        $this->item_area[$stock_detail['id']]            = $stock_detail['product_area'];
         $this->item_outside_company[$stock_detail['id']] = $stock_detail['product_outside_company'];
+        $this->check_quantity[$stock_detail['id']]       = $stock_detail['product_quantity'];
+        $this->quantity[$stock_detail['id']]             = 1;
 
-        $this->check_quantity[$stock_detail['id']] = $stock_detail['product_quantity'];
-        $this->quantity[$stock_detail['id']] = 1;
+        $this->dispatch('focusQuantity', productId: $stock_detail['id']);
     }
 
     public function removeItem($row_id)
@@ -153,6 +148,13 @@ class ProductCarttoEXP extends Component
         $this->updateQuantity($row_id, $product_id);
     }
 
+
+    public function setAndUpdateQuantity(string $row_id, int $product_id, int $qty): void
+    {
+        $this->quantity[$product_id] = max(1, $qty);
+        $this->updateQuantity($row_id, $product_id);
+        $this->dispatch('qty-confirmed-' . $product_id, qty: $this->quantity[$product_id]);
+    }
 
     // Método para decrementar cantidad
     public function decrementQuantity($row_id, $product_id)

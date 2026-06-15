@@ -4,234 +4,168 @@ namespace App\Livewire\Reports;
 
 use Livewire\Component;
 use Carbon\Carbon;
-use Livewire\WithPagination;
-use Modules\Reception\Entities\Reception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Modules\Reception\Entities\Reception;
+use Modules\Informat\Entities\Area;
 
 class ReceptionReport extends Component
 {
-    use WithPagination;
+    // Filtros
+    public string $startDate    = '';
+    public string $endDate      = '';
+    public string $area         = '';
+    public string $status       = '';
+    public string $productName  = '';
+    public string $productCode  = '';
+    public string $groupBy      = 'date';
 
-    protected $paginationTheme = 'bootstrap';
+    // Datos y selección
+    public array  $data          = [];
+    public array  $selectedItems = [];
+    public bool   $selectAll     = false;
 
-    public $startDate;
-    public $endDate;
-    public $area;
-    public $status;
-    public $data = [];
-    public $selectedItems = [];
-    public $selectAll = false;
+    // Config
+    public int $maxPrintItems = 10000;
 
-    public function mount()
+    // Áreas para el filtro
+    public mixed $areas = [];
+
+    public function mount(): void
     {
         $this->startDate = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $this->endDate = Carbon::now()->format('Y-m-d');
-        $this->area = '';
-        $this->status = '';
+        $this->endDate   = Carbon::now()->format('Y-m-d');
+        $this->areas     = Area::orderBy('area_name')->get();
         $this->loadData();
     }
 
-    public function loadData()
+    // ── Carga de datos ────────────────────────────────────────────────────────
+
+    public function loadData(): void
     {
         try {
-            // MODIFICACIÓN: Incluir receptionDetails en la consulta para obtener product_name
-            $receptions = Reception::with(['receptionDetails' => function($query) {
-                    $query->select('reception_id', 'product_name'); // Seleccionar campos necesarios
-                }])
+            $receptions = Reception::query()
+                ->select(['id', 'updated_at', 'reference', 'area', 'delivery_staff', 'operator', 'status'])
+                ->withCount('receptionDetails as details_count')
+                ->with(['receptionDetails' => fn($q) =>
+                    $q->select('reception_id', 'product_name')->distinct()
+                ])
                 ->whereBetween('updated_at', [
                     $this->startDate . ' 00:00:00',
-                    $this->endDate . ' 23:59:59',
+                    $this->endDate   . ' 23:59:59',
                 ])
-                ->when($this->area, function ($query) {
-                    return $query->where('area', $this->area);
-                })
-                ->when($this->status, function ($query) {
-                    return $query->where('status', $this->status);
-                })
-                ->orderBy('updated_at', 'desc')
+                ->when($this->area,   fn($q) => $q->where('area',   $this->area))
+                ->when($this->status, fn($q) => $q->where('status', $this->status))
+                ->when($this->productName, fn($q) => $q->whereHas('receptionDetails',
+                    fn($d) => $d->where('product_name', 'like', '%' . $this->productName . '%')
+                ))
+                ->when($this->productCode, fn($q) => $q->whereHas('receptionDetails',
+                    fn($d) => $d->where('product_code', 'like', '%' . $this->productCode . '%')
+                ))
+                ->orderByDesc('updated_at')
+                ->limit(1000)
                 ->get();
 
-            // MODIFICACIÓN: Incluir product_names en el mapeo
-            $this->data = $receptions->map(function ($reception) {
-                $receptionArray = $reception->toArray();
-                $receptionArray['details_count'] = $reception->receptionDetails->count();
-                
-                // *** NUEVA FUNCIONALIDAD: Agregar los nombres de productos ***
-                $receptionArray['product_names'] = $reception->receptionDetails
-                    ->pluck('product_name')
-                    ->filter() // Eliminar valores vacíos o null
-                    ->unique() // Eliminar duplicados
-                    ->values()
-                    ->toArray();
-                
-                // También agregar una cadena concatenada para mostrar fácilmente
-                $receptionArray['product_names_string'] = implode(', ', $receptionArray['product_names']);
-                
-                return $receptionArray;
-            })->toArray();
+            $this->data = $receptions->map(fn($r) => [
+                'id'             => $r->id,
+                'updated_at'     => (string) $r->updated_at,
+                'reference'      => $r->reference,
+                'area'           => $r->area,
+                'delivery_staff' => $r->delivery_staff,
+                'operator'       => $r->operator,
+                'status'         => $r->status,
+                'details_count'  => $r->details_count,
+                'product_names'  => $r->receptionDetails->pluck('product_name')->filter()->values()->toArray(),
+            ])->toArray();
 
-            $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+            $this->selectedItems = array_map('strval', array_column($this->data, 'id'));
             $this->selectAll = true;
 
-            session()->flash('message', 'Loaded ' . count($this->data) . ' records. All items selected by default.');
-        } catch (\Exception $e) {
-            session()->flash('message', 'Error loading data: ' . $e->getMessage());
-            $this->data = [];
+        } catch (\Throwable $e) {
+            Log::error('ReceptionReport::loadData ' . $e->getMessage());
+            session()->flash('error', 'Error al cargar los datos: ' . $e->getMessage());
+            $this->data          = [];
             $this->selectedItems = [];
-            $this->selectAll = false;
+            $this->selectAll     = false;
         }
     }
 
-    public function updatedSelectAll($value)
+    // ── Selección ─────────────────────────────────────────────────────────────
+
+    public function updatedSelectAll(bool $value): void
     {
-        if ($value) {
-            $this->selectedItems = collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray();
-        } else {
-            $this->selectedItems = [];
-        }
+        $this->selectedItems = $value
+            ? collect($this->data)->pluck('id')->map(fn($id) => (string) $id)->toArray()
+            : [];
     }
 
-    public $maxPrintItems = 5000;
-
-    // MÉTODO MEJORADO - Guardar en sesión en lugar de enviar por JavaScript
-    public function print()
+    public function selectByStatus(string $status): void
     {
-        if (empty($this->selectedItems)) {
-            session()->flash('message', 'Por favor seleccione al menos un elemento para imprimir.');
+        if ($status === 'All') {
+            $this->selectedItems = collect($this->data)
+                ->pluck('id')->map(fn($id) => (string) $id)->toArray();
+            $this->selectAll = true;
             return;
         }
 
-        if (count($this->selectedItems) > $this->maxPrintItems) {
-            session()->flash('message', "Demasiados elementos seleccionados. Por favor seleccione máximo {$this->maxPrintItems} elementos.");
-            return;
-        }
-
-        try {
-            // SOLUCIÓN 1: Guardar los IDs en la sesión
-            Session::put('print_reception_items', $this->selectedItems);
-            Session::put('print_reception_timestamp', now());
-
-            \Log::info('Items guardados en sesión para impresión: ' . count($this->selectedItems));
-
-            // Redirigir directamente al controlador
-            return redirect()->route('reports.reception.print-session');
-        } catch (\Exception $e) {
-            session()->flash('message', 'Error preparando la impresión: ' . $e->getMessage());
-            \Log::error('Error en print(): ' . $e->getMessage());
-        }
-    }
-
-    // MÉTODO ALTERNATIVO - División en chunks y procesamiento por lotes
-    public function printInChunks()
-    {
-        if (empty($this->selectedItems)) {
-            session()->flash('message', 'Por favor seleccione al menos un elemento para imprimir.');
-            return;
-        }
-
-        $itemCount = count($this->selectedItems);
-        $chunkSize = 1000; // Procesar de 1000 en 1000
-        $chunks = array_chunk($this->selectedItems, $chunkSize);
-
-        // Guardar todos los chunks en la sesión
-        Session::put('print_reception_chunks', $chunks);
-        Session::put('print_reception_total_items', $itemCount);
-        Session::put('print_reception_timestamp', now());
-
-        \Log::info("Items divididos en {count($chunks)} chunks para impresión total: {$itemCount}");
-
-        // Procesar el primer chunk
-        return redirect()->route('reports.reception.print-chunks');
-    }
-
-    // MÉTODO DIRECTO - Sin JavaScript, directo por servidor
-    public function printDirect()
-    {
-        if (empty($this->selectedItems)) {
-            session()->flash('message', 'Por favor seleccione al menos un elemento para imprimir.');
-            return;
-        }
-
-        try {
-            // MODIFICACIÓN: Incluir receptionDetails con product_name para la impresión
-            $receptions = Reception::with(['receptionDetails' => function($query) {
-                    $query->select('reception_id', 'product_name', 'quantity');
-                }])
-                ->whereIn('id', $this->selectedItems)
-                ->orderBy('updated_at', 'desc')
-                ->get();
-
-            if ($receptions->isEmpty()) {
-                session()->flash('message', 'No se encontraron elementos válidos para imprimir.');
-                return;
-            }
-
-            // Usar el controlador para generar el PDF
-            $controller = new \Modules\Reports\Http\Controllers\ReceptionPrintController();
-            return $controller->generatePdfDirect($this->selectedItems);
-        } catch (\Exception $e) {
-            session()->flash('message', 'Error generando PDF: ' . $e->getMessage());
-            \Log::error('Error en printDirect(): ' . $e->getMessage());
-        }
-    }
-
-    public function toggleSelection($itemId)
-    {
-        $itemId = (string) $itemId;
-
-        if (in_array($itemId, $this->selectedItems)) {
-            $this->selectedItems = array_values(array_filter($this->selectedItems, fn($id) => $id !== $itemId));
-        } else {
-            $this->selectedItems[] = $itemId;
-        }
-
+        $this->selectedItems = collect($this->data)
+            ->where('status', $status)
+            ->pluck('id')->map(fn($id) => (string) $id)->toArray();
         $this->selectAll = count($this->selectedItems) === count($this->data);
     }
 
-    public function selectByStatus($status)
-    {
-        if ($status === 'All') {
-            // Seleccionar todos los elementos
-            $this->selectedItems = collect($this->data)
-                ->pluck('id')
-                ->map(fn($id) => (string) $id)
-                ->toArray();
+    // ── Propiedades computadas ─────────────────────────────────────────────────
 
-            $this->selectAll = true;
-
-            session()->flash('message', 'Selected all ' . count($this->selectedItems) . ' items');
-        } else {
-            // Seleccionar por estado específico
-            $this->selectedItems = collect($this->data)
-                ->where('status', $status)
-                ->pluck('id')
-                ->map(fn($id) => (string) $id)
-                ->toArray();
-
-            $this->selectAll = count($this->selectedItems) === count($this->data);
-
-            session()->flash('message', 'Selected ' . count($this->selectedItems) . ' items with status: ' . $status);
-        }
-    }
-
-    public function getSelectedCountProperty()
+    public function getSelectedCountProperty(): int
     {
         return count($this->selectedItems);
     }
 
-    public function getTotalPackagesProperty()
+    public function getTotalPackagesProperty(): int
     {
-        return collect($this->data)
-            ->whereIn('id', $this->selectedItems)
+        return (int) collect($this->data)
+            ->whereIn('id', array_map('intval', $this->selectedItems))
             ->sum('details_count');
     }
+
+    // ── Imprimir ──────────────────────────────────────────────────────────────
+
+    public function print(): mixed
+    {
+        if (empty($this->selectedItems)) {
+            session()->flash('message', 'Seleccione al menos un elemento para imprimir.');
+            return null;
+        }
+
+        if (count($this->selectedItems) > $this->maxPrintItems) {
+            session()->flash('message', "Máximo {$this->maxPrintItems} elementos. Seleccionados: " . count($this->selectedItems));
+            return null;
+        }
+
+        Session::put('print_reception_items',     $this->selectedItems);
+        Session::put('print_reception_timestamp', now());
+        Session::put('print_reception_groupby',   $this->groupBy);
+        Session::put('print_reception_filters',   [
+            'startDate'   => $this->startDate,
+            'endDate'     => $this->endDate,
+            'area'        => $this->area,
+            'status'      => $this->status,
+            'productName' => $this->productName,
+            'productCode' => $this->productCode,
+            'groupBy'     => $this->groupBy,
+        ]);
+
+        return redirect()->route('reports.reception.print-session');
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────────
 
     public function render()
     {
         return view('livewire.reports.receptions-report', [
-            'data' => $this->data,
-            'selectedItems' => $this->selectedItems,
-            'selectAll' => $this->selectAll,
+            'areas'       => $this->areas,
+            'selectedSet' => array_flip($this->selectedItems),
         ]);
     }
 }

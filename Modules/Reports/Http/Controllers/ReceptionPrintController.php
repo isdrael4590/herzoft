@@ -4,283 +4,268 @@ namespace Modules\Reports\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Modules\Reception\Entities\Reception;
 use Modules\Informat\Entities\Institute;
 use Modules\Setting\Entities\Setting;
 use PDF;
 
 class ReceptionPrintController extends Controller
 {
-    // MÉTODO ORIGINAL (mantener para compatibilidad)
     public function printFromPost(Request $request)
     {
-        $request->validate([
-            'items' => 'required|string'
-        ]);
-
+        $request->validate(['items' => 'required|string']);
         $items = json_decode($request->items, true);
 
         if (!is_array($items) || empty($items)) {
             return redirect()->back()->with('error', 'No valid items selected for printing');
         }
 
-        \Log::info("POST Method: Processing {count($items)} items");
-
-        return $this->generatePdf($items);
+        return $this->generatePdf($items, []);
     }
 
-    // NUEVO MÉTODO - Leer desde la sesión
     public function printFromSession()
     {
-        $items = Session::get('print_reception_items');
+        $items     = Session::get('print_reception_items');
         $timestamp = Session::get('print_reception_timestamp');
+        $filters   = Session::get('print_reception_filters', []);
 
         if (!$items || !is_array($items) || empty($items)) {
-            return redirect()->back()->with('error', 'No hay elementos válidos en la sesión para imprimir');
+            return redirect()->back()->with('error', 'No hay elementos en la sesión para imprimir.');
         }
 
-        // Verificar que la sesión no sea muy antigua (30 minutos)
         if ($timestamp && $timestamp->diffInMinutes(now()) > 30) {
-            Session::forget(['print_reception_items', 'print_reception_timestamp']);
-            return redirect()->back()->with('error', 'La sesión de impresión ha expirado. Intente nuevamente.');
+            Session::forget(['print_reception_items', 'print_reception_timestamp', 'print_reception_filters', 'print_reception_groupby']);
+            return redirect()->back()->with('error', 'La sesión expiró. Intente nuevamente.');
         }
 
-        \Log::info("Session Method: Processing " . count($items) . " items");
+        Session::forget(['print_reception_items', 'print_reception_timestamp', 'print_reception_filters', 'print_reception_groupby']);
 
-        // Limpiar la sesión después de usar
-        Session::forget(['print_reception_items', 'print_reception_timestamp']);
-
-        return $this->generatePdf($items);
+        return $this->generatePdf($items, $filters);
     }
 
-    // NUEVO MÉTODO - Procesar chunks desde la sesión
     public function printFromChunks()
     {
-        $chunks = Session::get('print_reception_chunks');
+        $chunks     = Session::get('print_reception_chunks');
         $totalItems = Session::get('print_reception_total_items', 0);
 
         if (!$chunks || !is_array($chunks) || empty($chunks)) {
-            return redirect()->back()->with('error', 'No hay chunks válidos en la sesión para imprimir');
+            return redirect()->back()->with('error', 'No hay chunks en la sesión para imprimir.');
         }
 
-        // Combinar todos los chunks
         $items = collect($chunks)->flatten()->toArray();
-
-        \Log::info("Chunks Method: Processing {$totalItems} items in " . count($chunks) . " chunks");
-
-        // Limpiar la sesión
         Session::forget(['print_reception_chunks', 'print_reception_total_items', 'print_reception_timestamp']);
 
-        return $this->generatePdf($items);
+        return $this->generatePdf($items, []);
     }
 
-    // NUEVO MÉTODO - Generación directa (para llamada desde Livewire)
-    public function generatePdfDirect(array $items)
-    {
-        return $this->generatePdf($items);
-    }
+    // ── Generación del PDF ──────────────────────────────────────────────────
 
-    // MÉTODO MEJORADO - Generación de PDF optimizado
-    private function generatePdf(array $items)
+    private function generatePdf(array $ids, array $filters): mixed
     {
         try {
-            $itemCount = count($items);
-            \Log::info("Generating PDF for {$itemCount} items");
+            set_time_limit(120);
+            ini_set('memory_limit', '256M');
 
-            // Validar que los items no estén vacíos
-            if (empty($items)) {
-                throw new \Exception('No items provided for PDF generation');
-            }
+            $itemCount = count($ids);
+            $groupBy   = $filters['groupBy'] ?? 'date';
 
-            // Configurar límites según el volumen
-            $this->setResourceLimits($itemCount);
+            Log::info("PDF: {$itemCount} recepciones, groupBy={$groupBy}");
 
-            // Obtener datos de manera optimizada
-            $receptions = $this->getReceptionsOptimized($items, $itemCount);
-
-            if ($receptions->isEmpty()) {
-                throw new \Exception('No valid receptions found for the provided IDs');
-            }
-
-            \Log::info("Found {$receptions->count()} valid receptions out of {$itemCount} requested");
-
-            // Obtener datos adicionales
-            $institute = Institute::first();
-            $setting = Setting::first();
-
-            // Procesar imágenes
-            $dataUrl = $this->processImage($institute, 'institutes');
+            // ── 1. Datos institucionales ──────────────────────────────────
+            $institute  = Institute::first();
+            $setting    = Setting::first();
+            $dataUrl    = $this->processImage($institute, 'institutes');
             $dataUrlogo = $this->processImage($setting, 'settings');
 
-            // Calcular estadísticas
-            $totalPackages = $receptions->sum(function ($reception) {
-                return $reception->receptionDetails->count();
-            });
+            // ── 2. KPIs globales (2 queries rápidas, sin Eloquent) ────────
+            $totalReceptions = count($ids);
 
-            $statusStats = $receptions->groupBy('status')->map(function ($group) {
-                return $group->count();
-            });
+            $totalPackages = DB::table('reception_details')
+                ->whereIn('reception_id', $ids)
+                ->count();
 
-            // Preparar datos para el PDF
+            $statusStats = DB::table('receptions')
+                ->whereIn('id', $ids)
+                ->select('status', DB::raw('COUNT(*) as total'))
+                ->groupBy('status')
+                ->pluck('total', 'status');
+
+            // ── 3. Resumen por área (siempre presente) ────────────────────
+            $areaSummary = DB::table('receptions as r')
+                ->leftJoin('reception_details as rd', 'rd.reception_id', '=', 'r.id')
+                ->whereIn('r.id', $ids)
+                ->select([
+                    'r.area',
+                    DB::raw('COUNT(DISTINCT r.id) as records_count'),
+                    DB::raw('COUNT(rd.id) as packages_count'),
+                    DB::raw('COALESCE(SUM(rd.product_quantity), 0) as total_quantity'),
+                ])
+                ->groupBy('r.area')
+                ->orderByDesc('records_count')
+                ->get();
+
+            // ── 3b. Resumen por fecha (siempre presente) ──────────────────
+            $dateSummary = DB::table('receptions as r')
+                ->leftJoin('reception_details as rd', 'rd.reception_id', '=', 'r.id')
+                ->whereIn('r.id', $ids)
+                ->select([
+                    DB::raw('DATE(r.updated_at) as date'),
+                    DB::raw('COUNT(DISTINCT r.id) as records_count'),
+                    DB::raw('COUNT(rd.id) as packages_count'),
+                    DB::raw('COALESCE(SUM(rd.product_quantity), 0) as total_quantity'),
+                ])
+                ->groupBy(DB::raw('DATE(r.updated_at)'))
+                ->orderByDesc('date')
+                ->get();
+
+            // ── 4. Datos agrupados según el modo elegido ──────────────────
+            $groupedData = match ($groupBy) {
+                'product'   => $this->groupedByProduct($ids),
+                'area'      => $this->groupedByArea($ids),
+                'code_date' => $this->groupedByCodeDate($ids),
+                default     => $this->groupedByDate($ids),
+            };
+
+            // ── 5. Preparar datos del PDF ─────────────────────────────────
             $pdfData = [
-                'receptions' => $receptions,
-                'institute' => $institute,
-                'setting' => $setting,
-                'dataUrl' => $dataUrl,
-                'dataUrlogo' => $dataUrlogo,
-                'total_items' => $itemCount,
-                'print_date' => now()->format('d M, Y H:i:s'),
-                'selected_count' => $receptions->count(),
-                'total_packages' => $totalPackages,
-                'status_stats' => $statusStats
+                'institute'        => $institute,
+                'setting'          => $setting,
+                'dataUrl'          => $dataUrl,
+                'dataUrlogo'       => $dataUrlogo,
+                'print_date'       => now()->format('d/m/Y H:i:s'),
+                'filters'          => $filters,
+                'total_receptions' => $totalReceptions,
+                'total_packages'   => $totalPackages,
+                'status_stats'     => $statusStats,
+                'area_summary'     => $areaSummary,
+                'date_summary'     => $dateSummary,
+                'grouped_data'     => $groupedData,
+                'group_by'         => $groupBy,
             ];
 
-            // Configurar opciones del PDF
-            $pdfOptions = $this->getPdfOptions($itemCount);
+            $pdf = PDF::loadView('reports::reception.print-aggregated', $pdfData)
+                ->setOptions([
+                    'dpi'             => 96,
+                    'defaultFont'     => 'sans-serif',
+                    'isPhpEnabled'    => true,
+                    'chroot'          => public_path(),
+                    'isRemoteEnabled' => true,
+                    'defaultPaperSize'=> 'a4',
+                    'orientation'     => 'portrait',
+                ]);
 
-            // Seleccionar vista según el volumen
-            $viewName = $this->getViewName($itemCount);
+            $filename = 'recepciones-' . now()->format('Y-m-d') . '-' . $totalReceptions . '.pdf';
 
-            // Generar PDF con manejo de errores mejorado
-            try {
-                $pdf = PDF::loadView($viewName, $pdfData)
-                    ->setOptions($pdfOptions);
-            } catch (\Exception $e) {
-                \Log::error('Error loading PDF view: ' . $e->getMessage());
-                // Usar vista básica como fallback
-                $pdf = PDF::loadView('reports::reception.print-basic', $pdfData)
-                    ->setOptions($pdfOptions);
-            }
-
-            $filename = $this->generateFilename($itemCount);
-
-            \Log::info("PDF generated successfully. Items: {$itemCount}, Filename: {$filename}");
+            Log::info("PDF generado: {$filename}");
 
             return $pdf->stream($filename);
-        } catch (\Exception $e) {
-            \Log::error('Error generating PDF: ' . $e->getMessage(), [
-                'items_count' => count($items),
-                'memory_usage' => memory_get_usage(true),
-                'memory_peak' => memory_get_peak_usage(true),
-                'trace' => $e->getTraceAsString()
+
+        } catch (\Throwable $e) {
+            Log::error('Error generando PDF: ' . $e->getMessage(), [
+                'ids_count'    => count($ids),
+                'memory'       => memory_get_usage(true),
+                'trace'        => $e->getTraceAsString(),
             ]);
 
-            return redirect()->back()
-                ->with('error', 'Error generando PDF: ' . $e->getMessage() .
-                    ' (Items: ' . count($items) . '). Intente con menos elementos o contacte al administrador.');
+            return redirect()->back()->with('error', 'Error al generar el PDF: ' . $e->getMessage());
         }
     }
 
-    private function setResourceLimits(int $itemCount)
+    // ── Queries agregadas ───────────────────────────────────────────────────
+
+    private function groupedByDate(array $ids): \Illuminate\Support\Collection
     {
-        if ($itemCount > 1000) {
-            set_time_limit(300); // 5 minutos
-            ini_set('memory_limit', '512M');
-        }
-
-        if ($itemCount > 5000) {
-            set_time_limit(600); // 10 minutos
-            ini_set('memory_limit', '1G');
-        }
-
-        if ($itemCount > 10000) {
-            set_time_limit(1200); // 20 minutos
-            ini_set('memory_limit', '2G');
-        }
+        return DB::table('receptions as r')
+            ->leftJoin('reception_details as rd', 'rd.reception_id', '=', 'r.id')
+            ->whereIn('r.id', $ids)
+            ->select([
+                DB::raw('DATE(r.updated_at) as date'),
+                DB::raw('COUNT(DISTINCT r.id) as records_count'),
+                DB::raw('COUNT(DISTINCT COALESCE(rd.product_code, rd.product_name)) as products_count'),
+                DB::raw('COUNT(DISTINCT r.area) as areas_count'),
+                DB::raw('COALESCE(SUM(rd.product_quantity), 0) as total_quantity'),
+                DB::raw('COUNT(rd.id) as total_packages'),
+            ])
+            ->groupBy(DB::raw('DATE(r.updated_at)'))
+            ->orderByDesc('date')
+            ->get();
     }
 
-    private function getReceptionsOptimized(array $items, int $itemCount)
+    private function groupedByProduct(array $ids): \Illuminate\Support\Collection
     {
-        // Para volúmenes muy grandes, usar paginación en la consulta
-        if ($itemCount > 5000) {
-            $receptions = collect();
-            $chunks = array_chunk($items, 1000);
-
-            foreach ($chunks as $chunkIndex => $chunk) {
-                \Log::info("Processing chunk " . ($chunkIndex + 1) . " of " . count($chunks));
-
-                $chunkData = Reception::with(['receptionDetails' => function ($query) {
-                    // Optimizar la carga de detalles si es necesario
-                    $query->select('id', 'reception_id', 'product_name'); // Solo campos necesarios
-                }])
-                    ->whereIn('id', $chunk)
-                    ->get();
-
-                $receptions = $receptions->merge($chunkData);
-            }
-
-            return $receptions->sortByDesc('updated_at');
-        } else {
-            // Consulta normal para volúmenes menores
-            return Reception::with(['receptionDetails' => function ($query) {
-                $query->select('id', 'reception_id', 'product_name'); // *** Agregado product_name y quantity ***
-            }])
-                ->whereIn('id', $items)
-                ->orderBy('updated_at', 'desc')
-                ->get();
-        }
+        return DB::table('reception_details as rd')
+            ->join('receptions as r', 'r.id', '=', 'rd.reception_id')
+            ->whereIn('r.id', $ids)
+            ->select([
+                DB::raw('COALESCE(rd.product_code, rd.product_name) as group_key'),
+                'rd.product_name',
+                'rd.product_code',
+                DB::raw('COALESCE(SUM(rd.product_quantity), 0) as total_quantity'),
+                DB::raw('COUNT(DISTINCT r.id) as records_count'),
+                DB::raw('COUNT(rd.id) as total_packages'),
+            ])
+            ->groupBy('group_key', 'rd.product_name', 'rd.product_code')
+            ->orderByDesc('total_quantity')
+            ->get();
     }
 
-    private function getPdfOptions(int $itemCount)
+    private function groupedByArea(array $ids): \Illuminate\Support\Collection
     {
-        $options = [
-            'dpi' => $itemCount > 5000 ? 96 : 150,
-            'defaultFont' => 'sans-serif',
-            'isPhpEnabled' => true,
-            'chroot' => public_path(),
-            'isRemoteEnabled' => true,
-            'defaultPaperSize' => 'a4',
-            'orientation' => 'portrait'
-        ];
-
-        // Para PDFs muy grandes, optimizar configuración
-        if ($itemCount > 10000) {
-            $options['orientation'] = 'landscape';
-            $options['dpi'] = 72;
-        }
-
-        return $options;
+        return DB::table('receptions as r')
+            ->leftJoin('reception_details as rd', 'rd.reception_id', '=', 'r.id')
+            ->whereIn('r.id', $ids)
+            ->select([
+                'r.area',
+                DB::raw('COUNT(DISTINCT r.id) as records_count'),
+                DB::raw('COUNT(DISTINCT COALESCE(rd.product_code, rd.product_name)) as products_count'),
+                DB::raw('COALESCE(SUM(rd.product_quantity), 0) as total_quantity'),
+                DB::raw('COUNT(rd.id) as total_packages'),
+            ])
+            ->groupBy('r.area')
+            ->orderByDesc('records_count')
+            ->get();
     }
 
-    private function getViewName(int $itemCount)
+    private function groupedByCodeDate(array $ids): \Illuminate\Support\Collection
     {
-        if ($itemCount > 10000) {
-            return 'reports::reception.print-minimal'; // Vista ultra-básica
-        } elseif ($itemCount > 5000) {
-            return 'reports::reception.print-optimized'; // Vista optimizada
-        } else {
-            return 'reports::reception.print-reception'; // Vista completa
-        }
+        return DB::table('reception_details as rd')
+            ->join('receptions as r', 'r.id', '=', 'rd.reception_id')
+            ->whereIn('r.id', $ids)
+            ->select([
+                DB::raw('DATE(r.updated_at) as date'),
+                'rd.product_code',
+                'rd.product_name',
+                DB::raw('COALESCE(SUM(rd.product_quantity), 0) as total_quantity'),
+                DB::raw('COUNT(rd.id) as total_packages'),
+                DB::raw('COUNT(DISTINCT r.id) as records_count'),
+            ])
+            ->groupBy(DB::raw('DATE(r.updated_at)'), 'rd.product_code', 'rd.product_name')
+            ->orderByDesc('date')
+            ->orderByDesc('total_quantity')
+            ->get();
     }
 
-    private function generateFilename(int $itemCount)
-    {
-        return 'reception-report-' . $itemCount . '-items-' . now()->format('Y-m-d-H-i-s') . '.pdf';
-    }
+    // ── Utilidades ──────────────────────────────────────────────────────────
 
-    private function processImage($model, $collection)
+    private function processImage($model, string $collection): ?string
     {
         if (!$model || !$model->getFirstMedia($collection)) {
             return null;
         }
 
         try {
-            $imagePath = $model->getFirstMedia($collection)->getPath();
+            $path = $model->getFirstMedia($collection)->getPath();
 
-            if (!file_exists($imagePath)) {
-                return null;
-            }
+            if (!file_exists($path)) return null;
 
-            $imageContent = file_get_contents($imagePath);
-            $base64 = base64_encode($imageContent);
+            $info     = getimagesize($path);
+            $mimeType = $info['mime'] ?? 'image/jpeg';
 
-            $imageInfo = getimagesize($imagePath);
-            $mimeType = $imageInfo['mime'] ?? 'image/jpeg';
-
-            return 'data:' . $mimeType . ';base64,' . $base64;
-        } catch (\Exception $e) {
-            \Log::warning('Error processing image: ' . $e->getMessage());
+            return 'data:' . $mimeType . ';base64,' . base64_encode(file_get_contents($path));
+        } catch (\Throwable $e) {
+            Log::warning('Error procesando imagen: ' . $e->getMessage());
             return null;
         }
     }

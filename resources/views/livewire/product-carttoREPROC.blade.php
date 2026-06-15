@@ -20,77 +20,98 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th class="align-middle">id</th>
-                        <th class="align-middle">Código</th>
-                        <th class="align-middle text-center">Criterio de Infección. </th>
+                        <th class="align-middle">Descripción / Código</th>
+                        <th class="align-middle text-center">Cantidad</th>
+                        <th class="align-middle text-center">Criterio de Infección</th>
                         <th class="align-middle text-center">Estado del instrumental</th>
                         <th class="align-middle text-center">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($cart_items->isNotEmpty())
-                        @foreach ($cart_items as $cart_item)
-                            <tr>
-                                <td class="align-middle">
-                                    {{ $cart_item->id }} <br>
-
-                                </td>
-                                <td class="align-middle">
-                                    {{ $cart_item->name }} <br>
-                                    <span class="badge badge-info">
-                                        {{ $cart_item->options->code }}
-                                    </span>
-                                    @include('livewire.includes.product-cart-modal')
-                                </td>
-
-                                <td class="align-middle text-center text-center">
-                                    @if ($cart_item->options->product_type_dirt == 'NO CRITICO')
-                                        <span class="badge badge-info">
-                                            {{ $cart_item->options->product_type_dirt }}
-                                        </span>
-                                    @elseif($cart_item->options->product_type_dirt == 'SEMICRITICO')
-                                        <span class="badge badge-warning">
-                                            {{ $cart_item->options->product_type_dirt }}
-                                        </span>
-                                    @elseif($cart_item->options->product_type_dirt == 'CRITICO')
-                                        <span class="badge badge-danger">
-                                            {{ $cart_item->options->product_type_dirt }}
-                                        </span>
-                                    @elseif($cart_item->options->product_type_dirt == 'REPROCESADO')
-                                        <span class="badge badge-secondary">
-                                            {{ $cart_item->options->product_type_dirt }}
-                                        </span>
-                                    @endif
-
-                                </td>
-
-                                <td class="align-middle text-center">
-                                    <span class="badge badge-secondary">
-                                        {{ $cart_item->options->product_state_rumed }}
-                                    </span>
-
-                                </td>
-
-                                <td class="align-middle text-center">
-                                    <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
-                                        <i class="bi bi-x-circle font-2xl text-danger"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="8" class="text-center">
-                                <span class="text-danger">
-                                    Por favor buscar y seleccionar el paquete !
+                    @forelse ($cart_items as $cart_item)
+                        <tr wire:key="cart-{{ $cart_item->rowId }}">
+                            <td class="align-middle">
+                                {{ $cart_item->name }} <br>
+                                <span class="badge badge-info">
+                                    {{ $cart_item->options->code }}
+                                </span>
+                                @include('livewire.includes.product-cart-modal')
+                            </td>
+                            <td class="align-middle text-center">
+                                @include('livewire.includes.product-cart-quantity')
+                            </td>
+                            <td class="align-middle text-center">
+                                @php
+                                    $dirtBadge = [
+                                        'NO CRITICO'  => 'badge-info',
+                                        'SEMICRITICO' => 'badge-warning',
+                                        'CRITICO'     => 'badge-danger',
+                                        'REPROCESADO' => 'badge-secondary',
+                                    ];
+                                    $dirt = $cart_item->options->product_type_dirt;
+                                @endphp
+                                <span class="badge {{ $dirtBadge[$dirt] ?? 'badge-secondary' }}">
+                                    {{ $dirt }}
                                 </span>
                             </td>
+                            <td class="align-middle text-center">
+                                <span class="badge badge-secondary">
+                                    {{ $cart_item->options->product_state_rumed }}
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <a href="#" wire:click.prevent="removeItem('{{ $cart_item->rowId }}')">
+                                    <i class="bi bi-x-circle font-2xl text-danger"></i>
+                                </a>
+                            </td>
                         </tr>
-                    @endif
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <span class="text-danger">Por favor buscar y seleccionar el paquete!</span>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
     </div>
+
+    <div class="row justify-content-md-end">
+        <div class="col-md-4">
+            <div class="table-responsive">
+                @php $total_package = $cart_items->sum('qty') @endphp
+                <table class="table table-striped">
+                    <tr>
+                        <th>Total Paquetes</th>
+                        <th>{{ $total_package }}</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="total_amount" value="{{ $total_package }}">
+
+    <script>
+        window.addEventListener('focusQuantity', (event) => {
+            setTimeout(() => {
+                const input = document.getElementById('qty-' + event.detail.productId);
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            }, 150);
+        });
+
+        window.addEventListener('closeProductModal', (event) => {
+            const modalEl = document.getElementById('inputDyrtState' + event.detail.productId);
+            if (modalEl) {
+                $(modalEl).removeClass('show').hide();
+                $(modalEl).attr('aria-hidden', 'true').removeAttr('aria-modal').css('display', '');
+            }
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open').css('padding-right', '');
+        });
+    </script>
 </div>
-
-

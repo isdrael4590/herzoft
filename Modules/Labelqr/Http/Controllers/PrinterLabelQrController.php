@@ -65,30 +65,75 @@ class PrinterLabelQrController extends Controller
         return $pdf->stream('Labelqr.pdf');
     }
 
+    public function previewQrLabelqr(Int $id)
+    {
+        $labelqr = Labelqr::where('id', $id)->firstOrFail();
+        $dataqr  = $labelqr->reference . "/" . $labelqr->lote_machine . "/";
+
+        // Pre-generar QR PNG una sola vez por código único (no por cada copia)
+        $qrCodes = [];
+        foreach ($labelqr->labelqrDetails as $item) {
+            if (!isset($qrCodes[$item->product_code])) {
+                $qrCodes[$item->product_code] = 'data:image/png;base64,' . base64_encode(
+                    \QrCode::format('png')->size(80)->margin(0)->generate($dataqr . $item->product_code)
+                );
+            }
+        }
+
+        $pdf = PDF::loadView('labelqr::labelqrs.print', [
+            'labelqr' => $labelqr,
+            'dataqr'  => $dataqr,
+            'qrCodes' => $qrCodes,
+        ])->setOptions([
+            'dpi'                   => 96,
+            'defaultFont'           => 'sans-serif',
+            'isHtml5ParserEnabled'  => true,
+            'isRemoteEnabled'       => false,
+            'enable_font_subsetting'=> true,
+        ])->setpaper($this->customPaper, 'landscape');
+
+        return $pdf->stream('Labelqr-QR.pdf');
+    }
+
 
     public $barcodes;
 
     private function generar_imagen(Int $id)
     {
-        $labelqr = Labelqr::where('id', $id)->first();
-        $labelqrDetails = LabelqrDetails::with('product')
-            ->where('id', $id)
-            ->orderBy('id', 'DESC')
-            ->get();
-        $institute = Institute::all()->first();
-        $barcode = Product::all()->first();
+        $labelqr  = Labelqr::where('id', $id)->firstOrFail();
+        $details  = $labelqr->labelqrDetails;
+        $symbology = Product::value('product_barcode_symbology') ?? 'C128';
 
-
-        $dataqr = $labelqr->reference . "/" . $labelqr->lote_machine . "/";
+        // Pre-generar barcode SVG una sola vez por código único
+        $barcodeSvgs = [];
+        foreach ($details as $item) {
+            if (!isset($barcodeSvgs[$item->product_code])) {
+                // factor=1.5, height=15 → barcode compacto, se auto-centra en la etiqueta
+                $png = \Milon\Barcode\Facades\DNS1DFacade::getBarCodePNG($item->product_code, $symbology, 1.5, 15, [0,0,0]);
+                $barcodeSvgs[$item->product_code] = 'data:image/png;base64,' . $png;
+            }
+        }
 
         $pdf = PDF::loadView('labelqr::labelqrs.print3', [
-            'labelqr' => $labelqr,
-            'labelqrDetails' => $labelqrDetails,
-            'institute' => $institute,
-            'dataqr'  =>  $dataqr,
-            'barcode' => $barcode,
-        ])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif'])->setpaper($this->customPaper, 'landscape');
+            'labelqr'     => $labelqr,
+            'details'     => $details,
+            'barcodeSvgs' => $barcodeSvgs,
+        ])->setOptions([
+            'dpi'                    => 96,
+            'defaultFont'            => 'sans-serif',
+            'isHtml5ParserEnabled'   => true,
+            'isRemoteEnabled'        => false,
+            'enable_font_subsetting' => true,
+        ])->setpaper($this->customPaper, 'landscape');
+
         return $pdf;
+    }
+
+    public function browserBarcodeLabelqr(Int $id)
+    {
+        $labelqr = Labelqr::where('id', $id)->firstOrFail();
+        $barcode = Product::first();
+        return view('labelqr::labelqrs.print2', compact('labelqr', 'barcode'));
     }
 
     public function simpleLabelqr(Int $id)
@@ -99,20 +144,25 @@ class PrinterLabelQrController extends Controller
 
     private function generar_imagensimple(Int $id)
     {
-        $labelqr_simple = Labelqr::where('id', $id)->first();
-        $labelqrDetails_simple = LabelqrDetails::with('product')
-            ->where('id', $id)
-            ->orderBy('id', 'DESC')
-            ->get();
-        $institute = Institute::all()->first();
-        // Otra forma (si necesitas buscar directamente en Products):
-        
-        $pdf_simple = PDF::loadView('labelqr::labelqrs.printsimple', [
-            'labelqr' => $labelqr_simple,
-            'labelqrDetails' => $labelqrDetails_simple,
-            'institute' => $institute,
+        $labelqr   = Labelqr::where('id', $id)->firstOrFail();
+        $details   = $labelqr->labelqrDetails;
 
-        ])->setOptions(['dpi' => 150, 'defaultFont' => 'sans-serif'])->setpaper($this->customPaper, 'landscape');
+        // Pre-fetch product areas para no hacer queries dentro de la vista
+        $productAreas = \Modules\Product\Entities\Product::whereIn('product_code', $details->pluck('product_code'))
+            ->pluck('area', 'product_code');
+
+        $pdf_simple = PDF::loadView('labelqr::labelqrs.printsimple', [
+            'labelqr'      => $labelqr,
+            'details'      => $details,
+            'productAreas' => $productAreas,
+        ])->setOptions([
+            'dpi'                    => 96,
+            'defaultFont'            => 'sans-serif',
+            'isHtml5ParserEnabled'   => true,
+            'isRemoteEnabled'        => false,
+            'enable_font_subsetting' => true,
+        ])->setpaper($this->customPaper, 'landscape');
+
         return $pdf_simple;
     }
 }

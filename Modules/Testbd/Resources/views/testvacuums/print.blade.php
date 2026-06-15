@@ -557,7 +557,7 @@
                                            <h3> <span>     {{ \Carbon\Carbon::parse($testvacuum->updated_at)->format('d M, Y') }}</span></h3>
 
                                             </th>
-                                            <th>  <div>Versión: <strong> 01</strong></div>
+                                            <th>  <div>Versión: <strong>{{ config('app.version') }}</strong></div>
                                             <div>Vigente: <strong> Septiembre 2024</strong></div></h5>
                                             </th>
                                         </tr>

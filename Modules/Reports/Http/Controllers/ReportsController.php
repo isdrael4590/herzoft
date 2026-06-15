@@ -45,4 +45,9 @@ class ReportsController extends Controller
         abort_if(Gate::denies('access_reports'), 403);
         return view('reports::product.products-zona-index');
     }
+
+    public function productHistoryReport() {
+        abort_if(Gate::denies('access_reports'), 403);
+        return view('reports::reception.product-history');
+    }
 }

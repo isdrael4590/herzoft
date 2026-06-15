@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     //informat Category
     Route::resource('institute', 'InstituteController');
     Route::resource('area', 'AreaController');
+    Route::patch('/proceso/label-type', 'ProcesoController@updateLabelType')->name('proceso.label-type');
     Route::resource('proceso', 'ProcesoController');
     Route::resource('lote', 'LoteController');
     Route::resource('machine', 'MachineController')->except('create', 'show');

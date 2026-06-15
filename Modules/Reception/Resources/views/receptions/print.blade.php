@@ -1,303 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A5 Registro Instrumental</title>
+    <title>Registro Instrumental – {{ $reception->reference }}</title>
     <style>
-        /* A5 Size (148mm x 210mm) */
-        @page {
-            size: A5;
-            margin: 0;
-        }
+        @page { size: A5; margin: 10mm 10mm 10mm 15mm; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            width: 148mm;
-            height: 210mm;
-            margin: 3mm;
             font-family: Arial, sans-serif;
-            box-sizing: border-box;
+            font-size: 6.5pt;
+            color: #1a1a2e;
+            line-height: 1.2;
+            background: #fff;
         }
 
-        /* Avoid page breaks inside elements */
-        .avoid-break {
-            page-break-inside: avoid;
-        }
-
-        /* Force a new page */
-        .new-page {
-            page-break-before: always;
-        }
-
-        .container {
-            width: 128mm;
-            padding: 4mm;
-            font-size: 14px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 4mm;
-        }
-
-        th,
-        td {
-            padding: 3px;
-            text-align: center;
-            vertical-align: top;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f8f6f6;
-            font-weight: bold;
-        }
-
-        .header-table {
-            border: none;
-            margin-bottom: 10px;
-        }
-
-        .header-table th {
-            background-color: transparent;
-            border: none;
-            vertical-align: middle;
-        }
-
-        .text-left {
-            text-align: left;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .no-border {
-            border: none;
+        .page {
+            width: 123mm;
+            padding: 8mm 0;
+            margin: 0 auto;
+            background: #fff;
+            overflow: hidden;
         }
 
         @media print {
-            .no-print {
-                display: none;
-            }
-
-            body {
-                padding: 0;
-            }
+            .page { width: 100%; padding: 0; margin: 0; }
+            .no-print { display: none !important; }
         }
 
-        /* Print-specific adjustments */
-        @media print {
-            body {
-                padding: 0;
-            }
+        .avoid-break { page-break-inside: avoid; }
+        .mb { margin-bottom: 1.5mm; }
 
-            .no-print {
-                display: none !important;
-            }
-        }
+        /* HEADER */
+        table { width: 100%; border-collapse: collapse; }
+        .tbl-header { border: 1.5px solid #1a1a2e; border-radius: 3px; }
+        .tbl-header td { border: none; vertical-align: middle; }
 
-        @page {
-            margin-top: 2mm;
-            margin-bottom: 5mm;
-            /* Make room for footer */
-        }
+        .hdr-logo { width: 20mm; text-align: center; padding: 1.5mm; background: #f4f6fb; border-right: 1.5px solid #1a1a2e !important; }
+        .hdr-logo img { max-width: 18mm; max-height: 14mm; object-fit: contain; }
+        .hdr-title { text-align: center; padding: 1.5mm 2mm; border-right: 1.5px solid #1a1a2e !important; }
+        .hdr-title h1 { font-size: 8pt; font-weight: 700; text-transform: uppercase; color: #1a1a2e; line-height: 1.25; }
+        .hdr-meta { width: 27mm; padding: 0; vertical-align: top !important; background: #f4f6fb; }
+        .meta-row { display: block; padding: 0.9mm 2mm; border-bottom: 1px solid #d0d5e0; }
+        .meta-row:last-child { border-bottom: none; }
+        .meta-label { display: block; font-size: 4.5pt; font-weight: 700; text-transform: uppercase; color: #999; letter-spacing: 0.3px; }
+        .meta-value { display: block; font-size: 6.5pt; font-weight: 700; color: #1a1a2e; line-height: 1.2; }
 
+        /* 3 COLUMNAS INFO */
+        .tbl-info td { width: 33.33%; vertical-align: top; border: 1px solid #c8cdd8; padding: 0; }
+        .tbl-info td:not(:last-child) { border-right: none; }
+        .panel-hdr { display: block; background: #1a1a2e; color: #fff; padding: 0.9mm 2mm; font-size: 5.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; text-align: center; }
+        .panel-body { display: block; padding: 0.8mm 1.5mm; }
+        .irow { display: block; padding: 0.4mm 0; border-bottom: 1px dotted #e0e4ed; }
+        .irow:last-child { border-bottom: none; }
+        .irow-lbl { display: block; font-size: 4.5pt; font-weight: 700; color: #999; text-transform: uppercase; line-height: 1.1; }
+        .irow-val { display: block; font-size: 6pt; font-weight: 700; color: #1a1a2e; word-break: break-word; line-height: 1.2; }
 
-        /* Only show the second-page header on pages after first */
-        .second-page-header {
-            display: none;
-        }
+        /* SECTION TITLE */
+        .section-title { font-size: 6pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; border-left: 2.5px solid #1a1a2e; padding-left: 2mm; margin-bottom: 1mm; }
 
-        @page :not(:first) {
-            /* Additional space on pages after first */
-            margin-top: 100mm;
-        }
+        /* TABLA ITEMS */
+        .tbl-items thead tr { background: #1a1a2e; }
+        .tbl-items thead th { color: #fff; padding: 1mm 0.8mm; font-size: 5.5pt; font-weight: 700; text-align: center; text-transform: uppercase; border: none; vertical-align: middle; }
+        .tbl-items tbody tr:nth-child(even) { background: #f2f4fa; }
+        .tbl-items tbody tr:nth-child(odd)  { background: #fff; }
+        .tbl-items tbody td { padding: 0.7mm 0.8mm; font-size: 6pt; text-align: center; vertical-align: middle; border-bottom: 1px solid #e5e7eb; border-left: none; border-right: none; border-top: none; }
+        .tbl-items tbody td.desc { text-align: left; padding-left: 1.2mm; }
+        .tbl-items tbody tr:last-child td { border-bottom: 1.5px solid #1a1a2e; }
+
+        /* FIRMAS */
+        .tbl-signs td { width: 50%; text-align: center; border: 1px solid #c8cdd8; padding: 1.2mm 4mm 1mm; vertical-align: top; }
+        .tbl-signs td:first-child { border-right: none; }
+        .sign-role  { font-size: 5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #aaa; margin-bottom: 0.3mm; }
+        .sign-name  { font-size: 7pt; font-weight: 700; color: #1a1a2e; margin-bottom: 0.5mm; }
+        .sign-line  { height: 9mm; border-bottom: 1.2px solid #1a1a2e; margin: 0 5mm 0.6mm; }
+        .sign-label { font-size: 4.5pt; color: #ccc; text-transform: uppercase; letter-spacing: 0.3px; }
+
+        /* NOTAS */
+        .notes-label      { font-size: 5pt; font-weight: 700; text-transform: uppercase; color: #888; letter-spacing: 0.4px; margin-bottom: 0.3mm; }
+        .notes-disclaimer { font-size: 5pt; color: #777; font-style: italic; margin-bottom: 0.5mm; }
+        .notes-text       { font-size: 6pt; color: #1a1a2e; background: #f4f6fb; border: 1px solid #d0d5e0; border-radius: 2px; padding: 0.7mm 1.5mm; }
+
+        /* FOOTER */
+        .doc-footer   { border-top: 1.5px solid #1a1a2e; padding-top: 1.5mm; text-align: center; }
+        .footer-inner { display: inline-flex; align-items: center; gap: 2mm; }
+        .footer-inner img { height: 5.5mm; object-fit: contain; }
+        .footer-info  { font-size: 5.5pt; color: #555; line-height: 1.4; text-align: left; }
+        .footer-info strong { font-size: 6pt; color: #1a1a2e; }
     </style>
 </head>
-
 <body>
-    <div class="container">
+<div class="page">
 
+    {{-- HEADER --}}
+    <table class="tbl-header mb avoid-break">
+        <tr>
+            <td class="hdr-logo"><img src="{{ $dataUrl }}" alt="Logo"></td>
+            <td class="hdr-title"><h1>Registro Físico<br>Ingreso de Instrumental</h1></td>
+            <td class="hdr-meta">
+                <span class="meta-row">
+                    <span class="meta-label">N.º Referencia</span>
+                    <span class="meta-value">{{ $reception->reference }}</span>
+                </span>
+                <span class="meta-row">
+                    <span class="meta-label">Fecha</span>
+                    <span class="meta-value">{{ \Carbon\Carbon::parse($reception->created_up)->format('d M Y') }}</span>
+                </span>
+                <span class="meta-row">
+                    <span class="meta-label">Versión</span>
+                    <span class="meta-value">01 – Sep 2024</span>
+                </span>
+            </td>
+        </tr>
+    </table>
 
-        <div class="row">
+    {{-- 3 COLUMNAS INFO --}}
+    <table class="tbl-info mb avoid-break">
+        <tr>
+            <td>
+                <span class="panel-hdr">Institución</span>
+                <span class="panel-body">
+                    <div class="irow"><span class="irow-lbl">Nombre</span><span class="irow-val">{{ Institutes()->institute_name }}</span></div>
+                    <div class="irow"><span class="irow-lbl">Área</span><span class="irow-val">{{ Institutes()->institute_area }}</span></div>
+                    <div class="irow"><span class="irow-lbl">Ciudad</span><span class="irow-val">{{ Institutes()->institute_city }}</span></div>
+                    <div class="irow"><span class="irow-lbl">Dirección</span><span class="irow-val">{{ Institutes()->institute_address }}</span></div>
+                </span>
+            </td>
+            <td>
+                <span class="panel-hdr">Recepción</span>
+                <span class="panel-body">
+                    <div class="irow"><span class="irow-lbl">Entrega</span><span class="irow-val">{{ $reception->delivery_staff }}</span></div>
+                    <div class="irow"><span class="irow-lbl">Área</span><span class="irow-val">{{ $reception->area }}</span></div>
+                    <div class="irow"><span class="irow-lbl">Recibe</span><span class="irow-val">{{ $reception->operator }}</span></div>
+                    <div class="irow"><span class="irow-lbl">Estado</span><span class="irow-val">{{ $reception->status }}</span></div>
+                </span>
+            </td>
+            <td>
+                <span class="panel-hdr">Registro</span>
+                <span class="panel-body">
+                    <div class="irow"><span class="irow-lbl">Número</span><span class="irow-val">{{ $reception->reference }}</span></div>
+                    <div class="irow"><span class="irow-lbl">Fecha</span><span class="irow-val">{{ \Carbon\Carbon::parse($reception->created_up)->format('d M Y') }}</span></div>
+                    <div class="irow"><span class="irow-lbl">Actualizado</span><span class="irow-val">{{ $reception->updated_at->format('d M Y H:i') }}</span></div>
+                    <div class="irow"><span class="irow-lbl">País</span><span class="irow-val">{{ Institutes()->institute_country }}</span></div>
+                </span>
+            </td>
+        </tr>
+    </table>
 
-            <table style="width: 100%; border-collapse: collapse;">
+    {{-- TABLA INSTRUMENTAL --}}
+    <p class="section-title mb">Detalle de Instrumental</p>
+    <table class="tbl-items mb">
+        <thead>
+            <tr>
+                <th style="width:9%">Código</th>
+                <th style="width:26%">Descripción</th>
+                <th style="width:6%">Cant.</th>
+                <th style="width:12%">N. Infección</th>
+                <th style="width:14%">T. Proceso</th>
+                <th style="width:10%">Estado</th>
+                <th style="width:12%">Paciente</th>
+                <th style="width:11%">C. Comer.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($reception->receptionDetails as $item)
                 <tr>
-                    <td style="width: 30%;" rowspan="2">
-                        <img src="{{ $dataUrl }}" alt="Institute Image" class="img-fluid mb-2" width="120px">
-                    </td>
-                    <td colspan="2" style="text-align: center;">
-                        <h3>Registro Físico ingreso de instrumental.
-                        </h3>
-                    </td>
+                    <td>{{ $item->product_code }}</td>
+                    <td class="desc">{{ $item->product_name }}</td>
+                    <td>{{ $item->product_quantity }}</td>
+                    <td>{{ $item->product_type_dirt }}</td>
+                    <td>{{ $item->product_type_process }}</td>
+                    <td>{{ $item->product_state_rumed }}</td>
+                    <td>{{ $item->product_patient ?? '—' }}</td>
+                    <td>{{ $item->product_outside_company ?? '—' }}</td>
                 </tr>
-                <tr>
-                    <td style="width: 30%;" style="text-align: center;">
-                        <h4>{{ $reception->reference }}</h4>
-                        <h5> <small>
-                                {{ \Carbon\Carbon::parse($reception->created_up)->format('d M, Y') }}</small>
-                        </h5>
-                    </td>
+            @endforeach
+        </tbody>
+    </table>
 
-                    <td style="width: 40%;"> <small style="text-align: center;">
-                            Versión: <strong> 01</strong> <br>
-                            Vigente: <strong> Septiembre 2024</strong>
-                        </small>
-                    </td>
-                </tr>
+    {{-- FIRMAS --}}
+    <table class="tbl-signs mb avoid-break">
+        <tr>
+            <td>
+                <div class="sign-role">Entrega</div>
+                <div class="sign-name">{{ $reception->delivery_staff }}</div>
+                <div class="sign-line"></div>
+                <div class="sign-label">Firma y sello</div>
+            </td>
+            <td>
+                <div class="sign-role">Recibe</div>
+                <div class="sign-name">{{ $reception->operator }}</div>
+                <div class="sign-line"></div>
+                <div class="sign-label">Firma y sello</div>
+            </td>
+        </tr>
+    </table>
 
-        </div>
-        <div class="row">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 40%;"><strong>Institución:</strong></h4>
-                        </th>
-                        <th style="width: 40%;"><strong>Información de Recepción:</strong></h4>
-                        </th>
-                        <th style="width: 30%;"><strong>Registro INFO:</strong></h5>
-                        </th>
+    {{-- NOTAS --}}
+    <div class="mb avoid-break">
+        <div class="notes-label">Observaciones</div>
+        <div class="notes-disclaimer">Verificar que los instrumentos sean correctos antes de firmar.</div>
+        <div class="notes-text">{{ !empty($reception->note) ? $reception->note : 'Sin observaciones.' }}</div>
+    </div>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div>
-                                <div>{{ Institutes()->institute_name }}</div>
-                                <div>Dirección: {{ Institutes()->institute_address }}</div>
-                                <div>Área: {{ Institutes()->institute_area }}</div>
-                                <div>Ciudad: {{ Institutes()->institute_city }}</div>
-                                <div>País: {{ Institutes()->institute_country }}</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <div>Persona que entrega: <strong>
-                                        {{ $reception->delivery_staff }}</strong>
-                                </div>
-                                <div>Área Procedente: <strong>{{ $reception->area }}</strong></div>
-                                <div>Persona que recibe:<strong>
-                                        {{ $reception->operator }}</strong></div>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <div>Número: <strong>{{ $reception->reference }}</strong></div>
-                                <div>Fecha:
-                                    {{ $reception->updated_at->format('d M, Y H:i') }}
-                                </div>
-                                <div>
-                                    Status: <strong>{{ $reception->status }}</strong>
-                                </div>
-
-                            </div>
-                        </td>
-
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <br>
-        <div class="row">
-            <table class="default-table printer-table">
-                <thead>
-                    <tr>
-                        <th style="width: 10%;">Código </th>
-                        <th style="width: 30%;">Descripción Rumed</th>
-                        <th style="width: 10%;">Cant</th>
-                        <th style="width: 15%;">Nivel infección</th>
-                        <th style="width: 20%;">Temp. Proceso</th>
-                        <th style="width: 10%;">Estado</th>
-                        <th style="width: 15%;">Paciente</th>
-                        <th style="width: 10%;">Casa Comer.</th>
-
-                </thead>
-                <tbody>
-                    @foreach ($reception->receptionDetails as $item)
-                        <tr>
-                            <td style= "text-align:center">
-                                {{ $item->product_code }}
-                            </td>
-                            <td style= "text-align:center">
-                                {{ $item->product_name }}
-                            </td>
-                            <td style= "text-align:center">
-                                {{ $item->product_quantity }}
-                            </td>
-                            <td style= "text-align:center">
-                                {{ $item->product_type_dirt }}
-                            </td>
-                             <td style= "text-align:center">
-                                {{ $item->product_type_process }}
-                            </td>
-                            <td style= "text-align:center">
-                                {{ $item->product_state_rumed }}
-                            </td>
-                            @if (@empty($item->product_patient))
-                            @else
-                                <td> {{ $item->product_patient }}</td>
-                            @endif
-                            @if (@empty($item->product_outside_company))
-                            @else
-                                <td> {{ $item->product_outside_company }}</td>
-                            @endif
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <br>
-            <div>
-                @if (@empty($reception->note))
-                    Notas: N/A
-                @else
-                    Notas: {{ $reception->note }}
-                @endif
+    {{-- FOOTER --}}
+    <div class="doc-footer avoid-break">
+        <div class="footer-inner">
+            <img src="{{ $dataUrlogo }}" alt="Logo empresa">
+            <div class="footer-info">
+                <strong>{{ Settings()->company_name }}</strong>
+                &nbsp;·&nbsp;{{ Settings()->company_email }}
+                &nbsp;·&nbsp;{{ Settings()->company_phone }}
             </div>
-            <br>
-
-
-        </div>
-        <div class="row">
-            <table class="default-table ">
-                <tr>
-                    <th style= " font-size: 10px; text-align: center;">
-                        RECIBE: <span> {{ $reception->operator }}</span>
-                        <br><br><br><br><br><br>
-                    </th>
-                    <th style= " font-size: 10px; text-align: center;">
-                        ENTREGA: <span> {{ $reception->delivery_staff }}</span>
-                        <br><br><br><br><br><br>
-
-                    </th>
-                    </th>
-                </tr>
-            </table>
-        </div>
-        <div class="row" style= " font-size: 10px; text-align: center;">
-            <ul>
-                <li><strong>Nota:</strong> Asegurarse los productos sean los correctos previo al registro.
-                </li>
-            </ul>
-            <ul>
-
-                <li>
-
-                    <img src="{{ $dataUrlogo }}" alt="Institute Image" class="img-fluid mb-2" width="80px">
-                    <br>
-                    {{ Settings()->company_name }} -
-                    {{ Settings()->company_email }} -
-                    {{ Settings()->company_phone }}
-
-                </li>
-            </ul>
         </div>
     </div>
 
+</div>
 </body>
-
 </html>

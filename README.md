@@ -1,6 +1,6 @@
-# Herzoft
+# HerzTrace
 
-![Logo Herzoft](public/images/LOGOHERZ.jpg)
+![Logo HerzTrace](public/images/LOGO/herzgroup.png)
 
 ## Instalación
 
@@ -14,13 +14,13 @@
 3. Clone los archivos de este repositorio:
 
    ```bash
-   git clone git@github.com:isdrael4590/herzoft.git
+   git clone git@github.com:isdrael4590/HerzTrace.git
    ```
 
-4. Para iniciar con las opciones de desarrollo o correr los contenedores, instale las dependencias de PHP proyecto a través del siguiente comando:
+4. Para iniciar con las opciones de desarrollo o correr los contenedores, instale las dependencias de PHP y Javascript del proyecto a través del siguiente comando:
 
    ```bash
-   composer update
+   composer install && npm install && npm run build
    ```
 
 5. Los contenedores utilizan [variables de entorno](https://docs.docker.com/compose/environment-variables/set-environment-variables/) para establecer valores globales de funcionamiento, en la primera configuración, haga una copia del archivo `.env.example` y renombrelo como `.env`
@@ -35,7 +35,7 @@
    DB_HOST=mysql
    DOMAIN=example.com # Sin el www.
    EMAIL=mail@example.com
-   APP_VERSION=latest # O cualquier version con el formato v1.0.0
+   APP_VERSION=latest # O cualquier version con el formato 1.0.0
    ```
 
 7. Las contraseñas de MySQL y del Administrador son almacenadas a través de [Docker secrets](`https://docs.docker.com/compose/use-secrets/`) por seguridad. Antes de iniciar el programa, es necesario crear dos archivos en la carpeta `database/credenciales` llamados `root_password.txt` y `user_password.txt` para establecer las constraseñas de MySQL y una en la carpeta `credenciales/admin.txt` para las credenciales de Adminstrador, use cualquier editor de texto para realizar esta tarea o con el siguiente comando en Linux.
@@ -97,7 +97,7 @@
 4. Para renovar automáticamente el certificado HTTPS de Let's Encrypt y reiniciar Nginx, como root edita crontab con `crontab -e` para regenerar el certificado para primer día del mes en un mes impar a las 07:00 CET
 
    ```bash
-   0 7 1 */2 * /usr/bin/docker compose -f /opt/docker/herzoft/docker-compose.prod.yml run --rm certbot && /usr/bin/docker compose -f /opt/docker/herzoft/docker-compose.prod.yml exec nginx nginx -s reload
+   0 7 1 */2 * /usr/bin/docker compose -f /opt/docker/HerzTrace/docker-compose.prod.yml run --rm certbot && /usr/bin/docker compose -f /opt/docker/HerzTrace/docker-compose.prod.yml exec nginx nginx -s reload
    ```
 
 ### Despliegue Local
@@ -131,7 +131,7 @@ En caso desees usar el servidor en modo producción en tu computadora, sigue los
 4. Sigue las instrucciones de [Despliegue](#despliegue) sin iniciar el Certbot
 5. Ingresa a tu servidor a través de [https://www.herzgrouplocal.net](https://www.herzgrouplocal.net)
 
-> **Important Note:** "herZoft" uses Laravel Snappy Package for PDFs. If you are using Linux then no configuration is needed. But in other Operating Systems please refer to [Laravel Snappy Documentation](https://github.com/barryvdh/laravel-snappy).
+> **Important Note:** "HerzTrace" uses Laravel Snappy Package for PDFs. If you are using Linux then no configuration is needed. But in other Operating Systems please refer to [Laravel Snappy Documentation](https://github.com/barryvdh/laravel-snappy).
 
 ## Credenciales
 
@@ -143,9 +143,9 @@ Por favor lee las instrucciones de [Respaldo](RESPALDO.md) para poder configurar
 
 ## Licencia
 
-Comercial, Todos los derechos reservados Herzoft© 2025
+Comercial, Todos los derechos reservados HerzTrace© 2025
 
 ## Problemas conocidos
 
-- No se cargan los códigos RUMED descritos en la carpeta `init/codigos_rumed.sql`: Borra el volumen `docker compose down && docker volume rm herzoft_sail-mysql`
+- No se cargan los códigos RUMED descritos en la carpeta `init/codigos_rumed.sql`: Borra el volumen `docker compose down && docker volume rm HerzTrace_sail-mysql`
 - En caso de error 500, `docker compose -f docker-compose.prod.yml exec app php artisan cache:clear` o revisar los permisos de la carpeta `storage/logs`

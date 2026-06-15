@@ -38,23 +38,22 @@ class SettingController extends Controller
                 'company_phone' => $request->company_phone,
                 'notification_email' => $request->notification_email,
                 'company_address' => $request->company_address,
-
             ]);
       
             if ($request->has('document')) {
-             
-                if (count( Setting::FirstorFail()->getMedia('settings')) > 0) {
-                    foreach ( Setting::FirstorFail()->getMedia('settings') as $media) {
-                        if (!in_array($media->file_name, $request->input('document', []))) {
-                            $media->delete();
-                        }
-                    }
-                }
-                $media = Setting::FirstorFail()->getMedia('settings')->pluck('file_name')->toArray();
-                foreach ($request->input('document', []) as $file) {
-                    if (count($media) === 0 || !in_array($file, $media)) {
-                        Setting::FirstorFail()->addMedia(Storage::path('temp/dropzone/' . $file))->toMediaCollection('settings');
-                    }
+                $setting       = Setting::firstOrFail();
+                $submitted     = $request->input('document', []);
+                $existingNames = $setting->getMedia('settings')->pluck('file_name')->toArray();
+
+                // Only the first submitted file that doesn't already exist in media is treated as a new upload
+                $newFile = collect($submitted)
+                    ->first(fn($f) => !in_array($f, $existingNames));
+
+                if ($newFile) {
+                    // Replace the current logo: clear all previous images and save the new one
+                    $setting->clearMediaCollection('settings');
+                    $setting->addMedia(Storage::path('temp/dropzone/' . $newFile))
+                            ->toMediaCollection('settings');
                 }
             }
         });

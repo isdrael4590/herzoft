@@ -27,6 +27,8 @@ class SearchProducttoDES extends Component
         $this->search_results = DischargeDetails::where('product_name', 'like', '%' . $this->query . '%')
             ->orWhere('product_code', 'like', '%' . $this->query . '%')
             ->take($this->how_many)->get();
+
+        $this->dispatch('searchUpdated');
     }
 
     public function loadMore() {

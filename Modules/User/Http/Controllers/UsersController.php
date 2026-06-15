@@ -4,7 +4,6 @@ namespace Modules\User\Http\Controllers;
 
 use Modules\User\DataTables\UsersDataTable;
 use App\Models\User;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -33,12 +32,14 @@ class UsersController extends Controller
 
         $request->validate([
             'name'     => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username|alpha_dash',
             'email'    => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|max:255|confirmed'
         ]);
 
         $user = User::create([
             'name'     => $request->name,
+            'username' => $request->username,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
             'is_active' => $request->is_active
@@ -75,11 +76,13 @@ class UsersController extends Controller
 
         $request->validate([
             'name'     => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,'.$user->id.'|alpha_dash',
             'email'    => 'required|email|max:255|unique:users,email,'.$user->id,
         ]);
 
         $user->update([
             'name'     => $request->name,
+            'username' => $request->username,
             'email'    => $request->email,
             'is_active' => $request->is_active
         ]);
@@ -104,6 +107,22 @@ class UsersController extends Controller
         toast("Usuario actualizado y asignado '$request->role' Role!", 'info');
 
         return redirect()->route('users.index');
+    }
+
+
+    public function resetPassword(User $user)
+    {
+        abort_if(Gate::denies('edit_user_management'), 403);
+
+        $defaultPassword = 'Admin1234!';
+
+        $user->password = Hash::make($defaultPassword);
+        $user->must_change_password = true;
+        $user->save();
+
+        toast("Contraseña reiniciada. Clave temporal: {$defaultPassword}", 'warning');
+
+        return back();
     }
 
 

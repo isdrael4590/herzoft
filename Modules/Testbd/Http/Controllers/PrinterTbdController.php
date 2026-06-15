@@ -19,17 +19,18 @@ class PrinterTbdController extends Controller
   {
     $testbd = Testbd::where('id', $id)->first();
     $institute = Institute::all()->first();
-    $urlImage = $institute->getFirstMedia('institutes')->getPath();
-
-    $Image = file_get_contents($urlImage);
-    $base64 = base64_encode($Image);
-    $dataUrl = 'data:image/jpeg;base64,' . $base64;
+    $dataUrl = null;
+    $instituteMedia = $institute->getFirstMedia('institutes');
+    if ($instituteMedia && file_exists($instituteMedia->getPath())) {
+        $dataUrl = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($instituteMedia->getPath()));
+    }
 
     $setting = Setting::all()->first();
-    $urllogoHerz = $setting->getFirstMedia('settings')->getPath();
-    $Imagelogo =  file_get_contents($urllogoHerz);
-    $base64Logo = base64_encode($Imagelogo);
-    $dataUrlogo = 'data:image/jpeg;base64,' . $base64Logo;
+    $dataUrlogo = null;
+    $settingMedia = $setting->getFirstMedia('settings');
+    if ($settingMedia && file_exists($settingMedia->getPath())) {
+        $dataUrlogo = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($settingMedia->getPath()));
+    }
 
     $PdfOptions = ['dpi' => 150, 'defaultFont' => 'sans-serif', 'isPhpEnabled' => true];
 
@@ -48,17 +49,18 @@ class PrinterTbdController extends Controller
   {
     $testvacuum = Testvacuum::where('id', $id)->first();
     $institute = Institute::all()->first();
-    $urlImage = $institute->getFirstMedia('institutes')->getPath();
-
-    $Image = file_get_contents($urlImage);
-    $base64 = base64_encode($Image);
-    $dataUrl = 'data:image/jpeg;base64,' . $base64;
+    $dataUrl = null;
+    $instituteMedia = $institute->getFirstMedia('institutes');
+    if ($instituteMedia && file_exists($instituteMedia->getPath())) {
+        $dataUrl = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($instituteMedia->getPath()));
+    }
 
     $setting = Setting::all()->first();
-    $urllogoHerz = $setting->getFirstMedia('settings')->getPath();
-    $Imagelogo =  file_get_contents($urllogoHerz);
-    $base64Logo = base64_encode($Imagelogo);
-    $dataUrlogo = 'data:image/jpeg;base64,' . $base64Logo;
+    $dataUrlogo = null;
+    $settingMedia = $setting->getFirstMedia('settings');
+    if ($settingMedia && file_exists($settingMedia->getPath())) {
+        $dataUrlogo = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($settingMedia->getPath()));
+    }
 
     $PdfOptions = ['dpi' => 150, 'defaultFont' => 'sans-serif', 'isPhpEnabled' => true];
 

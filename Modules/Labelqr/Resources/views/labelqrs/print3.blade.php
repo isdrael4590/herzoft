@@ -1,133 +1,92 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <title>QR ETIQUETAS</title>
-    <meta name="viewport">
     <meta charset="UTF-8">
-
-    <!-- External CSS libraries -->
     <style>
-        /** Print ticket **/
-        @media print {
-            .cabecera-ticket {}
-        }
+        * { margin: 0; padding: 0; }
 
+        @page { margin: 2mm; }
 
-        /*css para etiquetas */
-        /*Informacion equipo tickets */
-        table,
-        th,
-        td {
-            border: 1px solid black;
-            border-style: dotted;
+        body { font-family: sans-serif; font-size: 6pt; }
+
+        .label      { width: 100%; page-break-after: always; page-break-inside: avoid; }
+        .label-last { width: 100%; page-break-after: avoid;  page-break-inside: avoid; }
+
+        table {
+            width: 100%;
             border-collapse: collapse;
-            padding-top: 1px;
-            padding-right: 1px;
-            padding-bottom: 1px;
-            padding-left: 1px;
+            border: 0.3pt solid #000;
         }
 
-
-
-        @page {
-            margin-left: 1cm;
-            margin-right: 0.3cm;
-            margin-top: 0.3cm;
-            margin-bottom: 0.2cm;
-
+        td, th {
+            border: 0.3pt solid #000;
+            padding: 1pt;
+            vertical-align: top;
         }
 
+        .header th {
+            text-align: center;
+            font-size: 6.5pt;
+        }
 
+        .header-sub { font-size: 4.5pt; font-weight: normal; }
 
+        .col    { width: 50%; font-size: 5pt; }
+        .col p  { margin: 0.5pt 0; line-height: 1.15; }
+        .venc   { font-size: 7pt; font-weight: bold; }
+        .elab   { font-size: 5.5pt; }
+        .bold   { font-weight: bold; }
 
-        p {
-            font-size: 7px;
-            margin-top: 0;
-            margin-bottom: 0;
-
+        .barcode-td {
+            text-align: center;
+            padding: 1pt;
         }
     </style>
-
-
-    <!-- Custom Stylesheet -->
 </head>
-@foreach ($labelqr->labelqrDetails as $item)
+<body>
+    @php
+        $allLabels = [];
+        foreach ($details as $item) {
+            for ($i = 0; $i < $item->product_quantity; $i++) {
+                $allLabels[] = $item;
+            }
+        }
+        $lastIdx = count($allLabels) - 1;
+    @endphp
 
-    <body>
-        @for ($i = 1; $i <= $item->product_quantity; $i++)
-            <div>
-                <table style="width:100%">
-
-                    <head>
-                        <tr style="font-size: 14px;">
-                            <th colspan="2"> {{ institutes()->institute_name }}<br>
-                                <p style="font-size: 11px;"> {{ institutes()->institute_area }} -
-                                    {{ institutes()->institute_city }} -{{ institutes()->institute_country }}</p>
-                            </th>
-                        </tr>
-                        <tr style="text-align: center; vertical-align: top;">
-                            <td tyle="text-align: center; vertical-align: top;">
-                                <p style="font-size: 14px;">
-                                    <small>Elab. {!! Carbon\Carbon::parse($item->updated_at)->format('d-m-Y') !!}</small><br>
-                                </p>
-                                <p>
-                                    <strong style="font-size: 10px;">{{ $labelqr->machine_name }} -> Lote:
-                                        {{ $labelqr->lote_machine }}
-                                    </strong>
-                                </p>
-
-
-                                <p>
-                                    <strong style="font-size: 10px;">{{ $item->product_name }} </strong>
-                                    <small style="font-size: 9px;">{{ $item->product_info }} <br>
-                                    </small>
-                                </p>
-
-                                <p style="font-size: 12px;">
-                                    <small> {{ $item->product_outside_company }} / {{ $item->product_patient }}
-                                    </small>
-
-                                </p>
-
-                            </td>
-                            <td tyle="text-align: center; vertical-align: top;">
-                                <p style="font-size: 13px;">
-                                    <strong>Venc. {!! Carbon\Carbon::parse($item->updated_at)->addDays($item->product_expiration)->format('d-m-Y') !!}</strong>
-
-
-                                </p>
-
-                                <p style="font-size: 13px;">
-                                    <strong style="font-size: 13px;">{{ $labelqr->reference }}</strong>
-                                    / {{ $labelqr->type_program }}
-                                </p>
-
-
-
-                                <p style="font-size: 12px;">
-                                    <small>Operador: {{ $labelqr->operator }} </small>
-                                </p>
-                                <p style="font-size: 12px;">
-                                    <small>Oper Emp: {{ $item->product_operator_package }} </small>
-                                </p>
-
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="2" style="text-align: center; vertical-align: middle;">
-                                <img src="data:image/png;base64,{!! base64_encode(
-                                    \Milon\Barcode\Facades\DNS1DFacade::getBarCodeSVG($item->product_code, $barcode->product_barcode_symbology, 2, 45),
-                                ) !!}" alt="Código de Barras">
-                            </td>
-                        </tr>
-
-                    </head>
-                </table>
-            </div>
-        @endfor
-    </body>
-@endforeach
-
+    @foreach ($allLabels as $idx => $item)
+    <div class="{{ $idx === $lastIdx ? 'label-last' : 'label' }}">
+        <table>
+            <tr class="header">
+                <th colspan="2">
+                    {{ institutes()->institute_name }}
+                    <br><span class="header-sub">{{ institutes()->institute_area }} — {{ institutes()->institute_city }}</span>
+                </th>
+            </tr>
+            <tr>
+                <td class="col">
+                    <p class="elab">Elab. {!! \Carbon\Carbon::parse($item->updated_at)->format('d-m-Y') !!}</p>
+                    <p class="bold">{{ $labelqr->machine_name }} → Lote: {{ $labelqr->lote_machine }}</p>
+                    <p class="bold">{{ $item->product_name }}</p>
+                    <p>{{ $item->product_info }}</p>
+                    <p>{{ $item->product_outside_company }} / {{ $item->product_patient }}</p>
+                </td>
+                <td class="col">
+                    <p class="venc">Venc. {!! \Carbon\Carbon::parse($item->updated_at)->addDays((int)$item->product_expiration)->format('d-m-Y') !!}</p>
+                    <p><span class="bold">{{ $labelqr->reference }}</span> / {{ $labelqr->type_program }}</p>
+                    <p>Op: {{ $labelqr->operator }}</p>
+                    <p>Op.Emp: {{ $item->product_operator_package }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="barcode-td">
+                    <img src="{{ $barcodeSvgs[$item->product_code] }}"
+                         style="display:block; max-width:100%; height:auto; margin:0 auto;">
+                    <div style="font-size:4pt; margin-top:0.5pt;">{{ $item->product_code }}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    @endforeach
+</body>
 </html>

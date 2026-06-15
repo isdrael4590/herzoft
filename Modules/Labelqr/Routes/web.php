@@ -32,10 +32,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Descargas Form labelqr
 
-    Route::get('/labelqrs_label/pdf/{id}', [PrinterLabelQrController::class, 'checkLabelqr'])->name('labelqrs_label.pdf');
-        Route::get('/labelqrs_label/simple/{id}', [PrinterLabelQrController::class, 'simpleLabelqr'])->name('labelqrs_label.simple');
-
-    Route::get('/labelqrs_label/print/{id}', [PrinterLabelQrController::class, 'printerLabelqr'])->name('labelqrs_label.print');
+    Route::get('/labelqrs_label/pdf/{id}',        [PrinterLabelQrController::class, 'checkLabelqr'])->name('labelqrs_label.pdf');
+    Route::get('/labelqrs_label/simple/{id}',     [PrinterLabelQrController::class, 'simpleLabelqr'])->name('labelqrs_label.simple');
+    Route::get('/labelqrs_label/qr-preview/{id}', [PrinterLabelQrController::class, 'previewQrLabelqr'])->name('labelqrs_label.qr-preview');
+    Route::get('/labelqrs_label/print/{id}',      [PrinterLabelQrController::class, 'printerLabelqr'])->name('labelqrs_label.print');
+    Route::get('/labelqrs_label/barcode-view/{id}', [PrinterLabelQrController::class, 'browserBarcodeLabelqr'])->name('labelqrs_label.barcode-view');
 
 
 

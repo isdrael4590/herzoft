@@ -82,7 +82,8 @@ class DischargeController extends Controller
                 'status_lote' => $request->status_cycle,
             ]);
 
-            foreach (Cart::instance('discharge')->content() as $cart_item) {
+            $cartInstance = $request->machine_type == 'Peroxido' ? 'discharge_hpo' : 'discharge';
+            foreach (Cart::instance($cartInstance)->content() as $cart_item) {
 
                 $labelqr_detail = LabelqrDetails::findOrFail($cart_item->id);
 
@@ -134,7 +135,7 @@ class DischargeController extends Controller
                     ]);
                 }
             }
-            Cart::instance('discharge')->destroy();
+            Cart::instance($cartInstance)->destroy();
         });
 
 
@@ -161,9 +162,10 @@ class DischargeController extends Controller
 
         $discharge_details = $discharge->dischargeDetails;
 
-        Cart::instance('discharge')->destroy();
+        $cartInstance = $discharge->machine_type == 'Peroxido' ? 'discharge_hpo' : 'discharge';
+        Cart::instance($cartInstance)->destroy();
 
-        $cart = Cart::instance('discharge');
+        $cart = Cart::instance($cartInstance);
 
         foreach ($discharge_details as $discharge_detail) {
             $labelqr_detail = LabelqrDetails::where("id", $discharge_detail->labelqr_detail_id)->get()->first();
@@ -260,7 +262,8 @@ class DischargeController extends Controller
                 ]);
             }
 
-            foreach (Cart::instance('discharge')->content() as $cart_item) {
+            $cartInstance = $discharge->machine_type == 'Peroxido' ? 'discharge_hpo' : 'discharge';
+            foreach (Cart::instance($cartInstance)->content() as $cart_item) {
 
                 if ($request->validation_biologic == 'Falla' || $request->status_cycle == 'Ciclo Falla') {
                     $result_qr_ref = "Reprocesar";
@@ -307,8 +310,10 @@ class DischargeController extends Controller
                         'product_quantity_fail' => $A2,
                     ]);
 
+                    // Devuelve exactamente lo que fue enviado a esterilización (A1),
+                    // sin importar si A2 cambió en el update.
                     $preparation_detail->update([
-                        'product_quantity' => $A0 + $A2,
+                        'product_quantity' => $A0 + $A1,
                     ]);
                 } elseif ($request->validation_biologic == 'Correcto' && $request->status_cycle == 'Ciclo Aprobado') {
                     $labelqr_detail->update([
@@ -337,15 +342,16 @@ class DischargeController extends Controller
                             $labelqr_detail->update([
                                 'product_quantity_fail' => $A1 - $A2,
                             ]);
+                            // max(0,...) evita cantidad negativa cuando B1 supera el stock actual.
                             $preparation_detail->update([
-                                'product_quantity' => $A0 - ($B1 - ($A1 - $A2)),
+                                'product_quantity' => max(0, $A0 - ($B1 - ($A1 - $A2))),
                             ]);
                         }
                     }
                 }
             }
 
-            Cart::instance('discharge')->destroy();
+            Cart::instance($cartInstance)->destroy();
         });
 
         toast('Descarga Liberada!', 'info');

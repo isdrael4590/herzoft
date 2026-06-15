@@ -1,45 +1,95 @@
 @extends('layouts.app')
 
-@section('title', 'Procesos Registro')
-
-@section('third_party_stylesheets')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-@endsection
+@section('title', 'Tipo Procesos')
 
 @section('breadcrumb')
     <ol class="breadcrumb border-0 m-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('proceso.index') }}">Información</a></li>
-        <li class="breadcrumb-item active">Información de Tipo Procesos</li>
+        <li class="breadcrumb-item active">Tipo Procesos</li>
     </ol>
 @endsection
 
 @section('content')
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                @include('utils.alerts')
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Button trigger modal -->
-                        @can('create_proceso')
-                            <a href="{{ route('proceso.create') }}" class="btn btn-primary">
-                                Añadir Tipo Procesos <i class="bi bi-plus"></i>
-                            </a>
-                        @endcan
-                        <hr>
 
-                        <div class="table-responsive">
-                            {!! $dataTable->table() !!}
-                        </div>
+        @include('utils.alerts')
+
+        {{-- Page Header --}}
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mr-3"
+                    style="width:48px;height:48px;background:linear-gradient(135deg,#14b8a6,#0d9488);">
+                    <i class="bi bi-arrow-repeat text-white" style="font-size:1.4rem;"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0 font-weight-bold text-dark">Tipo de Procesos</h4>
+                    <small class="text-muted">Procesos de esterilización registrados</small>
+                </div>
+            </div>
+            @can('create_proceso')
+                <a href="{{ route('proceso.create') }}"
+                    class="btn d-flex align-items-center text-white"
+                    style="border-radius:8px;padding:10px 20px;font-weight:600;box-shadow:0 4px 12px rgba(20,184,166,0.35);background:linear-gradient(135deg,#14b8a6,#0d9488);border:none;">
+                    <i class="bi bi-plus-lg mr-2"></i> Nuevo Proceso
+                </a>
+            @endcan
+        </div>
+
+        {{-- Configuración de Etiquetas --}}
+        @can('print_labelqrs_direct')
+        <div class="card border-0 mb-4" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);border-left:4px solid #14b8a6 !important;">
+            <div class="card-body py-3 px-4">
+                <form action="{{ route('proceso.label-type') }}" method="POST"
+                      class="d-flex align-items-center flex-wrap gap-3">
+                    @csrf
+                    @method('PATCH')
+                    <div class="d-flex align-items-center mr-3">
+                        <i class="bi bi-tags-fill text-teal mr-2" style="font-size:1.2rem;color:#14b8a6;"></i>
+                        <span class="font-weight-semibold text-dark" style="font-size:.9rem;">Tipo de Etiqueta Global</span>
                     </div>
+                    <div class="d-flex align-items-center">
+                        <select name="label_type" class="form-control form-control-sm mr-2" style="width:200px;">
+                            <option value="qr"      {{ (institutes()->label_type ?? 'qr') == 'qr'      ? 'selected' : '' }}>
+                                QR — Imprimir directa
+                            </option>
+                            <option value="barcode" {{ (institutes()->label_type ?? 'qr') == 'barcode' ? 'selected' : '' }}>
+                                Código de Barras
+                            </option>
+                            <option value="simple"  {{ (institutes()->label_type ?? 'qr') == 'simple'  ? 'selected' : '' }}>
+                                Simple
+                            </option>
+                        </select>
+                        <button type="submit" class="btn btn-sm text-white"
+                                style="background:linear-gradient(135deg,#14b8a6,#0d9488);border:none;border-radius:8px;">
+                            <i class="bi bi-save mr-1"></i> Guardar
+                        </button>
+                    </div>
+                    <small class="text-muted ml-auto">Aplica a todos los procesos del sistema.</small>
+                </form>
+            </div>
+        </div>
+        @endcan
+
+        {{-- Main Card --}}
+        <div class="card border-0" style="border-radius:12px;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+            <div class="card-header border-0 d-flex align-items-center justify-content-between"
+                style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px 12px 0 0;padding:16px 24px;">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-table text-primary mr-2" style="font-size:1.1rem;"></i>
+                    <span class="font-weight-semibold text-secondary" style="font-size:.9rem;letter-spacing:.3px;">REGISTRO DE PROCESOS</span>
+                </div>
+                <span class="badge" style="font-size:.75rem;padding:5px 10px;border-radius:20px;background:rgba(20,184,166,0.15);color:#0d9488;">
+                    Tabla en tiempo real
+                </span>
+            </div>
+            <div class="card-body" style="padding:24px;">
+                <div class="table-responsive">
+                    {!! $dataTable->table(['class' => 'table table-hover table-bordered align-middle']) !!}
                 </div>
             </div>
         </div>
+
     </div>
-
-    <!-- Create Modal -->
-
 @endsection
 
 @push('page_scripts')

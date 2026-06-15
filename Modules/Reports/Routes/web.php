@@ -102,4 +102,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/reports/products-zona/print', [ProductsZonaPrintController::class, 'printFromSession'])
     ->name('reports.product.products-zona.print');  // Agregar 'product'
+
+Route::get('/reports/product-history', [ReportsController::class, 'productHistoryReport'])
+    ->name('reports.product-history.index');
 });

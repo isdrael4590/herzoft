@@ -26,9 +26,10 @@ class LabelqrDischargeController extends Controller
 
         $labelqr_details = $labelqr->labelqrDetails;
 
-        Cart::instance('discharge')->destroy();
+        $cartInstance = $labelqr->machine_type == 'Peroxido' ? 'discharge_hpo' : 'discharge';
+        Cart::instance($cartInstance)->destroy();
 
-        $cart = Cart::instance('discharge');
+        $cart = Cart::instance($cartInstance);
 
         foreach ($labelqr_details as $labelqr_detail) {
             $cart->add([

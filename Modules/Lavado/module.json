@@ -1,0 +1,11 @@
+{
+    "name": "Lavado",
+    "alias": "lavado",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Lavado\\Providers\\LavadoServiceProvider"
+    ],
+    "files": []
+}

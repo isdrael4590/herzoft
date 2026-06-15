@@ -27,7 +27,7 @@ class LabelqrHPOController extends Controller
     public function create()
     {
         abort_if(Gate::denies('create_labelqrs'), 403);
-        Cart::instance('labelqr')->destroy();
+        Cart::instance('labelqrhpo')->destroy();
         return view('labelqr::labelqrshpo.create');
     }
 
@@ -50,7 +50,7 @@ class LabelqrHPOController extends Controller
                 'total_amount' => $request->total_amount,  // se añade
             ]);
 
-            foreach (Cart::instance('labelqr')->content() as $cart_item) {
+            foreach (Cart::instance('labelqrhpo')->content() as $cart_item) {
                 $preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 LabelqrDetails::create([
                     'labelqr_id' => $labelqr->id,
@@ -82,7 +82,7 @@ class LabelqrHPOController extends Controller
                 }
             }
 
-            Cart::instance('labelqr')->destroy();
+            Cart::instance('labelqrhpo')->destroy();
         });
 
         toast('labelqr registrada!', 'success');
@@ -103,9 +103,9 @@ class LabelqrHPOController extends Controller
 
         $labelqr_details = $labelqr->labelqrDetails;
 
-        Cart::instance('labelqr')->destroy();
+        Cart::instance('labelqrhpo')->destroy();
 
-        $cart = Cart::instance('labelqr');
+        $cart = Cart::instance('labelqrhpo');
 
         foreach ($labelqr_details as $labelqr_detail) {
             $cart->add([
@@ -161,7 +161,7 @@ class LabelqrHPOController extends Controller
                 'total_amount' => $request->total_amount // se añade
 
             ]);
-            foreach (Cart::instance('labelqr')->content() as $cart_item) {
+            foreach (Cart::instance('labelqrhpo')->content() as $cart_item) {
                 //$preparation_detail = PreparationDetails::findOrFail($cart_item->id);
                 if ($cart_item->options->preparation_detail_id != null) {
                     LabelqrDetails::create([
@@ -227,7 +227,7 @@ class LabelqrHPOController extends Controller
                 }
             }
 
-            Cart::instance('labelqr')->destroy();
+            Cart::instance('labelqrhpo')->destroy();
         });
 
         toast('Ingreso actualizado!', 'info');

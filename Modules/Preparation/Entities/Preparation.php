@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Discharge\Entities\Discharge;
 use Modules\Preparation\Database\factories\PreparationFactory;
 use Modules\Product\Entities\Product;
+use Modules\Lavado\Entities\Lavado;
 use Modules\Reception\Entities\Reception;
 
 class Preparation extends Model
@@ -36,6 +37,12 @@ class Preparation extends Model
     public function reception()
     {
         return $this->belongsTo(Reception::class, 'reception_id');
+    }
+
+    // Relación con Lavado
+    public function lavado()
+    {
+        return $this->belongsTo(Lavado::class, 'lavado_id');
     }
         // Método helper para obtener la referencia de recepción
     public function getReceptionReferenceAttribute()

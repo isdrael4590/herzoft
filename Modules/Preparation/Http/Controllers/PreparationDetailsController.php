@@ -4,19 +4,37 @@ namespace Modules\Preparation\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Modules\Preparation\DataTables\PreparationDetailsDataTable;
+use Modules\Preparation\DataTables\PreparationGroupedDataTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Modules\Preparation\Entities\PreparationDetails;
 use Modules\Preparation\Entities\PreparationQuantityReset;
+use Modules\Labelqr\Entities\LabelqrDetails;
 
 class PreparationDetailsController extends Controller
 {
-    public function index(PreparationDetailsDataTable $dataTable)
+    public function index(PreparationGroupedDataTable $dataTable)
     {
         abort_if(Gate::denies('access_preparations'), 403);
         return $dataTable->render('preparation::preparationDetails.index');
+    }
+
+    public function codeHistory($code)
+    {
+        abort_if(Gate::denies('access_preparations'), 403);
+
+        $productCode = urldecode($code);
+
+        $details = PreparationDetails::where('product_code', $productCode)
+            ->with('preparation')
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        $productName = optional($details->first())->product_name ?? $productCode;
+
+        return view('preparation::preparationDetails.code-history', compact('details', 'productCode', 'productName'));
     }
 
     public function edit($id)

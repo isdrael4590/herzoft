@@ -123,17 +123,19 @@ class HomeController extends Controller
     {
         abort_if(!request()->ajax(), 404);
 
+        $date_range = Carbon::today()->subYear()->format('Y-m-d');
+
         $currentMonthTestbdoks = Testbd::where('validation_bd', 'Correcto')
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
         $currentMonthTestbdfails = Testbd::where('validation_bd', 'Falla')
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
         $currentMonthTestvacuumoks = Testvacuum::where('validation_vacuum', 'Correcto')
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
         $currentMonthTestvacuumfails = Testvacuum::where('validation_vacuum', 'Falla')
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
 
         return response()->json([
@@ -425,6 +427,8 @@ class HomeController extends Controller
     {
         abort_if(!request()->ajax(), 404);
 
+        $date_range = Carbon::today()->subYear()->format('Y-m-d');
+
         $search_steamok1 = ['machine_name' =>  'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
         $search_steamFail1 = ['machine_name' =>  'MATACHANA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Falla'];
         $search_steamok2 = ['machine_name' => 'CISA', 'machine_type' => 'Autoclave', 'status_cycle' => 'Ciclo Aprobado'];
@@ -432,22 +436,22 @@ class HomeController extends Controller
         $search_HPOOK = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Peroxido', 'status_cycle' => 'Ciclo Aprobado'];
         $search_HPOFAIL = ['machine_name' => 'MATACHANA HPO', 'machine_type' => 'Peroxido', 'status_cycle' => 'Ciclo Falla'];
         $Steam1ok = Discharge::where($search_steamok1)
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
         $Steam1fail = Discharge::where($search_steamFail1)
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
         $Steam2ok = Discharge::where($search_steamok2)
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
         $Steam2fail = Discharge::where($search_steamFail2)
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
         $HPO_OK = Discharge::where($search_HPOOK)
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
         $HPO_FAIL = Discharge::where($search_HPOFAIL)
-            ->whereYear('updated_at', date('Y'))
+            ->where('updated_at', '>=', $date_range)
             ->count();
 
 

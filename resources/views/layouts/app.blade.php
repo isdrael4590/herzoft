@@ -1,10 +1,16 @@
+@php
+    use Modules\Setting\Entities\Licence;
+    $licence = Licence::first();
+    $showNotification = $licence && $licence->shouldShowNotification();
+    $daysRemaining = $showNotification ? $licence->days_remaining : null;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <title>@yield('title') || {{ config('app.name') }}</title>
-    <meta content="herZoft" name="author">
+    <meta content="HerzTrace" name="author">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <!-- Favicon -->
@@ -14,6 +20,173 @@
 
     <!-- stack css -->
     <style>
+        /* ═══════════════════════════════════════════════════════════
+           SIDEBAR MODERNO — HERZTRACE
+           ═══════════════════════════════════════════════════════════ */
+
+        /* ── Fondo principal ──────────────────────────────────────── */
+        .c-sidebar {
+            background: linear-gradient(160deg, #0f2554 0%, #1a3a7c 50%, #122a6a 100%) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35) !important;
+        }
+
+        /* ── Brand / logo ─────────────────────────────────────────── */
+        .c-sidebar-brand {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            padding: 18px 20px !important;
+        }
+
+        /* ── Títulos de sección ───────────────────────────────────── */
+        .c-sidebar-nav-title {
+            font-size: 10.5px !important;
+            font-weight: 700 !important;
+            letter-spacing: 2px !important;
+            text-transform: uppercase !important;
+            padding: 18px 20px 7px !important;
+            margin-top: 2px !important;
+            opacity: 1 !important;
+            color: #5b9bd5 !important;
+            border-top: 1px solid rgba(0, 212, 245, 0.12) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        .c-sidebar-nav-title::before {
+            content: '';
+            display: inline-block;
+            width: 14px;
+            height: 2px;
+            border-radius: 2px;
+            background: currentColor;
+            opacity: 0.7;
+            flex-shrink: 0;
+        }
+
+        /* Color por sección — paleta logo HerzTrace */
+        .nav-title--dirty   { color: #e86060 !important; }   /* rojo Herz */
+        .nav-title--zne     { color: #4da8f5 !important; }   /* azul Trace */
+        .nav-title--esteril { color: #34d399 !important; }   /* verde estéril */
+        .nav-title--almacen { color: #a78bfa !important; }   /* violeta */
+        .nav-title--reports { color: #00d4f5 !important; }   /* cyan escudo */
+        .nav-title--db      { color: #818cf8 !important; }   /* índigo */
+        .nav-title--config  { color: #fbbf24 !important; }   /* ámbar */
+
+        /* ── Links de nivel 1 ─────────────────────────────────────── */
+        .c-sidebar .c-sidebar-nav-link,
+        .c-sidebar .c-sidebar-nav-dropdown-toggle {
+            color: #c4d8f5 !important;
+            font-size: 13.5px !important;
+            font-weight: 500 !important;
+            padding: 10px 20px !important;
+            border-left: 3px solid transparent !important;
+            border-radius: 0 !important;
+            transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease !important;
+            letter-spacing: 0.2px;
+        }
+
+        .c-sidebar .c-sidebar-nav-link:hover,
+        .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
+            color: #ffffff !important;
+            background: rgba(0, 212, 245, 0.07) !important;
+            border-left-color: #00d4f5 !important;
+        }
+
+        /* Estado activo — cyan del logo */
+        .c-sidebar .c-sidebar-nav-link.c-active {
+            color: #ffffff !important;
+            background: rgba(0, 212, 245, 0.12) !important;
+            border-left: 3px solid #00d4f5 !important;
+            font-weight: 600 !important;
+        }
+
+        /* Dropdown abierto */
+        .c-sidebar .c-sidebar-nav-dropdown.c-show > .c-sidebar-nav-dropdown-toggle {
+            color: #ffffff !important;
+            background: rgba(0, 212, 245, 0.07) !important;
+            border-left-color: #00d4f5 !important;
+        }
+
+        /* ── Submenú ──────────────────────────────────────────────── */
+        .c-sidebar .c-sidebar-nav-dropdown-items {
+            background: rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .c-sidebar .c-sidebar-nav-dropdown-items .c-sidebar-nav-link {
+            font-size: 13px !important;
+            padding: 8px 20px 8px 42px !important;
+            color: #8ab0d8 !important;
+            border-left: 3px solid transparent !important;
+            font-weight: 400 !important;
+        }
+
+        .c-sidebar .c-sidebar-nav-dropdown-items .c-sidebar-nav-link:hover {
+            color: #e8f0fb !important;
+            background: rgba(0, 212, 245, 0.06) !important;
+            border-left-color: #00d4f5 !important;
+        }
+
+        .c-sidebar .c-sidebar-nav-dropdown-items .c-sidebar-nav-link.c-active {
+            color: #00d4f5 !important;
+            background: rgba(0, 212, 245, 0.1) !important;
+            border-left: 3px solid #00d4f5 !important;
+            font-weight: 600 !important;
+        }
+
+        /* ── Iconos ───────────────────────────────────────────────── */
+        .c-sidebar .c-sidebar-nav-icon {
+            color: #5b86be !important;
+            font-size: 15px !important;
+            min-width: 22px !important;
+            transition: color 0.18s ease !important;
+        }
+
+        .c-sidebar .c-sidebar-nav-link:hover .c-sidebar-nav-icon,
+        .c-sidebar .c-sidebar-nav-dropdown-toggle:hover .c-sidebar-nav-icon,
+        .c-sidebar .c-sidebar-nav-dropdown.c-show > .c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon {
+            color: #00d4f5 !important;
+        }
+
+        .c-sidebar .c-sidebar-nav-link.c-active .c-sidebar-nav-icon {
+            color: #00d4f5 !important;
+        }
+
+        /* Iconos submenú */
+        .c-sidebar .c-sidebar-nav-dropdown-items .c-sidebar-nav-icon {
+            font-size: 13px !important;
+            color: #406a96 !important;
+        }
+
+        .c-sidebar .c-sidebar-nav-dropdown-items .c-sidebar-nav-link:hover .c-sidebar-nav-icon {
+            color: #00d4f5 !important;
+        }
+
+        .c-sidebar .c-sidebar-nav-dropdown-items .c-sidebar-nav-link.c-active .c-sidebar-nav-icon {
+            color: #00d4f5 !important;
+        }
+
+        /* ── Botón minimizar ──────────────────────────────────────── */
+        .c-sidebar-minimizer {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+            transition: background 0.2s !important;
+        }
+
+        .c-sidebar-minimizer:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* ── Sidebar minimizado: mostrar iconos con color ─────────── */
+        .c-sidebar-minimized .c-sidebar-nav-link .c-sidebar-nav-icon,
+        .c-sidebar-minimized .c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon {
+            color: #4b5563 !important;
+        }
+
+        .c-sidebar-minimized .c-sidebar-nav-link:hover .c-sidebar-nav-icon {
+            color: #60a5fa !important;
+        }
         .license-notification {
             position: fixed;
             bottom: 0;
@@ -152,9 +325,19 @@
             }
         }
 
+        .c-wrapper {
+            display: flex !important;
+            flex-direction: column !important;
+            min-height: 100vh;
+        }
+
+        .c-body {
+            flex: 1 1 auto;
+        }
+
+        @if ($showNotification)
         .c-body {
             padding-bottom: 70px !important;
-            min-height: calc(100vh - 70px);
         }
 
         .c-wrapper {
@@ -164,6 +347,7 @@
         .c-main {
             margin-bottom: 70px !important;
         }
+        @endif
     </style>
 
 </head>
@@ -183,24 +367,11 @@
             <main class="c-main">
                 @yield('content')
             </main>
+            @include('layouts.footer')
         </div>
-        @include('layouts.footer')
     </div>
 
     {{-- Notificación de Licencia --}}
-    @php
-        use Modules\Setting\Entities\Licence;
-
-        $licence = Licence::first();
-        $showNotification = false;
-        $daysRemaining = null;
-
-        if ($licence && $licence->shouldShowNotification()) {
-            $showNotification = true;
-            $daysRemaining = $licence->days_remaining;
-        }
-    @endphp
-
     @if ($showNotification)
 
         <div class="license-notification {{ $daysRemaining <= 7 ? 'danger' : ($daysRemaining <= 15 ? 'warning' : '') }}"

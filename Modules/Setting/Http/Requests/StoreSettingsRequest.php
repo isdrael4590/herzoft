@@ -21,7 +21,7 @@ class StoreSettingsRequest extends FormRequest
             'notification_email' => 'required|email|max:255',
             'company_address' => 'required|string|max:500',
         
-            'footer_text' => 'nullable|string|max:255'
+            'footer_text' => 'nullable|string|max:255',
         ];
     }
 

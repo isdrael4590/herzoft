@@ -39,7 +39,56 @@
                                     </div>
                                 </div>
                             </div>
-                            <livewire:product-carttoPRE :cartInstance="'preparation'" :data="$preparation" />
+                            {{-- Productos que van a PREPARACIÓN --}}
+                            <div class="mb-3">
+                                <h6 class="font-weight-bold text-primary">
+                                    <i class="bi bi-box-arrow-in-right mr-1"></i>
+                                    Va a Preparación
+                                    <span
+                                        class="badge badge-primary ml-1">{{ Cart::instance('preparation')->count() }}</span>
+                                </h6>
+                            </div>
+                            <livewire:product-carttoPRE :cartInstance="'preparation'" :data="$preparation" :readonlyQty="true" />
+
+                            {{-- Productos que van a PRELAVADO --}}
+                            @if ($prelavado_count > 0)
+                                <div class="mt-4 mb-3">
+                                    <h6 class="font-weight-bold text-warning">
+                                        <i class="bi bi-droplet mr-1"></i>
+                                        Va a Lavado
+                                        <span class="badge badge-warning ml-1">{{ $prelavado_count }}</span>
+                                    </h6>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th class="align-middle">Descripción/Código</th>
+                                                <th class="align-middle text-center">Cantidad</th>
+                                                <th class="align-middle text-center">Paciente</th>
+                                                <th class="align-middle text-center">Casa Comercial</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($para_prelavado as $item)
+                                                <tr>
+                                                    <td class="align-middle text-center">
+                                                        {{ $item->product_name }}<br>
+                                                        <span class="badge badge-info">{{ $item->product_code }}</span>
+                                                    </td>
+                                                    <td class="align-middle text-center">{{ $item->product_quantity }}</td>
+                                                    <td class="align-middle text-center">
+                                                        {{ !empty($item->product_patient) ? $item->product_patient : '—' }}
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        {{ !empty($item->product_outside_company) ? $item->product_outside_company : '—' }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
                             <div class="form-group">
                                 <label for="note">Nota (Si se necesita)</label>
                                 <textarea name="note" id="note" rows="5" class="form-control" maxlength="400" onkeyup="updateCounter()">{{ $preparation->note }}</textarea>
@@ -50,7 +99,7 @@
 
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <button type="submit" class="btn btn-primary" id="submit-btn">
-                                    <span id="submit-text">Enviar a preparación</span>
+                                    <span id="submit-text">{{ $prelavado_count > 0 ? 'Enviar a preparación y lavado' : 'Enviar a preparación' }}</span>
                                     <i class="bi bi-check" id="submit-icon"></i>
                                 </button>
 
@@ -144,7 +193,7 @@
             submitBtn.classList.remove('btn-secondary');
             submitBtn.classList.add('btn-primary');
 
-            submitText.textContent = 'Enviar a preparación';
+            submitText.textContent = '{{ $prelavado_count > 0 ? 'Enviar a preparación y lavado' : 'Enviar a preparación' }}';
             submitIcon.className = 'bi bi-check';
 
             loadingIndicator.classList.add('d-none');

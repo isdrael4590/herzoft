@@ -23,9 +23,11 @@ class User extends Authenticatable implements HasMedia
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
-        'is_active'
+        'is_active',
+        'must_change_password',
     ];
 
     /**
@@ -44,7 +46,8 @@ class User extends Authenticatable implements HasMedia
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at'    => 'datetime',
+        'must_change_password' => 'boolean',
     ];
 
     protected $with = ['media'];
