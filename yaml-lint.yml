@@ -1,0 +1,24 @@
+---
+# yamllint configuration for a Laravel / GitHub Actions project
+extends: default
+
+rules:
+  # GitHub Actions uses "on:" as a key — yamllint flags it as a boolean
+  # without this exception. The workflow files already have the inline
+  # disable comment, but this keeps other YAML files clean too.
+  truthy:
+    allowed-values: ["true", "false", "on", "off", "yes", "no"]
+    check-keys: true
+
+  # Allow slightly longer lines (120 instead of the default 80) to match
+  # the PHP and JS line-length settings used in this project.
+  line-length:
+    max: 120
+    level: warning
+
+  # Blade component files sometimes have deeply-nested YAML front-matter;
+  # raise the indent warning threshold to avoid noise.
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false

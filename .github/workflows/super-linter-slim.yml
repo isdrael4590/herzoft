@@ -13,45 +13,97 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      # contents permission to clone the repository
       contents: read
       packages: read
-      # issues and pull-requests permissions to write results as pull
-      # request comments. Omit them if you don't need summary comments
       issues: write
       pull-requests: write
-      # To report GitHub Actions status checks. Omit if you don't need
-      # to update commit status
       statuses: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          # super-linter needs the full git history to get the
-          # list of files that changed across commits
           fetch-depth: 0
           persist-credentials: false
 
       - name: Super-linter
         uses: super-linter/super-linter/slim@v8.6.0 # x-release-please-version
         env:
-          # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Deshabilitar Prettier en favor de Biome
+
+          # ---------------------------------------------------------------
+          # General
+          # ---------------------------------------------------------------
+          # Treat conflicting tools as a hard error instead of a warning
+          FAIL_ON_CONFLICTING_TOOLS_ENABLED: true
+          # Respect .gitignore so vendor/, node_modules/, storage/ etc.
+          # are never sent to any linter
+          IGNORE_GITIGNORED_FILES: true
+          # Belt-and-suspenders: also exclude paths that might not be in
+          # .gitignore on every branch (e.g. public/build generated files)
+          FILTER_REGEX_EXCLUDE: .*(public/build|bootstrap/cache|_ide_helper).*
+          # Config files live in / (super-linter default)
+          LINTER_RULES_PATH: ./
+
+          # ---------------------------------------------------------------
+          # PHP — Laravel standard
+          # VALIDATE_PHP_BUILTIN  → php -l  (syntax check)    ✅ enabled
+          # VALIDATE_PHP_PHPCS    → phpcs   (PSR-12 style)    ✅ enabled
+          # VALIDATE_PHP_PHPSTAN  → phpstan (static analysis) ⬇ disabled:
+          #   PHPStan needs a full composer install + framework stubs;
+          #   run it as a separate dedicated job instead.
+          # VALIDATE_PHP_PSALM    → psalm   (static analysis) ⬇ disabled:
+          #   same reason as PHPStan.
+          # ---------------------------------------------------------------
+          VALIDATE_PHP_PHPSTAN: false
+          VALIDATE_PHP_PSALM: false
+          # Tell super-linter where to find the PHPCS ruleset
+          PHP_PHPCS_FILE_NAME: phpcs.xml
+
+          # ---------------------------------------------------------------
+          # JavaScript / TypeScript / Vue / JSX / TSX
+          # Biome handles lint + format for all of these.
+          # Disable ESLint and Prettier to prevent conflicts.
+          # ---------------------------------------------------------------
+          VALIDATE_JAVASCRIPT_ES: false
+          VALIDATE_JAVASCRIPT_PRETTIER: false
+          VALIDATE_JSX_ESLINT: false
+          VALIDATE_JSX_PRETTIER: false
+          VALIDATE_TYPESCRIPT_ES: false
+          VALIDATE_TYPESCRIPT_PRETTIER: false
+          VALIDATE_TSX_ESLINT: false
+          VALIDATE_VUE_ESLINT: false
+          VALIDATE_VUE_PRETTIER: false
+
+          # ---------------------------------------------------------------
+          # JSON / JSONC
+          # Biome handles lint + format. Disable ESLint and Prettier.
+          # ---------------------------------------------------------------
+          VALIDATE_JSON_ESLINT: false
+          VALIDATE_JSON_PRETTIER: false
+          VALIDATE_JSONC_ESLINT: false
+          VALIDATE_JSONC_PRETTIER: false
+
+          # ---------------------------------------------------------------
+          # CSS / SCSS / SASS
+          # Biome handles lint + format. Disable Stylelint and Prettier.
+          # ---------------------------------------------------------------
+          VALIDATE_CSS: false
           VALIDATE_CSS_PRETTIER: false
+          VALIDATE_SCSS: false
+          VALIDATE_SASS: false
+
+          # ---------------------------------------------------------------
+          # GraphQL / HTML
+          # Prettier disabled in favour of Biome.
+          # ---------------------------------------------------------------
           VALIDATE_GRAPHQL_PRETTIER: false
           VALIDATE_HTML_PRETTIER: false
-          VALIDATE_JSON_PRETTIER: false
-          VALIDATE_JSONC_PRETTIER: false
-          VALIDATE_JSX_PRETTIER: false
-          VALIDATE_TYPESCRIPT_PRETTIER: false
-          VALIDATE_VUE_PRETTIER: false
-          # Deshabilitar ESLint en favor de Biome
-          VALIDATE_JAVASCRIPT: false
-          VALIDATE_JSX: false
-          # Deshabilitar lenguajes no usados
-          VALIDATE_PYTHON_RUFF: false
-          VALIDATE_PYTHON_RUFF_FORMAT: false
+
+          # ---------------------------------------------------------------
+          # Languages not used in this project
+          # ---------------------------------------------------------------
           VALIDATE_PYTHON: false
           VALIDATE_PYTHON_BLACK: false
+          VALIDATE_PYTHON_RUFF: false
+          VALIDATE_PYTHON_RUFF_FORMAT: false
