@@ -34,59 +34,89 @@ jobs:
           # ---------------------------------------------------------------
           # General
           # ---------------------------------------------------------------
-          # Treat conflicting tools as a hard error instead of a warning
+          # Required when ENABLE_GITHUB_PULL_REQUEST_SUMMARY_COMMENT is true
+          SAVE_SUPER_LINTER_SUMMARY: true
+          # Treat conflicting tools as a hard error
           FAIL_ON_CONFLICTING_TOOLS_ENABLED: true
-          # Respect .gitignore so vendor/, node_modules/, storage/ etc.
-          # are never sent to any linter
+          # Respect .gitignore — skips vendor/, node_modules/, storage/ etc.
           IGNORE_GITIGNORED_FILES: true
-          # Belt-and-suspenders: also exclude paths that might not be in
-          # .gitignore on every branch (e.g. public/build generated files)
+          # Extra exclusion for generated files that may be committed
           FILTER_REGEX_EXCLUDE: .*(public/build|bootstrap/cache|_ide_helper).*
-          # Config files live in / (super-linter default)
-          LINTER_RULES_PATH: ./
+          # Config files live in .github/linters/ (super-linter default)
+          LINTER_RULES_PATH: .github/linters
+
+          # ---------------------------------------------------------------
+          # Git
+          # No commitlint config in this project — disable to silence warning
+          # ---------------------------------------------------------------
+          VALIDATE_GIT_COMMITLINT: false
 
           # ---------------------------------------------------------------
           # PHP — Laravel standard
-          # VALIDATE_PHP_BUILTIN  → php -l  (syntax check)    ✅ enabled
-          # VALIDATE_PHP_PHPCS    → phpcs   (PSR-12 style)    ✅ enabled
-          # VALIDATE_PHP_PHPSTAN  → phpstan (static analysis) ⬇ disabled:
-          #   PHPStan needs a full composer install + framework stubs;
-          #   run it as a separate dedicated job instead.
-          # VALIDATE_PHP_PSALM    → psalm   (static analysis) ⬇ disabled:
-          #   same reason as PHPStan.
+          # PHP_BUILTIN (php -l syntax check) and PHP_PHPCS (PSR-12) are
+          # left ON. PHPStan and Psalm are disabled because they require a
+          # full composer install with Laravel stubs to avoid false positives;
+          # run them in a dedicated job if needed.
           # ---------------------------------------------------------------
           VALIDATE_PHP_PHPSTAN: false
           VALIDATE_PHP_PSALM: false
-          # Tell super-linter where to find the PHPCS ruleset
           PHP_PHPCS_FILE_NAME: phpcs.xml
 
           # ---------------------------------------------------------------
-          # JavaScript / TypeScript / Vue / JSX / TSX
-          # Biome handles lint + format for all of these.
-          # Disable ESLint and Prettier to prevent conflicts.
+          # JavaScript — Biome handles lint + format
+          # [JAVASCRIPT_ES]      → flag: VALIDATE_JAVASCRIPT_ES
+          # [JAVASCRIPT_PRETTIER]→ flag: VALIDATE_JAVASCRIPT_PRETTIER
           # ---------------------------------------------------------------
           VALIDATE_JAVASCRIPT_ES: false
           VALIDATE_JAVASCRIPT_PRETTIER: false
-          VALIDATE_JSX_ESLINT: false
-          VALIDATE_JSX_PRETTIER: false
+
+          # ---------------------------------------------------------------
+          # TypeScript — Biome handles lint + format
+          # [TYPESCRIPT_ES]      → flag: VALIDATE_TYPESCRIPT_ES
+          # [TYPESCRIPT_PRETTIER]→ flag: VALIDATE_TYPESCRIPT_PRETTIER
+          # ---------------------------------------------------------------
           VALIDATE_TYPESCRIPT_ES: false
           VALIDATE_TYPESCRIPT_PRETTIER: false
-          VALIDATE_TSX_ESLINT: false
-          VALIDATE_VUE_ESLINT: false
+
+          # ---------------------------------------------------------------
+          # JSX — Biome handles lint + format
+          # [JSX]        → flag: VALIDATE_JSX       (ESLint in super-linter)
+          # [JSX_PRETTIER]→ flag: VALIDATE_JSX_PRETTIER
+          # ---------------------------------------------------------------
+          VALIDATE_JSX: false
+          VALIDATE_JSX_PRETTIER: false
+
+          # ---------------------------------------------------------------
+          # TSX — Biome handles lint + format
+          # [TSX]        → flag: VALIDATE_TSX       (ESLint in super-linter)
+          # ---------------------------------------------------------------
+          VALIDATE_TSX: false
+
+          # ---------------------------------------------------------------
+          # Vue — Biome handles lint + format
+          # [VUE]        → flag: VALIDATE_VUE       (ESLint in super-linter)
+          # [VUE_PRETTIER]→ flag: VALIDATE_VUE_PRETTIER
+          # ---------------------------------------------------------------
+          VALIDATE_VUE: false
           VALIDATE_VUE_PRETTIER: false
 
           # ---------------------------------------------------------------
           # JSON / JSONC
-          # Biome handles lint + format. Disable ESLint and Prettier.
+          # Biome handles lint + format.
+          # [JSON]         → flag: VALIDATE_JSON         (ESLint)
+          # [JSON_PRETTIER]→ flag: VALIDATE_JSON_PRETTIER
+          # [JSONC]         → flag: VALIDATE_JSONC        (ESLint)
+          # [JSONC_PRETTIER]→ flag: VALIDATE_JSONC_PRETTIER
           # ---------------------------------------------------------------
-          VALIDATE_JSON_ESLINT: false
+          VALIDATE_JSON: false
           VALIDATE_JSON_PRETTIER: false
-          VALIDATE_JSONC_ESLINT: false
+          VALIDATE_JSONC: false
           VALIDATE_JSONC_PRETTIER: false
 
           # ---------------------------------------------------------------
-          # CSS / SCSS / SASS
-          # Biome handles lint + format. Disable Stylelint and Prettier.
+          # CSS / SCSS / SASS — Biome handles lint + format
+          # [CSS]         → flag: VALIDATE_CSS       (Stylelint)
+          # [CSS_PRETTIER]→ flag: VALIDATE_CSS_PRETTIER
           # ---------------------------------------------------------------
           VALIDATE_CSS: false
           VALIDATE_CSS_PRETTIER: false
@@ -94,11 +124,12 @@ jobs:
           VALIDATE_SASS: false
 
           # ---------------------------------------------------------------
-          # GraphQL / HTML
-          # Prettier disabled in favour of Biome.
+          # GraphQL / HTML / YAML — Prettier disabled (no Biome conflict,
+          # but Prettier is redundant when Biome covers these formats)
           # ---------------------------------------------------------------
           VALIDATE_GRAPHQL_PRETTIER: false
           VALIDATE_HTML_PRETTIER: false
+          VALIDATE_YAML_PRETTIER: false
 
           # ---------------------------------------------------------------
           # Languages not used in this project
