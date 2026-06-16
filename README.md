@@ -2,6 +2,8 @@
 
 ![Logo HerzTrace](public/images/LOGO/herzgroup.png)
 
+[![Super-Linter](https://github.com/isdrael4590/herzoft/actions/workflows/super-linter-slim.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 ## Instalación
 
 1. Instale Docker Engine para su plataforma como se explica aquí [Instalación](https://docs.docker.com/engine/install/)
