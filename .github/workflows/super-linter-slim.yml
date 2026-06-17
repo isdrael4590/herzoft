@@ -46,6 +46,19 @@ jobs:
           LINTER_RULES_PATH: .github/linters
 
           # ---------------------------------------------------------------
+          # Composer — platform extension fix
+          # The super-linter container runs Alpine Linux with a minimal
+          # PHP 8.4 build. It is missing ext-session, ext-fileinfo,
+          # ext-gd, ext-exif, and ext-xml, which are required by the
+          # lock file but NOT needed for static linting.
+          # COMPOSER_IGNORE_PLATFORM_REQS is a native Composer env var
+          # (equivalent to --ignore-platform-reqs) and is respected by
+          # every composer install call super-linter makes internally,
+          # including those for each Modules/*/composer.json.
+          # ---------------------------------------------------------------
+          COMPOSER_IGNORE_PLATFORM_REQS: 1
+
+          # ---------------------------------------------------------------
           # Git
           # No commitlint config in this project — disable to silence warning
           # ---------------------------------------------------------------
@@ -80,7 +93,7 @@ jobs:
 
           # ---------------------------------------------------------------
           # JSX — Biome handles lint + format
-          # [JSX]        → flag: VALIDATE_JSX       (ESLint in super-linter)
+          # [JSX]         → flag: VALIDATE_JSX        (ESLint in super-linter)
           # [JSX_PRETTIER]→ flag: VALIDATE_JSX_PRETTIER
           # ---------------------------------------------------------------
           VALIDATE_JSX: false
@@ -88,13 +101,13 @@ jobs:
 
           # ---------------------------------------------------------------
           # TSX — Biome handles lint + format
-          # [TSX]        → flag: VALIDATE_TSX       (ESLint in super-linter)
+          # [TSX] → flag: VALIDATE_TSX               (ESLint in super-linter)
           # ---------------------------------------------------------------
           VALIDATE_TSX: false
 
           # ---------------------------------------------------------------
           # Vue — Biome handles lint + format
-          # [VUE]        → flag: VALIDATE_VUE       (ESLint in super-linter)
+          # [VUE]         → flag: VALIDATE_VUE        (ESLint in super-linter)
           # [VUE_PRETTIER]→ flag: VALIDATE_VUE_PRETTIER
           # ---------------------------------------------------------------
           VALIDATE_VUE: false
@@ -103,9 +116,9 @@ jobs:
           # ---------------------------------------------------------------
           # JSON / JSONC
           # Biome handles lint + format.
-          # [JSON]         → flag: VALIDATE_JSON         (ESLint)
-          # [JSON_PRETTIER]→ flag: VALIDATE_JSON_PRETTIER
-          # [JSONC]         → flag: VALIDATE_JSONC        (ESLint)
+          # [JSON]          → flag: VALIDATE_JSON          (ESLint)
+          # [JSON_PRETTIER] → flag: VALIDATE_JSON_PRETTIER
+          # [JSONC]         → flag: VALIDATE_JSONC         (ESLint)
           # [JSONC_PRETTIER]→ flag: VALIDATE_JSONC_PRETTIER
           # ---------------------------------------------------------------
           VALIDATE_JSON: false
@@ -115,7 +128,7 @@ jobs:
 
           # ---------------------------------------------------------------
           # CSS / SCSS / SASS — Biome handles lint + format
-          # [CSS]         → flag: VALIDATE_CSS       (Stylelint)
+          # [CSS]         → flag: VALIDATE_CSS        (Stylelint)
           # [CSS_PRETTIER]→ flag: VALIDATE_CSS_PRETTIER
           # ---------------------------------------------------------------
           VALIDATE_CSS: false
@@ -124,8 +137,8 @@ jobs:
           VALIDATE_SASS: false
 
           # ---------------------------------------------------------------
-          # GraphQL / HTML / YAML — Prettier disabled (no Biome conflict,
-          # but Prettier is redundant when Biome covers these formats)
+          # GraphQL / HTML / YAML
+          # Prettier disabled (Biome covers these formats)
           # ---------------------------------------------------------------
           VALIDATE_GRAPHQL_PRETTIER: false
           VALIDATE_HTML_PRETTIER: false
