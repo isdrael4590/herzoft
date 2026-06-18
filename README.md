@@ -6,10 +6,13 @@
 
 1. Instale Docker Engine para su plataforma como se explica aquí [Instalación](https://docs.docker.com/engine/install/)
 2. Instale las dependencias de software necesarias para correr el proyecto, por ejemplo para Ubuntu:
+   a. Dependencias descargables de Ubuntu
 
-   ```bash
-   sudo apt update && sudo apt install composer cron php php-curl php-dom php-gd php-zip
-   ```
+      ```bash
+      sudo apt update && sudo apt install composer cron php php-curl php-dom php-gd php-zip
+      ```
+
+   b. Descarga NodeJS desde su [instalador oficial](https://nodejs.org/en/download)
 
 3. Clone los archivos de este repositorio:
 
