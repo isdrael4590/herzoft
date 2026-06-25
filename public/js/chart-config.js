@@ -42,7 +42,56 @@ $(document).ready(function () {
         // Rendimiento Areas Central.
         
         let v = document.getElementById("CentralChart"); $.get("/central/chart-data", function (a) { new Chart(v, { type: "line", data: { labels: a.months, datasets: [{ label: "Recepción", data: a.Ciclos_Receptions, fill: !1, borderColor: "#2563EB", backgroundColor: ['#2563EB'], tension: 0 }, { label: "Producción", data: a.Ciclos_Labelqr, fill: !1, borderColor: "#EA580C", backgroundColor: ['#EA580C'], tension: 0 }, { label: "Despachos", data: a.Ciclos_Expeditions, fill: !1, borderColor: "#35eb1f", backgroundColor: ['#35eb1f'], tension: 0 }] } }) })
-    
+
+        // Equipos Procesados — stacked bar con selector Mes/Semestre/Año.
+        let eq = document.getElementById("EquipmentSemesterChart");
+        if (eq) {
+            let equipmentChart = null;
+            let activePeriod = "semester";
+            const _now = new Date();
+            const _curYear  = _now.getFullYear();
+            const _curMonth = _now.getMonth() + 1;
+            const _curSem   = _curMonth <= 6 ? "S1" : "S2";
+
+            function loadEquipmentChart(period) {
+                var params = { period: period, year: _curYear, month: _curMonth, sem: _curSem };
+                $.get("/equipment-semester/chart-data", params, function (a) {
+                    const pal = a.datasets.map(function (_, i) {
+                        return "hsl(" + Math.round((i * 137.508) % 360) + ",62%,50%)";
+                    });
+                    if (equipmentChart) { equipmentChart.destroy(); }
+                    equipmentChart = new Chart(eq, {
+                        type: "bar",
+                        data: {
+                            labels: a.labels,
+                            datasets: a.datasets.map(function (ds, i) {
+                                return { label: ds.label, data: ds.data, backgroundColor: pal[i] + "cc", borderColor: pal[i], borderWidth: 1, stack: "top20", borderRadius: 3 };
+                            })
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: { mode: "index", intersect: false },
+                            plugins: { legend: { position: "bottom", labels: { font: { size: 9 }, boxWidth: 10 } } },
+                            scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+                        }
+                    });
+                });
+            }
+
+            loadEquipmentChart("semester");
+
+            document.querySelectorAll("#equipmentPeriodToggle .hz-period-btn").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    document.querySelectorAll("#equipmentPeriodToggle .hz-period-btn").forEach(function (b) {
+                        b.classList.remove("hz-period-btn--active");
+                    });
+                    btn.classList.add("hz-period-btn--active");
+                    activePeriod = btn.dataset.period;
+                    loadEquipmentChart(activePeriod);
+                });
+            });
+        }
+
     });
-    
-    
+

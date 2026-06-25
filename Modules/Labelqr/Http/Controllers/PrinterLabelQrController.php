@@ -139,7 +139,7 @@ class PrinterLabelQrController extends Controller
     public function simpleLabelqr(Int $id)
     {
         $pdf_simple = $this->generar_imagensimple($id);
-        return $pdf_simple->stream('Labelqr.simple');
+        return $pdf_simple->stream('Labelqr-simple.pdf');
     }
 
     private function generar_imagensimple(Int $id)

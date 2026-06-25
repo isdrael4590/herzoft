@@ -192,7 +192,11 @@ $today = \Carbon\Carbon::now();
                             <div class="hz-chart-card__title">Test Bowie &amp; Dick / Vacío — Mensual</div>
                             <div class="hz-chart-card__sub">Distribución de resultados por día del mes</div>
                         </div>
-                        <span class="hz-badge hz-badge--blue"><i class="bi bi-activity"></i> Mensual</span>
+                        <div class="hz-period-toggle" id="toggleTestBowies">
+                            <button class="hz-period-btn hz-period-btn--active" data-period="month">Mes</button>
+                            <button class="hz-period-btn" data-period="semester">Semestre</button>
+                            <button class="hz-period-btn" data-period="year">Año</button>
+                        </div>
                     </div>
                     <div class="hz-chart-card__body">
                         <canvas id="testBowiesChart" height="120"></canvas>
@@ -238,7 +242,11 @@ $today = \Carbon\Carbon::now();
                             <div class="hz-chart-card__title">Producción Mensual — Esterilización</div>
                             <div class="hz-chart-card__sub">Ciclos procesados por día del mes actual</div>
                         </div>
-                        <span class="hz-badge hz-badge--green"><i class="bi bi-bar-chart"></i> Mensual</span>
+                        <div class="hz-period-toggle" id="toggleProductions">
+                            <button class="hz-period-btn hz-period-btn--active" data-period="month">Mes</button>
+                            <button class="hz-period-btn" data-period="semester">Semestre</button>
+                            <button class="hz-period-btn" data-period="year">Año</button>
+                        </div>
                     </div>
                     <div class="hz-chart-card__body">
                         <canvas id="ProductionsChart" height="120"></canvas>
@@ -284,7 +292,11 @@ $today = \Carbon\Carbon::now();
                             <div class="hz-chart-card__title">Instrumental Procesado</div>
                             <div class="hz-chart-card__sub">Tipos de paquetes procesados en el período</div>
                         </div>
-                        <span class="hz-badge hz-badge--amber"><i class="bi bi-scissors"></i></span>
+                        <div class="hz-period-toggle" id="toggleProductionLabels">
+                            <button class="hz-period-btn hz-period-btn--active" data-period="month">Mes</button>
+                            <button class="hz-period-btn" data-period="semester">Semestre</button>
+                            <button class="hz-period-btn" data-period="year">Año</button>
+                        </div>
                     </div>
                     <div class="hz-chart-card__body">
                         <canvas id="ProductionlabelsChart" height="140"></canvas>
@@ -298,10 +310,45 @@ $today = \Carbon\Carbon::now();
                             <div class="hz-chart-card__title">Rendimiento de Paquetes</div>
                             <div class="hz-chart-card__sub">Eficiencia del proceso por categoría</div>
                         </div>
-                        <span class="hz-badge hz-badge--purple"><i class="bi bi-speedometer2"></i></span>
+                        <div class="hz-period-toggle" id="toggleResultProduction">
+                            <button class="hz-period-btn hz-period-btn--active" data-period="month">Mes</button>
+                            <button class="hz-period-btn" data-period="semester">Semestre</button>
+                            <button class="hz-period-btn" data-period="year">Año</button>
+                        </div>
                     </div>
                     <div class="hz-chart-card__body">
                         <canvas id="ResultProductionChart" height="140"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endcan
+
+    {{-- ══════════════════════════════════════
+         GRÁFICOS — EQUIPOS POR SEMESTRE
+    ══════════════════════════════════════ --}}
+    @can('show_types_rumed')
+        <div class="hz-section-label mb-3">
+            <i class="bi bi-layers-fill"></i> Equipos Procesados
+        </div>
+        <div class="row g-3 mb-4">
+            <div class="col-12">
+                <div class="hz-chart-card">
+                    <div class="hz-chart-card__head">
+                        <div>
+                            <div class="hz-chart-card__title">Top 20 Equipos Procesados</div>
+                            <div class="hz-chart-card__sub">Cantidad procesada agrupada por el período seleccionado</div>
+                        </div>
+                        <div class="hz-period-toggle" id="equipmentPeriodToggle2">
+                            <button class="hz-period-btn" data-period="month">Mes</button>
+                            <button class="hz-period-btn hz-period-btn--active" data-period="semester">Semestre</button>
+                            <button class="hz-period-btn" data-period="year">Año</button>
+                        </div>
+                    </div>
+                    <div class="hz-chart-card__body">
+                        <div style="position:relative;height:360px;">
+                            <canvas id="EquipmentSemesterChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -320,7 +367,11 @@ $today = \Carbon\Carbon::now();
                             <div class="hz-chart-card__title">Liberación Biológicos</div>
                             <div class="hz-chart-card__sub">Resultado de indicadores biológicos</div>
                         </div>
-                        <span class="hz-badge hz-badge--red"><i class="bi bi-eyedropper"></i></span>
+                        <div class="hz-period-toggle" id="toggleBiologic">
+                            <button class="hz-period-btn hz-period-btn--active" data-period="month">Mes</button>
+                            <button class="hz-period-btn" data-period="semester">Semestre</button>
+                            <button class="hz-period-btn" data-period="year">Año</button>
+                        </div>
                     </div>
                     <div class="hz-chart-card__body">
                         <canvas id="BiologicChart" height="140"></canvas>
@@ -336,7 +387,11 @@ $today = \Carbon\Carbon::now();
                             <div class="hz-chart-card__title">Rendimiento por Área</div>
                             <div class="hz-chart-card__sub">Producción comparativa entre áreas centrales</div>
                         </div>
-                        <span class="hz-badge hz-badge--cyan"><i class="bi bi-map-fill"></i></span>
+                        <div class="hz-period-toggle" id="toggleCentral">
+                            <button class="hz-period-btn hz-period-btn--active" data-period="month">Mes</button>
+                            <button class="hz-period-btn" data-period="semester">Semestre</button>
+                            <button class="hz-period-btn" data-period="year">Año</button>
+                        </div>
                     </div>
                     <div class="hz-chart-card__body">
                         <canvas id="CentralChart" height="140"></canvas>
@@ -647,6 +702,64 @@ $today = \Carbon\Carbon::now();
 .hz-badge--red    { background: #fef2f2; color: #ef4444; }
 .hz-badge--cyan   { background: #ecfeff; color: #0891b2; }
 
+/* ── Period pickers ────────────────────────────────────── */
+.hz-period-pickers {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 20px 10px;
+    border-bottom: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+}
+.hz-picker-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.hz-picker-sel {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #374151;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 7px;
+    padding: 4px 8px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394a3b8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 7px center;
+    padding-right: 22px;
+}
+.hz-picker-sel:focus { border-color: #0d9488; }
+
+/* ── Period toggle ─────────────────────────────────────── */
+.hz-period-toggle {
+    display: flex;
+    gap: 4px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 3px;
+    flex-shrink: 0;
+}
+.hz-period-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.4;
+}
+.hz-period-btn:hover { color: #1e293b; background: #e2e8f0; }
+.hz-period-btn--active { background: #ffffff; color: #0d9488; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
 /* ── Donut wraps ───────────────────────────────────────── */
 .hz-donut-wrap {
     text-align: center;
@@ -692,5 +805,135 @@ $today = \Carbon\Carbon::now();
             }
             setInterval(updateClock, 1000);
         })();
+    </script>
+
+    {{-- Top 20 Equipos: stacked bar segmentado por período --}}
+    <script>
+    (function () {
+        $(document).ready(function () {
+            var toggle = document.getElementById('equipmentPeriodToggle2');
+            var canvas = document.getElementById('EquipmentSemesterChart');
+            if (!toggle || !canvas) return;
+
+            var curChart  = null;
+            var activePer = 'semester';
+            var now       = new Date();
+            var curYear   = now.getFullYear();
+            var curMonth  = now.getMonth() + 1;
+            var curSem    = curMonth <= 6 ? 'S1' : 'S2';
+            var MONTHS    = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                             'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+            $.get('/chart-years', function (availableYears) {
+                var years = availableYears || [curYear];
+
+                function yearOpts(sel) {
+                    return years.slice().reverse().map(function (y) {
+                        return '<option value="' + y + '"' + (y === sel ? ' selected' : '') + '>' + y + '</option>';
+                    }).join('');
+                }
+
+                var pickersEl = document.createElement('div');
+                pickersEl.className = 'hz-period-pickers';
+                pickersEl.innerHTML =
+                    '<div class="hz-picker-group" data-for="month">' +
+                        '<select class="hz-picker-sel" data-key="month">' +
+                            MONTHS.map(function (m, i) {
+                                return '<option value="' + (i + 1) + '"' + (i + 1 === curMonth ? ' selected' : '') + '>' + m + '</option>';
+                            }).join('') +
+                        '</select>' +
+                        '<select class="hz-picker-sel" data-key="year">' + yearOpts(curYear) + '</select>' +
+                    '</div>' +
+                    '<div class="hz-picker-group" data-for="semester" style="display:none">' +
+                        '<select class="hz-picker-sel" data-key="sem">' +
+                            '<option value="S1"' + (curSem === 'S1' ? ' selected' : '') + '>S1 (Ene–Jun)</option>' +
+                            '<option value="S2"' + (curSem === 'S2' ? ' selected' : '') + '>S2 (Jul–Dic)</option>' +
+                        '</select>' +
+                        '<select class="hz-picker-sel" data-key="year">' + yearOpts(curYear) + '</select>' +
+                    '</div>' +
+                    '<div class="hz-picker-group" data-for="year" style="display:none">' +
+                        '<select class="hz-picker-sel" data-key="year">' + yearOpts(curYear) + '</select>' +
+                    '</div>';
+
+                toggle.parentNode.insertBefore(pickersEl, toggle.nextSibling);
+
+                function showGroup(period) {
+                    pickersEl.querySelectorAll('.hz-picker-group').forEach(function (g) {
+                        g.style.display = g.dataset.for === period ? 'flex' : 'none';
+                    });
+                }
+
+                function getParams(period) {
+                    var params = { period: period };
+                    var group  = pickersEl.querySelector('[data-for="' + period + '"]');
+                    if (group) {
+                        group.querySelectorAll('.hz-picker-sel').forEach(function (sel) {
+                            params[sel.dataset.key] = sel.value;
+                        });
+                    }
+                    return params;
+                }
+
+                function load(period) {
+                    if (curChart) { curChart.destroy(); curChart = null; }
+                    $.get('/equipment-semester/chart-data', getParams(period), function (a) {
+                        var datasets = a.datasets || [];
+                        var colors   = datasets.map(function (_, i) {
+                            return 'hsl(' + Math.round(i * 137.508 % 360) + ',62%,50%)';
+                        });
+                        curChart = new Chart(canvas, {
+                            type: 'bar',
+                            data: {
+                                labels  : a.labels,
+                                datasets: datasets.map(function (ds, i) {
+                                    return {
+                                        label          : ds.label,
+                                        data           : ds.data,
+                                        backgroundColor: colors[i] + 'cc',
+                                        borderColor    : colors[i],
+                                        borderWidth    : 1,
+                                        stack          : 'top20',
+                                        borderRadius   : 3,
+                                    };
+                                }),
+                            },
+                            options: {
+                                responsive         : true,
+                                maintainAspectRatio: false,
+                                interaction        : { mode: 'index', intersect: false },
+                                plugins: {
+                                    legend : { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 6, font: { size: 9.5 } } },
+                                    tooltip: { backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#cbd5e1', padding: 10, cornerRadius: 8, boxPadding: 4 },
+                                },
+                                scales: {
+                                    x: { stacked: true, grid: { display: false }, ticks: { padding: 7, color: '#94a3b8' } },
+                                    y: { stacked: true, beginAtZero: true,        ticks: { padding: 7, color: '#94a3b8', precision: 0 } },
+                                },
+                            },
+                        });
+                    });
+                }
+
+                showGroup(activePer);
+                load(activePer);
+
+                toggle.querySelectorAll('.hz-period-btn').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        toggle.querySelectorAll('.hz-period-btn').forEach(function (b) {
+                            b.classList.remove('hz-period-btn--active');
+                        });
+                        btn.classList.add('hz-period-btn--active');
+                        activePer = btn.dataset.period;
+                        showGroup(activePer);
+                        load(activePer);
+                    });
+                });
+
+                pickersEl.querySelectorAll('.hz-picker-sel').forEach(function (sel) {
+                    sel.addEventListener('change', function () { load(activePer); });
+                });
+            });
+        });
+    })();
     </script>
 @endpush

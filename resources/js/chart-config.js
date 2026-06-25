@@ -63,18 +63,34 @@ $(document).ready(function () {
         };
     }
 
-    // Build a line dataset with consistent styling
+    function stackedBarOptions() {
+        return {
+            responsive          : true,
+            maintainAspectRatio : true,
+            interaction         : { mode: 'index', intersect: false },
+            plugins             : {
+                legend  : { ...LEGEND, labels: { boxWidth: 12, boxHeight: 12, padding: 10, font: { size: 10 } } },
+                tooltip : TOOLTIP,
+            },
+            scales: {
+                x: { stacked: true, grid: { ...GRID, display: false }, ticks: TICK },
+                y: { stacked: true, beginAtZero: true, grid: GRID, ticks: { ...TICK, precision: 0 } },
+            },
+        };
+    }
+
+    // Build a line dataset
     function lds(label, data, color, fill) {
         return {
             label,
             data,
-            borderColor     : color,
-            backgroundColor : fill ? color + '28' : 'transparent',
-            fill            : !!fill,
-            tension         : 0.35,
-            borderWidth     : 2.5,
-            pointRadius     : 3.5,
-            pointHoverRadius: 6,
+            borderColor          : color,
+            backgroundColor      : fill ? color + '28' : 'transparent',
+            fill                 : !!fill,
+            tension              : 0.35,
+            borderWidth          : 2.5,
+            pointRadius          : 3.5,
+            pointHoverRadius     : 6,
             pointBackgroundColor : color,
             pointBorderColor     : '#fff',
             pointBorderWidth     : 2,
@@ -92,6 +108,13 @@ $(document).ready(function () {
         }];
     }
 
+    // Auto-generate HSL palette for N items
+    function palette(n) {
+        return Array.from({ length: n }, (_, i) =>
+            'hsl(' + Math.round((i * 137.508) % 360) + ',62%,50%)'
+        );
+    }
+
     // Loading overlay helpers
     function showLoader(canvas) {
         const loader = document.createElement('div');
@@ -104,29 +127,125 @@ $(document).ready(function () {
         if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
     }
 
-    // ── 1. Test B&D / Vacío — Mensual (line) ──────────────────
-    const eBowies = document.getElementById('testBowiesChart');
-    if (eBowies) {
-        const ldr = showLoader(eBowies);
-        $.get('/testbowies/chart-data', function (a) {
-            hideLoader(ldr);
-            new Chart(eBowies, {
+    // ── Period toggle + picker helper ─────────────────────────
+    // Injects month/semester/year selectors below the toggle and reloads on change.
+    // `availableYears` is passed in from the outer scope once loaded from the backend.
+    function initPeriodChart(toggleId, canvasId, url, defaultPeriod, buildChart, availableYears) {
+        const canvas   = document.getElementById(canvasId);
+        const toggleEl = document.getElementById(toggleId);
+        if (!canvas || !toggleEl) return;
+
+        const now   = new Date();
+        const curY  = now.getFullYear();
+        const curM  = now.getMonth() + 1;
+        const curS  = curM <= 6 ? 'S1' : 'S2';
+        const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                        'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        const years  = availableYears || [curY];
+
+        function yearOpts(sel) {
+            return years.slice().reverse().map(function (y) {
+                return '<option value="' + y + '"' + (y === sel ? ' selected' : '') + '>' + y + '</option>';
+            }).join('');
+        }
+
+        // Build picker groups
+        const pickersEl = document.createElement('div');
+        pickersEl.className = 'hz-period-pickers';
+        pickersEl.innerHTML =
+            '<div class="hz-picker-group" data-for="month">' +
+                '<select class="hz-picker-sel" data-key="month">' +
+                    MONTHS.map(function (m, i) {
+                        return '<option value="' + (i+1) + '"' + (i+1 === curM ? ' selected' : '') + '>' + m + '</option>';
+                    }).join('') +
+                '</select>' +
+                '<select class="hz-picker-sel" data-key="year">' + yearOpts(curY) + '</select>' +
+            '</div>' +
+            '<div class="hz-picker-group" data-for="semester" style="display:none">' +
+                '<select class="hz-picker-sel" data-key="sem">' +
+                    '<option value="S1"' + (curS==='S1'?' selected':'') + '>S1 (Ene–Jun)</option>' +
+                    '<option value="S2"' + (curS==='S2'?' selected':'') + '>S2 (Jul–Dic)</option>' +
+                '</select>' +
+                '<select class="hz-picker-sel" data-key="year">' + yearOpts(curY) + '</select>' +
+            '</div>' +
+            '<div class="hz-picker-group" data-for="year" style="display:none">' +
+                '<select class="hz-picker-sel" data-key="year">' + yearOpts(curY) + '</select>' +
+            '</div>';
+
+        // Insert after toggle
+        toggleEl.parentNode.insertBefore(pickersEl, toggleEl.nextSibling);
+
+        function showGroup(period) {
+            pickersEl.querySelectorAll('.hz-picker-group').forEach(function (g) {
+                g.style.display = g.dataset.for === period ? 'flex' : 'none';
+            });
+        }
+
+        function getParams(period) {
+            var params = { period: period };
+            var group  = pickersEl.querySelector('[data-for="' + period + '"]');
+            if (group) {
+                group.querySelectorAll('.hz-picker-sel').forEach(function (sel) {
+                    params[sel.dataset.key] = sel.value;
+                });
+            }
+            return params;
+        }
+
+        var activePeriod = defaultPeriod;
+        var inst = null;
+
+        function load(period) {
+            if (inst) { inst.destroy(); inst = null; }
+            var ldr = showLoader(canvas);
+            $.get(url, getParams(period), function (data) {
+                hideLoader(ldr);
+                inst = buildChart(canvas, data);
+            });
+        }
+
+        showGroup(activePeriod);
+        load(activePeriod);
+
+        toggleEl.querySelectorAll('.hz-period-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                toggleEl.querySelectorAll('.hz-period-btn')
+                    .forEach(function (b) { b.classList.remove('hz-period-btn--active'); });
+                btn.classList.add('hz-period-btn--active');
+                activePeriod = btn.dataset.period;
+                showGroup(activePeriod);
+                load(activePeriod);
+            });
+        });
+
+        pickersEl.querySelectorAll('.hz-picker-sel').forEach(function (sel) {
+            sel.addEventListener('change', function () { load(activePeriod); });
+        });
+    }
+
+    // ── Cargar años disponibles y luego inicializar todos los gráficos ────────
+    $.get('/chart-years', function (availableYears) {
+
+    // ── 1. Test B&D / Vacío — Mensual ─────────────────────────
+    initPeriodChart('toggleTestBowies', 'testBowiesChart', '/testbowies/chart-data', 'month',
+        function (canvas, a) {
+            return new Chart(canvas, {
                 type : 'line',
                 data : {
-                    labels  : a.months,
+                    labels  : a.labels,
                     datasets: [
-                        lds('TBD —',      a.TBDNeg,      '#2563EB'),
-                        lds('TBD +',      a.TBDPosi,     '#ef4444'),
-                        lds('Test V OK',  a.testvacNeg,  '#10b981'),
+                        lds('TBD —',        a.TBDNeg,      '#2563EB'),
+                        lds('TBD +',        a.TBDPosi,     '#ef4444'),
+                        lds('Test V OK',    a.testvacNeg,  '#10b981'),
                         lds('Test V Falla', a.testvacPosi, '#f59e0b'),
                     ],
                 },
                 options: lineOptions(),
             });
-        });
-    }
+        }, availableYears
+    );
 
-    // ── 2a. Totales mes — Test B&D (doughnut) ─────────────────
+    // ── 2a. Totales — Test B&D (doughnut) ─────────────────────
     const tBD = document.getElementById('currentMonthChart');
     if (tBD) {
         const ldr = showLoader(tBD);
@@ -143,7 +262,7 @@ $(document).ready(function () {
         });
     }
 
-    // ── 2b. Totales mes — Test Vacío (doughnut) ───────────────
+    // ── 2b. Totales — Test Vacío (doughnut) ───────────────────
     const tVac = document.getElementById('currentMonthChart2');
     if (tVac) {
         const ldr = showLoader(tVac);
@@ -160,16 +279,13 @@ $(document).ready(function () {
         });
     }
 
-    // ── 3. Producción Mensual Esterilización (line) ───────────
-    const rProd = document.getElementById('ProductionsChart');
-    if (rProd) {
-        const ldr = showLoader(rProd);
-        $.get('/productions/chart-data', function (a) {
-            hideLoader(ldr);
-            new Chart(rProd, {
+    // ── 3. Producción Esterilización ──────────────────────────
+    initPeriodChart('toggleProductions', 'ProductionsChart', '/productions/chart-data', 'month',
+        function (canvas, a) {
+            return new Chart(canvas, {
                 type : 'line',
                 data : {
-                    labels  : a.months,
+                    labels  : a.labels,
                     datasets: [
                         lds('V1 OK',     a.Ciclos_ok1,      '#2563EB'),
                         lds('V1 Falla',  a.Ciclos_Fails1,   '#ef4444'),
@@ -181,8 +297,8 @@ $(document).ready(function () {
                 },
                 options: lineOptions(),
             });
-        });
-    }
+        }, availableYears
+    );
 
     // ── 4a. Producción Total — Vapor (doughnut) ───────────────
     const cVapor = document.getElementById('currentMonthProductionChart');
@@ -221,16 +337,13 @@ $(document).ready(function () {
         });
     }
 
-    // ── 5. Instrumental Procesado (area line) ─────────────────
-    const sLabels = document.getElementById('ProductionlabelsChart');
-    if (sLabels) {
-        const ldr = showLoader(sLabels);
-        $.get('/productionlabels/chart-data', function (a) {
-            hideLoader(ldr);
-            new Chart(sLabels, {
+    // ── 5. Instrumental Procesado ─────────────────────────────
+    initPeriodChart('toggleProductionLabels', 'ProductionlabelsChart', '/productionlabels/chart-data', 'month',
+        function (canvas, a) {
+            return new Chart(canvas, {
                 type : 'line',
                 data : {
-                    labels  : a.months,
+                    labels  : a.labels,
                     datasets: [
                         lds('Inst. Vapor',    a.label_steams, '#f97316', true),
                         lds('Inst. Peróxido', a.label_hpos,   '#0891b2', true),
@@ -238,19 +351,16 @@ $(document).ready(function () {
                 },
                 options: lineOptions(),
             });
-        });
-    }
+        }, availableYears
+    );
 
-    // ── 6. Rendimiento de Paquetes (area line) ────────────────
-    const ssResult = document.getElementById('ResultProductionChart');
-    if (ssResult) {
-        const ldr = showLoader(ssResult);
-        $.get('/resultproductions/chart-data', function (a) {
-            hideLoader(ldr);
-            new Chart(ssResult, {
+    // ── 6. Rendimiento de Paquetes ────────────────────────────
+    initPeriodChart('toggleResultProduction', 'ResultProductionChart', '/resultproductions/chart-data', 'month',
+        function (canvas, a) {
+            return new Chart(canvas, {
                 type : 'line',
                 data : {
-                    labels  : a.months,
+                    labels  : a.labels,
                     datasets: [
                         lds('Inst. Procesado', a.procesado_all, '#f97316', true),
                         lds('Inst. Estéril',   a.esteril_all,  '#0891b2', true),
@@ -258,19 +368,16 @@ $(document).ready(function () {
                 },
                 options: lineOptions(),
             });
-        });
-    }
+        }, availableYears
+    );
 
-    // ── 7. Liberación Biológicos (line) ───────────────────────
-    const uBio = document.getElementById('BiologicChart');
-    if (uBio) {
-        const ldr = showLoader(uBio);
-        $.get('/biologics/chart-data', function (a) {
-            hideLoader(ldr);
-            new Chart(uBio, {
+    // ── 7. Liberación Biológicos ──────────────────────────────
+    initPeriodChart('toggleBiologic', 'BiologicChart', '/biologics/chart-data', 'month',
+        function (canvas, a) {
+            return new Chart(canvas, {
                 type : 'line',
                 data : {
-                    labels  : a.months,
+                    labels  : a.labels,
                     datasets: [
                         lds('Steam Bio OK',    a.Ciclos_BioSteam_OK,   '#2563EB'),
                         lds('Steam Bio Falla', a.Ciclos_BioSteam_FAIL, '#ef4444'),
@@ -280,19 +387,16 @@ $(document).ready(function () {
                 },
                 options: lineOptions(),
             });
-        });
-    }
+        }, availableYears
+    );
 
-    // ── 8. Rendimiento por Área Central (area line) ───────────
-    const vCentral = document.getElementById('CentralChart');
-    if (vCentral) {
-        const ldr = showLoader(vCentral);
-        $.get('/central/chart-data', function (a) {
-            hideLoader(ldr);
-            new Chart(vCentral, {
+    // ── 8. Rendimiento por Área Central ──────────────────────
+    initPeriodChart('toggleCentral', 'CentralChart', '/central/chart-data', 'month',
+        function (canvas, a) {
+            return new Chart(canvas, {
                 type : 'line',
                 data : {
-                    labels  : a.months,
+                    labels  : a.labels,
                     datasets: [
                         lds('Recepción',  a.Ciclos_Receptions, '#2563EB', true),
                         lds('Producción', a.Ciclos_Labelqr,    '#ef4444', true),
@@ -301,7 +405,49 @@ $(document).ready(function () {
                 },
                 options: lineOptions(),
             });
-        });
-    }
+        }, availableYears
+    );
+
+    // ── 9. Top 20 Equipos — Stacked Bar segmentado por período ──
+    initPeriodChart('equipmentPeriodToggle', 'EquipmentSemesterChart', '/equipment-semester/chart-data', 'semester',
+        function (canvas, a) {
+            const colors = palette(a.datasets.length);
+            return new Chart(canvas, {
+                type : 'bar',
+                data : {
+                    labels  : a.labels,
+                    datasets: a.datasets.map(function (ds, i) {
+                        return {
+                            label           : ds.label,
+                            data            : ds.data,
+                            backgroundColor : colors[i] + 'cc',
+                            borderColor     : colors[i],
+                            borderWidth     : 1,
+                            stack           : 'top20',
+                            borderRadius    : 3,
+                        };
+                    }),
+                },
+                options: {
+                    responsive          : true,
+                    maintainAspectRatio : false,
+                    interaction         : { mode: 'index', intersect: false },
+                    plugins             : {
+                        legend: {
+                            position : 'bottom',
+                            labels   : { boxWidth: 10, boxHeight: 10, padding: 6, font: { size: 9.5 } },
+                        },
+                        tooltip: TOOLTIP,
+                    },
+                    scales: {
+                        x: { stacked: true, grid: { ...GRID, display: false }, ticks: TICK },
+                        y: { stacked: true, beginAtZero: true, grid: GRID, ticks: { ...TICK, precision: 0 } },
+                    },
+                },
+            });
+        }, availableYears
+    );
+
+    }); // end $.get('/chart-years')
 
 });
