@@ -2,7 +2,7 @@
 # Image Setup for Laravel-Horizon
 # --------------------------------------------------------------------------
 
-FROM php:8.5-alpine
+FROM php:8.4-alpine
 
 # Argumentos para el usuario no root
 ARG PUID=1000
@@ -21,25 +21,19 @@ COPY supervisord.conf /etc/supervisord.conf
 RUN set -eux; \
     # Paquetes de sistema (permanentes)
     apk add --no-cache \
-        curl=~8 \
-        git=~2 \
+        freetype-dev~=2 \
         gmp-dev~=6 \
-        libgsasl-dev~=2 \
-        libmcrypt-dev~=2 \
+        imagemagick-dev~=7 \
+        jpeg-dev~=9f \
+        libjpeg-turbo-dev~=3 \
         libmemcached-dev~=1 \
         libpng-dev~=1 \
         libxml2-dev~=2 \
         libzip-dev~=1 \
         oniguruma-dev~=6 \
         postgresql18-dev \
-        procps=~4 \
         supervisor=~4 \
-        wget=~1 \
-        zlib-dev~=1 \
-        freetype-dev \
-        imagemagick-dev \
-        jpeg-dev \
-        libjpeg-turbo-dev; \
+        zlib-dev~=1; \
     \
     # Dependencias de compilación (temporales)
     apk add --no-cache --virtual .build-deps \
@@ -52,21 +46,21 @@ RUN set -eux; \
     pecl install redis imagick; \
     docker-php-ext-enable redis imagick; \
     if [ "${INSTALL_GNUPG}" = "true" ]; then \
-        apk add --no-cache gpgme gpgme-dev; \
+        apk add --no-cache gpgme~=2 gpgme-dev~=2; \
         pecl install gnupg; \
         docker-php-ext-enable gnupg; \
     fi; \
     \
-    # Extensiones PHP nativas (compilación paralela)
-    docker-php-ext-install -j$(nproc) \
-        gmp soap exif pcntl zip pdo_mysql pdo_pgsql bcmath intl sockets gd; \
-    \
     # Configuración de GD
     docker-php-ext-configure gd --with-freetype --with-jpeg; \
     \
+    # Extensiones PHP nativas (compilación paralela)
+    docker-php-ext-install -j"$(nproc)" \
+        gmp soap exif pcntl zip pdo_mysql pdo_pgsql bcmath intl sockets gd; \
+    \
     # BZ2 condicional
     if [ "${INSTALL_BZ2}" = "true" ]; then \
-        apk add --no-cache bzip2-dev; \
+        apk add --no-cache bzip2-dev~=1; \
         docker-php-ext-install bz2; \
     fi; \
     \
@@ -83,3 +77,5 @@ WORKDIR /etc/supervisor/conf.d/
 
 # Punto de entrada
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+
+USER sail
