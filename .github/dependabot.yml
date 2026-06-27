@@ -6,13 +6,13 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 7
+      default-days: 30
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 7
+      default-days: 30
   - package-ecosystem: docker
     directories:
       - "/"
@@ -21,4 +21,4 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 7
+      default-days: 30
