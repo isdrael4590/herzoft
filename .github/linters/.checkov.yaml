@@ -1,0 +1,12 @@
+# Checkov configuration for super-linter
+# Placed at .github/linters/.checkov.yaml
+#
+# Checkov scans the workspace independently of super-linter's
+# FILTER_REGEX_EXCLUDE. Any path exclusions must be declared here.
+
+skip-path:
+  - vendor          # Composer dependencies — not our code
+  - node_modules    # npm dependencies — not our code
+  - public/build    # Vite build output
+  - bootstrap/cache # Laravel framework cache
+  - storage         # Laravel runtime storage
