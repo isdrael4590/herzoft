@@ -16,9 +16,9 @@ Utiliza la configuración de SSH para configurar una computadora remota con las 
 
 1. Inicia tu configuración con el comando
 
-    ```bash
-    rclone config
-    ```
+   ```bash
+   rclone config
+   ```
 
 2. Presiona `n` para crear una nueva conexión remota
 3. Añade el nombre `herzoft_respaldo`
@@ -48,43 +48,43 @@ _Nota_: Reemplaza tu `nombre_usuario` y `/tu/carpeta/respaldo` con tus datos de 
 7. Escribe `true` para darle seguridad a tu cuenta
 8. En tu computadora local, sincroniza tus archivos con el comando:
 
-    ```bash
-    rclone sync -P herzoft_respaldo_local:/opt/docker/backup /tu/carpeta/respaldo 
-    ```
+   ```bash
+   rclone sync -P herzoft_respaldo_local:/opt/docker/backup /tu/carpeta/respaldo
+   ```
 
 ## Programar la ejecución de los servicios
 
 1. Mueve los scripts y dales permisos de ejecución en tu carpeta local con el siguiente comando
 
-    ```bash
-    sudo cp scripts/diario.sh scripts/quincenal.sh /usr/local/bin
-    sudo chmod +x /usr/local/bin/diario.sh /usr/local/bin/quincenal.sh
-    source .env
-    # Crea los archivos iniciales
-    mkdir -p $RUTA_RESPALDO
-    sudo touch /var/log/respaldo_diario.log /var/log/respaldo_quincenal.log 
-    sudo chown -R $USER:$USER $RUTA_RESPALDO /var/log/respaldo_diario.log /var/log/respaldo_quincenal.log 
-    ```
+   ```bash
+   sudo cp scripts/diario.sh scripts/quincenal.sh /usr/local/bin
+   sudo chmod +x /usr/local/bin/diario.sh /usr/local/bin/quincenal.sh
+   source .env
+   # Crea los archivos iniciales
+   mkdir -p $RUTA_RESPALDO
+   sudo touch /var/log/respaldo_diario.log /var/log/respaldo_quincenal.log
+   sudo chown -R $USER:$USER $RUTA_RESPALDO /var/log/respaldo_diario.log /var/log/respaldo_quincenal.log
+   ```
 
 2. Edita en tus scripts, edita las variables `RUTA_PROYECTO` de acuerdo a la ubicación de tu proyecto
 
-    ```bash
-    sudo nano /usr/local/bin/diario.sh 
-    sudo nano /usr/local/bin/quincenal.sh
-    ```
+   ```bash
+   sudo nano /usr/local/bin/diario.sh
+   sudo nano /usr/local/bin/quincenal.sh
+   ```
 
 3. Abre tu archivo de `crontab` para poder programar los scripts
 
-    ```bash
-    crontab -e
-    ```
+   ```bash
+   crontab -e
+   ```
 
 4. Añade las siguientes líneas al final del archivo para programar los scripts
 
-    ```bash
-    0 0 * * * /usr/local/bin/diario.sh >> /var/log/respaldo_diario.log 2>&1
-    0 1 */14 * * /usr/local/bin/quincenal.sh >> /var/log/respaldo_quincenal.log 2>&1
-    ```
+   ```bash
+   0 0 * * * /usr/local/bin/diario.sh >> /var/log/respaldo_diario.log 2>&1
+   0 1 */14 * * /usr/local/bin/quincenal.sh >> /var/log/respaldo_quincenal.log 2>&1
+   ```
 
 ## Restaurar
 
@@ -92,24 +92,24 @@ _Nota_: Usar las mismas contraseñas y `APP_KEY` que en producción
 
 1. Parar los contenedores y volumenes
 
-    ```bash
-    docker compose -f docker-compose.prod.yml down
-    ```
+   ```bash
+   docker compose -f docker-compose.prod.yml down
+   ```
 
 2. Borrar el contenedor anterior para no tener problemas
 
-    ```bash
-    docker volume rm herzoft_sail-mysql
-    ```
+   ```bash
+   docker volume rm herzoft_sail-mysql
+   ```
 
 3. Inicializar los contenedores
 
-    ```bash
-    docker compose -f docker-compose.prod.yml up nginx laravel-horizon -d --build
-    ```
+   ```bash
+   docker compose -f docker-compose.prod.yml up nginx laravel-horizon -d --build
+   ```
 
 4. Descomprime y cargar la base de datos
 
-    ```bash
-    docker compose -f docker-compose.prod.yml exec -T mysql sh -c 'export MYSQL_PWD="$(cat "$MYSQL_ROOT_PASSWORD_FILE")";  exec mysql -u root --default-character-set=utf8mb4 --database=$MYSQL_DATABASE' < backup/mysql_backup_reemplaza_el_nombre_de_tu_sql.sql
-    ```
+   ```bash
+   docker compose -f docker-compose.prod.yml exec -T mysql sh -c 'export MYSQL_PWD="$(cat "$MYSQL_ROOT_PASSWORD_FILE")";  exec mysql -u root --default-character-set=utf8mb4 --database=$MYSQL_DATABASE' < backup/mysql_backup_reemplaza_el_nombre_de_tu_sql.sql
+   ```
