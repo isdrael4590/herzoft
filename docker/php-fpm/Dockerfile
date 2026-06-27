@@ -2,15 +2,17 @@
 # PHP-FPM Image for Laravel (optimized)
 # Based on cyberduck/php-fpm-laravel but heavily improved
 # --------------------------------------------------------------------------
-FROM php:8.5-alpine
+FROM php:8.4-alpine
 
 # Variables de entorno (opcional)
 ENV COMPOSER_MEMORY_LIMIT='-1'
+COPY --from=composer:2.8 /usr/bin/composer /usr/local/bin/composer
 
 # Copiar configuración personalizada de PHP (antes de los RUN para cachear)
 COPY ./docker/php-fpm/laravel.ini /usr/local/etc/php/conf.d/
 
 # --- Capa única: instalación de paquetes, extensiones y limpieza ---
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN set -eux; \
     # Paquetes permanentes del sistema
     apk add --no-cache \
@@ -34,8 +36,6 @@ RUN set -eux; \
     # Dependencias de compilación (temporales)
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
-        autoconf~=2 \
-        build-base~=0 \
         linux-headers~=7; \
 
     \
@@ -43,18 +43,12 @@ RUN set -eux; \
     docker-php-ext-configure gd --with-freetype --with-jpeg; \
     \
     # Extensiones nativas (compilación paralela)
-    docker-php-ext-install -j$(nproc) \
+    docker-php-ext-install -j"$(nproc)" \
         soap exif pcntl zip pdo_mysql pdo_pgsql bcmath intl gmp gd; \
     \
     # Extensiones PECL (instalación y habilitación inmediata)
-    pecl install imagick memcached redis xdebug; \
+    pecl install imagick memcached redis; \
     docker-php-ext-enable imagick memcached redis; \
-    \
-    # Instalar Composer (global)
-    curl -s http://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; \
-    \
-    # Cambiar UID de www-data (se puede hacer ahora)
-    usermod -u 1000 www-data; \
     \
     # Eliminar dependencias de compilación y limpiar cachés
     apk del .build-deps; \
@@ -67,21 +61,24 @@ COPY composer.json composer.lock ./
 # --- Instalar dependencias de Composer (capa cacheable) ---
 RUN composer install \
     --no-dev \
-    --no-scripts \
-    --no-autoloader \
     --prefer-dist \
     --no-interaction \
-    --optimize-autoloader || true
+    --no-scripts \
+    --no-autoloader
 
 # --- Copiar el resto del código de la aplicación ---
-COPY . /var/www/html
+COPY . .
+
+RUN composer dump-autoload \
+    --optimize \
+    --classmap-authoritative \
+    --no-dev \
+ && php artisan package:discover --ansi
 
 # --- Capa final: permisos, aliases, cron, dump-autoload ---
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R ug+rwx storage bootstrap/cache
 RUN set -eux; \
-    # Establecer permisos (se puede limitar a directorios específicos)
-    chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache; \
-    # Generar autoloader ahora que todo el código está presente
-    composer dump-autoload --optimize --no-dev; \
     # Aliases útiles (art, migrate, fresh, t, d, dep)
     printf '#!/bin/bash\n/usr/local/bin/php /var/www/html/artisan "$@"' > /usr/bin/art && chmod +x /usr/bin/art; \
     printf '#!/bin/bash\n/usr/local/bin/php /var/www/html/artisan migrate "$@"' > /usr/bin/migrate && chmod +x /usr/bin/migrate; \
@@ -96,8 +93,26 @@ RUN set -eux; \
 # Copiar script de entrada y establecer permisos
 COPY ./docker/php-fpm/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/local/bin/docker-entrypoint.sh /
+RUN addgroup -g 1000 laravel \
+ && adduser -D -u 1000 -G laravel laravel
+ RUN mkdir -p \
+    storage \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    bootstrap/cache \
+ && chown -R laravel:laravel storage bootstrap/cache \
+ && chmod -R ug+rwx storage bootstrap/cache
 
 # Punto de entrada y comando
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 EXPOSE 9000
 CMD ["php-fpm"]
+
+HEALTHCHECK --interval=30s \
+            --timeout=5s \
+            --start-period=20s \
+            --retries=3 \
+CMD php-fpm -t || exit 1
+USER laravel
