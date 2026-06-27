@@ -1,7 +1,8 @@
 ---
 services:
   mysql:
-    image: "mysql:8"
+    image: "mysql:8.4"
+    restart: unless-stopped
     ports:
       - "${FORWARD_DB_PORT:-3306}:3306"
     secrets:
@@ -22,7 +23,8 @@ services:
       retries: 3
       timeout: 5s
   redis:
-    image: "redis:alpine"
+    image: "redis:8.8-alpine"
+    restart: unless-stopped
     volumes:
       - "${DATA_PATH_HOST}/redis:/data"
     networks:
@@ -35,7 +37,7 @@ services:
       - REDIS_HOST
       - REDIS_PASSWORD
   nginx:
-    image: nginx:latest
+    image: nginx:1.31-alpine
     restart: unless-stopped
     environment:
       - DOMAIN
@@ -58,9 +60,8 @@ services:
     build:
       context: .
       dockerfile: "./docker/php-fpm/Dockerfile"
+    restart: unless-stopped
     image: app:${APP_VERSION:-1.1.0}
-    volumes:
-      - ./:/var/www/html
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
@@ -80,8 +81,8 @@ services:
   laravel-horizon:
     build:
       context: ./docker/laravel-horizon
+    restart: unless-stopped
     volumes:
-      - ./:/var/www/html
       - ./docker/laravel-horizon/supervisord.d:/etc/supervisord.d
     depends_on:
       - app
@@ -90,7 +91,7 @@ services:
     networks:
       - sail
   certbot:
-    image: certbot/certbot:latest
+    image: certbot/certbot:v5.4.0
     command: >-
       certonly --webroot -w /var/www/certbot --force-renewal
       --email ${EMAIL} --agree-tos -d ${DOMAIN}
