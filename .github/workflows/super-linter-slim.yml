@@ -41,7 +41,7 @@ jobs:
           # Respect .gitignore — skips vendor/, node_modules/, storage/ etc.
           IGNORE_GITIGNORED_FILES: true
           # Extra exclusion for generated files that may be committed
-          FILTER_REGEX_EXCLUDE: .*(public/build|bootstrap/cache|_ide_helper).*
+          FILTER_REGEX_EXCLUDE: .*(vendor|node_modules|public/build|bootstrap/cache|_ide_helper).*
           # Config files live in .github/linters/ (super-linter default)
           LINTER_RULES_PATH: .github/linters
 
