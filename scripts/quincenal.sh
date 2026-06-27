@@ -20,10 +20,10 @@ rclone mkdir "$RUTA_REMOTA" || true
 echo "Selecionando el archivo más reciente..."
 ARCHIVO_RECIENTE=""
 for archivo in "$RUTA_RESPALDO"/*.zip; do
-    # Si no existen archivos .zip, el bucle podría tomar el string literal '*.zip', lo controlamos aquí:
-    [[ -e "$archivo" ]] || break
-    # Compara si este archivo es más reciente (-nt = newer than) que el guardado previamente
-    [[ -z "$ARCHIVO_RECIENTE" || "$archivo" -nt "$ARCHIVO_RECIENTE" ]] && ARCHIVO_RECIENTE="$archivo"
+	# Si no existen archivos .zip, el bucle podría tomar el string literal '*.zip', lo controlamos aquí:
+	[[ -e "$archivo" ]] || break
+	# Compara si este archivo es más reciente (-nt = newer than) que el guardado previamente
+	[[ -z "$ARCHIVO_RECIENTE" || "$archivo" -nt "$ARCHIVO_RECIENTE" ]] && ARCHIVO_RECIENTE="$archivo"
 done
 echo "Archivo seleccionado: $ARCHIVO_RECIENTE"
 
