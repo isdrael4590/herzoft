@@ -19,7 +19,7 @@
    git clone git@github.com:isdrael4590/HerzTrace.git
    ```
 
-4. Para iniciar con las opciones de desarrollo o correr los contenedores, instale las dependencias de PHP y Javascript del proyecto a través del siguiente comando:
+4. Para iniciar con las opciones de desarrollo o correr los contenedores, instale las dependencias de PHP y JavaScript del proyecto a través del siguiente comando:
 
    ```bash
    composer install && npm install && npm run build
@@ -40,7 +40,7 @@
    APP_VERSION=latest # O cualquier version con el formato 1.0.0
    ```
 
-7. Las contraseñas de MySQL y del Administrador son almacenadas a través de [Docker secrets](`https://docs.docker.com/compose/use-secrets/`) por seguridad. Antes de iniciar el programa, es necesario crear dos archivos en la carpeta `database/credenciales` llamados `root_password.txt` y `user_password.txt` para establecer las constraseñas de MySQL y una en la carpeta `credenciales/admin.txt` para las credenciales de Adminstrador, use cualquier editor de texto para realizar esta tarea o con el siguiente comando en Linux.
+7. Las contraseñas de MySQL y Administrador son almacenadas con [Docker secrets](https://docs.docker.com/compose/use-secrets) por seguridad. Antes de iniciar, crea `root_password.txt` y `user_password.txt` en la carpeta `database/credenciales` para establecer las contraseñas de MySQL y las credenciales de Administrador con el archivo `credenciales/admin.txt` , como éste ejemplo en Linux:
 
    ```bash
    mkdir database/credenciales && mkdir credenciales
@@ -145,7 +145,7 @@ Por favor lee las instrucciones de [Respaldo](RESPALDO.md) para poder configurar
 
 ## Licencia
 
-Comercial, Todos los derechos reservados HerzTrace© 2025
+Comercial, todos los derechos reservados HerzTrace© 2025
 
 ## Problemas conocidos
 

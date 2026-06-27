@@ -8,6 +8,7 @@
 ## Índice de Tablas
 
 ### Módulo Core / Catálogos
+
 - [areas](#areas)
 - [categories](#categories)
 - [institutes](#institutes)
@@ -18,9 +19,11 @@
 - [settings](#settings)
 
 ### Módulo Trazabilidad (flujo principal)
+
 - [receptions](#receptions) → [preparations](#preparations) → [labelqrs](#labelqrs) → [discharges](#discharges) → [stocks](#stocks) → [expeditions](#expeditions)
 
 ### Tablas de Detalle
+
 - [reception_details](#reception_details)
 - [preparation_details](#preparation_details)
 - [preparation_quantity_resets](#preparation_quantity_resets)
@@ -30,6 +33,7 @@
 - [expedition_details](#expedition_details)
 
 ### Módulo Auxiliar / Pruebas
+
 - [informats](#informats)
 - [instrumentals](#instrumentals)
 - [lotes](#lotes)
@@ -37,6 +41,7 @@
 - [testvacuums](#testvacuums)
 
 ### Módulo Sistema / Auth
+
 - [users](#users)
 - [roles](#roles)
 - [permissions](#permissions)
@@ -48,6 +53,7 @@
 - [uploads](#uploads)
 
 ### Laravel Interno
+
 - [failed_jobs](#failed_jobs)
 - [migrations](#migrations)
 - [password_resets](#password_resets)
@@ -57,6 +63,7 @@
 ## Módulo Core / Catálogos
 
 ### `areas`
+
 Zonas o servicios del hospital donde se envían materiales.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -72,6 +79,7 @@ Zonas o servicios del hospital donde se envían materiales.
 ---
 
 ### `categories`
+
 Categorías de clasificación de productos.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -85,6 +93,7 @@ Categorías de clasificación de productos.
 ---
 
 ### `institutes`
+
 Datos del hospital o institución que usa el sistema.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -102,6 +111,7 @@ Datos del hospital o institución que usa el sistema.
 ---
 
 ### `machines`
+
 Equipos de esterilización registrados.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -120,6 +130,7 @@ Equipos de esterilización registrados.
 ---
 
 ### `procesos`
+
 Tipos de procesos de esterilización disponibles.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -135,6 +146,7 @@ Tipos de procesos de esterilización disponibles.
 ---
 
 ### `products`
+
 Catálogo de productos/instrumentos gestionados.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -158,6 +170,7 @@ Catálogo de productos/instrumentos gestionados.
 ---
 
 ### `units`
+
 Unidades de medida disponibles.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -171,6 +184,7 @@ Unidades de medida disponibles.
 ---
 
 ### `settings`
+
 Configuración general de la aplicación.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -191,6 +205,7 @@ Configuración general de la aplicación.
 ## Módulo Trazabilidad
 
 ### `receptions`
+
 Recepción de material sucio proveniente de las áreas.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -210,6 +225,7 @@ Recepción de material sucio proveniente de las áreas.
 ---
 
 ### `reception_details`
+
 Ítems individuales de cada recepción.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -236,6 +252,7 @@ Recepción de material sucio proveniente de las áreas.
 ---
 
 ### `preparations`
+
 Preparación/empaque del material limpio previo a esterilización.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -252,6 +269,7 @@ Preparación/empaque del material limpio previo a esterilización.
 ---
 
 ### `preparation_details`
+
 Ítems individuales de cada preparación.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -278,6 +296,7 @@ Preparación/empaque del material limpio previo a esterilización.
 ---
 
 ### `preparation_quantity_resets`
+
 Auditoría de reseteos de cantidad en preparación.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -298,6 +317,7 @@ Auditoría de reseteos de cantidad en preparación.
 ---
 
 ### `labelqrs`
+
 Registro del ciclo de esterilización con etiqueta QR.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -323,6 +343,7 @@ Registro del ciclo de esterilización con etiqueta QR.
 ---
 
 ### `labelqr_details`
+
 Ítems individuales de cada ciclo de esterilización.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -355,6 +376,7 @@ Registro del ciclo de esterilización con etiqueta QR.
 ---
 
 ### `discharges`
+
 Descarga/retiro del material esterilizado.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -383,6 +405,7 @@ Descarga/retiro del material esterilizado.
 ---
 
 ### `discharge_details`
+
 Ítems individuales de cada descarga.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -413,6 +436,7 @@ Descarga/retiro del material esterilizado.
 ---
 
 ### `stocks`
+
 Stock de material esterilizado disponible para despacho.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -432,6 +456,7 @@ Stock de material esterilizado disponible para despacho.
 ---
 
 ### `stock_details`
+
 Ítems individuales de stock disponible.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -462,6 +487,7 @@ Stock de material esterilizado disponible para despacho.
 ---
 
 ### `expeditions`
+
 Despacho de material esterilizado a las áreas.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -481,6 +507,7 @@ Despacho de material esterilizado a las áreas.
 ---
 
 ### `expedition_details`
+
 Ítems individuales de cada despacho.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -511,6 +538,7 @@ Despacho de material esterilizado a las áreas.
 ## Módulo Auxiliar / Pruebas
 
 ### `informats`
+
 Control de insumos de esterilización (indicadores, empaques, etc.).
 
 | Campo | Tipo | Nulo | Descripción |
@@ -532,6 +560,7 @@ Control de insumos de esterilización (indicadores, empaques, etc.).
 ---
 
 ### `instrumentals`
+
 Trazabilidad individual de instrumental quirúrgico.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -550,6 +579,7 @@ Trazabilidad individual de instrumental quirúrgico.
 ---
 
 ### `lotes`
+
 Registro de lotes por equipo de esterilización.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -566,6 +596,7 @@ Registro de lotes por equipo de esterilización.
 ---
 
 ### `testbds`
+
 Registro de pruebas de indicador biológico (BD).
 
 | Campo | Tipo | Nulo | Descripción |
@@ -587,6 +618,7 @@ Registro de pruebas de indicador biológico (BD).
 ---
 
 ### `testvacuums`
+
 Registro de pruebas de vacío (Bowie-Dick).
 
 | Campo | Tipo | Nulo | Descripción |
@@ -609,6 +641,7 @@ Registro de pruebas de vacío (Bowie-Dick).
 ## Módulo Sistema / Auth
 
 ### `users`
+
 Usuarios del sistema.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -626,6 +659,7 @@ Usuarios del sistema.
 ---
 
 ### `roles`
+
 Roles del sistema (Spatie Permission).
 
 | Campo | Tipo | Nulo | Descripción |
@@ -639,6 +673,7 @@ Roles del sistema (Spatie Permission).
 ---
 
 ### `permissions`
+
 Permisos del sistema (Spatie Permission).
 
 | Campo | Tipo | Nulo | Descripción |
@@ -652,6 +687,7 @@ Permisos del sistema (Spatie Permission).
 ---
 
 ### `model_has_roles`
+
 Pivot: asignación de roles a usuarios.
 
 | Campo | Tipo | Descripción |
@@ -663,6 +699,7 @@ Pivot: asignación de roles a usuarios.
 ---
 
 ### `model_has_permissions`
+
 Pivot: asignación directa de permisos a usuarios.
 
 | Campo | Tipo | Descripción |
@@ -674,6 +711,7 @@ Pivot: asignación directa de permisos a usuarios.
 ---
 
 ### `role_has_permissions`
+
 Pivot: permisos asignados a roles.
 
 | Campo | Tipo | Descripción |
@@ -684,6 +722,7 @@ Pivot: permisos asignados a roles.
 ---
 
 ### `licence_expirations`
+
 Control de la licencia de uso de la aplicación.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -697,6 +736,7 @@ Control de la licencia de uso de la aplicación.
 ---
 
 ### `media`
+
 Archivos multimedia (Spatie MediaLibrary).
 
 | Campo | Tipo | Nulo | Descripción |
@@ -712,10 +752,10 @@ Archivos multimedia (Spatie MediaLibrary).
 | `disk` | varchar(255) | NO | Disco de almacenamiento |
 | `conversions_disk` | varchar(255) | SÍ | Disco de conversiones |
 | `size` | bigint unsigned | NO | Tamaño en bytes |
-| `manipulations` | json | NO | Manipulaciones |
-| `custom_properties` | json | NO | Propiedades personalizadas |
-| `generated_conversions` | json | NO | Conversiones generadas |
-| `responsive_images` | json | NO | Imágenes responsivas |
+| `manipulations` | JSON | NO | Manipulaciones |
+| `custom_properties` | JSON | NO | Propiedades personalizadas |
+| `generated_conversions` | JSON | NO | Conversiones generadas |
+| `responsive_images` | JSON | NO | Imágenes responsivas |
 | `order_column` | int unsigned | SÍ | Orden |
 | `created_at` | timestamp | SÍ | |
 | `updated_at` | timestamp | SÍ | |
@@ -723,6 +763,7 @@ Archivos multimedia (Spatie MediaLibrary).
 ---
 
 ### `uploads`
+
 Registro de archivos subidos al sistema.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -738,6 +779,7 @@ Registro de archivos subidos al sistema.
 ## Laravel Interno
 
 ### `failed_jobs`
+
 Cola de trabajos fallidos de Laravel.
 
 | Campo | Tipo | Nulo | Descripción |
@@ -753,6 +795,7 @@ Cola de trabajos fallidos de Laravel.
 ---
 
 ### `migrations`
+
 Historial de migraciones de Laravel.
 
 | Campo | Tipo | Descripción |
@@ -764,6 +807,7 @@ Historial de migraciones de Laravel.
 ---
 
 ### `password_resets`
+
 Tokens para restablecimiento de contraseña.
 
 | Campo | Tipo | Nulo | Descripción |
