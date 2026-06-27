@@ -1,122 +1,85 @@
-#
-#--------------------------------------------------------------------------
-# Image Setup
-#--------------------------------------------------------------------------
-#
-
-# no memcached
+# --------------------------------------------------------------------------
+# Image Setup for Laravel-Horizon
+# --------------------------------------------------------------------------
 
 FROM php:8.5-alpine
 
-RUN apk --update add wget \
-  curl \
-  git \
-  build-base \
-  libmemcached-dev \
-  libmcrypt-dev \
-  libxml2-dev \
-  zlib-dev \
-  autoconf \
-  cyrus-sasl-dev \
-  libgsasl-dev \
-  supervisor \
-  oniguruma-dev \
-  procps \
-  libzip-dev \
-  linux-headers \
-  postgresql-dev \
-  gmp-dev
-
-# Install the PHP packages
-RUN docker-php-ext-install gmp soap exif pcntl zip pdo_mysql pdo_pgsql bcmath intl sockets
-
-
-#####################################
-# PHPRedis:
-#####################################
-RUN pecl install redis && docker-php-ext-enable redis
-
-#####################################
-# Imagick:
-#####################################
-RUN apk add imagemagick-dev
-RUN pecl install imagick && \
-  docker-php-ext-enable imagick
-
-#####################################
-# GD:
-#####################################
-
-# Install the PHP gd library
-RUN apk add libpng-dev jpeg-dev libjpeg-turbo-dev freetype-dev
-RUN docker-php-ext-install gd && \
-  docker-php-ext-configure gd --with-freetype --with-jpeg && \
-  docker-php-ext-install gd
-
-
-# Add a non-root user to help install ffmpeg:
+# Argumentos para el usuario no root
 ARG PUID=1000
-ENV PUID ${PUID}
+ENV PUID=${PUID}
 ARG PGID=1000
-ENV PGID ${PGID}
+ENV PGID=${PGID}
 
-RUN addgroup -g ${PGID} sail && \
-  adduser -D -G sail -u ${PUID} sail
-
-#Install BZ2:
+# Argumentos para extensiones opcionales
 ARG INSTALL_BZ2=false
-RUN if [ ${INSTALL_BZ2} = true ]; then \
-  apk --update add bzip2-dev; \
-  docker-php-ext-install bz2 \
-  ;fi
-
-###########################################################################
-# PHP GnuPG:
-###########################################################################
-
 ARG INSTALL_GNUPG=true
 
-RUN set -eux; if [ ${INSTALL_GNUPG} = true ]; then \
-  apk add --no-cache --no-progress --virtual BUILD_DEPS_PHP_GNUPG gpgme-dev; \
-  apk add --no-cache --no-progress gpgme; \
-  pecl install gnupg; \
-  docker-php-ext-enable gnupg; \
-  fi
-
-
-#--------------------------------------------------------------------------
-# Optional Supervisord Configuration
-#--------------------------------------------------------------------------
-#
-# Modify the ./supervisor.conf file to match your App's requirements.
-# Make sure you rebuild your container with every change.
-#
-
+# Copiar configuración de supervisord antes de los RUN (para aprovechar caché)
 COPY supervisord.conf /etc/supervisord.conf
 
-ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
+# --- Capa única de instalación y limpieza ---
+RUN set -eux; \
+    # Paquetes de sistema (permanentes)
+    apk add --no-cache \
+        curl=~8 \
+        git=~2 \
+        gmp-dev~=6 \
+        libgsasl-dev~=2 \
+        libmcrypt-dev~=2 \
+        libmemcached-dev~=1 \
+        libpng-dev~=1 \
+        libxml2-dev~=2 \
+        libzip-dev~=1 \
+        oniguruma-dev~=6 \
+        postgresql18-dev \
+        procps=~4 \
+        supervisor=~4 \
+        wget=~1 \
+        zlib-dev~=1 \
+        freetype-dev \
+        imagemagick-dev \
+        jpeg-dev \
+        libjpeg-turbo-dev; \
+    \
+    # Dependencias de compilación (temporales)
+    apk add --no-cache --virtual .build-deps \
+        autoconf~=2 \
+        build-base~=0 \
+        cyrus-sasl-dev~=2 \
+        linux-headers~=7; \
+    \
+    # Extensiones PECL (redis, imagick, gnupg condicional)
+    pecl install redis imagick; \
+    docker-php-ext-enable redis imagick; \
+    if [ "${INSTALL_GNUPG}" = "true" ]; then \
+        apk add --no-cache gpgme gpgme-dev; \
+        pecl install gnupg; \
+        docker-php-ext-enable gnupg; \
+    fi; \
+    \
+    # Extensiones PHP nativas (compilación paralela)
+    docker-php-ext-install -j$(nproc) \
+        gmp soap exif pcntl zip pdo_mysql pdo_pgsql bcmath intl sockets gd; \
+    \
+    # Configuración de GD
+    docker-php-ext-configure gd --with-freetype --with-jpeg; \
+    \
+    # BZ2 condicional
+    if [ "${INSTALL_BZ2}" = "true" ]; then \
+        apk add --no-cache bzip2-dev; \
+        docker-php-ext-install bz2; \
+    fi; \
+    \
+    # Limpieza: eliminar dependencias de compilación y cachés
+    apk del .build-deps; \
+    rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
-#
-#--------------------------------------------------------------------------
-# Optional Software's Installation
-#--------------------------------------------------------------------------
-#
-# If you need to modify this image, feel free to do it right here.
-#
-# -- Your awesome modifications go here -- #
+# Crear usuario no root
+RUN addgroup -g ${PGID} sail && \
+    adduser -D -G sail -u ${PUID} sail
 
-
-#--------------------------------------------------------------------------
-# Check PHP version
-#--------------------------------------------------------------------------
-#
-
-RUN php -v
-
-#
-#--------------------------------------------------------------------------
-# Final Touch
-#--------------------------------------------------------------------------
-#
-
+# Directorio de trabajo (por defecto para supervisord)
 WORKDIR /etc/supervisor/conf.d/
+
+# Punto de entrada
+ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
