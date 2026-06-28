@@ -43,4 +43,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/central/chart-data', [HomeController::class, 'CentralChart'])
         ->name('central.chart');
+
+    Route::get('/equipment-semester/chart-data', [HomeController::class, 'EquipmentSemesterChart'])
+        ->name('equipment-semester.chart');
+
+    Route::get('/chart-years', [HomeController::class, 'chartYears'])
+        ->name('chart.years');
 });

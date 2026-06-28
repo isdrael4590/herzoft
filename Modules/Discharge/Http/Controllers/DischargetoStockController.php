@@ -32,7 +32,7 @@ class DischargetoStockController extends Controller
         $cart = Cart::instance('stock');
 
         foreach ($discharge_details as $discharge_detail) {
-            $expiration = Carbon::parse($discharge_detail->updated_at)->addDays($discharge_detail->product_expiration);
+            $expiration = Carbon::parse($discharge_detail->updated_at)->addDays((int) $discharge_detail->product_expiration);
             $cart->add([
                 'id'      => $discharge_detail->id,
                 'name'    => $discharge_detail->product_name,
